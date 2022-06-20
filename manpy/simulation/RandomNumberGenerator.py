@@ -27,15 +27,15 @@ holds methods for generations of numbers from different distributions
 """
 
 import math
-
+import numpy.random as rnd
 
 class RandomNumberGenerator(object):
     # data should be given as a dict:
     #     "distribution": {
     #         "distributionType": {
-    #             "mean": 10,
-    #             "stdev": 1,
-    #             "parameterX":X,
+    #             "mean": "2*x + 10",
+    #             "stdev": "1",
+    #             "parameterX":"X",
     #            ...
     #         },
     def __init__(self, obj, distribution):
@@ -95,87 +95,70 @@ class RandomNumberGenerator(object):
         for key in parameters:
             if parameters[key] in [None, ""]:
                 parameters[key] = 0.0
-        self.mean = float(parameters.get("mean", 0))
-        self.stdev = float(parameters.get("stdev", 0))
-        self.min = float(parameters.get("min", 0))
-        self.max = float(parameters.get("max", 0))
-        self.alpha = float(parameters.get("alpha", 0))
-        self.beta = float(parameters.get("beta", 0))
-        self.logmean = float(parameters.get("logmean", 0))
-        self.logsd = float(parameters.get("logsd", 0))
-        self.probability = float(parameters.get("probability", 0))
-        self.shape = float(parameters.get("shape", 0))
-        self.scale = float(parameters.get("scale", 0))
-        self.location = float(parameters.get("location", 0))
-        self.rate = float(parameters.get("rate", 0))
+        self.mean = str(parameters.get("mean", 0))
+        self.stdev = str(parameters.get("stdev", 0))
+        self.min = str(parameters.get("min", 0))
+        self.max = str(parameters.get("max", 0))
+        self.alpha = str(parameters.get("alpha", 0))
+        self.beta = str(parameters.get("beta", 0))
+        self.probability = str(parameters.get("probability", 0))
+        self.shape = str(parameters.get("shape", 0))
+        self.scale = str(parameters.get("scale", 0))
+        self.location = str(parameters.get("location", 0))
+        self.rate = str(parameters.get("rate", 0))
         self.obj = obj
 
-    def generateNumber(self):
+
+    def generateNumber(self, start_time=0):
         from .Globals import G
+        x = G.env.now - start_time
 
         if self.distributionType == "Fixed":  # if the distribution is Fixed
-            return self.mean
+            return eval(self.mean)
         elif self.distributionType == "Exp":  # if the distribution is Exponential
-            return G.Rnd.expovariate(1.0 / (self.mean))
+            return rnd.exponential(eval(self.mean))
         elif self.distributionType == "Normal":  # if the distribution is Normal
-            if self.max < self.min:
+            if eval(self.max) < eval(self.min):
                 raise ValueError(
                     "Normal distribution for %s uses wrong "
                     "parameters. max (%s) > min (%s)"
-                    % (self.obj.id, self.max, self.min)
+                    % (self.obj.id, eval(self.max), eval(self.min))
                 )
             while 1:
-                number = G.Rnd.normalvariate(self.mean, self.stdev)
-                if (
-                    number > self.max or number < self.min and max != 0
-                ):  # if the number is out of bounds repeat the process
+                number = rnd.normal(eval(self.mean), eval(self.stdev))
+                if (number > eval(self.max) or number < eval(self.min) and eval(self.max) != 0):
+                    # if the number is out of bounds repeat the process
                     ##if max=0 this means that we did not have time "time" bounds
                     continue
                 else:  # if the number is in the limits stop the process
                     return number
-        elif (
-            self.distributionType == "Gamma" or self.distributionType == "Erlang"
-        ):  # if the distribution is gamma or erlang
+        elif (self.distributionType == "Gamma" or self.distributionType == "Erlang"):
+            # if the distribution is gamma or erlang
             # in case shape is given instead of alpha
             if not self.alpha:
                 self.alpha = self.shape
             # in case rate is given instead of beta
             if not self.beta:
-                self.beta = 1 / float(self.rate)
-            return G.Rnd.gammavariate(self.alpha, self.beta)
+                self.beta = 1 / float(eval(self.rate))
+            return rnd.gamma(eval(self.alpha), eval(self.beta))
         elif self.distributionType == "Logistic":  # if the distribution is Logistic
-            # XXX from http://stackoverflow.com/questions/3955877/generating-samples-from-the-logistic-distribution
-            # to check
-            while 1:
-                x = G.Rnd.random()
-                number = self.location + self.scale * math.log(x / (1 - x))
-                if number > 0:
-                    return number
-                else:
-                    continue
+            return rnd.logistic(eval(self.location), eval(self.scale))
         elif self.distributionType == "Geometric":  # if the distribution is Geometric
-            return G.numpyRnd.random.geometric(self.probability)
+            return rnd.geometric(eval(self.probability))
         elif self.distributionType == "Lognormal":  # if the distribution is Lognormal
-            # XXX from the files lognormvariate(mu, sigma)
-            # it would be better to use same mean,stdev
-            return G.Rnd.lognormvariate(self.logmean, self.logsd)
+            return rnd.lognormal(eval(self.mean), eval(self.stdev))
         elif self.distributionType == "Weibull":  # if the distribution is Weibull
-            return G.Rnd.weibullvariate(self.scale, self.shape)
+            return rnd.weibull(eval(self.shape))
         elif self.distributionType == "Cauchy":  # if the distribution is Cauchy
             # XXX from http://www.johndcook.com/python_cauchy_rng.html
             while 1:
-                p = 0.0
-                while p == 0.0:
-                    p = G.Rnd.random()
-                number = self.location + self.scale * math.tan(math.pi * (p - 0.5))
+                number = eval(self.location) + eval(self.scale) * math.tan(math.pi * (rnd.random_sample() - 0.5))
                 if number > 0:
                     return number
                 else:
                     continue
         elif self.distributionType == "Triangular":  # if the distribution is Triangular
-            return G.numpyRnd.random.triangular(
-                left=self.min, right=self.max, mode=self.mean
-            )
+            return rnd.triangular(left=eval(self.min), mode=eval(self.mean), right=eval(self.max))
         else:
             raise ValueError(
                 "Unknown distribution %r used in %s %s"

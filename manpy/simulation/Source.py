@@ -60,9 +60,9 @@ class EntityGenerator(object):
 
                 G.EntityList.append(entity)
 
-                self.victim.outputTrace(
-                    entity_name=entity.name, entity_id=entity.id, message="generated"
-                )
+                #self.victim.outputTrace(
+                #    entity_name=entity.name, entity_id=entity.id, message="generated"
+                #)
                 self.victim.getActiveObjectQueue().append(entity)
                 self.victim.numberOfArrivals += 1
                 G.numberOfEntities += 1
@@ -78,11 +78,12 @@ class EntityGenerator(object):
                 # this is used just ot output the trace correctly
                 entityCounter = G.numberOfEntities + len(self.victim.scheduledEntities)
                 self.victim.scheduledEntities.append(self.env.now)
+                """
                 self.victim.outputTrace(
                     f"{self.victim.item.type}{entityCounter}",
                     f"{self.victim.item.type}{entityCounter}",
                     "generated",
-                )
+                )"""
 
             # wait until the next arrival
             yield self.env.timeout(

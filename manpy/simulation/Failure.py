@@ -45,6 +45,7 @@ class Failure(ObjectInterruption):
         offshift=False,
         deteriorationType="constant",
         waitOnTie=False,
+        conditional=False,
         **kw
     ):
         ObjectInterruption.__init__(self, id, name, victim=victim)
@@ -68,167 +69,246 @@ class Failure(ObjectInterruption):
         self.offshift = offshift
         # flag to show if the failure will wait on tie with other events before interrupting the victim
         self.waitOnTie = waitOnTie
+        # if a function should determine if a failure occurs or not
+        self.conditional = conditional
 
     def initialize(self):
         ObjectInterruption.initialize(self)
         self.victimStartsProcess = self.env.event()
         self.victimEndsProcess = self.env.event()
 
+    def condition(self):
+        #Overwrite this method to set a condition
+        return None
+
     # =======================================================================
     #    The run method for the failure which has to served by a repairman
     # =======================================================================
     def run(self):
-        while 1:
-            # if the time that the victim is off-shift should not be counted
-            timeToFailure = self.rngTTF.generateNumber()
-            remainingTimeToFailure = timeToFailure
-            failureNotTriggered = True
+        if self.condition != None:
+            from .Globals import G
+            self.contribute = self.env.event()
+            while 1:
+                yield self.contribute
+                self.contribute = self.env.event()
 
-            # if time to failure counts not matter the state of the victim
-            if self.deteriorationType == "constant":
-                yield self.env.timeout(remainingTimeToFailure)
-            # if time to failure counts only in onShift time
-            elif self.deteriorationType == "onShift":
-                while failureNotTriggered:
-                    timeRestartedCounting = self.env.now
-                    self.isWaitingForVictimOffShift = True
+                if self.condition() == True:
+                    self.interruptVictim()
 
-                    self.expectedSignals["victimOffShift"] = 1
+                    # check in the ObjectInterruptions of the victim. If there is a one that is waiting for victimFailed send it
+                    for oi in self.victim.objectInterruptions:
+                        if oi.expectedSignals["victimFailed"]:
+                            self.sendSignal(receiver=oi, signal=oi.victimFailed)
+                    self.victim.Up = False
+                    self.victim.timeLastFailure = self.env.now
+                    self.outputTrace(self.victim.name, self.victim.id, "is down")
+                    # update the failure time
+                    failTime = self.env.now
+                    if (
+                        self.repairman and self.repairman != "None"
+                    ):  # if the failure needs a resource to be fixed,
+                        # the machine waits until the
+                        # resource is available
 
-                    receivedEvent = (
-                        yield self.env.timeout(remainingTimeToFailure)
-                        | self.victimOffShift
-                    )
-                    # the failure should receive a signal if there is a shift-off triggered
-                    if self.victimOffShift in receivedEvent:
-                        assert (
-                            self.victim.onShift == False
-                        ), "shiftFailure cannot recalculate TTF if the victim is onShift"
-                        self.victimOffShift = self.env.event()
-                        remainingTimeToFailure = remainingTimeToFailure - (
-                            self.env.now - timeRestartedCounting
-                        )
-                        # wait for the shift to start again
-                        self.isWaitingForVictimOnShift = True
+                        with self.repairman.getResource().request() as request:
+                            yield request
+                            # update the time that the repair started
+                            timeOperationStarted = self.env.now
+                            self.repairman.timeLastOperationStarted = self.env.now
 
-                        self.expectedSignals["victimOnShift"] = 1
+                            yield self.env.timeout(
+                                self.rngTTR.generateNumber()
+                            )  # wait until the repairing process is over
+                            self.victim.totalFailureTime += self.env.now - failTime
+                            self.reactivateVictim()  # since repairing is over, the Machine is reactivated
+                            self.victim.Up = True
+                            self.outputTrace(self.victim.name, self.victim.id, "is up")
 
-                        yield self.victimOnShift
-
-                        self.isWaitingForVictimOnShift = False
-                        self.victimOnShift = self.env.event()
-                        assert (
-                            self.victim.onShift == True
-                        ), "the victim of shiftFailure must be onShift to continue counting the TTF"
-                    else:
-                        self.isWaitingForVictimOffShift = False
-                        failureNotTriggered = False
-
-            # if time to failure counts only in working time
-            elif self.deteriorationType == "working":
-                # wait for victim to start process
-
-                self.expectedSignals["victimStartsProcess"] = 1
-
-                yield self.victimStartsProcess
-
-                self.victimStartsProcess = self.env.event()
-                while failureNotTriggered:
-                    timeRestartedCounting = self.env.now
-
-                    self.expectedSignals["victimEndsProcess"] = 1
-
-                    # wait either for the failure or end of process
-                    receivedEvent = (
-                        yield self.env.timeout(remainingTimeToFailure)
-                        | self.victimEndsProcess
-                    )
-                    if self.victimEndsProcess in receivedEvent:
-                        self.victimEndsProcess = self.env.event()
-                        remainingTimeToFailure = remainingTimeToFailure - (
-                            self.env.now - timeRestartedCounting
-                        )
-
-                        self.expectedSignals["victimStartsProcess"] = 1
-
-                        yield self.victimStartsProcess
-
-                        # wait for victim to start again processing
-                        self.victimStartsProcess = self.env.event()
-                    else:
-                        failureNotTriggered = False
-
-            # if the mode is to wait on tie before interruption add a dummy hold for 0
-            # this is done so that if processing finishes exactly at the time of interruption
-            # the processing will finish first (if this mode is selected)
-            if self.waitOnTie:
-                if hasattr(self.victim, "timeToEndCurrentOperation"):
-                    if float(self.victim.timeToEndCurrentOperation) == float(
-                        self.env.now
-                    ):
-                        yield self.env.timeout(0)
-
-            # interrupt the victim
-            self.interruptVictim()  # interrupt the victim
-
-            # check in the ObjectInterruptions of the victim. If there is a one that is waiting for victimFailed send it
-            for oi in self.victim.objectInterruptions:
-                if oi.expectedSignals["victimFailed"]:
-                    self.sendSignal(receiver=oi, signal=oi.victimFailed)
-            self.victim.Up = False
-            self.victim.timeLastFailure = self.env.now
-            self.outputTrace(self.victim.name, self.victim.id, "is down")
-            # update the failure time
-            failTime = self.env.now
-            if (
-                self.repairman and self.repairman != "None"
-            ):  # if the failure needs a resource to be fixed,
-                # the machine waits until the
-                # resource is available
-
-                with self.repairman.getResource().request() as request:
-                    yield request
-                    # update the time that the repair started
-                    timeOperationStarted = self.env.now
-                    self.repairman.timeLastOperationStarted = self.env.now
+                            self.repairman.totalWorkingTime += (
+                                self.env.now - timeOperationStarted
+                            )
+                        continue
 
                     yield self.env.timeout(
                         self.rngTTR.generateNumber()
                     )  # wait until the repairing process is over
-                    self.victim.totalFailureTime += self.env.now - failTime
+
+                    # add the failure
+                    # if victim is off shift add only the fail time before the shift ended
+                    if not self.victim.onShift and failTime < self.victim.timeLastShiftEnded:
+                        self.victim.totalFailureTime += (
+                            self.victim.timeLastShiftEnded - failTime
+                        )
+                    # if the victim was off shift since the start of the failure add nothing
+                    elif not self.victim.onShift and failTime >= self.victim.timeLastShiftEnded:
+                        pass
+                    # if victim was off shift in the start of the fail time, add on
+                    elif self.victim.onShift and failTime < self.victim.timeLastShiftStarted:
+                        self.victim.totalFailureTime += (
+                            self.env.now - self.victim.timeLastShiftStarted
+                        )
+                        # this can happen only if deteriorationType is constant
+                        assert (
+                            self.deteriorationType == "constant"
+                        ), "object got failure while off-shift and deterioration type not constant"
+                    else:
+                        self.victim.totalFailureTime += self.env.now - failTime
                     self.reactivateVictim()  # since repairing is over, the Machine is reactivated
                     self.victim.Up = True
                     self.outputTrace(self.victim.name, self.victim.id, "is up")
 
-                    self.repairman.totalWorkingTime += (
-                        self.env.now - timeOperationStarted
+        else:
+            while 1:
+                # if the time that the victim is off-shift should not be counted
+                timeToFailure = self.rngTTF.generateNumber()
+                remainingTimeToFailure = timeToFailure
+                failureNotTriggered = True
+
+                # if time to failure counts not matter the state of the victim
+                if self.deteriorationType == "constant":
+                    yield self.env.timeout(remainingTimeToFailure)
+                # if time to failure counts only in onShift time
+                elif self.deteriorationType == "onShift":
+                    while failureNotTriggered:
+                        timeRestartedCounting = self.env.now
+                        self.isWaitingForVictimOffShift = True
+
+                        self.expectedSignals["victimOffShift"] = 1
+
+                        receivedEvent = (
+                            yield self.env.timeout(remainingTimeToFailure)
+                            | self.victimOffShift
+                        )
+                        # the failure should receive a signal if there is a shift-off triggered
+                        if self.victimOffShift in receivedEvent:
+                            assert (
+                                self.victim.onShift == False
+                            ), "shiftFailure cannot recalculate TTF if the victim is onShift"
+                            self.victimOffShift = self.env.event()
+                            remainingTimeToFailure = remainingTimeToFailure - (
+                                self.env.now - timeRestartedCounting
+                            )
+                            # wait for the shift to start again
+                            self.isWaitingForVictimOnShift = True
+
+                            self.expectedSignals["victimOnShift"] = 1
+
+                            yield self.victimOnShift
+
+                            self.isWaitingForVictimOnShift = False
+                            self.victimOnShift = self.env.event()
+                            assert (
+                                self.victim.onShift == True
+                            ), "the victim of shiftFailure must be onShift to continue counting the TTF"
+                        else:
+                            self.isWaitingForVictimOffShift = False
+                            failureNotTriggered = False
+
+                # if time to failure counts only in working time
+                elif self.deteriorationType == "working":
+                    # wait for victim to start process
+
+                    self.expectedSignals["victimStartsProcess"] = 1
+
+                    yield self.victimStartsProcess
+
+                    self.victimStartsProcess = self.env.event()
+                    while failureNotTriggered:
+                        timeRestartedCounting = self.env.now
+
+                        self.expectedSignals["victimEndsProcess"] = 1
+
+                        # wait either for the failure or end of process
+                        receivedEvent = (
+                            yield self.env.timeout(remainingTimeToFailure)
+                            | self.victimEndsProcess
+                        )
+                        if self.victimEndsProcess in receivedEvent:
+                            self.victimEndsProcess = self.env.event()
+                            remainingTimeToFailure = remainingTimeToFailure - (
+                                self.env.now - timeRestartedCounting
+                            )
+
+                            self.expectedSignals["victimStartsProcess"] = 1
+
+                            yield self.victimStartsProcess
+
+                            # wait for victim to start again processing
+                            self.victimStartsProcess = self.env.event()
+                        else:
+                            failureNotTriggered = False
+
+                # if the mode is to wait on tie before interruption add a dummy hold for 0
+                # this is done so that if processing finishes exactly at the time of interruption
+                # the processing will finish first (if this mode is selected)
+                if self.waitOnTie:
+                    if hasattr(self.victim, "timeToEndCurrentOperation"):
+                        if float(self.victim.timeToEndCurrentOperation) == float(
+                            self.env.now
+                        ):
+                            yield self.env.timeout(0)
+
+                # interrupt the victim
+                self.interruptVictim()  # interrupt the victim
+
+                # check in the ObjectInterruptions of the victim. If there is a one that is waiting for victimFailed send it
+                for oi in self.victim.objectInterruptions:
+                    if oi.expectedSignals["victimFailed"]:
+                        self.sendSignal(receiver=oi, signal=oi.victimFailed)
+                self.victim.Up = False
+                self.victim.timeLastFailure = self.env.now
+                self.outputTrace(self.victim.name, self.victim.id, "is down")
+                # update the failure time
+                failTime = self.env.now
+                if (
+                    self.repairman and self.repairman != "None"
+                ):  # if the failure needs a resource to be fixed,
+                    # the machine waits until the
+                    # resource is available
+
+                    with self.repairman.getResource().request() as request:
+                        yield request
+                        # update the time that the repair started
+                        timeOperationStarted = self.env.now
+                        self.repairman.timeLastOperationStarted = self.env.now
+
+                        yield self.env.timeout(
+                            self.rngTTR.generateNumber()
+                        )  # wait until the repairing process is over
+                        self.victim.totalFailureTime += self.env.now - failTime
+                        self.reactivateVictim()  # since repairing is over, the Machine is reactivated
+                        self.victim.Up = True
+                        self.outputTrace(self.victim.name, self.victim.id, "is up")
+
+                        self.repairman.totalWorkingTime += (
+                            self.env.now - timeOperationStarted
+                        )
+                    continue
+
+                yield self.env.timeout(
+                    self.rngTTR.generateNumber()
+                )  # wait until the repairing process is over
+
+                # add the failure
+                # if victim is off shift add only the fail time before the shift ended
+                if not self.victim.onShift and failTime < self.victim.timeLastShiftEnded:
+                    self.victim.totalFailureTime += (
+                        self.victim.timeLastShiftEnded - failTime
                     )
-                continue
-
-            yield self.env.timeout(
-                self.rngTTR.generateNumber()
-            )  # wait until the repairing process is over
-
-            # add the failure
-            # if victim is off shift add only the fail time before the shift ended
-            if not self.victim.onShift and failTime < self.victim.timeLastShiftEnded:
-                self.victim.totalFailureTime += (
-                    self.victim.timeLastShiftEnded - failTime
-                )
-            # if the victim was off shift since the start of the failure add nothing
-            elif not self.victim.onShift and failTime >= self.victim.timeLastShiftEnded:
-                pass
-            # if victim was off shift in the start of the fail time, add on
-            elif self.victim.onShift and failTime < self.victim.timeLastShiftStarted:
-                self.victim.totalFailureTime += (
-                    self.env.now - self.victim.timeLastShiftStarted
-                )
-                # this can happen only if deteriorationType is constant
-                assert (
-                    self.deteriorationType == "constant"
-                ), "object got failure while off-shift and deterioration type not constant"
-            else:
-                self.victim.totalFailureTime += self.env.now - failTime
-            self.reactivateVictim()  # since repairing is over, the Machine is reactivated
-            self.victim.Up = True
-            self.outputTrace(self.victim.name, self.victim.id,  "is up")
+                # if the victim was off shift since the start of the failure add nothing
+                elif not self.victim.onShift and failTime >= self.victim.timeLastShiftEnded:
+                    pass
+                # if victim was off shift in the start of the fail time, add on
+                elif self.victim.onShift and failTime < self.victim.timeLastShiftStarted:
+                    self.victim.totalFailureTime += (
+                        self.env.now - self.victim.timeLastShiftStarted
+                    )
+                    # this can happen only if deteriorationType is constant
+                    assert (
+                        self.deteriorationType == "constant"
+                    ), "object got failure while off-shift and deterioration type not constant"
+                else:
+                    self.victim.totalFailureTime += self.env.now - failTime
+                self.reactivateVictim()  # since repairing is over, the Machine is reactivated
+                self.victim.Up = True
+                self.outputTrace(self.victim.name, self.victim.id,  "is up")

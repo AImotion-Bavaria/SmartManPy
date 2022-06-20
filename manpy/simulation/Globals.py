@@ -37,11 +37,6 @@ import numpy
 # globals
 # ===========================================================================
 class G:
-    seed = 1450  # the seed of the random number generator
-    Rnd = Random(seed)  # random number generator
-
-    numpyRnd = numpy
-
     ObjList = []  # a list that holds all the CoreObjects
     EntityList = []  # a list that holds all the Entities
     ObjectResourceList = []
@@ -247,7 +242,7 @@ def getMethodFromName(dotted_name):
         cls = getClassFromName(clsName)
         method = getattr(cls, methodName)
     if not method:
-        raise Exception("Method %s not implemented" % method_name)
+        raise Exception("Method %s not implemented" % methodName)
     return method
 
 
@@ -546,16 +541,6 @@ def runSimulation(
 
     # run the replications
     for i in range(G.numberOfReplications):
-        if G.seed:
-            G.Rnd = Random("%s%s" % (G.seed, i))
-            G.numpyRnd.random.seed(G.seed)
-        else:
-            G.Rnd = Random()
-            G.numpyRnd.random.seed()
-        G.seed += (
-            1  # increment the seed so that we get different random numbers in each run.
-        )
-
         G.env = env or simpy.Environment()
         # this is where all the simulation object 'live'
 
@@ -584,7 +569,7 @@ def runSimulation(
 
         # identify from the exits what is the time that the last entity has ended.
         endList = []
-        from .Exit import Exit
+        from manpy.simulation.Exit import Exit
 
         for object in G.ObjList:
             if issubclass(object.__class__, Exit):
@@ -603,3 +588,14 @@ def runSimulation(
         # carry on the post processing operations for every object in the topology
         for object in G.ObjList + G.ObjectResourceList:
             object.postProcessing()
+
+def ExcelPrinter(df, filename):
+    #df = G.get_simulation_results_dataframe()
+    number_sheets = df.shape[0] // 65535 + 1
+
+    if number_sheets > 1:
+        for i in range(number_sheets):
+            file = "{}({}).xls".format(filename, i)
+            df[65535 * (i): 65535 * (i + 1)].to_excel(file)
+    else:
+        df.to_excel("{}.xls".format(filename))

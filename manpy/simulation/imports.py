@@ -58,6 +58,7 @@ from manpy.simulation.MouldAssemblyBufferManaged import MouldAssemblyBufferManag
 from manpy.simulation.OrderDecomposition import OrderDecomposition
 from manpy.simulation.NonStarvingEntry import NonStarvingEntry
 from manpy.simulation.RoutingQueue import RoutingQueue
+from manpy.simulation.Feature import Feature
 
 # Entities
 from manpy.simulation.Job import Job

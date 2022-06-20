@@ -37,7 +37,7 @@ class SimulationExamples(TestCase):
     """
 
     def testTwoServers(self):
-        from manpy.simulation.Examples.TwoServers import main
+        from manpy.simulation.Examples import main
 
         result = main(test=1)
         self.assertEqual(result["parts"], 732)
@@ -45,21 +45,21 @@ class SimulationExamples(TestCase):
         self.assertTrue(26.73 < result["working_ratio"] < 27.74)
 
     def testAssemblyLine(self):
-        from manpy.simulation.Examples.AssemblyLine import main
+        from manpy.simulation.Examples.Old.AssemblyLine import main
 
         result = main(test=1)
         self.assertEqual(result["frames"], 664)
         self.assertTrue(92.36 < result["working_ratio"] < 93.37)
 
     def testSingleServer(self):
-        from manpy.simulation.Examples.SingleServer import main
+        from manpy.simulation.Examples.Old.SingleServer import main
 
         result = main(test=1)
         self.assertEqual(result["parts"], 2880)
         self.assertTrue(49.99 < result["working_ratio"] < 50.01)
 
     def testClearBatchLines(self):
-        from manpy.simulation.Examples.ClearBatchLines import main
+        from manpy.simulation.Examples import main
 
         result = main(test=1)
         self.assertEqual(result["batches"], 89)
@@ -68,7 +68,7 @@ class SimulationExamples(TestCase):
         self.assertTrue(93.81 < result["waiting_ratio_M3"] < 93.82)
 
     def testDecompositionOfBatches(self):
-        from manpy.simulation.Examples.DecompositionOfBatches import main
+        from manpy.simulation.Examples import main
 
         result = main(test=1)
         self.assertEqual(result["subbatches"], 2302)
@@ -77,7 +77,7 @@ class SimulationExamples(TestCase):
         self.assertTrue(20.03 < result["waiting_ratio"] < 20.04)
 
     def testSerialBatchProcessing(self):
-        from manpy.simulation.Examples.SerialBatchProcessing import main
+        from manpy.simulation.Examples.Old.SerialBatchProcessing import main
 
         result = main(test=1)
         self.assertEqual(result["batches"], 359)
@@ -86,7 +86,7 @@ class SimulationExamples(TestCase):
         self.assertTrue(75.06 < result["waiting_ratio_M3"] < 75.07)
 
     def testJobShop1(self):
-        from manpy.simulation.Examples.JobShop1 import main
+        from manpy.simulation.Examples.Old.JobShop1 import main
 
         result = main(test=1)
         expectedResult = [
@@ -101,7 +101,7 @@ class SimulationExamples(TestCase):
         self.assertEqual(result, expectedResult)
 
     def testJobShop2EDD(self):
-        from manpy.simulation.Examples.JobShop2EDD import main
+        from manpy.simulation.Examples import main
 
         result = main(test=1)
         expectedResult = [
@@ -128,7 +128,7 @@ class SimulationExamples(TestCase):
         self.assertEqual(result, expectedResult)
 
     def testJobShop2MC(self):
-        from manpy.simulation.Examples.JobShop2MC import main
+        from manpy.simulation.Examples import main
 
         result = main(test=1)
         expectedResult = [
@@ -155,7 +155,7 @@ class SimulationExamples(TestCase):
         self.assertEqual(result, expectedResult)
 
     def testJobShop2Priority(self):
-        from manpy.simulation.Examples.JobShop2Priority import main
+        from manpy.simulation.Examples.Old.JobShop2Priority import main
 
         result = main(test=1)
         expectedResult = [
@@ -182,7 +182,7 @@ class SimulationExamples(TestCase):
         self.assertEqual(result, expectedResult)
 
     def testJobShop2RPC(self):
-        from manpy.simulation.Examples.JobShop2RPC import main
+        from manpy.simulation.Examples import main
 
         result = main(test=1)
         expectedResult = [
@@ -209,7 +209,7 @@ class SimulationExamples(TestCase):
         self.assertEqual(result, expectedResult)
 
     def testParallelServers1(self):
-        from manpy.simulation.Examples.ParallelServers1 import main
+        from manpy.simulation.Examples.Old.ParallelServers1 import main
 
         result = main(test=1)
         self.assertEqual(result["parts"], 2880)
@@ -217,7 +217,7 @@ class SimulationExamples(TestCase):
         self.assertTrue(26.9 < result["working_ratio_M2"] < 26.91)
 
     def testParallelServers2(self):
-        from manpy.simulation.Examples.ParallelServers3 import main
+        from manpy.simulation.Examples.Old.ParallelServers3 import main
 
         result = main(test=1)
         self.assertEqual(result["parts"], 2880)
@@ -226,7 +226,7 @@ class SimulationExamples(TestCase):
 
     # NOTE: testParallelServers4 is extension of testParallelServers4 so this test really tests if they both run
     def testParallelServers4(self):
-        from manpy.simulation.Examples.ParallelServers4 import main
+        from manpy.simulation.Examples.Old.ParallelServers4 import main
 
         result = main(test=1)
         self.assertEqual(result["parts"], 2880)
@@ -236,35 +236,35 @@ class SimulationExamples(TestCase):
         self.assertEqual(result["NumM2"], 220)
 
     def testServerWithShift1(self):
-        from manpy.simulation.Examples.ServerWithShift1 import main
+        from manpy.simulation.Examples import main
 
         result = main(test=1)
         self.assertEqual(result["parts"], 3)
         self.assertTrue(49.99 < result["working_ratio"] < 50.01)
 
     def testServerWithShift2(self):
-        from manpy.simulation.Examples.ServerWithShift2 import main
+        from manpy.simulation.Examples import main
 
         result = main(test=1)
         self.assertEqual(result["parts"], 16)
         self.assertTrue(49.99 < result["working_ratio"] < 50.01)
 
     def testServerWithShift3(self):
-        from manpy.simulation.Examples.ServerWithShift3 import main
+        from manpy.simulation.Examples.Old.ServerWithShift3 import main
 
         result = main(test=1)
         self.assertEqual(result["parts"], 4)
         self.assertTrue(59.99 < result["working_ratio"] < 60.01)
 
     def testServerWithShift4(self):
-        from manpy.simulation.Examples.ServerWithShift4 import main
+        from manpy.simulation.Examples.Old.ServerWithShift4 import main
 
         result = main(test=1)
         self.assertEqual(result["parts"], 2)
         self.assertTrue(29.99 < result["working_ratio"] < 30.01)
 
     def testSettingWip1(self):
-        from manpy.simulation.Examples.SettingWip1 import main
+        from manpy.simulation.Examples.Old.SettingWip1 import main
 
         result = main(test=1)
         self.assertEqual(result["parts"], 1)
@@ -272,7 +272,7 @@ class SimulationExamples(TestCase):
         self.assertEqual(result["working_ratio"], 100)
 
     def testSettingWip2(self):
-        from manpy.simulation.Examples.SettingWip2 import main
+        from manpy.simulation.Examples import main
 
         result = main(test=1)
         self.assertEqual(result["parts"], 2)
@@ -280,7 +280,7 @@ class SimulationExamples(TestCase):
         self.assertEqual(result["working_ratio"], 100)
 
     def testSettingWip3(self):
-        from manpy.simulation.Examples.SettingWip3 import main
+        from manpy.simulation.Examples import main
 
         result = main(test=1)
         self.assertEqual(result["parts"], 2)
@@ -288,14 +288,14 @@ class SimulationExamples(TestCase):
         self.assertEqual(result["working_ratio"], 100)
 
     def testBalancingABuffer(self):
-        from manpy.simulation.Examples.BalancingABuffer import main
+        from manpy.simulation.Examples import main
 
         result = main(test=1)
         self.assertEqual(result["parts"], 13)
         self.assertEqual(result["working_ratio"], 80)
 
     def testChangingPredecessors(self):
-        from manpy.simulation.Examples.ChangingPredecessors import main
+        from manpy.simulation.Examples.Old.ChangingPredecessors import main
 
         result = main(test=1)
         self.assertEqual(result["parts"], 10)
@@ -303,7 +303,7 @@ class SimulationExamples(TestCase):
         self.assertTrue(83.32 < result["working_ratio"] < 83.34)
 
     def testSettingWip3(self):
-        from manpy.simulation.Examples.SettingWip3 import main
+        from manpy.simulation.Examples import main
 
         result = main(test=1)
         self.assertEqual(result["parts"], 2)
@@ -311,33 +311,33 @@ class SimulationExamples(TestCase):
         self.assertEqual(result["working_ratio"], 100)
 
     def testNonStarvingLine(self):
-        from manpy.simulation.Examples.NonStarvingLine import main
+        from manpy.simulation.Examples import main
 
         result = main(test=1)
         self.assertEqual(result["parts"], 9)
         self.assertEqual(result["working_ratio"], 100)
 
     def testNonStarvingLineBatches(self):
-        from manpy.simulation.Examples.NonStarvingLineBatches import main
+        from manpy.simulation.Examples.Old.NonStarvingLineBatches import main
 
         result = main(test=1)
         self.assertEqual(result["batches"], 4)
         self.assertEqual(result["working_ratio"], 100)
 
     def testCompoundMachine(self):
-        from manpy.simulation.Examples.CompoundMachine import main
+        from manpy.simulation.Examples.Old.CompoundMachine import main
 
         result = main(test=1)
         self.assertTrue(5.8 < result < 5.92)
 
     def testJobShop2ScenarioAnalysis(self):
-        from manpy.simulation.Examples.JobShop2ScenarioAnalysis import main
+        from manpy.simulation.Examples.Old.JobShop2ScenarioAnalysis import main
 
         result = main(test=1)
         self.assertEqual(result, 2)
 
     def testBufferAllocation(self):
-        from manpy.simulation.Examples.BufferAllocation import main
+        from manpy.simulation.Examples import main
 
         result = main(test=1)
         self.assertTrue(80 < result["parts"] < 1000)

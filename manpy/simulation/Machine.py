@@ -519,8 +519,8 @@ class Machine(CoreObject):
         for oi in self.objectInterruptions:
             if oi.type == "Failure":
                 if oi.deteriorationType == "working":
-                    if oi.expectedSignals["victimStartsProcess"]:
-                        self.sendSignal(receiver=oi, signal=oi.victimStartsProcess)
+                    if oi.expectedSignals["victimStartsProcessing"]:
+                        self.sendSignal(receiver=oi, signal=oi.victimStartsProcessing)
         # this loop is repeated until the processing time is expired with no failure
         # check when the processingEndedFlag switched to false
         while operationNotFinished:
@@ -623,7 +623,7 @@ class Machine(CoreObject):
                     self.env.now - self.currentOperator.timeLastOperationStarted
                 )
                 yield self.env.process(self.release())
-                from .Globals import G
+                from manpy.simulation.Globals import G
 
                 # append the entity that was stopped to the pending ones
                 if G.RouterList:
@@ -1127,8 +1127,8 @@ class Machine(CoreObject):
             for oi in self.objectInterruptions:
                 if oi.type == "Failure":
                     if oi.deteriorationType == "working":
-                        if oi.expectedSignals["victimEndsProcess"]:
-                            self.sendSignal(receiver=oi, signal=oi.victimEndsProcess)
+                        if oi.expectedSignals["victimEndsProcessing"]:
+                            self.sendSignal(receiver=oi, signal=oi.victimEndsProcessing)
             # in case Machine just performed the last work before the scheduled maintenance signal the corresponding object
             if self.isWorkingOnTheLast:
                 # for the scheduled Object interruptions
