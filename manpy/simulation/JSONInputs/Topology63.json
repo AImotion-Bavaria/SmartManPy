@@ -1,0 +1,76 @@
+{
+     "graph": {
+          "node": {
+               "M1": {
+                    "processingTime": {
+                         "Exp": {
+                              "mean": 1.5
+                         }
+                    },
+                    "interruptions": {},
+                    "element_id": "manpyNode_3",
+                    "_class": "manpy.Machine",
+                    "name": "M1"
+               },
+               "S1": {
+                    "name": "S1",
+                    "entity": "manpy.Part",
+                    "interArrivalTime": {
+                         "Normal": {
+                              "mean": 1.25,
+                              "max": 2,
+                              "min": 1,
+                              "stdev": 0.5
+                         }
+                    },
+                    "interruptions": {},
+                    "element_id": "manpyNode_1",
+                    "_class": "manpy.Source"
+               },
+               "E1": {
+                    "interruptions": {},
+                    "element_id": "manpyNode_2",
+                    "_class": "manpy.Exit"
+               }
+          },
+          "edge": {
+               "con_24": {
+                    "source": "M1",
+                    "destination": "E1",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "con_11": {
+                    "source": "S1",
+                    "destination": "M1",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               }
+          }
+     },
+     "preference": {
+          "coordinates": {
+               "M1": {
+                    "top": 0.485131406063451,
+                    "left": 0.07716052110571939
+               },
+               "S1": {
+                    "top": 0.23709113629882006,
+                    "left": 0.24971235052621402
+               },
+               "E1": {
+                    "top": 0.6177845249089259,
+                    "left": 0.6390659970020633
+               }
+          }
+     },
+     "general": {
+          "numberOfReplications": 4,
+          "trace": "No",
+          "processTimeout": 10,
+          "seed": 1450,
+          "confidenceLevel": 0.5,
+          "maxSimTime": 50,
+          "currentDate": "2014/03/05"
+     }
+}

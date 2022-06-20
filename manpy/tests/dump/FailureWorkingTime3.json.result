@@ -1,0 +1,55 @@
+{
+ "_class": "manpy.Simulation",
+ "elementList": [
+  {
+   "_class": "manpy.Exit",
+   "family": "Exit",
+   "id": "E1",
+   "results": {
+    "lifespan": [
+     2.4285714285714284
+    ],
+    "takt_time": [
+     1.0357142857142858
+    ],
+    "throughput": [
+     14
+    ]
+   }
+  },
+  {
+   "_class": "manpy.Machine",
+   "family": "Server",
+   "id": "M1",
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     2.5
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     50.0
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     12.5
+    ],
+    "working_ratio": [
+     35.0
+    ]
+   }
+  }
+ ],
+ "general": {
+  "_class": "manpy.Configuration"
+ }
+}

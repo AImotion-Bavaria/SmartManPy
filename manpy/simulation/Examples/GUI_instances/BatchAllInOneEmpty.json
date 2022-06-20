@@ -1,0 +1,1200 @@
+{
+  "application_configuration": {
+    "general": {
+      "properties": {
+        "confidenceLevel": {
+          "default": 0.95,
+          "description": "Confidence level for statistical analysis of stochastic experiments",
+          "name": "Confidence level",
+          "type": "number"
+        },
+        "currentDate": {
+          "default": "2014/02/18",
+          "description": "The day the experiment starts, in YYYY/MM/DD HH:MM:DD format",
+          "name": "Simulation start time",
+          "type": "string"
+        },
+        "maxSimTime": {
+          "default": 100,
+          "description": "Length of the simulation run",
+          "name": "Length of experiment",
+          "type": "number"
+        },
+        "numberOfReplications": {
+          "default": 10,
+          "description": "Number of replications to run",
+          "name": "Number of replications",
+          "type": "number"
+        },
+        "processTimeout": {
+          "default": 10,
+          "description": "Number of seconds before the calculation process is interrupted",
+          "name": "Process timeout",
+          "type": "number"
+        },
+        "seed": {
+          "default": "1",
+          "description": "When using the same seed, the random number generator produce the same sequence of numbers",
+          "name": "Seed for random number generator",
+          "type": "number"
+        },
+        "throughputTarget": {
+          "default": 10,
+          "description": "The daily throughput target in units.",
+          "name": "Daily throughput target",
+          "type": "number"
+        },
+       "timeUnit": {
+          "default": "minute",
+          "description": "Used for input and reporting widgets.",
+          "name": "Time unit",
+          "type": "string",
+          "enum": [
+            "minute",
+            "hour",
+            "day",
+            "week",
+            "month",
+            "year"
+          ]
+        },
+        "trace": {
+          "default": "No",
+          "description": "Create an excel trace file (Yes or No)",
+          "enum": [
+            "No",
+            "Yes"
+          ],
+          "name": "Output Trace",
+          "type": "string"
+        },
+        "numberOfGenerations":{
+          "default": 1,
+          "title": "Number of optimization generations",
+          "description" : "Number of optimization generations",
+          "type": "integer"
+        },
+        "numberOfAntsPerGenerations":{
+          "default": 5,
+          "title": "Number of scenarios per optimization generation",
+          "description": "Number of scenarios per optimization generation",
+          "type": "integer"
+        }
+      }
+    },
+    "input": {
+      "view": {
+        "gadget": "Input_viewProductionLine",
+        "title": "Production Line",
+        "type": "object_view"
+      },
+      "view_machine_shift_spreadsheet": {
+        "configuration": {
+          "columns": [
+            {
+              "format": "date-time",
+              "name": "Date",
+              "type": "string"
+            },
+            {
+              "name": "Machine",
+              "type": "string"
+            },
+            {
+              "name": "Start",
+              "type": "string"
+            },
+            {
+              "name": "Stop",
+              "type": "string"
+            }
+          ]
+        },
+        "gadget": "Input_viewSpreadsheet",
+        "title": "Machine Shifts Spreadsheet",
+        "type": "object_view"
+      },
+      "view_management": {
+        "gadget": "Input_viewDocumentManagement",
+        "title": "Manage Document",
+        "type": "object_view"
+      },
+      "debug": {
+        "gadget": "Input_viewDebugJson",
+	"title": "Edit Configuration",
+	"type": "object_view"
+      },
+      "view_operator_shift_spreadsheet": {
+        "configuration": {
+			"extend": [
+				"x",
+				"y"
+			],
+			"columns": [
+				{
+				  "format": "date-time",
+				  "name": "Date",
+				  "type": "string"
+				},
+				{
+				  "name": "Product Builder",
+				  "type": "string"
+				},
+				{
+				  "name": "Start",
+				  "type": "string"
+				},
+				{
+				  "name": "Stop",
+				  "type": "string"
+				},
+				{
+				  "name": "Break1 Start",
+				  "type": "string"
+				},
+				{
+				  "name": "Break1 Stop",
+				  "type": "string"
+				},
+				{
+				  "name": "Break2 Start",
+				  "type": "string"
+				},
+				{
+				  "name": "Break2 Stop",
+				  "type": "string"
+				}
+			  ],
+			 "handsontable_options": {
+				"minSpareCols": 1
+			 }
+		},
+		"gadget": "Input_viewSpreadsheet",
+		"title": "Product Builder Shifts Spreadsheet",
+		"type": "object_view"
+	  },
+      "view_operator_skill_spreadsheet": {
+        "configuration": {
+          "columns": [
+            {
+              "name": "Product Builder",
+              "type": "string"
+            },
+            {
+              "name": "Skills",
+              "type": "array"
+            }
+          ]
+        },
+        "gadget": "Input_viewSpreadsheet",
+        "title": "Product Builder Skills",
+        "type": "object_view"
+      },
+      "view_wip_spreadsheet": {
+        "configuration": {
+          "columns": [
+            {
+              "name": "ID",
+              "type": "string"
+            },
+            {
+              "name": "StationID",
+              "type": "string"
+            },
+            {
+              "name": "Number of Units",
+              "type": "number"
+            },
+            {
+              "name": "Remaining Units",
+              "type": "number"
+            },
+            {
+              "name": "Type",
+              "type": "string"
+            },
+            {
+              "name": "Batch ID",
+              "type": "string"
+            }
+          ]
+        },
+        "gadget": "Input_viewSpreadsheet",
+        "title": "WIP Spreadsheet",
+        "type": "object_view"
+      },
+      "view_run_simulation": {
+        "gadget": "Input_viewSimulation",
+        "title": "Run Simulation",
+        "type": "object_view"
+      },
+      "view_ACO_weights_spreadsheet": {
+        "configuration": {
+          "columns": [
+            {
+              "name": "",
+              "type": "string"
+            },
+            {
+              "name": "Assignment to machines with higher WIPB",
+              "type": "string"
+            },
+            {
+              "name": "Uniform assignment across stations",
+              "type": "string"
+            },
+            {
+              "name": "Min assignment variations",
+              "type": "string"
+            },
+            {
+              "name": "Machines with furthest last assignment time",
+              "type": "string"
+            },
+            {
+              "name": "Max number of assigned PB",
+              "type": "string"
+            }
+          ]
+        },
+        "gadget": "Input_viewSpreadsheet",
+        "title": "Optimization Weights",
+        "type": "object_view"
+      },
+      "view_result": {
+        "gadget": "Input_viewResultList",
+        "title": "Results",
+        "type": "object_view"
+      }
+    },
+    "output": {
+        "view_exit_results": {
+        "configuration": {
+          "handsontable_options": {},
+          "output_id": "exit_output"
+        },
+        "gadget": "Output_viewSpreadsheet",
+        "title": "Exit statistics",
+        "type": "object_view"
+      },
+      "view_buffer_state": {
+        "configuration": {
+          "handsontable_options": {},
+          "output_id": "buffer_output"
+        },
+        "gadget": "Output_viewSpreadsheet",
+        "title": "Buffer Levels",
+        "type": "object_view"
+      },
+	  "view_operator_gantt": {
+		"configuration": {
+		  "output_id": "operator_gantt"
+		},
+		"gadget": "Output_viewGantt",
+		"title": "Operator Schedule Gantt",
+		"type": "object_view"
+	  },
+      "view_queue_stats": {
+        "configuration": {
+          "output_id": "queue_statistics"
+        },
+        "gadget": "Output_viewGraph",
+        "title": "Queue Statistics",
+        "type": "object_view"
+      },
+      "view_station_utilization": {
+        "configuration": {
+          "output_id": "station_utilization"
+        },
+        "gadget": "Output_viewGraph",
+        "title": "Station Utilization",
+        "type": "object_view"
+      },
+      "view_operator_utilization": {
+        "configuration": {
+          "output_id": "operator_utilization"
+        },
+        "gadget": "Output_viewGraph",
+        "title": "Operator Utilization",
+        "type": "object_view"
+      },
+      "view_download_spreadsheet": {
+        "configuration": {
+          "output_id": "operator_spreadsheet"
+        },
+        "gadget": "Output_viewDownloadFile",
+        "title": "Operator Schedule Spreadsheet",
+        "type": "object_view"
+      }
+    },
+    "post_processing": {
+      "description": "",
+      "plugin_list": [
+	    {
+          "_class": "manpy.plugins.Batches.BatchesStationUtilization.BatchesStationUtilization",
+          "family": "Server",
+          "output_id": "station_utilization"
+        },
+        {
+          "_class": "manpy.plugins.PostProcessQueueStatistics.PostProcessQueueStatistics",
+          "output_id": "queue_statistics"
+        },
+        {
+          "_class": "manpy.plugins.Batches.BatchesTabularExit.BatchesTabularExit",
+          "output_id": "exit_output"
+        },
+        {
+          "_class": "manpy.plugins.Batches.BatchesTabularQueues.BatchesTabularQueues",
+          "output_id": "buffer_output"
+        },
+        {
+          "_class": "manpy.plugins.Batches.BatchesOperatorUtilization.BatchesOperatorUtilization",
+          "output_id": "operator_utilization"
+        },
+        {
+          "_class": "manpy.plugins.Batches.BatchesOperatorGantt.BatchesOperatorGantt",
+          "output_id": "operator_gantt"
+        },
+        {
+          "_class": "manpy.plugins.Batches.BatchesOperatorSpreadsheet.BatchesOperatorSpreadsheet",
+          "output_id": "operator_spreadsheet"
+        }
+	  ]
+    },
+    "pre_processing": {
+      "description": "",
+      "plugin_list": [
+        {
+          "_class": "manpy.plugins.Batches.AddBatchStations.AddBatchStations",
+          "input_id": "batchStations"
+        },
+        {
+          "_class": "manpy.plugins.GatherWIPStat.GatherWIPStat",
+          "input_id": "WIPStat"
+        },
+        {
+          "_class": "manpy.plugins.ReadEntryData.ReadEntryData",
+          "input_id": "EntryData"
+        },
+        {
+          "_class": "manpy.plugins.Batches.BatchesWIPSpreadsheet.BatchesWIPSpreadsheet",
+          "input_id": "WipSpreadsheet"
+        },
+        {
+          "_class": "manpy.plugins.Batches.ReadSkilledOperators.ReadSkilledOperators",
+          "input_id": "SkilledOperatorsSpreadsheet"
+        },
+        {
+          "_class": "manpy.plugins.Batches.BatchesShift.BatchesShift",
+          "input_id": "ShiftSpreadsheet"
+        }
+      ]
+    },
+    "processing_plugin": {
+      "_class": "manpy.plugins.Batches.BatchesACO.BatchesACO",
+      "description": ""
+    }
+  },
+  "class_definition": {
+    "manpy.BatchDecompositionStartTime": {
+      "_class": "manpy.BatchDecompositionStartTime",
+      "allOf": [
+        {
+          "$ref": "#/node"
+        },
+        {
+          "properties": {
+            "id": {
+              "default": "D",
+              "type": "string",
+			  "name": "Name"
+            },
+            "numberOfSubBatches": {
+              "default": 10,
+              "description": "Number Of Sub-Batches",
+              "type": "number"
+            }
+          },
+          "type": "object"
+        }
+      ],
+      "css": {
+        "backgroundColor": "#dfd",
+        "backgroundImage": "linear-gradient(to bottom, #dfd 0%, #cec 100%)",
+        "border": "1px solid #bcb"
+      },
+      "description": "A station that decomposes batches into sub-batches",
+      "name": "Decomposition"
+    },
+    "manpy.BatchReassembly": {
+      "_class": "node",
+      "allOf": [
+        {
+          "$ref": "#/node"
+        },
+        {
+          "properties": {
+            "id": {
+              "default": "R",
+              "type": "string",
+			  "name": "Name"
+            },
+            "numberOfSubBatches": {
+              "default": 10,
+              "description": "Number Of Sub-Batches",
+              "type": "number"
+            }
+          },
+          "type": "object"
+        }
+      ],
+      "css": {
+        "backgroundColor": "#dfd",
+        "backgroundImage": "linear-gradient(to bottom, #dfd 0%, #cec 100%)",
+        "border": "1px solid #bcb"
+      },
+      "description": "A station that assembles sub-batches back into a parent batch",
+      "name": "Reassembly"
+    },
+    "manpy.BatchDecomposition": {
+      "_class": "node",
+      "allOf": [
+        {
+          "$ref": "#/node"
+        },
+        {
+          "properties": {
+            "id": {
+              "default": "D",
+              "type": "string",
+			  "name": "Name"
+            },
+            "numberOfSubBatches": {
+              "default": 10,
+              "description": "Number Of Sub-Batches",
+              "type": "number"
+            }
+          },
+          "type": "object"
+        }
+      ],
+      "css": {
+        "backgroundColor": "#dfd",
+        "backgroundImage": "linear-gradient(to bottom, #dfd 0%, #cec 100%)",
+        "border": "1px solid #bcb"
+      },
+      "description": "A station that decomposes a batch into sub-batches",
+      "name": "Decomposition"
+    },
+    "manpy.BatchScrapMachine": {
+      "_class": "node",
+      "allOf": [
+        {
+          "$ref": "#/node"
+        },
+        {
+          "properties": {
+            "id": {
+              "default": "M",
+              "name": "Unique Station Name",
+              "required": true,
+              "type": "string"
+            },
+            "technology": {
+              "default": "M",
+              "name": "Operation",
+              "required": true,
+              "type": "string"
+            },
+            "processingTime": {
+              "$ref": "#/definitions/_dist",
+              "description": "The time that this station needs in order to process a unit",
+			  "default": 0.1,
+              "name": "Processing time (per unit)",
+              "required": true
+            },
+			"workingBatchSize": {
+			  "default": 10,
+			  "name": "Working batch size in this station",
+			  "type": "number"
+			}
+          },
+          "type": "object"
+        }
+      ],
+      "css": {
+        "width": "80px",
+        "height": "80px",
+        "border-radius": "50px",
+        "line-height": "40px",
+        "backgroundColor": "#fef",
+        "backgroundImage": "linear-gradient(to bottom, #fef 0%, #ede 100%)",
+        "border": "1px solid #cbc"
+      },
+      "description": "A station processing batches for some time given by a distribution provided by the entities that are processed. A random number of batch units is scrapped",
+      "name": "Machine"
+    },
+    "manpy.BatchSource": {
+      "_class": "node",
+      "allOf": [
+        {
+          "$ref": "#/node"
+        },
+        {
+          "properties": {
+            "id": {
+              "default": "S",
+              "name": "ID",
+              "required": true,
+              "type": "string",
+			  "name": "Name"
+            },
+            "interArrivalTime": {
+              "$ref": "#/definitions/_dist",
+              "description": "Inter-arrival time",
+              "name": "Inter-arrival time",
+			  "default": {"Fixed":{"mean":1}},
+              "required": true
+            },
+            "batchNumberOfUnits": {
+              "description": "the number of units of the created batches",
+              "name": "Number Of Units",
+              "type": "number",
+			  "default": 80,
+              "required": true
+            },
+            "entity": {
+              "default": "manpy.Batch",
+              "description": "Manpy class for entities",
+              "name": "Entity Class",
+              "required": true,
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      ],
+      "description": "A station creating entities",
+      "name": "Source"
+    },
+    "manpy.Edge": {
+      "_class": "edge",
+      "allOf": [
+        {
+          "$ref": "#/edge"
+        }
+      ],
+      "description": "Connect stations together"
+    },
+    "manpy.EventGenerator": {
+      "_class": "node",
+      "allOf": [
+        {
+          "$ref": "#/node"
+        },
+        {
+          "properties": {
+            "argumentDict": {
+              "default": "{}",
+              "description": "arguments to be used by the method",
+              "required": true,
+              "type": "string"
+            },
+            "duration": {
+              "default": 10,
+              "description": "duration",
+              "required": true,
+              "type": "number"
+            },
+            "id": {
+              "default": "A",
+              "required": true,
+              "type": "string"
+            },
+            "interval": {
+              "default": 10,
+              "description": "interval time",
+              "required": true,
+              "type": "number"
+            },
+            "method": {
+              "default": "Globals.countIntervalThroughput",
+              "description": "method to be performed",
+              "required": true,
+              "type": "string"
+            },
+            "name": {
+              "default": "Attainment",
+              "type": "string"
+            },
+            "start": {
+              "default": 1,
+              "description": "Start time",
+              "required": true,
+              "type": "number"
+            },
+            "stop": {
+              "default": -1,
+              "description": "Stop time",
+              "required": true,
+              "type": "number"
+            }
+          },
+          "type": "object"
+        }
+      ],
+      "css": {
+        "backgroundColor": "#fdc",
+        "backgroundImage": "linear-gradient(to bottom, #fdc 0%, #ecb 100%)",
+        "border": "1px solid #cba"
+      },
+      "description": "Attainment",
+      "name": "Attainment"
+    },
+    "manpy.Exit": {
+      "_class": "node",
+      "allOf": [
+        {
+          "$ref": "#/node"
+        },
+        {
+          "properties": {
+            "id": {
+              "default": "E",
+              "required": true,
+			  "name": "Name"
+            }
+          },
+          "type": "object"
+        }
+      ],
+      "css": {
+        "backgroundColor": "#eef",
+        "backgroundImage": "linear-gradient(to bottom, #eef 0%, #dde 100%)",
+        "border": "1px solid #ccb"
+      },
+      "description": "A station where entities exits from the system",
+      "name": "Exit",
+      "shape": "rectangle"
+    },
+    "manpy.LineClearance": {
+      "_class": "node",
+      "allOf": [
+        {
+          "$ref": "#/node"
+        },
+        {
+          "properties": {
+            "capacity": {
+              "$ref": "#/definitions/_capacity",
+              "required": true
+            },
+            "id": {
+              "default": "C",
+              "type": "string",
+			  "name": "Name"
+            },
+            "schedulingRule": {
+              "$ref": "#/definitions/_schedulingRule",
+              "required": true
+            }
+          },
+          "type": "object"
+        }
+      ],
+      "css": {
+        "backgroundColor": "#eff",
+        "backgroundImage": "linear-gradient(to bottom, #eff 0%, #dee 100%)",
+        "border": "1px solid #bcc"
+      },
+      "description": "A buffer where entities of the same group can be held until the next station is ready to process them. Entities of other groups cannot be accepted",
+      "name": "Clearance"
+    },
+    "manpy.NonStarvingEntry": {
+      "_class": "node",
+      "allOf": [
+        {
+          "$ref": "#/node"
+        },
+        {
+          "properties": {
+            "entityData": {
+              "description": "Entity produced related information",
+              "properties": {
+                "class": {
+                  "default": "manpy.Batch",
+                  "description": "Entity class",
+                  "required": true,
+                  "type": "string"
+                },
+                "numberOfUnits": {
+                  "default": 80,
+                  "description": "Number of units per batch",
+                  "required": true,
+                  "type": "number"
+                }
+              },
+              "required": true,
+              "type": "object"
+            },
+            "id": {
+              "default": "E",
+              "required": true,
+              "type": "string",
+			  "name": "Name"
+            }
+          },
+          "type": "object"
+        }
+      ],
+      "css": {
+        "backgroundColor": "#ffe",
+        "backgroundImage": "linear-gradient(to bottom, #ffe 0%, #dde 100%)",
+        "border": "1px solid #bbc"
+      },
+      "description": "A station creating batches",
+      "name": "Entry"
+    },
+    "manpy.Queue": {
+      "_class": "node",
+      "allOf": [
+        {
+          "$ref": "#/node"
+        },
+        {
+          "properties": {
+            "id": {
+              "default": "Q",
+              "type": "string",
+			  "name": "Name"
+            },
+            "capacity": {
+              "$ref": "#/definitions/_capacity",
+              "required": true
+            },
+            "schedulingRule": {
+              "$ref": "#/definitions/_schedulingRule",
+              "required": true
+            }
+          },
+          "type": "object"
+        }
+      ],
+      "css": {
+        "backgroundColor": "#eff",
+        "backgroundImage": "linear-gradient(to bottom, #eff 0%, #dee 100%)",
+        "border": "1px solid #bcc"
+      },
+      "description": "A buffer where entities can be hold until the next station is ready to process them",
+      "name": "Queue"
+    },
+    "manpy.RoutingQueue": {
+      "_class": "node",
+      "allOf": [
+        {
+          "$ref": "#/node"
+        },
+        {
+          "properties": {
+            "id": {
+              "default": "RQ",
+              "type": "string",
+			  "name": "Name"
+            },
+            "capacity": {
+              "$ref": "#/definitions/_capacity",
+              "required": true
+            },
+            "schedulingRule": {
+              "$ref": "#/definitions/_schedulingRule",
+              "required": true
+            }
+          },
+          "type": "object"
+        }
+      ],
+      "css": {
+        "backgroundColor": "#eff",
+        "backgroundImage": "linear-gradient(to bottom, #eff 0%, #dee 100%)",
+        "border": "1px solid #bcc"
+      },
+      "description": "A buffer that directs sub-batches of the same batch directed to the same machine",
+      "name": "RoutingQueue"
+    },
+    "definitions": {
+      "_capacity": {
+        "default": 1,
+        "name": "Capacity",
+        "description": "capacity of the queue. -1 means infinite",
+        "oneOf": [
+          {
+            "enum": [
+              -1
+            ]
+          },
+          {
+            "multipleOf": 1
+          }
+        ],
+        "type": "number"
+      },
+      "_dist": {
+        "allOf": [
+          {
+            "properties": {
+              "distribution": {
+                "default": "Fixed",
+                "enum": [
+                  "Fixed",
+                  "Exp",
+                  "Normal",
+                  "Lognormal",
+                  "Binomial",
+                  "Poisson",
+                  "Logistic",
+                  "Cauchy",
+                  "Geometric",
+                  "Gama",
+                  "Weibull"
+                ],
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/distributionTypes/_fixed"
+              },
+              {
+                "$ref": "#/definitions/distributionTypes/_exp"
+              },
+              {
+                "$ref": "#/definitions/distributionTypes/_normal"
+              },
+              {
+                "$ref": "#/definitions/distributionTypes/_lognormal"
+              },
+              {
+                "$ref": "#/definitions/distributionTypes/_binomial"
+              },
+              {
+                "$ref": "#/definitions/distributionTypes/_poisson"
+              },
+              {
+                "$ref": "#/definitions/distributionTypes/_logistic"
+              },
+              {
+                "$ref": "#/definitions/distributionTypes/_cauchy"
+              },
+              {
+                "$ref": "#/definitions/distributionTypes/_geometric"
+              },
+              {
+                "$ref": "#/definitions/distributionTypes/_gama"
+              },
+              {
+                "$ref": "#/definitions/distributionTypes/_weibull"
+              }
+            ]
+          }
+        ]
+      },
+      "_failureDist": {
+        "allOf": [
+          {
+            "properties": {
+              "failureDistribution": {
+                "default": "No",
+                "description": "Is this machine subject to failures, if not then Time to Repair and Time to failure are ignored",
+                "enum": [
+                  "No",
+                  "Yes"
+                ],
+                "name": "Has failure ?",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          {
+            "$ref": "#/definitions/distributionTypes/_failure"
+          }
+        ]
+      },
+      "_operationType": {
+        "description": "the type of operations that are performed manually in the machine",
+        "name": "Operation type",
+        "enum": [
+          "MT-Load",
+          "MT-Load-Setup",
+          "MT-Load-Setup-Processing"
+        ],
+        "type": "string"
+      },
+      "_schedulingRule": {
+        "default": "FIFO",
+        "name": "Scheduling Rule",
+        "description": "Scheduling Rule of this buffer",
+        "enum": [
+          "FIFO",
+          "Priority",
+          "EDD",
+          "EOD",
+          "NumStages",
+          "RPC",
+          "LPT",
+          "SPT",
+          "MS",
+          "WINQ",
+          "WT"
+        ],
+        "type": "string"
+      },
+      "distributionTypes": {
+        "_binomial": {
+          "description": "Binomial",
+          "properties": {
+            "mean": {
+              "default": 0,
+              "type": "number"
+            },
+            "size": {
+              "default": 0,
+              "type": "number"
+            }
+          },
+          "title": "Binomial",
+          "type": "object"
+        },
+        "_cauchy": {
+          "description": "Cauchy",
+          "properties": {
+            "location": {
+              "default": 0,
+              "type": "number"
+            },
+            "scale": {
+              "default": 0,
+              "type": "number"
+            }
+          },
+          "title": "Cauchy",
+          "type": "object"
+        },
+        "_exp": {
+          "description": "Exponential",
+          "properties": {
+            "mean": {
+              "default": 0,
+              "required": true,
+              "type": "number"
+            }
+          },
+          "title": "Exp",
+          "type": "object"
+        },
+        "_failure": {
+          "properties": {
+            "TTF": {
+              "name": "Time to Failure",
+              "$ref": "#/definitions/_dist"
+            },
+            "TTR": {
+              "name": "Time to Repair",
+              "$ref": "#/definitions/_dist"
+            },
+            "repairman": {
+              "description": "Repairman",
+              "required": true,
+              "type": "string"
+            }
+          },
+          "title": "Yes",
+          "type": "object"
+        },
+        "_fixed": {
+          "properties": {
+            "mean": {
+              "default": 0,
+              "required": true,
+              "type": "number"
+            }
+          },
+          "title": "Fixed",
+          "type": "object"
+        },
+        "_gama": {
+          "description": "Gama",
+          "properties": {
+            "rate": {
+              "default": 0,
+              "required": true,
+              "type": "number"
+            },
+            "shape": {
+              "default": 0,
+              "required": true,
+              "type": "number"
+            }
+          },
+          "title": "Gama",
+          "type": "object"
+        },
+        "_geometric": {
+          "description": "Geometric",
+          "properties": {
+            "probability": {
+              "default": 0,
+              "required": true,
+              "type": "number"
+            }
+          },
+          "title": "Geometric",
+          "type": "object"
+        },
+        "_logistic": {
+          "description": "Logistic",
+          "properties": {
+            "location": {
+              "default": 0,
+              "required": true,
+              "type": "number"
+            },
+            "scale": {
+              "default": 0,
+              "required": true,
+              "type": "number"
+            }
+          },
+          "title": "Logistic",
+          "type": "object"
+        },
+        "_lognormal": {
+          "description": "Lognormal",
+          "properties": {
+            "mean": {
+              "_class": "manpy.Property",
+              "default": 0,
+              "name": "Mean",
+              "type": "number"
+            },
+            "stdev": {
+              "_class": "manpy.Property",
+              "default": 0,
+              "name": "Standard Deviation",
+              "type": "number"
+            }
+          },
+          "title": "Lognormal",
+          "type": "object"
+        },
+        "_no": {
+          "description": "None",
+          "title": "No",
+          "type": "string"
+        },
+        "_normal": {
+          "description": "Normal",
+          "properties": {
+            "mean": {
+              "default": 0,
+              "required": true,
+              "type": "number"
+            },
+            "stdev": {
+              "default": 0,
+              "required": true,
+              "type": "number"
+            }
+          },
+          "title": "Normal",
+          "type": "object"
+        },
+        "_poisson": {
+          "description": "Poisson",
+          "properties": {
+            "lambda": {
+              "default": 0,
+              "type": "number"
+            }
+          },
+          "title": "Poisson",
+          "type": "object"
+        },
+        "_weibull": {
+          "description": "Weibull",
+          "properties": {
+            "scale": {
+              "default": 0,
+              "required": true,
+              "type": "number"
+            },
+            "shape": {
+              "default": 0,
+              "required": true,
+              "type": "number"
+            }
+          },
+          "title": "Weibull",
+          "type": "object"
+        }
+      }
+    },
+    "edge": {
+      "description": "Base definition for edge",
+      "properties": {
+        "_class": {
+          "type": "string"
+        },
+        "destination": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "_class",
+        "source",
+        "destination"
+      ],
+      "type": "object"
+    },
+    "node": {
+      "description": "Base definition for node",
+      "properties": {
+        "_class": {
+          "type": "string"
+        },
+        "coordinate": {
+          "properties": {
+            "left": "number",
+            "top": "number"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "_class"
+      ],
+      "type": "object"
+    }
+  },
+  "constraints": {},
+  "general": {
+    "name": "BatchAllInOneEmpty.json"
+  },
+  "graph": {
+    "edge": {},
+    "node": {}
+  },
+  "input": {},
+  "result": {
+    "result_list": []
+  }
+}

@@ -1,0 +1,983 @@
+{
+ "_class": "manpy.Simulation",
+ "elementList": [
+  {
+   "_class": "manpy.MouldAssemblyBufferManaged",
+   "family": "Buffer",
+   "id": "AB1",
+   "results": {}
+  },
+  {
+   "_class": "manpy.OrderComponent",
+   "family": "Job",
+   "id": "C1O1",
+   "results": {
+    "completionTime": 19.900000000000002,
+    "schedule": [
+     {
+      "entranceTime": 1.0,
+      "exitTime": 1.0,
+      "stationId": "OD0"
+     },
+     {
+      "entranceTime": 1.0,
+      "exitTime": 2.4,
+      "stationId": "QCAM"
+     },
+     {
+      "entranceTime": 2.4,
+      "exitTime": 4.4,
+      "stationId": "CAM1"
+     },
+     {
+      "entranceTime": 4.4,
+      "exitTime": 4.4,
+      "stationId": "QMILL"
+     },
+     {
+      "entranceTime": 4.4,
+      "exitTime": 6.7,
+      "stationId": "MILL2"
+     },
+     {
+      "entranceTime": 6.7,
+      "exitTime": 9.700000000000001,
+      "stationId": "QEDM"
+     },
+     {
+      "entranceTime": 9.700000000000001,
+      "exitTime": 12.200000000000001,
+      "stationId": "EDM"
+     },
+     {
+      "entranceTime": 12.200000000000001,
+      "exitTime": 19.900000000000002,
+      "stationId": "AB1"
+     },
+     {
+      "entranceTime": 19.900000000000002,
+      "exitTime": 19.900000000000002,
+      "stationId": "MA2"
+     }
+    ]
+   }
+  },
+  {
+   "_class": "manpy.OrderComponent",
+   "family": "Job",
+   "id": "C1O2",
+   "results": {
+    "completionTime": 22.6,
+    "schedule": [
+     {
+      "entranceTime": 2.4,
+      "exitTime": 2.4,
+      "stationId": "OD0"
+     },
+     {
+      "entranceTime": 2.4,
+      "exitTime": 4.4,
+      "stationId": "QCAM"
+     },
+     {
+      "entranceTime": 4.4,
+      "exitTime": 4.7,
+      "stationId": "CAM2"
+     },
+     {
+      "entranceTime": 4.7,
+      "exitTime": 6.7,
+      "stationId": "QMILL"
+     },
+     {
+      "entranceTime": 6.7,
+      "exitTime": 9.7,
+      "stationId": "MILL2"
+     },
+     {
+      "entranceTime": 9.7,
+      "exitTime": 13.200000000000001,
+      "stationId": "QEDM"
+     },
+     {
+      "entranceTime": 13.200000000000001,
+      "exitTime": 14.400000000000002,
+      "stationId": "EDM"
+     },
+     {
+      "entranceTime": 14.400000000000002,
+      "exitTime": 22.6,
+      "stationId": "AB1"
+     },
+     {
+      "entranceTime": 22.6,
+      "exitTime": 22.6,
+      "stationId": "MA3"
+     }
+    ]
+   }
+  },
+  {
+   "_class": "manpy.OrderComponent",
+   "family": "Job",
+   "id": "C1O3",
+   "results": {
+    "completionTime": 12.600000000000001,
+    "schedule": [
+     {
+      "entranceTime": 2.4,
+      "exitTime": 2.4,
+      "stationId": "OD0"
+     },
+     {
+      "entranceTime": 2.4,
+      "exitTime": 2.4,
+      "stationId": "QCAM"
+     },
+     {
+      "entranceTime": 2.4,
+      "exitTime": 3.2,
+      "stationId": "CAM2"
+     },
+     {
+      "entranceTime": 3.2,
+      "exitTime": 3.2,
+      "stationId": "QMILL"
+     },
+     {
+      "entranceTime": 3.2,
+      "exitTime": 5.2,
+      "stationId": "MILL1"
+     },
+     {
+      "entranceTime": 5.2,
+      "exitTime": 5.2,
+      "stationId": "QEDM"
+     },
+     {
+      "entranceTime": 5.2,
+      "exitTime": 6.4,
+      "stationId": "EDM"
+     },
+     {
+      "entranceTime": 6.4,
+      "exitTime": 12.600000000000001,
+      "stationId": "AB1"
+     },
+     {
+      "entranceTime": 12.600000000000001,
+      "exitTime": 12.600000000000001,
+      "stationId": "MA1"
+     }
+    ]
+   }
+  },
+  {
+   "_class": "manpy.OrderComponent",
+   "family": "Job",
+   "id": "C2O1",
+   "results": {
+    "completionTime": 19.900000000000002,
+    "schedule": [
+     {
+      "entranceTime": 1.0,
+      "exitTime": 1.0,
+      "stationId": "OD0"
+     },
+     {
+      "entranceTime": 1.0,
+      "exitTime": 12.200000000000001,
+      "stationId": "QCAM"
+     },
+     {
+      "entranceTime": 12.200000000000001,
+      "exitTime": 13.200000000000001,
+      "stationId": "CAM1"
+     },
+     {
+      "entranceTime": 13.200000000000001,
+      "exitTime": 13.200000000000001,
+      "stationId": "QMILL"
+     },
+     {
+      "entranceTime": 13.200000000000001,
+      "exitTime": 17.5,
+      "stationId": "MILL1"
+     },
+     {
+      "entranceTime": 17.5,
+      "exitTime": 18.3,
+      "stationId": "QEDM"
+     },
+     {
+      "entranceTime": 18.3,
+      "exitTime": 19.900000000000002,
+      "stationId": "EDM"
+     },
+     {
+      "entranceTime": 19.900000000000002,
+      "exitTime": 19.900000000000002,
+      "stationId": "AB1"
+     },
+     {
+      "entranceTime": 19.900000000000002,
+      "exitTime": 19.900000000000002,
+      "stationId": "MA2"
+     }
+    ]
+   }
+  },
+  {
+   "_class": "manpy.OrderComponent",
+   "family": "Job",
+   "id": "C2O2",
+   "results": {
+    "completionTime": 22.6,
+    "schedule": [
+     {
+      "entranceTime": 2.4,
+      "exitTime": 2.4,
+      "stationId": "OD0"
+     },
+     {
+      "entranceTime": 2.4,
+      "exitTime": 17.5,
+      "stationId": "QCAM"
+     },
+     {
+      "entranceTime": 17.5,
+      "exitTime": 18.3,
+      "stationId": "CAM2"
+     },
+     {
+      "entranceTime": 18.3,
+      "exitTime": 18.3,
+      "stationId": "QMILL"
+     },
+     {
+      "entranceTime": 18.3,
+      "exitTime": 19.3,
+      "stationId": "MILL2"
+     },
+     {
+      "entranceTime": 19.3,
+      "exitTime": 20.900000000000002,
+      "stationId": "QEDM"
+     },
+     {
+      "entranceTime": 20.900000000000002,
+      "exitTime": 22.6,
+      "stationId": "EDM"
+     },
+     {
+      "entranceTime": 22.6,
+      "exitTime": 22.6,
+      "stationId": "AB1"
+     },
+     {
+      "entranceTime": 22.6,
+      "exitTime": 22.6,
+      "stationId": "MA3"
+     }
+    ]
+   }
+  },
+  {
+   "_class": "manpy.OrderComponent",
+   "family": "Job",
+   "id": "C2O3",
+   "results": {
+    "completionTime": 12.600000000000001,
+    "schedule": [
+     {
+      "entranceTime": 2.4,
+      "exitTime": 2.4,
+      "stationId": "OD0"
+     },
+     {
+      "entranceTime": 2.4,
+      "exitTime": 6.4,
+      "stationId": "QCAM"
+     },
+     {
+      "entranceTime": 6.4,
+      "exitTime": 6.6000000000000005,
+      "stationId": "CAM1"
+     },
+     {
+      "entranceTime": 6.6000000000000005,
+      "exitTime": 6.6000000000000005,
+      "stationId": "QMILL"
+     },
+     {
+      "entranceTime": 6.6000000000000005,
+      "exitTime": 7.800000000000001,
+      "stationId": "MILL1"
+     },
+     {
+      "entranceTime": 7.800000000000001,
+      "exitTime": 8.0,
+      "stationId": "QEDM"
+     },
+     {
+      "entranceTime": 8.0,
+      "exitTime": 9.700000000000001,
+      "stationId": "EDM"
+     },
+     {
+      "entranceTime": 9.700000000000001,
+      "exitTime": 12.600000000000001,
+      "stationId": "AB1"
+     },
+     {
+      "entranceTime": 12.600000000000001,
+      "exitTime": 12.600000000000001,
+      "stationId": "MA1"
+     }
+    ]
+   }
+  },
+  {
+   "_class": "manpy.OrderComponent",
+   "family": "Job",
+   "id": "C3O3",
+   "results": {
+    "completionTime": 12.600000000000001,
+    "schedule": [
+     {
+      "entranceTime": 2.4,
+      "exitTime": 2.4,
+      "stationId": "OD0"
+     },
+     {
+      "entranceTime": 2.4,
+      "exitTime": 6.6000000000000005,
+      "stationId": "QCAM"
+     },
+     {
+      "entranceTime": 6.6000000000000005,
+      "exitTime": 7.000000000000001,
+      "stationId": "CAM2"
+     },
+     {
+      "entranceTime": 7.000000000000001,
+      "exitTime": 7.800000000000001,
+      "stationId": "QMILL"
+     },
+     {
+      "entranceTime": 7.800000000000001,
+      "exitTime": 8.0,
+      "stationId": "MILL1"
+     },
+     {
+      "entranceTime": 8.0,
+      "exitTime": 12.200000000000001,
+      "stationId": "QEDM"
+     },
+     {
+      "entranceTime": 12.200000000000001,
+      "exitTime": 12.600000000000001,
+      "stationId": "EDM"
+     },
+     {
+      "entranceTime": 12.600000000000001,
+      "exitTime": 12.600000000000001,
+      "stationId": "AB1"
+     },
+     {
+      "entranceTime": 12.600000000000001,
+      "exitTime": 12.600000000000001,
+      "stationId": "MA1"
+     }
+    ]
+   }
+  },
+  {
+   "_class": "manpy.MachineManagedJob",
+   "family": "Server",
+   "id": "CAD1",
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     0.0
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     90.55118110236222
+    ],
+    "working_ratio": [
+     9.448818897637794
+    ]
+   }
+  },
+  {
+   "_class": "manpy.MachineManagedJob",
+   "family": "Server",
+   "id": "CAD2",
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     0.0
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     90.55118110236222
+    ],
+    "working_ratio": [
+     9.448818897637794
+    ]
+   }
+  },
+  {
+   "_class": "manpy.MachineManagedJob",
+   "family": "Server",
+   "id": "CAM1",
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     0.0
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     87.40157480314961
+    ],
+    "working_ratio": [
+     12.598425196850394
+    ]
+   }
+  },
+  {
+   "_class": "manpy.MachineManagedJob",
+   "family": "Server",
+   "id": "CAM2",
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     0.0
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     90.94488188976378
+    ],
+    "working_ratio": [
+     9.055118110236224
+    ]
+   }
+  },
+  {
+   "_class": "manpy.ExitJobShop",
+   "family": "Exit",
+   "id": "E1",
+   "results": {
+    "lifespan": [
+     21.733333333333334
+    ],
+    "takt_time": [
+     8.466666666666667
+    ],
+    "throughput": [
+     3
+    ]
+   }
+  },
+  {
+   "_class": "manpy.MachineManagedJob",
+   "family": "Server",
+   "id": "EDM",
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     0.0
+    ],
+    "setup_ratio": [
+     14.173228346456707
+    ],
+    "waiting_ratio": [
+     59.44881889763778
+    ],
+    "working_ratio": [
+     26.377952755905504
+    ]
+   }
+  },
+  {
+   "_class": "manpy.MachineManagedJob",
+   "family": "Server",
+   "id": "IM",
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     0.0
+    ],
+    "setup_ratio": [
+     3.149606299212601
+    ],
+    "waiting_ratio": [
+     85.03937007874015
+    ],
+    "working_ratio": [
+     11.811023622047243
+    ]
+   }
+  },
+  {
+   "_class": "manpy.Mould",
+   "family": "Job",
+   "id": "M1O1",
+   "results": {
+    "completionTime": 23.700000000000003,
+    "schedule": [
+     {
+      "entranceTime": 19.900000000000002,
+      "exitTime": 20.900000000000002,
+      "stationId": "MA2"
+     },
+     {
+      "entranceTime": 20.900000000000002,
+      "exitTime": 21.200000000000003,
+      "stationId": "QIM"
+     },
+     {
+      "entranceTime": 21.200000000000003,
+      "exitTime": 23.700000000000003,
+      "stationId": "IM"
+     },
+     {
+      "entranceTime": 23.700000000000003,
+      "stationId": "E1"
+     }
+    ]
+   }
+  },
+  {
+   "_class": "manpy.Mould",
+   "family": "Job",
+   "id": "M1O2",
+   "results": {
+    "completionTime": 25.400000000000002,
+    "schedule": [
+     {
+      "entranceTime": 22.6,
+      "exitTime": 24.6,
+      "stationId": "MA3"
+     },
+     {
+      "entranceTime": 24.6,
+      "exitTime": 24.6,
+      "stationId": "QIM"
+     },
+     {
+      "entranceTime": 24.6,
+      "exitTime": 25.400000000000002,
+      "stationId": "IM"
+     },
+     {
+      "entranceTime": 25.400000000000002,
+      "stationId": "E1"
+     }
+    ]
+   }
+  },
+  {
+   "_class": "manpy.Mould",
+   "family": "Job",
+   "id": "M1O3",
+   "results": {
+    "completionTime": 16.1,
+    "schedule": [
+     {
+      "entranceTime": 12.600000000000001,
+      "exitTime": 15.600000000000001,
+      "stationId": "MA1"
+     },
+     {
+      "entranceTime": 15.600000000000001,
+      "exitTime": 15.600000000000001,
+      "stationId": "QIM"
+     },
+     {
+      "entranceTime": 15.600000000000001,
+      "exitTime": 16.1,
+      "stationId": "IM"
+     },
+     {
+      "entranceTime": 16.1,
+      "stationId": "E1"
+     }
+    ]
+   }
+  },
+  {
+   "_class": "manpy.MouldAssemblyManaged",
+   "family": "Server",
+   "id": "MA1",
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     0.0
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     88.18897637795276
+    ],
+    "working_ratio": [
+     11.811023622047243
+    ]
+   }
+  },
+  {
+   "_class": "manpy.MouldAssemblyManaged",
+   "family": "Server",
+   "id": "MA2",
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     0.0
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     96.06299212598424
+    ],
+    "working_ratio": [
+     3.9370078740157477
+    ]
+   }
+  },
+  {
+   "_class": "manpy.MouldAssemblyManaged",
+   "family": "Server",
+   "id": "MA3",
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     0.0
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     92.12598425196849
+    ],
+    "working_ratio": [
+     7.874015748031495
+    ]
+   }
+  },
+  {
+   "_class": "manpy.MachineManagedJob",
+   "family": "Server",
+   "id": "MILL1",
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     0.0
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     72.44094488188978
+    ],
+    "working_ratio": [
+     27.559055118110226
+    ]
+   }
+  },
+  {
+   "_class": "manpy.MachineManagedJob",
+   "family": "Server",
+   "id": "MILL2",
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     0.0
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     78.74015748031498
+    ],
+    "working_ratio": [
+     21.25984251968503
+    ]
+   }
+  },
+  {
+   "_class": "manpy.OrderDesign",
+   "family": "Job",
+   "id": "O1",
+   "results": {
+    "completionTime": 1.0,
+    "schedule": [
+     {
+      "entranceTime": 0,
+      "exitTime": 0.0,
+      "stationId": "Q0"
+     },
+     {
+      "entranceTime": 0.0,
+      "exitTime": 1.0,
+      "stationId": "CAD2"
+     },
+     {
+      "entranceTime": 1.0,
+      "stationId": "OD0"
+     }
+    ]
+   }
+  },
+  {
+   "_class": "manpy.OrderDesign",
+   "family": "Job",
+   "id": "O2",
+   "results": {
+    "completionTime": 2.4,
+    "schedule": [
+     {
+      "entranceTime": 0,
+      "exitTime": 1.0,
+      "stationId": "Q0"
+     },
+     {
+      "entranceTime": 1.0,
+      "exitTime": 2.4,
+      "stationId": "CAD2"
+     },
+     {
+      "entranceTime": 2.4,
+      "stationId": "OD0"
+     }
+    ]
+   }
+  },
+  {
+   "_class": "manpy.OrderDesign",
+   "family": "Job",
+   "id": "O3",
+   "results": {
+    "completionTime": 2.4,
+    "schedule": [
+     {
+      "entranceTime": 0,
+      "exitTime": 0.0,
+      "stationId": "Q0"
+     },
+     {
+      "entranceTime": 0.0,
+      "exitTime": 2.4,
+      "stationId": "CAD1"
+     },
+     {
+      "entranceTime": 2.4,
+      "stationId": "OD0"
+     }
+    ]
+   }
+  },
+  {
+   "_class": "manpy.OperatorManagedJob",
+   "family": "Operator",
+   "id": "OP1",
+   "results": {
+    "off_shift_ratio": [
+     0.0
+    ],
+    "on_break_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     16.53543307086615
+    ],
+    "working_ratio": [
+     83.46456692913385
+    ]
+   }
+  },
+  {
+   "_class": "manpy.OperatorManagedJob",
+   "family": "Operator",
+   "id": "OP2",
+   "results": {
+    "off_shift_ratio": [
+     0.0
+    ],
+    "on_break_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     53.1496062992126
+    ],
+    "working_ratio": [
+     46.8503937007874
+    ]
+   }
+  },
+  {
+   "_class": "manpy.QueueManagedJob",
+   "family": "Buffer",
+   "id": "Q0",
+   "results": {}
+  },
+  {
+   "_class": "manpy.ConditionalBufferManaged",
+   "family": "Buffer",
+   "id": "QCAM",
+   "results": {}
+  },
+  {
+   "_class": "manpy.QueueManagedJob",
+   "family": "Buffer",
+   "id": "QEDM",
+   "results": {}
+  },
+  {
+   "_class": "manpy.QueueManagedJob",
+   "family": "Buffer",
+   "id": "QIM",
+   "results": {}
+  },
+  {
+   "_class": "manpy.QueueManagedJob",
+   "family": "Buffer",
+   "id": "QMILL",
+   "results": {}
+  }
+ ],
+ "general": {
+  "_class": "manpy.Configuration"
+ }
+}

@@ -1,0 +1,416 @@
+{
+ "_class": "manpy.Simulation",
+ "elementList": [
+  {
+   "_class": "manpy.Exit",
+   "family": "Exit",
+   "id": "E1",
+   "results": {
+    "lifespan": [
+     137.96875
+    ],
+    "takt_time": [
+     15.3125
+    ],
+    "throughput": [
+     176
+    ],
+    "unitsThroughput": [
+     17600
+    ]
+   }
+  },
+  {
+   "_class": "manpy.BatchScrapMachine",
+   "family": "Server",
+   "id": "M1A",
+   "results": {
+    "blockage_ratio": [
+     13.194444444444445
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     70.83333333333333
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     0.0
+    ],
+    "working_ratio": [
+     15.972222222222221
+    ]
+   }
+  },
+  {
+   "_class": "manpy.BatchScrapMachine",
+   "family": "Server",
+   "id": "M1B",
+   "results": {
+    "blockage_ratio": [
+     13.975694444444445
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     37.5
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     0.0
+    ],
+    "working_ratio": [
+     48.52430555555556
+    ]
+   }
+  },
+  {
+   "_class": "manpy.BatchScrapMachine",
+   "family": "Server",
+   "id": "M2A",
+   "results": {
+    "blockage_ratio": [
+     13.368055555555555
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     70.83333333333333
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     0.08680555555555555
+    ],
+    "working_ratio": [
+     15.711805555555555
+    ]
+   }
+  },
+  {
+   "_class": "manpy.BatchScrapMachine",
+   "family": "Server",
+   "id": "M2B",
+   "results": {
+    "blockage_ratio": [
+     14.0625
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     37.5
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     0.08680555555555555
+    ],
+    "working_ratio": [
+     48.35069444444444
+    ]
+   }
+  },
+  {
+   "_class": "manpy.BatchScrapMachine",
+   "family": "Server",
+   "id": "M3A",
+   "results": {
+    "blockage_ratio": [
+     13.45486111111111
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     70.83333333333333
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     0.1736111111111111
+    ],
+    "working_ratio": [
+     15.538194444444445
+    ]
+   }
+  },
+  {
+   "_class": "manpy.BatchScrapMachine",
+   "family": "Server",
+   "id": "M3B",
+   "results": {
+    "blockage_ratio": [
+     14.149305555555555
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     37.5
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     0.1736111111111111
+    ],
+    "working_ratio": [
+     48.177083333333336
+    ]
+   }
+  },
+  {
+   "_class": "manpy.BatchScrapMachine",
+   "family": "Server",
+   "id": "MM",
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     37.5
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     0.5208333333333334
+    ],
+    "working_ratio": [
+     61.979166666666664
+    ]
+   }
+  },
+  {
+   "_class": "manpy.BatchScrapMachine",
+   "family": "Server",
+   "id": "PaA",
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     70.83333333333333
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     14.930555555555555
+    ],
+    "working_ratio": [
+     14.23611111111111
+    ]
+   }
+  },
+  {
+   "_class": "manpy.BatchScrapMachine",
+   "family": "Server",
+   "id": "PaB",
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     37.5
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     15.45138888888889
+    ],
+    "working_ratio": [
+     47.048611111111114
+    ]
+   }
+  },
+  {
+   "_class": "manpy.BatchScrapMachine",
+   "family": "Server",
+   "id": "PrA",
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     70.83333333333333
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     14.930555555555555
+    ],
+    "working_ratio": [
+     14.23611111111111
+    ]
+   }
+  },
+  {
+   "_class": "manpy.BatchScrapMachine",
+   "family": "Server",
+   "id": "PrB",
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     37.5
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     15.104166666666666
+    ],
+    "working_ratio": [
+     47.395833333333336
+    ]
+   }
+  },
+  {
+   "_class": "manpy.LineClearance",
+   "family": "Buffer",
+   "id": "Q2A",
+   "results": {}
+  },
+  {
+   "_class": "manpy.LineClearance",
+   "family": "Buffer",
+   "id": "Q2B",
+   "results": {}
+  },
+  {
+   "_class": "manpy.LineClearance",
+   "family": "Buffer",
+   "id": "Q3A",
+   "results": {}
+  },
+  {
+   "_class": "manpy.LineClearance",
+   "family": "Buffer",
+   "id": "Q3B",
+   "results": {}
+  },
+  {
+   "_class": "manpy.Queue",
+   "family": "Buffer",
+   "id": "QM",
+   "results": {}
+  },
+  {
+   "_class": "manpy.Queue",
+   "family": "Buffer",
+   "id": "QPa",
+   "results": {}
+  },
+  {
+   "_class": "manpy.Queue",
+   "family": "Buffer",
+   "id": "QPr",
+   "results": {}
+  },
+  {
+   "_class": "manpy.Queue",
+   "family": "Buffer",
+   "id": "QStart",
+   "results": {}
+  }
+ ],
+ "general": {
+  "_class": "manpy.Configuration"
+ }
+}

@@ -1,0 +1,65 @@
+{
+     "graph": {
+          "node": {
+               "Q1": {
+                    "capacity": 1,
+                    "name": "Q1",
+                    "top": 0.40909090909090906,
+                    "wip": [],
+                    "interruptions": {},
+                    "_class": "manpy.Queue",
+                    "left": 0.4414893617021277
+               },
+               "E1": {
+                    "interruptions": {},
+                    "top": 0.10215053763440862,
+                    "_class": "manpy.Exit",
+                    "name": "Stock",
+                    "left": 0.5
+               },
+               "M1": {
+                    "name": "Moulding",
+                    "top": 0.5,
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0.1
+                         }
+                    },
+                    "wip": [
+                         {
+                              "unitsToProcess": 40,
+                              "numberOfUnits": 80,
+                              "_class": "manpy.Batch",
+                              "name": "Batch1",
+                              "id": "B1"
+                         }
+                    ],
+                    "interruptions": {},
+                    "_class": "manpy.BatchScrapMachine",
+                    "left": 0.5
+               }
+          },
+          "edge": {
+               "1": {
+                    "source": "M1",
+                    "destination": "E1",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "0": {
+                    "source": "Q1",
+                    "destination": "M1",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               }
+          }
+     },
+     "_class": "manpy.Simulation",
+     "general": {
+          "maxSimTime": "-1",
+          "_class": "manpy.Configuration",
+          "confidenceLevel": "0.95",
+          "trace": "No",
+          "numberOfReplications": "1"
+     }
+}

@@ -1,0 +1,235 @@
+{
+     "graph": {
+          "node": {
+               "MA1": {
+                    "interruptions": {},
+                    "_class": "manpy.MouldAssemblyManaged",
+                    "id": "MA1",
+                    "name": "Assembly"
+               },
+               "Q0": {
+                    "capacity": -1,
+                    "name": "StartQueue",
+                    "isDummy": "0",
+                    "wip": [
+                         {
+                              "id": "O1",
+                              "route": [
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 0.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "Q0"
+                                        ]
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 1.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M0"
+                                        ]
+                                   }
+                              ],
+                              "_class": "manpy.Order",
+                              "componentsList": [
+                                   {
+                                        "route": [
+                                             {
+                                                  "processingTime": {
+                                                       "Fixed": {
+                                                            "mean": "0"
+                                                       }
+                                                  },
+                                                  "stationIdsList": [
+                                                       "OD0"
+                                                  ]
+                                             },
+                                             {
+                                                  "processingTime": {
+                                                       "Fixed": {
+                                                            "mean": "0"
+                                                       }
+                                                  },
+                                                  "stationIdsList": [
+                                                       "Q1"
+                                                  ]
+                                             },
+                                             {
+                                                  "processingTime": {
+                                                       "Fixed": {
+                                                            "mean": "2"
+                                                       }
+                                                  },
+                                                  "stationIdsList": [
+                                                       "M1"
+                                                  ]
+                                             },
+                                             {
+                                                  "processingTime": {
+                                                       "Fixed": {
+                                                            "mean": "0"
+                                                       }
+                                                  },
+                                                  "stationIdsList": [
+                                                       "AB1"
+                                                  ]
+                                             },
+                                             {
+                                                  "processingTime": {
+                                                       "Fixed": {
+                                                            "mean": "0"
+                                                       }
+                                                  },
+                                                  "stationIdsList": [
+                                                       "MA1"
+                                                  ]
+                                             }
+                                        ],
+                                        "_class": "manpy.OrderComponent",
+                                        "id": "C1",
+                                        "name": "Component1"
+                                   },
+                                   {
+                                        "route": [
+                                             {
+                                                  "processingTime": {
+                                                       "Fixed": {
+                                                            "mean": "0"
+                                                       }
+                                                  },
+                                                  "stationIdsList": [
+                                                       "OD0"
+                                                  ]
+                                             },
+                                             {
+                                                  "processingTime": {
+                                                       "Fixed": {
+                                                            "mean": "0"
+                                                       }
+                                                  },
+                                                  "stationIdsList": [
+                                                       "Q1"
+                                                  ]
+                                             },
+                                             {
+                                                  "processingTime": {
+                                                       "Fixed": {
+                                                            "mean": "1"
+                                                       }
+                                                  },
+                                                  "stationIdsList": [
+                                                       "M1"
+                                                  ]
+                                             },
+                                             {
+                                                  "processingTime": {
+                                                       "Fixed": {
+                                                            "mean": "0"
+                                                       }
+                                                  },
+                                                  "stationIdsList": [
+                                                       "AB1"
+                                                  ]
+                                             },
+                                             {
+                                                  "processingTime": {
+                                                       "Fixed": {
+                                                            "mean": "0"
+                                                       }
+                                                  },
+                                                  "stationIdsList": [
+                                                       "MA1"
+                                                  ]
+                                             }
+                                        ],
+                                        "_class": "manpy.OrderComponent",
+                                        "id": "C2",
+                                        "name": "Component2"
+                                   },
+                                   {
+                                        "route": [
+                                             {
+                                                  "processingTime": {
+                                                       "Fixed": {
+                                                            "mean": "1"
+                                                       }
+                                                  },
+                                                  "stationIdsList": [
+                                                       "MA1"
+                                                  ]
+                                             },
+                                             {
+                                                  "processingTime": {
+                                                       "Fixed": {
+                                                            "mean": "0"
+                                                       }
+                                                  },
+                                                  "stationIdsList": [
+                                                       "E1"
+                                                  ]
+                                             }
+                                        ],
+                                        "_class": "manpy.Mould",
+                                        "id": "Mo1",
+                                        "name": "Mould1"
+                                   }
+                              ],
+                              "name": "Order1"
+                         }
+                    ],
+                    "interruptions": {},
+                    "_class": "manpy.QueueJobShop"
+               },
+               "Q1": {
+                    "interruptions": {},
+                    "_class": "manpy.QueueJobShop",
+                    "capacity": -1,
+                    "name": "Queue1",
+                    "isDummy": "0"
+               },
+               "OD0": {
+                    "interruptions": {},
+                    "_class": "manpy.OrderDecomposition",
+                    "name": "Order Decomposition"
+               },
+               "AB1": {
+                    "capacity": -1,
+                    "name": "AssemblyBuffer",
+                    "isDummy": "0",
+                    "interruptions": {},
+                    "_class": "manpy.MouldAssemblyBufferManaged",
+                    "id": "AB1"
+               },
+               "M1": {
+                    "interruptions": {},
+                    "_class": "manpy.MachineJobShop",
+                    "name": "Machine1"
+               },
+               "M0": {
+                    "interruptions": {},
+                    "_class": "manpy.MachineJobShop",
+                    "name": "Design"
+               },
+               "E1": {
+                    "interruptions": {},
+                    "_class": "manpy.ExitJobShop",
+                    "name": "Exit"
+               }
+          },
+          "edge": {}
+     },
+     "_class": "manpy.Simulation",
+     "general": {
+          "trace": "No",
+          "_class": "manpy.Configuration",
+          "confidenceLevel": "0.95",
+          "maxSimTime": "-1",
+          "numberOfReplications": "1"
+     }
+}

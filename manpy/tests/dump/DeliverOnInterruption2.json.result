@@ -1,0 +1,129 @@
+{
+ "_class": "manpy.Simulation",
+ "elementList": [
+  {
+   "_class": "manpy.Exit",
+   "family": "Exit",
+   "id": "E1",
+   "results": {
+    "lifespan": [
+     25.0
+    ],
+    "takt_time": [
+     10.0
+    ],
+    "throughput": [
+     4
+    ]
+   }
+  },
+  {
+   "_class": "manpy.Machine",
+   "family": "Server",
+   "id": "M1A",
+   "results": {
+    "blockage_ratio": [
+     5.0
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     82.5
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     0.0
+    ],
+    "working_ratio": [
+     12.5
+    ]
+   }
+  },
+  {
+   "_class": "manpy.Machine",
+   "family": "Server",
+   "id": "M1B",
+   "results": {
+    "blockage_ratio": [
+     5.0
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     82.5
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     0.0
+    ],
+    "working_ratio": [
+     12.5
+    ]
+   }
+  },
+  {
+   "_class": "manpy.Machine",
+   "family": "Server",
+   "id": "M2",
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     0.0
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     0.0
+    ],
+    "working_ratio": [
+     100.0
+    ]
+   }
+  },
+  {
+   "_class": "manpy.Queue",
+   "family": "Buffer",
+   "id": "Q1",
+   "results": {}
+  },
+  {
+   "_class": "manpy.Queue",
+   "family": "Buffer",
+   "id": "Q2",
+   "results": {}
+  }
+ ],
+ "general": {
+  "_class": "manpy.Configuration"
+ }
+}

@@ -1,0 +1,432 @@
+{
+     "graph": {
+          "node": {
+               "ASBTSTE": {
+                    "interruptions": {},
+                    "_class": "manpy.simulation.applications.CapacityStations.CapacityStationExit.CapacityStationExit",
+                    "name": "ASBTSTExit"
+               },
+               "ASBTSTB": {
+                    "wip": [],
+                    "interruptions": {},
+                    "requireFullProject": 1,
+                    "_class": "manpy.simulation.applications.CapacityStations.CapacityStationBuffer.CapacityStationBuffer",
+                    "name": "ASBTSTBuffer"
+               },
+               "SMFB": {
+                    "interruptions": {},
+                    "_class": "manpy.simulation.applications.CapacityStations.CapacityStationBuffer.CapacityStationBuffer",
+                    "name": "SMFBuffer",
+                    "wip": [
+                         {
+                              "_class": "manpy.simulation.applications.CapacityStations.CapacityEntity.CapacityEntity",
+                              "requiredCapacity": 80,
+                              "capacityProjectId": "P1",
+                              "name": "P1_SMF_80"
+                         }
+                    ]
+               },
+               "EEP": {
+                    "name": "EEP",
+                    "intervalCapacity": [
+                         290.0,
+                         100.0,
+                         200.0,
+                         300.0,
+                         390.0,
+                         20.0,
+                         0.0
+                    ],
+                    "intervalCapacityStart": 3,
+                    "interruptions": {},
+                    "_class": "manpy.simulation.applications.CapacityStations.CapacityStation.CapacityStation",
+                    "intervalCapacityExceptions": {
+                         "2.0": 70,
+                         "9.0": 70
+                    }
+               },
+               "SMFE": {
+                    "interruptions": {},
+                    "_class": "manpy.simulation.applications.CapacityStations.CapacityStationExit.CapacityStationExit",
+                    "name": "SMFExit",
+                    "nextCapacityStationBufferId": "WELDB"
+               },
+               "PPASB": {
+                    "name": "PPASB",
+                    "intervalCapacity": [
+                         170.0,
+                         270.0,
+                         370.0,
+                         20.0,
+                         20.0,
+                         20.0,
+                         0.0
+                    ],
+                    "intervalCapacityStart": 3,
+                    "notProcessOutsideThreshold": 1,
+                    "interruptions": {},
+                    "_class": "manpy.simulation.applications.CapacityStations.CapacityStation.CapacityStation",
+                    "intervalCapacityExceptions": {
+                         "2.0": 50,
+                         "9.0": 80
+                    }
+               },
+               "SMF": {
+                    "name": "SMF",
+                    "intervalCapacity": [
+                         20.0,
+                         30.0,
+                         130.0,
+                         80.0,
+                         180.0,
+                         20.0,
+                         0.0
+                    ],
+                    "intervalCapacityStart": 3,
+                    "interruptions": {},
+                    "_class": "manpy.simulation.applications.CapacityStations.CapacityStation.CapacityStation",
+                    "intervalCapacityExceptions": {
+                         "2.0": 70,
+                         "9.0": 70
+                    }
+               },
+               "WELDE": {
+                    "interruptions": {},
+                    "_class": "manpy.simulation.applications.CapacityStations.CapacityStationExit.CapacityStationExit",
+                    "name": "WELDExit",
+                    "nextCapacityStationBufferId": "PPASBB"
+               },
+               "WELD": {
+                    "name": "WELD",
+                    "intervalCapacity": [
+                         70.0,
+                         170.0,
+                         270.0,
+                         80.0,
+                         180.0,
+                         20.0,
+                         0.0
+                    ],
+                    "intervalCapacityStart": 3,
+                    "interruptions": {},
+                    "_class": "manpy.simulation.applications.CapacityStations.CapacityStation.CapacityStation",
+                    "intervalCapacityExceptions": {
+                         "2.0": 90,
+                         "9.0": 90
+                    }
+               },
+               "WELDB": {
+                    "interruptions": {},
+                    "_class": "manpy.simulation.applications.CapacityStations.CapacityStationBuffer.CapacityStationBuffer",
+                    "name": "WELDBuffer",
+                    "wip": []
+               },
+               "ASBTST": {
+                    "name": "ASBTST",
+                    "intervalCapacity": [
+                         170.0,
+                         270.0,
+                         370.0,
+                         20.0,
+                         20.0,
+                         20.0,
+                         0.0
+                    ],
+                    "intervalCapacityStart": 3,
+                    "notProcessOutsideThreshold": 1,
+                    "interruptions": {},
+                    "_class": "manpy.simulation.applications.CapacityStations.CapacityStation.CapacityStation",
+                    "intervalCapacityExceptions": {
+                         "2.0": 50,
+                         "9.0": 80
+                    }
+               },
+               "PAINTB": {
+                    "interruptions": {},
+                    "_class": "manpy.simulation.applications.CapacityStations.CapacityStationBuffer.CapacityStationBuffer",
+                    "name": "PaintBuffer",
+                    "wip": []
+               },
+               "PAINTE": {
+                    "interruptions": {},
+                    "_class": "manpy.simulation.applications.CapacityStations.CapacityStationExit.CapacityStationExit",
+                    "name": "PaintExit",
+                    "nextCapacityStationBufferId": "ASBTSTB"
+               },
+               "CNCE": {
+                    "interruptions": {},
+                    "_class": "manpy.simulation.applications.CapacityStations.CapacityStationExit.CapacityStationExit",
+                    "name": "CNCExit",
+                    "nextCapacityStationBufferId": "PPASBB"
+               },
+               "CNCB": {
+                    "interruptions": {},
+                    "_class": "manpy.simulation.applications.CapacityStations.CapacityStationBuffer.CapacityStationBuffer",
+                    "name": "CNCBuffer",
+                    "wip": [
+                         {
+                              "_class": "manpy.simulation.applications.CapacityStations.CapacityEntity.CapacityEntity",
+                              "requiredCapacity": 130,
+                              "capacityProjectId": "P1",
+                              "name": "P1_CNC_130"
+                         }
+                    ]
+               },
+               "CSC": {
+                    "dueDateThreshold": 7,
+                    "name": "CSC",
+                    "interval": "1",
+                    "start": "0",
+                    "interruptions": {},
+                    "_class": "manpy.simulation.applications.CapacityStations.CapacityStationController.CapacityStationController"
+               },
+               "PAINT": {
+                    "name": "Paint",
+                    "intervalCapacity": [
+                         20.0,
+                         20.0,
+                         20.0,
+                         320.0,
+                         420.0,
+                         20.0,
+                         0.0
+                    ],
+                    "intervalCapacityStart": 3,
+                    "interruptions": {},
+                    "_class": "manpy.simulation.applications.CapacityStations.CapacityStation.CapacityStation",
+                    "intervalCapacityExceptions": {
+                         "2.0": 70,
+                         "9.0": 170
+                    }
+               },
+               "CNC": {
+                    "name": "CNC",
+                    "intervalCapacity": [
+                         90.0,
+                         190.0,
+                         290.0,
+                         390.0,
+                         490.0,
+                         20.0,
+                         0.0
+                    ],
+                    "intervalCapacityStart": 3,
+                    "interruptions": {},
+                    "_class": "manpy.simulation.applications.CapacityStations.CapacityStation.CapacityStation",
+                    "intervalCapacityExceptions": {
+                         "2.0": 80,
+                         "9.0": 80
+                    }
+               },
+               "QD": {
+                    "capacity": "-1",
+                    "name": "DUMMY",
+                    "wip": [
+                         {
+                              "dueDate": 34,
+                              "capacityRequirementDict": {
+                                   "WELD": 90,
+                                   "MCH": 125,
+                                   "EEP": 30,
+                                   "ASBTST": 300,
+                                   "PAINT": 50,
+                                   "CNC": 130,
+                                   "PPASB": 700,
+                                   "SMF": 80
+                              },
+                              "_class": "manpy.simulation.applications.CapacityStations.CapacityProject.CapacityProject",
+                              "id": "P1",
+                              "name": "P1"
+                         }
+                    ],
+                    "interruptions": {},
+                    "_class": "manpy.Queue",
+                    "id": "QD"
+               },
+               "MCH": {
+                    "name": "MCH",
+                    "intervalCapacity": [
+                         20.0,
+                         70.0,
+                         170.0,
+                         270.0,
+                         370.0,
+                         20.0,
+                         0.0
+                    ],
+                    "intervalCapacityStart": 3,
+                    "interruptions": {},
+                    "_class": "manpy.simulation.applications.CapacityStations.CapacityStation.CapacityStation",
+                    "intervalCapacityExceptions": {
+                         "2.0": 20,
+                         "9.0": 60
+                    }
+               },
+               "MCHB": {
+                    "interruptions": {},
+                    "_class": "manpy.simulation.applications.CapacityStations.CapacityStationBuffer.CapacityStationBuffer",
+                    "name": "MCHBuffer",
+                    "wip": [
+                         {
+                              "_class": "manpy.simulation.applications.CapacityStations.CapacityEntity.CapacityEntity",
+                              "requiredCapacity": 125,
+                              "capacityProjectId": "P1",
+                              "name": "P1_MCH_125"
+                         }
+                    ]
+               },
+               "EEPE": {
+                    "interruptions": {},
+                    "_class": "manpy.simulation.applications.CapacityStations.CapacityStationExit.CapacityStationExit",
+                    "name": "EEPExit",
+                    "nextCapacityStationBufferId": "ASBTSTB"
+               },
+               "EEPB": {
+                    "interruptions": {},
+                    "_class": "manpy.simulation.applications.CapacityStations.CapacityStationBuffer.CapacityStationBuffer",
+                    "name": "EEPBuffer",
+                    "wip": [
+                         {
+                              "_class": "manpy.simulation.applications.CapacityStations.CapacityEntity.CapacityEntity",
+                              "requiredCapacity": 30,
+                              "capacityProjectId": "P1",
+                              "name": "P1_EEP_30"
+                         }
+                    ]
+               },
+               "MCHE": {
+                    "interruptions": {},
+                    "_class": "manpy.simulation.applications.CapacityStations.CapacityStationExit.CapacityStationExit",
+                    "name": "CNCExit",
+                    "nextCapacityStationBufferId": "PPASBB"
+               },
+               "PPASBB": {
+                    "requireFullProject": 1,
+                    "name": "PPASBBuffer",
+                    "notRequiredOperations": [
+                         "EEP",
+                         "PAINT",
+                         "ASBTST"
+                    ],
+                    "wip": [],
+                    "interruptions": {},
+                    "_class": "manpy.simulation.applications.CapacityStations.CapacityStationBuffer.CapacityStationBuffer"
+               },
+               "PPASBE": {
+                    "interruptions": {},
+                    "_class": "manpy.simulation.applications.CapacityStations.CapacityStationExit.CapacityStationExit",
+                    "name": "PPASBExit",
+                    "nextCapacityStationBufferId": "PAINTB"
+               }
+          },
+          "edge": {
+               "11": {
+                    "source": "PPASB",
+                    "destination": "PPASBE",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "10": {
+                    "source": "PPASBB",
+                    "destination": "PPASB",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "13": {
+                    "source": "PAINT",
+                    "destination": "PAINTE",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "12": {
+                    "source": "PAINTB",
+                    "destination": "PAINT",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "15": {
+                    "source": "ASBTST",
+                    "destination": "ASBTSTE",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "14": {
+                    "source": "ASBTSTB",
+                    "destination": "ASBTST",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "1": {
+                    "source": "SMF",
+                    "destination": "SMFE",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "0": {
+                    "source": "SMFB",
+                    "destination": "SMF",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "3": {
+                    "source": "WELD",
+                    "destination": "WELDE",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "2": {
+                    "source": "WELDB",
+                    "destination": "WELD",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "5": {
+                    "source": "CNC",
+                    "destination": "CNCE",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "4": {
+                    "source": "CNCB",
+                    "destination": "CNC",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "7": {
+                    "source": "MCH",
+                    "destination": "MCHE",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "6": {
+                    "source": "MCHB",
+                    "destination": "MCH",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "9": {
+                    "source": "EEP",
+                    "destination": "EEPE",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "8": {
+                    "source": "EEPB",
+                    "destination": "EEP",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               }
+          }
+     },
+     "_class": "manpy.Simulation",
+     "general": {
+          "extraPropertyDict": {
+               "assemblySpace": 600
+          },
+          "numberOfReplications": "1",
+          "trace": "No",
+          "confidenceLevel": "0.95",
+          "maxSimTime": "-1",
+          "_class": "manpy.Configuration"
+     }
+}

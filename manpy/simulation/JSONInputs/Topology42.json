@@ -1,0 +1,107 @@
+{
+     "graph": {
+          "node": {
+               "M1": {
+                    "name": "Machine1",
+                    "loadTime": {
+                         "Fixed": {
+                              "mean": 0.0
+                         }
+                    },
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 17.0
+                         }
+                    },
+                    "operationType": "MT-Load-Processing",
+                    "interruptions": {},
+                    "_class": "manpy.Machine"
+               },
+               "S1": {
+                    "interruptions": {},
+                    "interArrivalTime": {
+                         "Fixed": {
+                              "distributionType": "Fixed",
+                              "mean": 6.0
+                         }
+                    },
+                    "_class": "manpy.Source",
+                    "name": "Source",
+                    "entity": "manpy.Part"
+               },
+               "E1": {
+                    "interruptions": {},
+                    "_class": "manpy.Exit",
+                    "name": "Exit"
+               },
+               "O1": {
+                    "interruptions": {},
+                    "_class": "manpy.Operator",
+                    "capacity": 1,
+                    "name": "Operator1"
+               },
+               "M2": {
+                    "name": "Machine2",
+                    "loadTime": {
+                         "Fixed": {
+                              "mean": 0.0
+                         }
+                    },
+                    "setupTime": {
+                         "Fixed": {
+                              "mean": 0.25
+                         }
+                    },
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 2.0
+                         }
+                    },
+                    "operationType": "MT-Load-Setup-Processing",
+                    "interruptions": {},
+                    "failures": {},
+                    "_class": "manpy.Machine"
+               }
+          },
+          "edge": {
+               "1": {
+                    "source": "O1",
+                    "destination": "M2",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "0": {
+                    "source": "O1",
+                    "destination": "M1",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "3": {
+                    "source": "M1",
+                    "destination": "M2",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "2": {
+                    "source": "S1",
+                    "destination": "M1",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "4": {
+                    "source": "M2",
+                    "destination": "E1",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               }
+          }
+     },
+     "_class": "manpy.Simulation",
+     "general": {
+          "trace": "No",
+          "_class": "manpy.Configuration",
+          "confidenceLevel": "0.95",
+          "maxSimTime": "155",
+          "numberOfReplications": "1"
+     }
+}

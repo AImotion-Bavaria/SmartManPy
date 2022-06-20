@@ -1,0 +1,148 @@
+{
+     "graph": {
+          "node": {
+               "Q1": {
+                    "capacity": 10,
+                    "name": "Q1",
+                    "top": 0.40909090909090906,
+                    "wip": [
+                         {
+                              "_class": "manpy.Batch",
+                              "numberOfUnits": 10,
+                              "name": "B1",
+                              "id": "B1"
+                         },
+                         {
+                              "_class": "manpy.Batch",
+                              "numberOfUnits": 10,
+                              "name": "B2",
+                              "id": "B2"
+                         },
+                         {
+                              "_class": "manpy.Batch",
+                              "numberOfUnits": 10,
+                              "name": "B3",
+                              "id": "B3"
+                         }
+                    ],
+                    "interruptions": {},
+                    "_class": "manpy.Queue",
+                    "left": 0.4414893617021277
+               },
+               "BD": {
+                    "name": "BD",
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0
+                         }
+                    },
+                    "numberOfSubBatches": 1,
+                    "interruptions": {},
+                    "element_id": "manpyNode_24",
+                    "_class": "manpy.BatchDecompositionBlocking",
+                    "id": "BD"
+               },
+               "Q2": {
+                    "capacity": 1,
+                    "name": "Q2",
+                    "top": 0.40909090909090906,
+                    "wip": [
+                         {
+                              "_class": "manpy.Batch",
+                              "numberOfUnits": 10,
+                              "name": "B0",
+                              "id": "B0"
+                         }
+                    ],
+                    "interruptions": {},
+                    "_class": "manpy.Queue",
+                    "left": 0.4414893617021277
+               },
+               "M1": {
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0.5
+                         }
+                    },
+                    "interruptions": {},
+                    "_class": "manpy.BatchScrapMachine",
+                    "name": "Machine1"
+               },
+               "BR": {
+                    "name": "BR",
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0
+                         }
+                    },
+                    "outputResults": 1,
+                    "numberOfSubBatches": 1,
+                    "interruptions": {},
+                    "_class": "manpy.BatchReassemblyBlocking",
+                    "id": "BR"
+               },
+               "M2": {
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 2
+                         }
+                    },
+                    "interruptions": {},
+                    "_class": "manpy.BatchScrapMachine",
+                    "name": "Machine2"
+               },
+               "E1": {
+                    "interruptions": {},
+                    "_class": "manpy.Exit",
+                    "name": "Exit"
+               }
+          },
+          "edge": {
+               "1": {
+                    "source": "Q1",
+                    "destination": "BD",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "3": {
+                    "source": "M1",
+                    "destination": "BR",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "2": {
+                    "source": "BD",
+                    "destination": "M1",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "5": {
+                    "source": "Q2",
+                    "destination": "M2",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "4": {
+                    "source": "BR",
+                    "destination": "Q2",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "6": {
+                    "source": "M2",
+                    "destination": "E1",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               }
+          }
+     },
+     "_class": "manpy.Simulation",
+     "general": {
+          "console": "No",
+          "numberOfReplications": "1",
+          "trace": "No",
+          "confidenceLevel": "0.95",
+          "maxSimTime": "100",
+          "_class": "manpy.Configuration"
+     }
+}

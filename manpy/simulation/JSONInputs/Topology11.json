@@ -1,0 +1,154 @@
+{
+     "graph": {
+          "node": {
+               "Q1": {
+                    "capacity": 1,
+                    "name": "Q1",
+                    "top": 0.5906862745098039,
+                    "isDummy": "0",
+                    "interruptions": {},
+                    "_class": "manpy.Queue",
+                    "left": 0.639751552795031
+               },
+               "W1": {
+                    "capacity": 1,
+                    "name": "W1",
+                    "top": 0.5906862745098039,
+                    "interruptions": {},
+                    "_class": "manpy.Repairman",
+                    "left": 0.18012422360248448
+               },
+               "S1": {
+                    "name": "Raw Material",
+                    "top": 0.9534313725490196,
+                    "entity": "manpy.Part",
+                    "interArrivalTime": {
+                         "Fixed": {
+                              "distributionType": "Fixed",
+                              "mean": 0.5
+                         }
+                    },
+                    "interruptions": {},
+                    "_class": "manpy.Source",
+                    "left": 0.639751552795031
+               },
+               "M1": {
+                    "name": "Machine1",
+                    "top": 0.40931372549019607,
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 1.5
+                         }
+                    },
+                    "interruptions": {},
+                    "_class": "manpy.Machine",
+                    "left": 0.6335403726708074
+               },
+               "M3": {
+                    "name": "Machine3",
+                    "top": 0.2279411764705882,
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 2.0
+                         }
+                    },
+                    "interruptions": {},
+                    "_class": "manpy.Machine",
+                    "left": 0.40993788819875776
+               },
+               "M2": {
+                    "name": "Machine2",
+                    "top": 0.40931372549019607,
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 1.5
+                         }
+                    },
+                    "failures": {},
+                    "interruptions": {},
+                    "_class": "manpy.Machine",
+                    "left": 0.1863354037267081
+               },
+               "DummyQ": {
+                    "capacity": 1,
+                    "name": "DummyQ",
+                    "top": 0.7720588235294118,
+                    "isDummy": "1",
+                    "interruptions": {},
+                    "_class": "manpy.Queue",
+                    "left": 0.639751552795031
+               },
+               "E1": {
+                    "interruptions": {},
+                    "top": 0.04656862745098034,
+                    "_class": "manpy.Exit",
+                    "name": "Stock",
+                    "left": 0.40993788819875776
+               }
+          },
+          "edge": {
+               "1": {
+                    "source": "W1",
+                    "destination": "M2",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "0": {
+                    "source": "W1",
+                    "destination": "M1",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "3": {
+                    "source": "M1",
+                    "destination": "M3",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "2": {
+                    "source": "S1",
+                    "destination": "DummyQ",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "5": {
+                    "source": "M3",
+                    "destination": "E1",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "4": {
+                    "source": "M2",
+                    "destination": "M3",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "7": {
+                    "source": "Q1",
+                    "destination": "M1",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "6": {
+                    "source": "DummyQ",
+                    "destination": "Q1",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "8": {
+                    "source": "Q1",
+                    "destination": "M2",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               }
+          }
+     },
+     "_class": "manpy.Simulation",
+     "general": {
+          "maxSimTime": "1440",
+          "_class": "manpy.Configuration",
+          "confidenceLevel": "0.95",
+          "trace": "No",
+          "numberOfReplications": "1"
+     }
+}

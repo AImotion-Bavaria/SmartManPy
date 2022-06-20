@@ -1,0 +1,119 @@
+{
+     "graph": {
+          "node": {
+               "Q1": {
+                    "capacity": -1,
+                    "name": "Queue2",
+                    "top": 0.40909090909090906,
+                    "isDummy": "0",
+                    "interruptions": {},
+                    "_class": "manpy.Queue",
+                    "left": 0.4414893617021277
+               },
+               "Q2": {
+                    "capacity": -1,
+                    "name": "Queue1",
+                    "top": 0.40909090909090906,
+                    "isDummy": "0",
+                    "interruptions": {},
+                    "_class": "manpy.Queue",
+                    "left": 0.4414893617021277
+               },
+               "S1": {
+                    "name": "Raw Material",
+                    "top": 0.9545454545454546,
+                    "entity": "manpy.Part",
+                    "interArrivalTime": {
+                         "Fixed": {
+                              "distributionType": "Fixed",
+                              "mean": 1.0
+                         }
+                    },
+                    "interruptions": {},
+                    "_class": "manpy.Source",
+                    "left": 0.6968085106382979
+               },
+               "M1": {
+                    "name": "Machine1",
+                    "top": 0.5909090909090908,
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0.75
+                         }
+                    },
+                    "failures": {},
+                    "interruptions": {},
+                    "_class": "manpy.Machine",
+                    "left": 0.4414893617021277
+               },
+               "M2": {
+                    "name": "Machine2",
+                    "top": 0.2272727272727273,
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0.75
+                         }
+                    },
+                    "failures": {},
+                    "interruptions": {},
+                    "_class": "manpy.Machine",
+                    "left": 0.2978723404255319
+               },
+               "EV": {
+                    "name": "ExcessEntitiesMover",
+                    "argumentDict": {
+                         "receiverId": "E1",
+                         "giverId": "Q2",
+                         "consumption": 20,
+                         "safetyStock": 70
+                    },
+                    "interval": "60",
+                    "start": "60",
+                    "interruptions": {},
+                    "_class": "manpy.EventGenerator",
+                    "method": "manpy.Globals.moveExcess"
+               },
+               "E1": {
+                    "interruptions": {},
+                    "top": 0.045454545454545414,
+                    "_class": "manpy.Exit",
+                    "name": "Stock",
+                    "left": 0.2978723404255319
+               }
+          },
+          "edge": {
+               "1": {
+                    "source": "M1",
+                    "destination": "Q1",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "0": {
+                    "source": "S1",
+                    "destination": "M1",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "3": {
+                    "source": "M2",
+                    "destination": "Q2",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "2": {
+                    "source": "Q1",
+                    "destination": "M2",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               }
+          }
+     },
+     "_class": "manpy.Simulation",
+     "general": {
+          "maxSimTime": "400",
+          "_class": "manpy.Configuration",
+          "confidenceLevel": "0.95",
+          "trace": "No",
+          "numberOfReplications": "1"
+     }
+}

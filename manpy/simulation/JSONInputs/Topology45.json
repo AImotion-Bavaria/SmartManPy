@@ -1,0 +1,252 @@
+{
+     "graph": {
+          "node": {
+               "Q1": {
+                    "capacity": -1,
+                    "name": "Queue1",
+                    "isDummy": "0",
+                    "wip": [
+                         {
+                              "route": [
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 0.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "Q1"
+                                        ]
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 1.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M1"
+                                        ]
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 0.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "Q2"
+                                        ]
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 1.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M2"
+                                        ]
+                                   },
+                                   {
+                                        "stationIdsList": [
+                                             "E1"
+                                        ]
+                                   }
+                              ],
+                              "_class": "manpy.OrderComponent",
+                              "id": "C1",
+                              "name": "Component1"
+                         }
+                    ],
+                    "interruptions": {},
+                    "_class": "manpy.QueueJobShop",
+                    "id": "Q1"
+               },
+               "Q3": {
+                    "capacity": -1,
+                    "name": "Queue4",
+                    "isDummy": "0",
+                    "wip": [
+                         {
+                              "route": [
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 0.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "Q3"
+                                        ]
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 1.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M3"
+                                        ]
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 0.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "Q4"
+                                        ]
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 1.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M4"
+                                        ]
+                                   },
+                                   {
+                                        "stationIdsList": [
+                                             "E1"
+                                        ]
+                                   }
+                              ],
+                              "_class": "manpy.OrderComponent",
+                              "id": "C2",
+                              "name": "Component2"
+                         }
+                    ],
+                    "interruptions": {},
+                    "_class": "manpy.QueueJobShop",
+                    "id": "Q3"
+               },
+               "Q2": {
+                    "capacity": -1,
+                    "name": "Queue2",
+                    "isDummy": "0",
+                    "wip": [],
+                    "interruptions": {},
+                    "_class": "manpy.QueueJobShop",
+                    "id": "Q2"
+               },
+               "Q4": {
+                    "capacity": -1,
+                    "name": "Queue4",
+                    "isDummy": "0",
+                    "wip": [],
+                    "interruptions": {},
+                    "_class": "manpy.QueueJobShop",
+                    "id": "Q4"
+               },
+               "O3": {
+                    "interruptions": {},
+                    "_class": "manpy.Operator",
+                    "capacity": 1,
+                    "name": "Operator3"
+               },
+               "M4": {
+                    "name": "Machine4",
+                    "setupTime": {
+                         "Fixed": {
+                              "mean": 0.0
+                         }
+                    },
+                    "processingTime": {},
+                    "operationType": "MT-Setup-Processing",
+                    "interruptions": {},
+                    "failures": {},
+                    "_class": "manpy.MachineJobShop",
+                    "id": "M4"
+               },
+               "M1": {
+                    "name": "Machine1",
+                    "processingTime": {},
+                    "operationType": "Processing",
+                    "interruptions": {},
+                    "failures": {},
+                    "_class": "manpy.MachineJobShop",
+                    "id": "M1"
+               },
+               "M3": {
+                    "name": "Machine3",
+                    "processingTime": {},
+                    "operationType": "Processing",
+                    "interruptions": {},
+                    "failures": {},
+                    "_class": "manpy.MachineJobShop",
+                    "id": "M3"
+               },
+               "M2": {
+                    "name": "Machine2",
+                    "setupTime": {
+                         "Fixed": {
+                              "mean": 0.0
+                         }
+                    },
+                    "processingTime": {},
+                    "operationType": "MT-Setup-Processing",
+                    "interruptions": {},
+                    "failures": {},
+                    "_class": "manpy.MachineJobShop",
+                    "id": "M2"
+               },
+               "E1": {
+                    "interruptions": {},
+                    "_class": "manpy.ExitJobShop",
+                    "id": "E1",
+                    "name": "Stock"
+               },
+               "O2": {
+                    "interruptions": {},
+                    "_class": "manpy.Operator",
+                    "capacity": 2,
+                    "name": "Operator2"
+               },
+               "O1": {
+                    "interruptions": {},
+                    "_class": "manpy.Operator",
+                    "capacity": 1,
+                    "name": "Operator1"
+               }
+          },
+          "edge": {
+               "1": {
+                    "source": "O2",
+                    "destination": "M3",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "0": {
+                    "source": "O1",
+                    "destination": "M1",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "3": {
+                    "source": "O3",
+                    "destination": "M4",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "2": {
+                    "source": "O3",
+                    "destination": "M2",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               }
+          }
+     },
+     "_class": "manpy.Simulation",
+     "general": {
+          "trace": "No",
+          "_class": "manpy.Configuration",
+          "confidenceLevel": "0.95",
+          "maxSimTime": "-1",
+          "numberOfReplications": "1"
+     }
+}

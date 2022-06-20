@@ -1,0 +1,101 @@
+{
+ "_class": "manpy.Simulation",
+ "elementList": [
+  {
+   "_class": "manpy.Exit",
+   "family": "Exit",
+   "id": "E1",
+   "results": {
+    "lifespan": [
+     32.0
+    ],
+    "takt_time": [
+     16.0
+    ],
+    "throughput": [
+     3
+    ],
+    "unitsThroughput": [
+     240
+    ]
+   }
+  },
+  {
+   "_class": "manpy.BatchScrapMachine",
+   "family": "Server",
+   "id": "M1",
+   "results": {
+    "blockage_ratio": [
+     25.0
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     0.0
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     41.666666666666664
+    ],
+    "working_ratio": [
+     33.333333333333336
+    ]
+   }
+  },
+  {
+   "_class": "manpy.BatchScrapMachine",
+   "family": "Server",
+   "id": "M2",
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     0.0
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     0.0
+    ],
+    "working_ratio": [
+     100.0
+    ]
+   }
+  },
+  {
+   "_class": "manpy.Queue",
+   "family": "Buffer",
+   "id": "Q1",
+   "results": {}
+  },
+  {
+   "_class": "manpy.LineClearance",
+   "family": "Buffer",
+   "id": "Q2",
+   "results": {}
+  }
+ ],
+ "general": {
+  "_class": "manpy.Configuration"
+ }
+}

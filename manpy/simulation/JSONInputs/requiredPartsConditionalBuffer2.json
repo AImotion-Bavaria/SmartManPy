@@ -1,0 +1,529 @@
+{
+     "graph": {
+          "node": {
+               "Q1": {
+                    "capacity": -1,
+                    "name": "Queue1",
+                    "isDummy": "0",
+                    "wip": [
+                         {
+                              "route": [
+                                   {
+                                        "stationIdsList": [
+                                             "Q1"
+                                        ],
+                                        "sequence": 1
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 1.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M1"
+                                        ],
+                                        "requiredParts": [],
+                                        "operationType": {
+                                             "Processing": 1
+                                        },
+                                        "sequence": 1
+                                   },
+                                   {
+                                        "stationIdsList": [
+                                             "Q3"
+                                        ],
+                                        "sequence": 2
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 3.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M3"
+                                        ],
+                                        "requiredParts": [],
+                                        "operationType": {
+                                             "Processing": 0
+                                        },
+                                        "sequence": 2
+                                   },
+                                   {
+                                        "stationIdsList": [
+                                             "Q2"
+                                        ],
+                                        "sequence": 7
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 2.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M2"
+                                        ],
+                                        "requiredParts": [
+                                             "J2",
+                                             "J3",
+                                             "J4",
+                                             "J5",
+                                             "J6"
+                                        ],
+                                        "operationType": {
+                                             "Processing": 1
+                                        },
+                                        "sequence": 7
+                                   },
+                                   {
+                                        "stationIdsList": [
+                                             "E1"
+                                        ]
+                                   }
+                              ],
+                              "_class": "manpy.Job",
+                              "id": "J1",
+                              "name": "Job1"
+                         },
+                         {
+                              "route": [
+                                   {
+                                        "stationIdsList": [
+                                             "Q1"
+                                        ],
+                                        "sequence": 2
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 1.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M1"
+                                        ],
+                                        "requiredParts": [],
+                                        "operationType": {
+                                             "Processing": 1
+                                        },
+                                        "sequence": 2
+                                   },
+                                   {
+                                        "stationIdsList": [
+                                             "Q3"
+                                        ],
+                                        "sequence": 3
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 3.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M3"
+                                        ],
+                                        "requiredParts": [],
+                                        "operationType": {
+                                             "Processing": 0
+                                        },
+                                        "sequence": 3
+                                   },
+                                   {
+                                        "stationIdsList": [
+                                             "Q2"
+                                        ],
+                                        "sequence": 4
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 2.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M2"
+                                        ],
+                                        "requiredParts": [],
+                                        "operationType": {
+                                             "Processing": 1
+                                        },
+                                        "sequence": 4
+                                   },
+                                   {
+                                        "stationIdsList": [
+                                             "E1"
+                                        ]
+                                   }
+                              ],
+                              "_class": "manpy.Job",
+                              "id": "J2",
+                              "name": "Job2"
+                         },
+                         {
+                              "route": [
+                                   {
+                                        "stationIdsList": [
+                                             "Q1"
+                                        ],
+                                        "sequence": 1
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 1.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M1"
+                                        ],
+                                        "requiredParts": [],
+                                        "operationType": {
+                                             "Processing": 1
+                                        },
+                                        "sequence": 1
+                                   },
+                                   {
+                                        "stationIdsList": [
+                                             "Q3"
+                                        ],
+                                        "sequence": 3
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 3.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M3"
+                                        ],
+                                        "requiredParts": [],
+                                        "operationType": {
+                                             "Processing": 0
+                                        },
+                                        "sequence": 3
+                                   },
+                                   {
+                                        "stationIdsList": [
+                                             "Q2"
+                                        ],
+                                        "sequence": 5
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 2.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M2"
+                                        ],
+                                        "requiredParts": [],
+                                        "operationType": {
+                                             "Processing": 1
+                                        },
+                                        "sequence": 5
+                                   },
+                                   {
+                                        "stationIdsList": [
+                                             "E1"
+                                        ]
+                                   }
+                              ],
+                              "_class": "manpy.Job",
+                              "id": "J3",
+                              "name": "Job3"
+                         },
+                         {
+                              "route": [
+                                   {
+                                        "stationIdsList": [
+                                             "Q1"
+                                        ],
+                                        "sequence": 1
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 1.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M1"
+                                        ],
+                                        "requiredParts": [],
+                                        "operationType": {
+                                             "Processing": 1
+                                        },
+                                        "sequence": 1
+                                   },
+                                   {
+                                        "stationIdsList": [
+                                             "Q2"
+                                        ],
+                                        "sequence": 4
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 2.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M2"
+                                        ],
+                                        "requiredParts": [],
+                                        "operationType": {
+                                             "Processing": 1
+                                        },
+                                        "sequence": 4
+                                   },
+                                   {
+                                        "stationIdsList": [
+                                             "E1"
+                                        ]
+                                   }
+                              ],
+                              "_class": "manpy.Job",
+                              "id": "J4",
+                              "name": "Job4"
+                         },
+                         {
+                              "route": [
+                                   {
+                                        "stationIdsList": [
+                                             "Q1"
+                                        ],
+                                        "sequence": 1
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 1.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M1"
+                                        ],
+                                        "requiredParts": [],
+                                        "operationType": {
+                                             "Processing": 1
+                                        },
+                                        "sequence": 1
+                                   },
+                                   {
+                                        "stationIdsList": [
+                                             "Q3"
+                                        ],
+                                        "sequence": 9
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 2.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M3"
+                                        ],
+                                        "requiredParts": [],
+                                        "operationType": {
+                                             "Processing": 1
+                                        },
+                                        "sequence": 9
+                                   },
+                                   {
+                                        "stationIdsList": [
+                                             "E1"
+                                        ]
+                                   }
+                              ],
+                              "_class": "manpy.Job",
+                              "id": "J5",
+                              "name": "Job5"
+                         },
+                         {
+                              "route": [
+                                   {
+                                        "stationIdsList": [
+                                             "Q1"
+                                        ],
+                                        "sequence": 1
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 1.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M1"
+                                        ],
+                                        "requiredParts": [],
+                                        "operationType": {
+                                             "Processing": 1
+                                        },
+                                        "sequence": 1
+                                   },
+                                   {
+                                        "stationIdsList": [
+                                             "Q3"
+                                        ],
+                                        "sequence": 3
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 1.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M3"
+                                        ],
+                                        "requiredParts": [],
+                                        "operationType": {
+                                             "Processing": 0
+                                        },
+                                        "sequence": 3
+                                   },
+                                   {
+                                        "stationIdsList": [
+                                             "Q2"
+                                        ],
+                                        "sequence": 10
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 1.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M2"
+                                        ],
+                                        "requiredParts": [],
+                                        "operationType": {
+                                             "Processing": 1
+                                        },
+                                        "sequence": 10
+                                   },
+                                   {
+                                        "stationIdsList": [
+                                             "E1"
+                                        ]
+                                   }
+                              ],
+                              "_class": "manpy.Job",
+                              "id": "J6",
+                              "name": "Job6"
+                         }
+                    ],
+                    "interruptions": {},
+                    "_class": "manpy.ConditionalBuffer",
+                    "schedulingRule": "NumStages"
+               },
+               "Q3": {
+                    "capacity": -1,
+                    "name": "Queue3",
+                    "isDummy": "0",
+                    "interruptions": {},
+                    "_class": "manpy.ConditionalBuffer",
+                    "schedulingRule": "LPT"
+               },
+               "Q2": {
+                    "capacity": -1,
+                    "name": "Queue2",
+                    "isDummy": "0",
+                    "interruptions": {},
+                    "_class": "manpy.ConditionalBuffer",
+                    "id": "Q2",
+                    "schedulingRule": "RPC"
+               },
+               "OP1": {
+                    "interruptions": {},
+                    "_class": "manpy.OperatorPool",
+                    "capacity": 2,
+                    "name": "Operator Pool 1"
+               },
+               "M1": {
+                    "interruptions": {},
+                    "_class": "manpy.MachineJobShop",
+                    "name": "Machine1",
+                    "operationType": "Load"
+               },
+               "M3": {
+                    "interruptions": {},
+                    "_class": "manpy.MachineJobShop",
+                    "name": "Machine3",
+                    "operationType": "Load"
+               },
+               "M2": {
+                    "interruptions": {},
+                    "_class": "manpy.MachineJobShop",
+                    "name": "Machine2",
+                    "operationType": "Load"
+               },
+               "E1": {
+                    "interruptions": {},
+                    "_class": "manpy.ExitJobShop",
+                    "name": "Exit"
+               },
+               "O2": {
+                    "interruptions": {},
+                    "_class": "manpy.Operator",
+                    "capacity": 1,
+                    "name": "Operator2"
+               },
+               "O1": {
+                    "interruptions": {},
+                    "_class": "manpy.Operator",
+                    "capacity": 1,
+                    "name": "Operator1"
+               }
+          },
+          "edge": {
+               "1": {
+                    "source": "O2",
+                    "destination": "OP1",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "0": {
+                    "source": "O1",
+                    "destination": "OP1",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "3": {
+                    "source": "OP1",
+                    "destination": "M2",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "2": {
+                    "source": "OP1",
+                    "destination": "M1",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "4": {
+                    "source": "OP1",
+                    "destination": "M3",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               }
+          }
+     },
+     "_class": "manpy.Simulation",
+     "general": {
+          "console": "No",
+          "numberOfReplications": "1",
+          "trace": "No",
+          "confidenceLevel": "0.95",
+          "maxSimTime": "-1",
+          "_class": "manpy.Configuration"
+     }
+}

@@ -1,0 +1,203 @@
+{
+ "_class": "manpy.Simulation",
+ "elementList": [
+  {
+   "_class": "manpy.CapacityStationBuffer",
+   "family": "Buffer",
+   "id": "CB1",
+   "results": {}
+  },
+  {
+   "_class": "manpy.CapacityStationBuffer",
+   "family": "Buffer",
+   "id": "CB2",
+   "results": {}
+  },
+  {
+   "_class": "manpy.CapacityStationBuffer",
+   "family": "Buffer",
+   "id": "CB3",
+   "results": {}
+  },
+  {
+   "_class": "manpy.CapacityStationExit",
+   "family": "Exit",
+   "id": "CE3",
+   "results": {
+    "lifespan": [
+     5.0
+    ],
+    "takt_time": [
+     5.0
+    ],
+    "throughput": [
+     1
+    ]
+   }
+  },
+  {
+   "_class": "manpy.CapacityStation",
+   "family": "CapacityStation",
+   "id": "CS1",
+   "results": {
+    "capacityUsed": [
+     {
+      "P1": 80.0,
+      "period": 0.0,
+      "utilization": 1.0
+     },
+     {
+      "P1": 20.0,
+      "period": 1.0,
+      "utilization": 0.25
+     },
+     {
+      "period": 2.0,
+      "utilization": 0.0
+     },
+     {
+      "period": 3.0,
+      "utilization": 0.0
+     },
+     {
+      "period": 4.0,
+      "utilization": 0.0
+     }
+    ],
+    "detailedWorkPlan": [
+     {
+      "allocation": 80.0,
+      "operation": "CS1",
+      "project": "P1",
+      "time": 0.0
+     },
+     {
+      "allocation": 20.0,
+      "operation": "CS1",
+      "project": "P1",
+      "time": 1.0
+     }
+    ],
+    "meanUtilization": 0.25
+   }
+  },
+  {
+   "_class": "manpy.CapacityStation",
+   "family": "CapacityStation",
+   "id": "CS2",
+   "results": {
+    "capacityUsed": [
+     {
+      "period": 0.0,
+      "utilization": 0.0
+     },
+     {
+      "period": 1.0,
+      "utilization": 0.0
+     },
+     {
+      "P1": 40.0,
+      "period": 2.0,
+      "utilization": 1.0
+     },
+     {
+      "P1": 10.0,
+      "period": 3.0,
+      "utilization": 0.1
+     },
+     {
+      "period": 4.0,
+      "utilization": 0.0
+     }
+    ],
+    "detailedWorkPlan": [
+     {
+      "allocation": 40.0,
+      "operation": "CS2",
+      "project": "P1",
+      "time": 2.0
+     },
+     {
+      "allocation": 10.0,
+      "operation": "CS2",
+      "project": "P1",
+      "time": 3.0
+     }
+    ],
+    "meanUtilization": 0.22
+   }
+  },
+  {
+   "_class": "manpy.CapacityStation",
+   "family": "CapacityStation",
+   "id": "CS3",
+   "results": {
+    "capacityUsed": [
+     {
+      "period": 0.0,
+      "utilization": 0.0
+     },
+     {
+      "period": 1.0,
+      "utilization": 0.0
+     },
+     {
+      "period": 2.0,
+      "utilization": 0.0
+     },
+     {
+      "period": 3.0,
+      "utilization": 0.0
+     },
+     {
+      "P1": 70,
+      "period": 4.0,
+      "utilization": 0.35
+     }
+    ],
+    "detailedWorkPlan": [
+     {
+      "allocation": 70,
+      "operation": "CS3",
+      "project": "P1",
+      "time": 4.0
+     }
+    ],
+    "meanUtilization": 0.06999999999999999
+   }
+  },
+  {
+   "_class": "manpy.CapacityProject",
+   "family": "Job",
+   "id": "P1",
+   "results": {
+    "schedule": [
+     {
+      "entranceTime": 0.0,
+      "exitTime": 2.0,
+      "stationId": "CS1"
+     },
+     {
+      "entranceTime": 2.0,
+      "exitTime": 4.0,
+      "stationId": "CS2"
+     },
+     {
+      "entranceTime": 4.0,
+      "exitTime": 5.0,
+      "stationId": "CS3"
+     }
+    ]
+   }
+  },
+  {
+   "_class": "manpy.Queue",
+   "family": "Buffer",
+   "id": "QD",
+   "results": {}
+  }
+ ],
+ "general": {
+  "_class": "manpy.Configuration"
+ }
+}

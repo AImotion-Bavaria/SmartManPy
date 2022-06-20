@@ -1,0 +1,165 @@
+{
+     "graph": {
+          "node": {
+               "Q1": {
+                    "capacity": -1,
+                    "name": "StartQueue",
+                    "top": 0.7727272727272727,
+                    "interruptions": {},
+                    "_class": "manpy.Queue",
+                    "left": 0.6968085106382979
+               },
+               "Q2": {
+                    "capacity": 2,
+                    "name": "Queue1",
+                    "top": 0.7727272727272727,
+                    "interruptions": {},
+                    "_class": "manpy.LineClearance",
+                    "left": 0.6968085106382979
+               },
+               "S1": {
+                    "name": "Source",
+                    "top": 0.9545454545454546,
+                    "entity": "manpy.Batch",
+                    "interArrivalTime": {
+                         "Fixed": {
+                              "distributionType": "Fixed",
+                              "mean": 1.5
+                         }
+                    },
+                    "batchNumberOfUnits": 100,
+                    "interruptions": {},
+                    "_class": "manpy.BatchSource",
+                    "left": 0.6968085106382979
+               },
+               "BR1": {
+                    "name": "Batch_Reassembly",
+                    "top": 0.5909090909090908,
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0.0
+                         }
+                    },
+                    "numberOfSubBatches": 4,
+                    "interruptions": {},
+                    "_class": "manpy.BatchReassembly",
+                    "left": 0.4414893617021277
+               },
+               "M1": {
+                    "name": "Station1",
+                    "top": 0.5909090909090908,
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0.5
+                         }
+                    },
+                    "failures": {},
+                    "interruptions": {},
+                    "_class": "manpy.Machine",
+                    "left": 0.4414893617021277
+               },
+               "M3": {
+                    "name": "Station3",
+                    "top": 0.5909090909090908,
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 1.0
+                         }
+                    },
+                    "interruptions": {},
+                    "_class": "manpy.Machine",
+                    "left": 0.4414893617021277
+               },
+               "M2": {
+                    "name": "Station2",
+                    "top": 0.5909090909090908,
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 1.0
+                         }
+                    },
+                    "interruptions": {},
+                    "_class": "manpy.Machine",
+                    "left": 0.4414893617021277
+               },
+               "BD1": {
+                    "name": "Batch_Decomposition",
+                    "top": 0.5909090909090908,
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 1.0
+                         }
+                    },
+                    "numberOfSubBatches": 4,
+                    "interruptions": {},
+                    "_class": "manpy.BatchDecomposition",
+                    "left": 0.4414893617021277
+               },
+               "E1": {
+                    "interruptions": {},
+                    "top": 0.045454545454545414,
+                    "_class": "manpy.Exit",
+                    "name": "Stock",
+                    "left": 0.2978723404255319
+               }
+          },
+          "edge": {
+               "1": {
+                    "source": "Q1",
+                    "destination": "BD1",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "0": {
+                    "source": "S1",
+                    "destination": "Q1",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "3": {
+                    "source": "M1",
+                    "destination": "Q2",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "2": {
+                    "source": "BD1",
+                    "destination": "M1",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "5": {
+                    "source": "M2",
+                    "destination": "BR1",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "4": {
+                    "source": "Q2",
+                    "destination": "M2",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "7": {
+                    "source": "M3",
+                    "destination": "E1",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "6": {
+                    "source": "BR1",
+                    "destination": "M3",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               }
+          }
+     },
+     "_class": "manpy.Simulation",
+     "general": {
+          "maxSimTime": "1440",
+          "_class": "manpy.Configuration",
+          "confidenceLevel": "0.95",
+          "trace": "No",
+          "numberOfReplications": "1"
+     }
+}

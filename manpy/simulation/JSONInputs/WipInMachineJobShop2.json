@@ -1,0 +1,281 @@
+{
+     "graph": {
+          "node": {
+               "Q1": {
+                    "capacity": -1,
+                    "name": "Queue1",
+                    "isDummy": "0",
+                    "wip": [
+                         {
+                              "name": "Job1",
+                              "orderDate": "0",
+                              "route": [
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 3.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M3"
+                                        ]
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 0.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "Q2"
+                                        ]
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 4.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M2"
+                                        ]
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 0.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "E1"
+                                        ]
+                                   }
+                              ],
+                              "dueDate": "15",
+                              "priority": "1",
+                              "_class": "manpy.Job",
+                              "id": "J1"
+                         }
+                    ],
+                    "interruptions": {},
+                    "_class": "manpy.QueueJobShop",
+                    "schedulingRule": "FIFO"
+               },
+               "Q3": {
+                    "capacity": -1,
+                    "name": "Queue3",
+                    "isDummy": "0",
+                    "interruptions": {},
+                    "_class": "manpy.QueueJobShop",
+                    "schedulingRule": "FIFO"
+               },
+               "Q2": {
+                    "capacity": -1,
+                    "name": "Queue2",
+                    "isDummy": "0",
+                    "wip": [
+                         {
+                              "name": "Job2",
+                              "orderDate": "-1",
+                              "route": [
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 3.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M2"
+                                        ]
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 0.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "Q3"
+                                        ]
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 1.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M3"
+                                        ]
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 7.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "Q2"
+                                        ]
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 7.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M2"
+                                        ]
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 0.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "E1"
+                                        ]
+                                   }
+                              ],
+                              "dueDate": "10",
+                              "priority": "-7",
+                              "_class": "manpy.Job",
+                              "id": "J2"
+                         },
+                         {
+                              "name": "Job3",
+                              "orderDate": "2",
+                              "route": [
+                                   {
+                                        "processingTime": {
+                                             "distributionType": "Fixed",
+                                             "mean": 0.0
+                                        },
+                                        "stationIdsList": [
+                                             "Q2"
+                                        ]
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 2.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M2"
+                                        ]
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 0.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "Q3"
+                                        ]
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 1.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M3"
+                                        ]
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 0.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "E1"
+                                        ]
+                                   }
+                              ],
+                              "dueDate": "6",
+                              "priority": "-12",
+                              "_class": "manpy.Job",
+                              "id": "J3"
+                         },
+                         {
+                              "name": "Job4",
+                              "orderDate": "1.5",
+                              "route": [
+                                   {
+                                        "processingTime": {
+                                             "distributionType": "Fixed",
+                                             "mean": 0.0
+                                        },
+                                        "stationIdsList": [
+                                             "Q2"
+                                        ]
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 7.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M2"
+                                        ]
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 0.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "E1"
+                                        ]
+                                   }
+                              ],
+                              "dueDate": "9",
+                              "priority": "0",
+                              "_class": "manpy.Job",
+                              "id": "J4"
+                         }
+                    ],
+                    "interruptions": {},
+                    "_class": "manpy.QueueJobShop",
+                    "schedulingRule": "MC-Priority-EDD"
+               },
+               "M1": {
+                    "interruptions": {},
+                    "_class": "manpy.MachineJobShop",
+                    "name": "Machine1"
+               },
+               "M3": {
+                    "interruptions": {},
+                    "_class": "manpy.MachineJobShop",
+                    "name": "Machine3"
+               },
+               "M2": {
+                    "interruptions": {},
+                    "_class": "manpy.MachineJobShop",
+                    "name": "Machine2"
+               },
+               "E1": {
+                    "interruptions": {},
+                    "_class": "manpy.ExitJobShop",
+                    "name": "Exit"
+               }
+          },
+          "edge": {}
+     },
+     "_class": "manpy.Simulation",
+     "general": {
+          "maxSimTime": "-1",
+          "_class": "manpy.Configuration",
+          "confidenceLevel": "0.95",
+          "trace": "No",
+          "numberOfReplications": "1"
+     }
+}

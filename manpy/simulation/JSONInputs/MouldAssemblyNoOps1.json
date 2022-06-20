@@ -1,0 +1,207 @@
+{
+     "graph": {
+          "node": {
+               "MA1": {
+                    "interruptions": {},
+                    "_class": "manpy.MouldAssembly",
+                    "id": "MA1",
+                    "name": "Assembly"
+               },
+               "Q0": {
+                    "capacity": -1,
+                    "name": "StartQueue",
+                    "isDummy": "0",
+                    "wip": [
+                         {
+                              "id": "O1",
+                              "route": [
+                                   {
+                                        "stationIdsList": [
+                                             "Q0"
+                                        ],
+                                        "sequence": ""
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 1.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M0"
+                                        ],
+                                        "requiredParts": [],
+                                        "sequence": ""
+                                   }
+                              ],
+                              "_class": "manpy.Order",
+                              "componentsList": [
+                                   {
+                                        "componentType": "Slider",
+                                        "route": [
+                                             {
+                                                  "stationIdsList": [
+                                                       "OD0"
+                                                  ],
+                                                  "sequence": ""
+                                             },
+                                             {
+                                                  "stationIdsList": [
+                                                       "Q1"
+                                                  ],
+                                                  "sequence": ""
+                                             },
+                                             {
+                                                  "processingTime": {
+                                                       "Fixed": {
+                                                            "mean": "2"
+                                                       }
+                                                  },
+                                                  "stationIdsList": [
+                                                       "M1"
+                                                  ],
+                                                  "requiredParts": [],
+                                                  "sequence": ""
+                                             },
+                                             {
+                                                  "stationIdsList": [
+                                                       "AB1"
+                                                  ],
+                                                  "sequence": ""
+                                             },
+                                             {
+                                                  "stationIdsList": [
+                                                       "MA1"
+                                                  ],
+                                                  "requiredParts": [],
+                                                  "sequence": ""
+                                             }
+                                        ],
+                                        "_class": "manpy.OrderComponent",
+                                        "id": "C1",
+                                        "name": "Component1"
+                                   },
+                                   {
+                                        "componentType": "Mold Base",
+                                        "route": [
+                                             {
+                                                  "stationIdsList": [
+                                                       "OD0"
+                                                  ],
+                                                  "sequence": ""
+                                             },
+                                             {
+                                                  "stationIdsList": [
+                                                       "Q1"
+                                                  ],
+                                                  "sequence": ""
+                                             },
+                                             {
+                                                  "processingTime": {
+                                                       "Fixed": {
+                                                            "mean": "1"
+                                                       }
+                                                  },
+                                                  "stationIdsList": [
+                                                       "M1"
+                                                  ],
+                                                  "requiredParts": [],
+                                                  "sequence": ""
+                                             },
+                                             {
+                                                  "stationIdsList": [
+                                                       "AB1"
+                                                  ],
+                                                  "sequence": ""
+                                             },
+                                             {
+                                                  "stationIdsList": [
+                                                       "MA1"
+                                                  ],
+                                                  "requiredParts": [],
+                                                  "sequence": ""
+                                             }
+                                        ],
+                                        "_class": "manpy.OrderComponent",
+                                        "id": "C2",
+                                        "name": "Component2"
+                                   },
+                                   {
+                                        "route": [
+                                             {
+                                                  "processingTime": {
+                                                       "Fixed": {
+                                                            "mean": "1"
+                                                       }
+                                                  },
+                                                  "stationIdsList": [
+                                                       "MA1"
+                                                  ],
+                                                  "requiredParts": [],
+                                                  "sequence": ""
+                                             },
+                                             {
+                                                  "stationIdsList": [
+                                                       "E1"
+                                                  ]
+                                             }
+                                        ],
+                                        "_class": "manpy.Mould",
+                                        "id": "Mo1",
+                                        "name": "Mould1"
+                                   }
+                              ],
+                              "name": "Order1"
+                         }
+                    ],
+                    "interruptions": {},
+                    "_class": "manpy.ConditionalBuffer"
+               },
+               "Q1": {
+                    "interruptions": {},
+                    "_class": "manpy.ConditionalBuffer",
+                    "capacity": -1,
+                    "name": "Queue1",
+                    "isDummy": "0"
+               },
+               "OD0": {
+                    "interruptions": {},
+                    "_class": "manpy.OrderDecomposition",
+                    "name": "Order Decomposition"
+               },
+               "AB1": {
+                    "capacity": -1,
+                    "name": "AssemblyBuffer",
+                    "isDummy": "0",
+                    "interruptions": {},
+                    "_class": "manpy.MouldAssemblyBuffer",
+                    "id": "AB1"
+               },
+               "M1": {
+                    "interruptions": {},
+                    "_class": "manpy.MachineJobShop",
+                    "name": "Machine1"
+               },
+               "M0": {
+                    "interruptions": {},
+                    "_class": "manpy.MachineJobShop",
+                    "name": "Design"
+               },
+               "E1": {
+                    "interruptions": {},
+                    "_class": "manpy.ExitJobShop",
+                    "name": "Exit"
+               }
+          },
+          "edge": {}
+     },
+     "_class": "manpy.Simulation",
+     "general": {
+          "console": "No",
+          "numberOfReplications": "1",
+          "trace": "No",
+          "confidenceLevel": "0.95",
+          "maxSimTime": "-1",
+          "_class": "manpy.Configuration"
+     }
+}

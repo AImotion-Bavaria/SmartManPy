@@ -1,0 +1,175 @@
+{
+ "_class": "manpy.Simulation",
+ "elementList": [
+  {
+   "_class": "manpy.ExitJobShop",
+   "family": "Exit",
+   "id": "E1",
+   "results": {
+    "lifespan": [
+     2.5
+    ],
+    "takt_time": [
+     1.5
+    ],
+    "throughput": [
+     2
+    ]
+   }
+  },
+  {
+   "_class": "manpy.MachineManagedJob",
+   "family": "Server",
+   "id": "M1",
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     0.0
+    ],
+    "setup_ratio": [
+     16.666666666666668
+    ],
+    "waiting_ratio": [
+     75.0
+    ],
+    "working_ratio": [
+     8.333333333333334
+    ]
+   }
+  },
+  {
+   "_class": "manpy.MachineManagedJob",
+   "family": "Server",
+   "id": "M2",
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     0.0
+    ],
+    "setup_ratio": [
+     16.666666666666668
+    ],
+    "waiting_ratio": [
+     16.666666666666668
+    ],
+    "working_ratio": [
+     66.66666666666667
+    ]
+   }
+  },
+  {
+   "_class": "manpy.OperatorManagedJob",
+   "family": "Operator",
+   "id": "O1",
+   "results": {
+    "off_shift_ratio": [
+     0.0
+    ],
+    "on_break_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     66.66666666666667
+    ],
+    "working_ratio": [
+     33.333333333333336
+    ]
+   }
+  },
+  {
+   "_class": "manpy.OrderDesign",
+   "family": "Job",
+   "id": "Or1",
+   "results": {
+    "completionTime": 3.0,
+    "schedule": [
+     {
+      "entranceTime": 0,
+      "exitTime": 0.0,
+      "stationId": "Q1"
+     },
+     {
+      "entranceTime": 0.0,
+      "exitTime": 0.75,
+      "stationId": "M1"
+     },
+     {
+      "entranceTime": 0.75,
+      "exitTime": 2.0,
+      "stationId": "Q2"
+     },
+     {
+      "entranceTime": 2.0,
+      "exitTime": 3.0,
+      "stationId": "M2"
+     },
+     {
+      "entranceTime": 3.0,
+      "stationId": "E1"
+     }
+    ]
+   }
+  },
+  {
+   "_class": "manpy.OrderDesign",
+   "family": "Job",
+   "id": "Or2",
+   "results": {
+    "completionTime": 2.0,
+    "schedule": [
+     {
+      "entranceTime": 0,
+      "exitTime": 0.5,
+      "stationId": "Q2"
+     },
+     {
+      "entranceTime": 0.5,
+      "exitTime": 2.0,
+      "stationId": "M2"
+     },
+     {
+      "entranceTime": 2.0,
+      "stationId": "E1"
+     }
+    ]
+   }
+  },
+  {
+   "_class": "manpy.QueueManagedJob",
+   "family": "Buffer",
+   "id": "Q1",
+   "results": {}
+  },
+  {
+   "_class": "manpy.QueueManagedJob",
+   "family": "Buffer",
+   "id": "Q2",
+   "results": {}
+  }
+ ],
+ "general": {
+  "_class": "manpy.Configuration"
+ }
+}

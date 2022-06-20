@@ -1,0 +1,394 @@
+{
+     "graph": {
+          "node": {
+               "MA1": {
+                    "interruptions": {},
+                    "_class": "manpy.MouldAssemblyManaged",
+                    "id": "MA1",
+                    "operationType": "MT-Load-Setup-Processing",
+                    "name": "Assembly 1"
+               },
+               "CAD1": {
+                    "interruptions": {},
+                    "_class": "manpy.MachineManagedJob",
+                    "name": "CAD Design 1",
+                    "operationType": "MT-Load-Setup-Processing"
+               },
+               "CAD2": {
+                    "interruptions": {},
+                    "_class": "manpy.MachineManagedJob",
+                    "name": "CAD Design 2",
+                    "operationType": "MT-Load-Setup-Processing"
+               },
+               "MA2": {
+                    "interruptions": {},
+                    "_class": "manpy.MouldAssemblyManaged",
+                    "id": "MA2",
+                    "operationType": "MT-Load-Setup-Processing",
+                    "name": "Assembly 2"
+               },
+               "OP1": {
+                    "interruptions": {},
+                    "_class": "manpy.OperatorManagedJob",
+                    "capacity": 1,
+                    "name": "Operator1"
+               },
+               "Q0": {
+                    "capacity": -1,
+                    "name": "StartQueue",
+                    "isDummy": "0",
+                    "wip": [
+                         {
+                              "name": "Order1",
+                              "route": [
+                                   {
+                                        "stationIdsList": [
+                                             "Q0"
+                                        ]
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 1.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "CAD1",
+                                             "CAD2"
+                                        ],
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 0.5
+                                             }
+                                        }
+                                   }
+                              ],
+                              "id": "O1",
+                              "manager": "OP1",
+                              "_class": "manpy.Order",
+                              "componentsList": [
+                                   {
+                                        "componentType": "Basic",
+                                        "route": [
+                                             {
+                                                  "stationIdsList": [
+                                                       "OD0"
+                                                  ]
+                                             },
+                                             {
+                                                  "stationIdsList": [
+                                                       "QCAM"
+                                                  ]
+                                             },
+                                             {
+                                                  "processingTime": {
+                                                       "Fixed": {
+                                                            "mean": "2"
+                                                       }
+                                                  },
+                                                  "stationIdsList": [
+                                                       "CAM1",
+                                                       "CAM2"
+                                                  ],
+                                                  "setupTime": {
+                                                       "Fixed": {
+                                                            "mean": "0.5"
+                                                       }
+                                                  }
+                                             },
+                                             {
+                                                  "stationIdsList": [
+                                                       "QMILL"
+                                                  ]
+                                             },
+                                             {
+                                                  "processingTime": {
+                                                       "Fixed": {
+                                                            "mean": "2"
+                                                       }
+                                                  },
+                                                  "stationIdsList": [
+                                                       "MILL1",
+                                                       "MILL2"
+                                                  ],
+                                                  "setupTime": {
+                                                       "Fixed": {
+                                                            "mean": "0.5"
+                                                       }
+                                                  }
+                                             },
+                                             {
+                                                  "stationIdsList": [
+                                                       "QEDM"
+                                                  ]
+                                             },
+                                             {
+                                                  "processingTime": {
+                                                       "Fixed": {
+                                                            "mean": "2"
+                                                       }
+                                                  },
+                                                  "stationIdsList": [
+                                                       "EDM"
+                                                  ],
+                                                  "setupTime": {
+                                                       "Fixed": {
+                                                            "mean": "0.5"
+                                                       }
+                                                  }
+                                             },
+                                             {
+                                                  "stationIdsList": [
+                                                       "AB1"
+                                                  ]
+                                             },
+                                             {
+                                                  "stationIdsList": [
+                                                       "MA1",
+                                                       "MA2",
+                                                       "MA3"
+                                                  ]
+                                             }
+                                        ],
+                                        "_class": "manpy.OrderComponent",
+                                        "id": "C1",
+                                        "name": "Component1"
+                                   },
+                                   {
+                                        "componentType": "Secondary",
+                                        "route": [
+                                             {
+                                                  "stationIdsList": [
+                                                       "OD0"
+                                                  ]
+                                             },
+                                             {
+                                                  "stationIdsList": [
+                                                       "QCAM"
+                                                  ]
+                                             },
+                                             {
+                                                  "processingTime": {
+                                                       "Fixed": {
+                                                            "mean": "1"
+                                                       }
+                                                  },
+                                                  "stationIdsList": [
+                                                       "CAM1",
+                                                       "CAM2"
+                                                  ],
+                                                  "setupTime": {
+                                                       "Fixed": {
+                                                            "mean": "0.6"
+                                                       }
+                                                  }
+                                             },
+                                             {
+                                                  "stationIdsList": [
+                                                       "QMILL"
+                                                  ]
+                                             },
+                                             {
+                                                  "processingTime": {
+                                                       "Fixed": {
+                                                            "mean": "4"
+                                                       }
+                                                  },
+                                                  "stationIdsList": [
+                                                       "MILL1",
+                                                       "MILL2"
+                                                  ],
+                                                  "setupTime": {
+                                                       "Fixed": {
+                                                            "mean": "0.4"
+                                                       }
+                                                  }
+                                             },
+                                             {
+                                                  "stationIdsList": [
+                                                       "QEDM"
+                                                  ]
+                                             },
+                                             {
+                                                  "processingTime": {
+                                                       "Fixed": {
+                                                            "mean": "1"
+                                                       }
+                                                  },
+                                                  "stationIdsList": [
+                                                       "EDM"
+                                                  ],
+                                                  "setupTime": {
+                                                       "Fixed": {
+                                                            "mean": "0.6"
+                                                       }
+                                                  }
+                                             },
+                                             {
+                                                  "stationIdsList": [
+                                                       "AB1"
+                                                  ]
+                                             },
+                                             {
+                                                  "stationIdsList": [
+                                                       "MA1",
+                                                       "MA2",
+                                                       "MA3"
+                                                  ]
+                                             }
+                                        ],
+                                        "_class": "manpy.OrderComponent",
+                                        "id": "C2",
+                                        "name": "Component2"
+                                   },
+                                   {
+                                        "route": [
+                                             {
+                                                  "processingTime": {
+                                                       "Fixed": {
+                                                            "mean": "1"
+                                                       }
+                                                  },
+                                                  "stationIdsList": [
+                                                       "MA1",
+                                                       "MA2",
+                                                       "MA3"
+                                                  ]
+                                             },
+                                             {
+                                                  "stationIdsList": [
+                                                       "QIM"
+                                                  ]
+                                             },
+                                             {
+                                                  "processingTime": {
+                                                       "Fixed": {
+                                                            "mean": "2"
+                                                       }
+                                                  },
+                                                  "stationIdsList": [
+                                                       "IM"
+                                                  ],
+                                                  "setupTime": {
+                                                       "Fixed": {
+                                                            "mean": "0.5"
+                                                       }
+                                                  }
+                                             },
+                                             {
+                                                  "stationIdsList": [
+                                                       "E1"
+                                                  ]
+                                             }
+                                        ],
+                                        "_class": "manpy.Mould",
+                                        "id": "M1",
+                                        "name": "Mould1"
+                                   }
+                              ]
+                         }
+                    ],
+                    "interruptions": {},
+                    "_class": "manpy.QueueManagedJob"
+               },
+               "OD0": {
+                    "interruptions": {},
+                    "_class": "manpy.OrderDecomposition",
+                    "name": "Order Decomposition"
+               },
+               "CAM2": {
+                    "interruptions": {},
+                    "_class": "manpy.MachineManagedJob",
+                    "name": "CAM Design 2",
+                    "operationType": "MT-Load-Setup-Processing"
+               },
+               "CAM1": {
+                    "interruptions": {},
+                    "_class": "manpy.MachineManagedJob",
+                    "name": "CAM Design 1",
+                    "operationType": "MT-Load-Setup-Processing"
+               },
+               "MILL2": {
+                    "interruptions": {},
+                    "_class": "manpy.MachineManagedJob",
+                    "name": "Milling 2",
+                    "operationType": "MT-Load-Setup-Processing"
+               },
+               "MILL1": {
+                    "interruptions": {},
+                    "_class": "manpy.MachineManagedJob",
+                    "name": "Milling 1",
+                    "operationType": "MT-Load-Setup-Processing"
+               },
+               "EDM": {
+                    "interruptions": {},
+                    "_class": "manpy.MachineManagedJob",
+                    "name": "EDM",
+                    "operationType": "MT-Load-Setup-Processing"
+               },
+               "AB1": {
+                    "capacity": -1,
+                    "name": "Assembly Buffer",
+                    "isDummy": "0",
+                    "interruptions": {},
+                    "_class": "manpy.MouldAssemblyBufferManaged",
+                    "id": "AB1"
+               },
+               "MA3": {
+                    "interruptions": {},
+                    "_class": "manpy.MouldAssemblyManaged",
+                    "id": "MA3",
+                    "operationType": "MT-Load-Setup-Processing",
+                    "name": "Assembly 3"
+               },
+               "IM": {
+                    "interruptions": {},
+                    "_class": "manpy.MachineManagedJob",
+                    "name": "Mould Injection",
+                    "operationType": "MT-Load-Setup-Processing"
+               },
+               "QMILL": {
+                    "interruptions": {},
+                    "_class": "manpy.QueueManagedJob",
+                    "capacity": -1,
+                    "name": "Queue Milling",
+                    "isDummy": "0"
+               },
+               "QIM": {
+                    "interruptions": {},
+                    "_class": "manpy.QueueManagedJob",
+                    "capacity": -1,
+                    "name": "Queue Mould Injection",
+                    "isDummy": "0"
+               },
+               "QCAM": {
+                    "interruptions": {},
+                    "_class": "manpy.QueueManagedJob",
+                    "capacity": -1,
+                    "name": "Queue CAM",
+                    "isDummy": "0"
+               },
+               "QEDM": {
+                    "interruptions": {},
+                    "_class": "manpy.QueueManagedJob",
+                    "capacity": -1,
+                    "name": "Queue EDM",
+                    "isDummy": "0"
+               },
+               "E1": {
+                    "interruptions": {},
+                    "_class": "manpy.ExitJobShop",
+                    "name": "Exit"
+               }
+          },
+          "edge": {}
+     },
+     "_class": "manpy.Simulation",
+     "general": {
+          "trace": "No",
+          "_class": "manpy.Configuration",
+          "confidenceLevel": "0.95",
+          "maxSimTime": "-1",
+          "numberOfReplications": "1"
+     }
+}

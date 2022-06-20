@@ -1,0 +1,115 @@
+{
+     "graph": {
+          "node": {
+               "CE1": {
+                    "interruptions": {},
+                    "_class": "manpy.simulation.applications.CapacityStations.CapacityStationExit.CapacityStationExit",
+                    "name": "SMFExit"
+               },
+               "CB1": {
+                    "interruptions": {},
+                    "_class": "manpy.simulation.applications.CapacityStations.CapacityStationBuffer.CapacityStationBuffer",
+                    "name": "SMFBuffer",
+                    "wip": [
+                         {
+                              "_class": "manpy.simulation.applications.CapacityStations.CapacityEntity.CapacityEntity",
+                              "capacityProjectId": "P1",
+                              "name": "P1_SMF_50",
+                              "requiredCapacity": 50
+                         },
+                         {
+                              "_class": "manpy.simulation.applications.CapacityStations.CapacityEntity.CapacityEntity",
+                              "capacityProjectId": "P2",
+                              "name": "P2_SMF_50",
+                              "requiredCapacity": 50
+                         },
+                         {
+                              "_class": "manpy.simulation.applications.CapacityStations.CapacityEntity.CapacityEntity",
+                              "capacityProjectId": "P3",
+                              "name": "P3_SMF_50",
+                              "requiredCapacity": 50
+                         }
+                    ]
+               },
+               "CS1": {
+                    "interruptions": {},
+                    "_class": "manpy.simulation.applications.CapacityStations.CapacityStation.CapacityStation",
+                    "name": "SMF",
+                    "intervalCapacity": [
+                         125,
+                         50,
+                         300,
+                         100,
+                         200,
+                         300
+                    ]
+               },
+               "QD": {
+                    "capacity": "-1",
+                    "name": "DUMMY",
+                    "wip": [
+                         {
+                              "capacityRequirementDict": {
+                                   "CS1": 50
+                              },
+                              "_class": "manpy.simulation.applications.CapacityStations.CapacityProject.CapacityProject",
+                              "dueDate": 10,
+                              "name": "P1",
+                              "id": "P1"
+                         },
+                         {
+                              "capacityRequirementDict": {
+                                   "CS1": 50
+                              },
+                              "_class": "manpy.simulation.applications.CapacityStations.CapacityProject.CapacityProject",
+                              "dueDate": 20,
+                              "name": "P2",
+                              "id": "P2"
+                         },
+                         {
+                              "capacityRequirementDict": {
+                                   "CS1": 50
+                              },
+                              "_class": "manpy.simulation.applications.CapacityStations.CapacityProject.CapacityProject",
+                              "dueDate": 30,
+                              "name": "P3",
+                              "id": "P3"
+                         }
+                    ],
+                    "interruptions": {},
+                    "_class": "manpy.Queue",
+                    "id": "QD"
+               },
+               "CSC": {
+                    "dueDateThreshold": 7,
+                    "name": "CSC",
+                    "interval": "1",
+                    "start": "0",
+                    "interruptions": {},
+                    "_class": "manpy.simulation.applications.CapacityStations.CapacityStationController.CapacityStationController"
+               }
+          },
+          "edge": {
+               "1": {
+                    "source": "CS1",
+                    "destination": "CE1",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "0": {
+                    "source": "CB1",
+                    "destination": "CS1",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               }
+          }
+     },
+     "_class": "manpy.Simulation",
+     "general": {
+          "maxSimTime": "-1",
+          "_class": "manpy.Configuration",
+          "confidenceLevel": "0.95",
+          "trace": "No",
+          "numberOfReplications": "1"
+     }
+}

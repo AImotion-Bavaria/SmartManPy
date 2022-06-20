@@ -1,0 +1,211 @@
+{
+  "application_configuration": {
+    "general": {
+      "properties": {
+        "maxEarliness": {
+          "default": 2,
+          "description": "Maximum Earliness",
+          "name": "Maximum Earliness",
+          "type": "number"
+        },
+        "maxLateness": {
+          "default": 2,
+          "description": "Maximum Lateness",
+          "name": "Maximum Lateness",
+          "type": "number"
+        },
+        "minDelta": {
+          "default": 1,
+          "description": "Min Delta Target Utilisation",
+          "name": "Min Delta Target Utilisation",
+          "type": "number"
+        },
+        "ACO": {
+          "default": "0",
+          "description": "ACO",
+          "name": "ACO",
+          "type": "string"
+        },
+        "ACOpopulationSize": {
+          "default": 5,
+          "description": "ACO Population size",
+          "name": "Population size",
+          "type": "number"
+        },
+        "ACOnumberOfGenerations": {
+          "default": 8,
+		  "description": "ACO Number of generations",
+          "name": "ACO Number of generations",
+          "type": "number"
+        },
+        "maxAssignedQty": {
+          "default": 10,
+          "description": "Maximum Assigned Quantity",
+          "name": "Maximum Assigned Quantity",
+          "type": "number"
+        },
+        "minUtilisation": {
+          "default": 1,
+          "description": "Minimum Utilisation",
+          "name": "Minimum Utilisation",
+          "type": "number"
+        },
+        "minDeltaTargetUtilisation": {
+          "default": 0,
+          "description": "Minimum Delta Target Utilisation",
+          "name": "Minimum Delta Target Utilisation",
+          "type": "number"
+        },
+        "minTargetUtilisation": {
+          "default": 2,
+          "description": "Minimum Delta Utilisation",
+          "name": "Minimum Delta Utilisation",
+          "type": "number"
+        },
+        "MAProportionality": {
+          "default": 0.5,
+          "description": "Mutation Proportionality",
+          "name": "Mutation Proportionality",
+          "type": "number"
+        },
+        "GA": {
+          "default": 1,
+          "description": "GA",
+          "name": "GA",
+          "type": "number"
+        },
+        "GApopulationSize": {
+          "default": 5,
+          "description": "GA population Size",
+          "name": "GA population Size",
+          "type": "number"
+        },
+        "GAnumberOfGenerations": {
+          "default": 8,
+          "description": "GA Number of Generations",
+          "name": "GA Number of Generations",
+          "type": "number"
+        },
+        "XOver": {
+          "default": 0.6,
+          "description": "x-over Probability",
+          "name": "x-over Probability",
+          "type": "number"
+        },
+        "mutationProbability": {
+          "default": 0.1,
+          "description": "Mutation Probability",
+          "name": "Mutation Probability",
+          "type": "number"
+        },
+		"processTimeout": {
+			"default": 300,
+			"description": "Number of seconds before the calculation process is interrupted",
+			"title": "ProcessTimeout",
+			"type": "number"
+		}
+      }
+    },
+    "input": {
+      "debug": {
+        "gadget": "Input_viewDebugJson",
+        "title": "Edit Configuration",
+        "type": "object_view"
+      },
+      "view": {
+        "gadget": "Input_viewProductionLine",
+        "title": "Production Line",
+        "type": "object_view"
+      },
+      "view_attach_spreadsheet": {
+        "gadget": "Input_viewAttachDocument",
+        "input_id": "attached_document",
+        "title": "Attach Document",
+        "type": "object_view"
+      },
+      "view_management": {
+        "gadget": "Input_viewDocumentManagement",
+        "title": "Manage document",
+        "type": "object_view"
+      },
+      "view_result": {
+        "gadget": "Input_viewResultList",
+        "title": "Results",
+        "type": "object_view"
+      },
+      "view_run_simulation": {
+        "gadget": "Input_viewSimulation",
+        "title": "Run Simulation",
+        "type": "object_view"
+      }
+    },
+    "output": {
+      "view_download_spreadsheet": {
+        "configuration": {
+          "output_id": "demand_planning_spreadsheet"
+        },
+        "gadget": "Output_viewDownloadFile",
+        "title": "Download Result Spreadsheet",
+        "type": "object_view"
+      },
+      "view_bottleneck_utilization_by_bottleneck": {
+        "configuration": {
+          "output_id": "bottleneck_utilization",
+          "select_label": "Please select bottleneck:"
+        },
+        "gadget": "Output_viewBottleneckGraph",
+        "title": "Bottleneck Utilization by Bottleneck",
+        "type": "object_view"
+      },
+      "view_bottleneck_utilization_by_week": {
+        "configuration": {
+          "output_id": "bottleneck_utilization_by_week",
+          "select_label": "Please select week:"
+        },
+        "gadget": "Output_viewBottleneckGraph",
+        "title": "Bottleneck Utilization by Week",
+        "type": "object_view"
+      }
+    },
+    "post_processing": {
+      "plugin_list": [
+        {
+          "_class": "manpy.plugins.DemandPlanning.PostProcessDemandPlanning.PostProcessDemandPlanning",
+          "output_id": "demand_planning_spreadsheet"
+        },
+        {
+          "_class": "manpy.plugins.DemandPlanning.DemandPlanningLine.DemandPlanningLine",
+          "output_id": "bottleneck_utilization"
+        },
+        {
+          "_class": "manpy.plugins.DemandPlanning.DemandPlanningLine.BottleNeckByWeek",
+          "output_id": "bottleneck_utilization_by_week"
+        }
+      ]
+    },
+    "pre_processing": {
+      "plugin_list": [
+        {
+          "_class": "manpy.plugins.DemandPlanning.AddDemandPlannerGenerator.AddDemandPlannerGenerator",
+          "input_id": "attached_document"
+        }
+      ]
+    },
+    "processing_plugin": {
+      "_class": "manpy.plugins.plugin.DefaultExecutionPlugin",
+      "input_id": "Simulation"
+    }
+  },
+  "class_definition": {},
+  "constraints": {},
+  "general": {},
+  "graph": {
+    "edge": {},
+    "node": {}
+  },
+  "input": {
+  },
+  "result": {
+    "result_list": []
+  }
+}

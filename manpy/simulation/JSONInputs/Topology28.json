@@ -1,0 +1,103 @@
+{
+     "graph": {
+          "node": {
+               "E1": {
+                    "interruptions": {},
+                    "top": 0.05688622754491013,
+                    "_class": "manpy.Exit",
+                    "left": 0.7083333333333333
+               },
+               "S1": {
+                    "name": "Source",
+                    "top": 0.9431137724550899,
+                    "entity": "manpy.Part",
+                    "interArrivalTime": {
+                         "Fixed": {
+                              "distributionType": "Fixed",
+                              "mean": 1.5
+                         }
+                    },
+                    "interruptions": {},
+                    "_class": "manpy.Source",
+                    "left": 0.30208333333333337
+               },
+               "M1": {
+                    "name": "Machine1",
+                    "top": 0.5,
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 17.0
+                         }
+                    },
+                    "operationType": "Processing",
+                    "interruptions": {},
+                    "_class": "manpy.Machine",
+                    "left": 0.5625
+               },
+               "O1": {
+                    "capacity": 1,
+                    "name": "Operator1",
+                    "top": 0.721556886227545,
+                    "interruptions": {},
+                    "_class": "manpy.Operator",
+                    "left": 0.8489583333333334
+               },
+               "M2": {
+                    "name": "Machine2",
+                    "loadTime": {},
+                    "top": 0.2784431137724551,
+                    "setupTime": {},
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 2.0
+                         }
+                    },
+                    "operationType": "Processing",
+                    "failures": {},
+                    "interruptions": {},
+                    "_class": "manpy.Machine",
+                    "left": 0.7083333333333333
+               }
+          },
+          "edge": {
+               "1": {
+                    "source": "O1",
+                    "destination": "M2",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "0": {
+                    "source": "O1",
+                    "destination": "M1",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "3": {
+                    "source": "M1",
+                    "destination": "M2",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "2": {
+                    "source": "S1",
+                    "destination": "M1",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "4": {
+                    "source": "M2",
+                    "destination": "E1",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               }
+          }
+     },
+     "_class": "manpy.Simulation",
+     "general": {
+          "maxSimTime": "1440",
+          "_class": "manpy.Configuration",
+          "confidenceLevel": "0.95",
+          "trace": "No",
+          "numberOfReplications": "1"
+     }
+}

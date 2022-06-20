@@ -1,0 +1,148 @@
+{
+ "_class": "manpy.Simulation",
+ "elementList": [
+  {
+   "_class": "manpy.Queue",
+   "family": "Buffer",
+   "id": "DummyQ",
+   "results": {}
+  },
+  {
+   "_class": "manpy.Exit",
+   "family": "Exit",
+   "id": "E1",
+   "results": {
+    "lifespan": [
+     9.975660639777468
+    ],
+    "takt_time": [
+     2.002086230876217
+    ],
+    "throughput": [
+     719
+    ]
+   }
+  },
+  {
+   "_class": "manpy.Machine",
+   "family": "Server",
+   "id": "M1",
+   "results": {
+    "blockage_ratio": [
+     62.43055555555556
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     0.0
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     0.034722222222222224
+    ],
+    "working_ratio": [
+     37.53472222222222
+    ]
+   }
+  },
+  {
+   "_class": "manpy.Machine",
+   "family": "Server",
+   "id": "M2",
+   "results": {
+    "blockage_ratio": [
+     62.395833333333336
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     0.0
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     0.0
+    ],
+    "working_ratio": [
+     37.604166666666664
+    ]
+   }
+  },
+  {
+   "_class": "manpy.Machine",
+   "family": "Server",
+   "id": "M3",
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     0.0
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     0.10416666666666667
+    ],
+    "working_ratio": [
+     99.89583333333333
+    ]
+   }
+  },
+  {
+   "_class": "manpy.Queue",
+   "family": "Buffer",
+   "id": "Q1",
+   "results": {}
+  },
+  {
+   "_class": "manpy.Repairman",
+   "family": "Operator",
+   "id": "W1",
+   "results": {
+    "off_shift_ratio": [
+     0.0
+    ],
+    "on_break_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     100.0
+    ],
+    "working_ratio": [
+     0.0
+    ]
+   }
+  }
+ ],
+ "general": {
+  "_class": "manpy.Configuration"
+ }
+}

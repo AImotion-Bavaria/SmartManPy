@@ -1,0 +1,154 @@
+{
+     "graph": {
+          "node": {
+               "Q1": {
+                    "capacity": -1,
+                    "name": "Queue1",
+                    "isDummy": "0",
+                    "wip": [
+                         {
+                              "isCritical": "1",
+                              "route": [
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 0.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "Q1"
+                                        ]
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 0.25
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M1"
+                                        ]
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 0.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "Q2"
+                                        ]
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 1.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M2"
+                                        ]
+                                   },
+                                   {
+                                        "stationIdsList": [
+                                             "E1"
+                                        ]
+                                   }
+                              ],
+                              "_class": "manpy.OrderComponent",
+                              "id": "C1",
+                              "name": "Component1"
+                         }
+                    ],
+                    "interruptions": {},
+                    "_class": "manpy.QueueJobShop",
+                    "id": "Q1"
+               },
+               "M1": {
+                    "name": "Machine1",
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0.25
+                         }
+                    },
+                    "interruptions": {},
+                    "failures": {},
+                    "_class": "manpy.MachineJobShop",
+                    "id": "M1"
+               },
+               "Q2": {
+                    "capacity": -1,
+                    "name": "Queue2",
+                    "isDummy": "0",
+                    "wip": [
+                         {
+                              "isCritical": "0",
+                              "route": [
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 0.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "Q2"
+                                        ]
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 1.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M2"
+                                        ]
+                                   },
+                                   {
+                                        "stationIdsList": [
+                                             "E1"
+                                        ]
+                                   }
+                              ],
+                              "_class": "manpy.OrderComponent",
+                              "id": "C2",
+                              "name": "Component2"
+                         }
+                    ],
+                    "interruptions": {},
+                    "_class": "manpy.QueueJobShop",
+                    "id": "Q2"
+               },
+               "E1": {
+                    "interruptions": {},
+                    "_class": "manpy.ExitJobShop",
+                    "id": "E1",
+                    "name": "Stock"
+               },
+               "M2": {
+                    "preemption": {
+                         "resetOnPreemption": "1",
+                         "isPreemptive": "1"
+                    },
+                    "name": "Machine2",
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 1.5
+                         }
+                    },
+                    "interruptions": {},
+                    "_class": "manpy.MachineJobShop",
+                    "id": "M2"
+               }
+          },
+          "edge": {}
+     },
+     "_class": "manpy.Simulation",
+     "general": {
+          "trace": "No",
+          "_class": "manpy.Configuration",
+          "confidenceLevel": "0.95",
+          "maxSimTime": "-1",
+          "numberOfReplications": "1"
+     }
+}

@@ -1,0 +1,189 @@
+{
+     "graph": {
+          "node": {
+               "S2": {
+                    "name": "Frames",
+                    "top": 0.9534313725490196,
+                    "entity": "manpy.Frame",
+                    "interArrivalTime": {
+                         "Fixed": {
+                              "mean": 2.0
+                         }
+                    },
+                    "interruptions": {},
+                    "_class": "manpy.Source",
+                    "left": 0.7857142857142857
+               },
+               "S1": {
+                    "name": "Parts",
+                    "top": 0.9534313725490196,
+                    "entity": "manpy.Part",
+                    "interArrivalTime": {
+                         "Fixed": {
+                              "mean": 0.5
+                         }
+                    },
+                    "interruptions": {},
+                    "_class": "manpy.Source",
+                    "left": 0.2142857142857143
+               },
+               "A1": {
+                    "name": "Assembly",
+                    "top": 0.7720588235294118,
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 2.0
+                         }
+                    },
+                    "interruptions": {},
+                    "_class": "manpy.Assembly",
+                    "left": 0.5
+               },
+               "M1": {
+                    "name": "Moulding",
+                    "top": 0.5906862745098039,
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0.25
+                         }
+                    },
+                    "interruptions": {
+                         "failure": {
+                              "TTR": {
+                                   "Fixed": {
+                                        "mean": 5
+                                   }
+                              },
+                              "TTF": {
+                                   "Fixed": {
+                                        "mean": 60
+                                   }
+                              }
+                         }
+                    },
+                    "_class": "manpy.Machine",
+                    "left": 0.5
+               },
+               "M3": {
+                    "name": "Part Wash",
+                    "top": 0.2279411764705882,
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 0.2
+                         }
+                    },
+                    "interruptions": {},
+                    "_class": "manpy.Machine",
+                    "left": 0.7857142857142857
+               },
+               "M2": {
+                    "name": "Frame Wash",
+                    "top": 0.2279411764705882,
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 1.0
+                         }
+                    },
+                    "interruptions": {},
+                    "_class": "manpy.Machine",
+                    "left": 0.2142857142857143
+               },
+               "E2": {
+                    "interruptions": {},
+                    "top": 0.04656862745098034,
+                    "_class": "manpy.Exit",
+                    "name": "Frames Stock",
+                    "left": 0.7857142857142857
+               },
+               "E1": {
+                    "interruptions": {},
+                    "top": 0.04656862745098034,
+                    "_class": "manpy.Exit",
+                    "name": "Parts Stock",
+                    "left": 0.2142857142857143
+               },
+               "D1": {
+                    "name": "Dismantle",
+                    "top": 0.40931372549019607,
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 1.0
+                         }
+                    },
+                    "interruptions": {},
+                    "_class": "manpy.Dismantle",
+                    "left": 0.5
+               }
+          },
+          "edge": {
+               "1": {
+                    "source": "S2",
+                    "destination": "A1",
+                    "data": {
+                         "entity": "Frame"
+                    },
+                    "_class": "manpy.Edge"
+               },
+               "0": {
+                    "source": "S1",
+                    "destination": "A1",
+                    "data": {
+                         "entity": "Part"
+                    },
+                    "_class": "manpy.Edge"
+               },
+               "3": {
+                    "source": "M1",
+                    "destination": "D1",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "2": {
+                    "source": "A1",
+                    "destination": "M1",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "5": {
+                    "source": "D1",
+                    "destination": "M3",
+                    "data": {
+                         "entity": "Part"
+                    },
+                    "_class": "manpy.Edge"
+               },
+               "4": {
+                    "source": "D1",
+                    "destination": "M2",
+                    "data": {
+                         "entity": "Frame"
+                    },
+                    "_class": "manpy.Edge"
+               },
+               "7": {
+                    "source": "M3",
+                    "destination": "E2",
+                    "data": {
+                         "entity": "Frame"
+                    },
+                    "_class": "manpy.Edge"
+               },
+               "6": {
+                    "source": "M2",
+                    "destination": "E1",
+                    "data": {
+                         "entity": "Part"
+                    },
+                    "_class": "manpy.Edge"
+               }
+          }
+     },
+     "_class": "manpy.Simulation",
+     "general": {
+          "maxSimTime": "1440",
+          "_class": "manpy.Configuration",
+          "confidenceLevel": "0.95",
+          "trace": "No",
+          "numberOfReplications": "1"
+     }
+}

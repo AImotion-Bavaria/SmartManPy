@@ -1,0 +1,178 @@
+{
+     "graph": {
+          "node": {
+               "Q1": {
+                    "capacity": 1000,
+                    "name": "Queue1",
+                    "isDummy": "0",
+                    "wip": [
+                         {
+                              "route": [
+                                   {
+                                        "stationIdsList": [
+                                             "Q1"
+                                        ]
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 1
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M1"
+                                        ],
+                                        "operationType": {
+                                             "Processing": 1
+                                        }
+                                   },
+                                   {
+                                        "stationIdsList": [
+                                             "Q3"
+                                        ]
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 3
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M3"
+                                        ],
+                                        "operationType": {
+                                             "Processing": 0
+                                        }
+                                   },
+                                   {
+                                        "stationIdsList": [
+                                             "Q2"
+                                        ]
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 2
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M2"
+                                        ],
+                                        "operationType": {
+                                             "Processing": 1
+                                        }
+                                   },
+                                   {
+                                        "stationIdsList": [
+                                             "E1"
+                                        ]
+                                   }
+                              ],
+                              "_class": "manpy.Job",
+                              "id": "J1",
+                              "name": "Job1"
+                         }
+                    ],
+                    "interruptions": {},
+                    "_class": "manpy.QueueJobShop"
+               },
+               "Q3": {
+                    "interruptions": {},
+                    "_class": "manpy.QueueJobShop",
+                    "capacity": 1000,
+                    "name": "Queue3",
+                    "isDummy": "0"
+               },
+               "Q2": {
+                    "capacity": 1000,
+                    "name": "Queue2",
+                    "isDummy": "0",
+                    "interruptions": {},
+                    "_class": "manpy.QueueJobShop",
+                    "id": "Q2"
+               },
+               "OP1": {
+                    "interruptions": {},
+                    "_class": "manpy.OperatorPool",
+                    "capacity": 1,
+                    "name": "Operator Pool 1"
+               },
+               "M1": {
+                    "interruptions": {},
+                    "_class": "manpy.MachineJobShop",
+                    "name": "Machine1",
+                    "operationType": "Load"
+               },
+               "M3": {
+                    "interruptions": {},
+                    "_class": "manpy.MachineJobShop",
+                    "name": "Machine3",
+                    "operationType": "Load"
+               },
+               "M2": {
+                    "interruptions": {},
+                    "_class": "manpy.MachineJobShop",
+                    "name": "Machine2",
+                    "operationType": "Load"
+               },
+               "E1": {
+                    "interruptions": {},
+                    "_class": "manpy.ExitJobShop",
+                    "name": "Exit"
+               },
+               "O2": {
+                    "interruptions": {},
+                    "_class": "manpy.Operator",
+                    "capacity": 1,
+                    "name": "Operator2"
+               },
+               "O1": {
+                    "interruptions": {},
+                    "_class": "manpy.Operator",
+                    "capacity": 1,
+                    "name": "Operator1"
+               }
+          },
+          "edge": {
+               "1": {
+                    "source": "O2",
+                    "destination": "OP1",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "0": {
+                    "source": "O1",
+                    "destination": "OP1",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "3": {
+                    "source": "OP1",
+                    "destination": "M2",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "2": {
+                    "source": "OP1",
+                    "destination": "M1",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "4": {
+                    "source": "OP1",
+                    "destination": "M3",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               }
+          }
+     },
+     "_class": "manpy.Simulation",
+     "general": {
+          "console": "No",
+          "numberOfReplications": "1",
+          "trace": "No",
+          "confidenceLevel": "0.95",
+          "maxSimTime": "-1",
+          "_class": "manpy.Configuration"
+     }
+}

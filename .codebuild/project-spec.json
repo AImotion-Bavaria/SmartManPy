@@ -1,0 +1,29 @@
+{
+    "name": "manpy",
+    "source": {
+        "type": "GITHUB",
+        "location": "https://github.com/datarevenue-berlin/manpy.git",
+        "gitCloneDepth": 1,
+        "gitSubmodulesConfig": {
+            "fetchSubmodules": false
+        },
+        "buildspec": ".codebuild/buildspec.yml",
+        "reportBuildStatus": false,
+        "insecureSsl": false,
+        "auth": {
+            "type": "OAUTH"
+        }
+    },
+    "environment": {
+        "type": "LINUX_CONTAINER",
+        "image": "python:3.6",
+        "computeType": "BUILD_GENERAL1_SMALL",
+        "environmentVariables": [],
+        "privilegedMode": false,
+        "imagePullCredentialsType": "SERVICE_ROLE"
+    },
+    "serviceRole": "CodeBuildServiceRole",
+    "artifacts": {
+      "type": "NO_ARTIFACTS"
+    }
+}

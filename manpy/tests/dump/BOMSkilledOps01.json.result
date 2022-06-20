@@ -1,0 +1,303 @@
+{
+ "_class": "manpy.Simulation",
+ "elementList": [
+  {
+   "_class": "manpy.MouldAssemblyBuffer",
+   "family": "Buffer",
+   "id": "AB1",
+   "results": {}
+  },
+  {
+   "_class": "manpy.OrderComponent",
+   "family": "Job",
+   "id": "C1",
+   "results": {
+    "completionTime": 4.0,
+    "schedule": [
+     {
+      "entranceTime": 0,
+      "exitTime": 4.0,
+      "stationId": "AB1"
+     },
+     {
+      "entranceTime": 4.0,
+      "exitTime": 4.0,
+      "stationId": "MA1"
+     }
+    ]
+   }
+  },
+  {
+   "_class": "manpy.OrderComponent",
+   "family": "Job",
+   "id": "C2",
+   "results": {
+    "completionTime": 4.0,
+    "schedule": [
+     {
+      "entranceTime": 0,
+      "exitTime": 0.0,
+      "stationId": "Q1"
+     },
+     {
+      "entranceTime": 0.0,
+      "exitTime": 1.0,
+      "stationId": "M1"
+     },
+     {
+      "entranceTime": 1.0,
+      "exitTime": 4.0,
+      "stationId": "AB1"
+     },
+     {
+      "entranceTime": 4.0,
+      "exitTime": 4.0,
+      "stationId": "MA1"
+     }
+    ]
+   }
+  },
+  {
+   "_class": "manpy.OrderComponent",
+   "family": "Job",
+   "id": "C3",
+   "results": {
+    "completionTime": 4.0,
+    "schedule": [
+     {
+      "entranceTime": 0,
+      "exitTime": 1.0,
+      "stationId": "Q1"
+     },
+     {
+      "entranceTime": 1.0,
+      "exitTime": 4.0,
+      "stationId": "M2"
+     },
+     {
+      "entranceTime": 4.0,
+      "exitTime": 4.0,
+      "stationId": "AB1"
+     },
+     {
+      "entranceTime": 4.0,
+      "exitTime": 4.0,
+      "stationId": "MA1"
+     }
+    ]
+   }
+  },
+  {
+   "_class": "manpy.ExitJobShop",
+   "family": "Exit",
+   "id": "E1",
+   "results": {
+    "lifespan": [
+     5.0
+    ],
+    "takt_time": [
+     5.0
+    ],
+    "throughput": [
+     1
+    ]
+   }
+  },
+  {
+   "_class": "manpy.MachineJobShop",
+   "family": "Server",
+   "id": "M0",
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     0.0
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     100.0
+    ],
+    "working_ratio": [
+     0.0
+    ]
+   }
+  },
+  {
+   "_class": "manpy.MachineJobShop",
+   "family": "Server",
+   "id": "M1",
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     0.0
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     80.0
+    ],
+    "working_ratio": [
+     20.0
+    ]
+   }
+  },
+  {
+   "_class": "manpy.MachineJobShop",
+   "family": "Server",
+   "id": "M2",
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     0.0
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     40.0
+    ],
+    "working_ratio": [
+     60.0
+    ]
+   }
+  },
+  {
+   "_class": "manpy.MouldAssembly",
+   "family": "Server",
+   "id": "MA1",
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     0.0
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     80.0
+    ],
+    "working_ratio": [
+     20.0
+    ]
+   }
+  },
+  {
+   "_class": "manpy.Mould",
+   "family": "Job",
+   "id": "Mo1",
+   "results": {
+    "completionTime": 5.0,
+    "schedule": [
+     {
+      "entranceTime": 4.0,
+      "exitTime": 5.0,
+      "stationId": "MA1"
+     },
+     {
+      "entranceTime": 5.0,
+      "stationId": "E1"
+     }
+    ]
+   }
+  },
+  {
+   "_class": "manpy.Operator",
+   "family": "Operator",
+   "id": "O1",
+   "results": {
+    "off_shift_ratio": [
+     0.0
+    ],
+    "on_break_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     20.0
+    ],
+    "working_ratio": [
+     80.0
+    ]
+   }
+  },
+  {
+   "_class": "manpy.Operator",
+   "family": "Operator",
+   "id": "O2",
+   "results": {
+    "off_shift_ratio": [
+     0.0
+    ],
+    "on_break_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     80.0
+    ],
+    "working_ratio": [
+     20.0
+    ]
+   }
+  },
+  {
+   "_class": "manpy.ConditionalBuffer",
+   "family": "Buffer",
+   "id": "Q0",
+   "results": {}
+  },
+  {
+   "_class": "manpy.ConditionalBuffer",
+   "family": "Buffer",
+   "id": "Q1",
+   "results": {}
+  }
+ ],
+ "general": {
+  "_class": "manpy.Configuration"
+ }
+}

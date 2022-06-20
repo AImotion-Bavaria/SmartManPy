@@ -1,0 +1,57 @@
+{
+     "graph": {
+          "node": {
+               "E1": {
+                    "interruptions": {},
+                    "top": 0.10215053763440862,
+                    "_class": "manpy.Exit",
+                    "name": "Stock",
+                    "left": 0.5
+               },
+               "M1": {
+                    "name": "Moulding",
+                    "top": 0.5,
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 1
+                         }
+                    },
+                    "interruptions": {},
+                    "_class": "manpy.Machine",
+                    "left": 0.5
+               },
+               "NS1": {
+                    "name": "Raw Material",
+                    "top": 0.8978494623655914,
+                    "entityData": {
+                         "_class": "manpy.Part"
+                    },
+                    "interruptions": {},
+                    "_class": "manpy.NonStarvingEntry",
+                    "left": 0.5
+               }
+          },
+          "edge": {
+               "1": {
+                    "source": "M1",
+                    "destination": "E1",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "0": {
+                    "source": "NS1",
+                    "destination": "M1",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               }
+          }
+     },
+     "_class": "manpy.Simulation",
+     "general": {
+          "maxSimTime": "10",
+          "_class": "manpy.Configuration",
+          "confidenceLevel": "0.95",
+          "trace": "No",
+          "numberOfReplications": "1"
+     }
+}

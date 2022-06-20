@@ -1,0 +1,1126 @@
+{
+  "application_configuration": {
+    "general": {
+      "properties": {
+        "confidenceLevel": {
+          "default": 0.95,
+          "description": "Confidence level for statistical analysis of stochastic experiments",
+          "title": "Confidence level",
+          "type": "number",
+		  "priority":6.5
+        },
+        "currentDate": {
+          "default": "2014/10/01 09:00:00",
+          "description": "The day the experiment starts, in YYYY/MM/DD HH:MM:SS format",
+          "title": "SimulationStartTime",
+          "type": "string",
+		  "priority":6.3
+        },
+        "ke_url": {
+          "default": "",
+          "description": "The URL for knowledge extraction to access its data for example http: //git.erp5.org/gitweb/manpy.git/blob_plain/HEAD: /manpy/KnowledgeExtraction/Mockup_Processingtimes.xls",
+          "title": "URL for Knowledge Extraction Spreadsheet",
+          "type": "string",
+		  "priority":0
+        },
+        "maxSimTime": {
+          "default": 100,
+          "description": "Length of the simulation run",
+          "title": "Length of Experiment",
+          "type": "number",
+		  "priority":9
+        },
+        "numberOfReplications": {
+          "default": 1,
+          "description": "Number of replications to run",
+          "title": "Number of replications",
+          "type": "integer",
+		  "priority":8
+        },
+        "processTimeout": {
+          "default": 10,
+          "description": "Number of seconds before the calculation process is interrupted",
+          "title": "ProcessTimeout",
+          "type": "number",
+		  "priority":1
+        },
+        "seed": {
+          "default": 1,
+          "description": "The seed of random number generation. If empty the seed will be random",
+          "title": "Seed for random number generator",
+          "type": "number",
+		  "priority":7
+        },
+        "timeUnit": {
+          "default": "minute",
+          "description": "Used for input and reporting widgets.",
+          "enum": [
+            "minute",
+            "hour",
+            "day",
+            "week",
+            "month",
+            "year"
+          ],
+          "name": "Time unit",
+          "type": "string",
+		  "priority":6
+        },
+        "trace": {
+          "default": "No",
+          "description": "Create an excel trace file (Yes or No)",
+          "enum": [
+            "No",
+            "Yes"
+          ],
+          "title": "OutputTrace",
+          "type": "string",
+		  "priority":5
+        }
+      }
+    },
+    "input": {
+      "debug": {
+        "gadget": "Input_viewDebugJson",
+        "title": "Edit Configuration",
+        "type": "object_view",
+		"priority":5
+      },
+      "view": {
+        "gadget": "Input_viewProductionLine",
+        "title": "Production Line",
+        "type": "object_view",
+		"priority":10
+      },
+      "view_management": {
+        "gadget": "Input_viewDocumentManagement",
+        "title": "Manage document",
+        "type": "object_view",
+		"priority":6
+      },
+      "view_result": {
+        "gadget": "Input_viewResultList",
+        "title": "Results",
+        "type": "object_view",
+		"priority":3
+      },
+      "view_run_simulation": {
+        "gadget": "Input_viewSimulation",
+        "title": "Run Simulation",
+        "type": "object_view",
+		"priority":4
+      },
+      "view_wip_spreadsheet": {
+        "configuration": {
+          "columns": [
+            {
+              "name": "ID",
+              "type": "string"
+            },
+            {
+              "name": "StationID",
+              "type": "string"
+            },
+            {
+              "name": "Remaining Processing Time",
+              "type": "number"
+            }
+          ]
+        },
+        "gadget": "Input_viewSpreadsheet",
+        "title": "WIP Spreadsheet",
+        "type": "object_view",
+		"priority":8
+      }
+    },
+    "output": {
+      "view_download_trace": {
+        "configuration": {
+          "output_id": "download_trace"
+        },
+        "gadget": "Output_viewDownloadFile",
+        "title": "Download Trace File",
+        "type": "object_view",
+		"priority":1
+      },
+      "view_queue_stats": {
+        "configuration": {
+          "output_id": "queue_statistics"
+        },
+        "gadget": "Output_viewGraph",
+        "title": "Queue Statistics",
+        "type": "object_view",
+		"priority":2
+      },
+      "view_station_utilization": {
+        "configuration": {
+          "output_id": "station_utilization"
+        },
+        "gadget": "Output_viewGraph",
+        "title": "Station Utilization",
+        "type": "object_view",
+		"priority":3
+      },
+      "view_tabular_results": {
+        "configuration": {
+          "handsontable_options": {},
+          "output_id": "exit_output"
+        },
+        "gadget": "Output_viewSpreadsheet",
+        "title": "Exit Statistics",
+        "type": "object_view",
+		"priority":4
+      }
+    },
+    "post_processing": {
+      "description": "",
+      "plugin_list": [
+        {
+          "_class": "manpy.plugins.DefaultTabularExit.DefaultTabularExit"
+        },
+        {
+          "_class": "manpy.plugins.PostProcessStationUtilization.PostProcessStationUtilization",
+          "family": "Server",
+          "output_id": "station_utilization"
+        },
+        {
+          "_class": "manpy.plugins.PostProcessQueueStatistics.PostProcessQueueStatistics",
+          "output_id": "queue_statistics"
+        },
+        {
+          "_class": "manpy.plugins.ParseTraceFile.ParseTraceFile",
+          "output_id": "download_trace"
+        }
+      ]
+    },
+    "pre_processing": {
+      "description": "",
+      "plugin_list": [
+        {
+          "_class": "manpy.plugins.GatherWIPStat.GatherWIPStat",
+          "input_id": "WIPStat"
+        },
+        {
+          "_class": "manpy.plugins.WIPSpreadsheet.WIPSpreadsheet",
+          "input_id": "WIPdata"
+        }
+      ]
+    },
+    "processing_plugin": {
+      "_class": "manpy.plugins.plugin.DefaultExecutionPlugin",
+      "description": "",
+      "input_id": "Simulation"
+    }
+  },
+  "class_definition": {
+    "manpy.Edge": {
+      "_class": "edge",
+      "allOf": [
+        {
+          "$ref": "#/edge"
+        }
+      ],
+      "description": "Connect stations together"
+    },
+    "manpy.Exit": {
+      "_class": "node",
+      "allOf": [
+        {
+          "$ref": "#/node"
+        },
+        {
+          "properties": {
+            "id": {
+              "default": "E",
+              "required": true
+            },
+            "name": {
+              "default": "Exit",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      ],
+      "css": {
+        "backgroundColor": "#eef",
+        "backgroundImage": "linear-gradient(to bottom, #eef 0%, #dde 100%)",
+        "border": "1px solid #ccb"
+      },
+      "description": "A station where entities exits from the system",
+      "name": "Exit",
+      "shape": "rectangle"
+    },
+    "manpy.Machine": {
+      "_class": "node",
+      "allOf": [
+        {
+          "$ref": "#/node"
+        },
+        {
+          "properties": {
+            "id": {
+              "default": "M",
+              "required": true,
+              "type": "string"
+            },
+            "name": {
+              "default": "Machine",
+              "type": "string"
+            },
+            "processingTime": {
+              "$ref": "#/definitions/_dist",
+              "required": true,
+			  "default":{"Fixed":{"mean":1}}
+            }
+          },
+          "type": "object"
+        }
+      ],
+      "css": {
+        "backgroundColor": "#fef",
+        "backgroundImage": "linear-gradient(to bottom, #fef 0%, #ede 100%)",
+        "border": "1px solid #cbc"
+      },
+      "description": "A station processing items for some time given by a distribution",
+      "name": "Machine"
+    },
+    "manpy.Queue": {
+      "_class": "node",
+      "allOf": [
+        {
+          "$ref": "#/node"
+        },
+        {
+          "properties": {
+            "capacity": {
+              "$ref": "#/definitions/_capacity",
+              "required": true,
+			  "priority":8
+            },
+            "id": {
+              "default": "Q",
+              "type": "string",
+			  "priority":10
+            },
+            "name": {
+              "default": "Queue",
+              "type": "string",
+			  "priority":9
+            },
+            "schedulingRule": {
+              "$ref": "#/definitions/_schedulingRule",
+              "required": true,
+			  "priority":7
+            }
+          },
+          "type": "object"
+        }
+      ],
+      "css": {
+        "backgroundColor": "#eff",
+        "backgroundImage": "linear-gradient(to bottom, #eff 0%, #dee 100%)",
+        "border": "1px solid #bcc",
+        "border-radius": "50px",
+        "height": "80px",
+        "line-height": "40px",
+        "width": "80px"
+      },
+      "description": "A buffer where entites can be hold until the next station is ready to process them",
+      "name": "Queue"
+    },
+    "manpy.Source": {
+      "_class": "node",
+      "allOf": [
+        {
+          "$ref": "#/node"
+        },
+        {
+          "properties": {
+            "entity": {
+              "default": "manpy.Part",
+              "description": "EntityClass",
+              "required": true,
+              "type": "string",
+			  "priority":7
+            },
+            "id": {
+              "default": "S",
+              "required": true,
+              "type": "string",
+			  "priority":10
+            },
+            "interArrivalTime": {
+              "$ref": "#/definitions/_dist",
+              "default": {
+                "Fixed": {
+                  "mean": 2
+                }
+              },
+              "description": "Inter-arrivaltime",
+              "required": true,
+			  "priority":5
+            },
+            "name": {
+              "default": "Source",
+              "type": "string",
+			  "priority":8
+            }
+          },
+          "type": "object"
+        }
+      ],
+      "css": {
+        "backgroundColor": "#ffe",
+        "backgroundImage": "linear-gradient(to bottom, #ffe 0%, #dde 100%)",
+        "border": "1px solid #bbc"
+      },
+      "description": "A station creating entities",
+      "name": "Source"
+    },
+    "definitions": {
+      "_capacity": {
+        "default": 1,
+        "description": "capacity of the queue. -1 means infinite",
+        "name": "Capacity",
+        "oneOf": [
+          {
+            "enum": [
+              -1
+            ]
+          },
+          {
+            "multipleOf": 1
+          }
+        ],
+        "type": "number"
+      },
+      "_dist": {
+        "allOf": [
+          {
+            "properties": {
+              "distribution": {
+                "default": "Fixed",
+                "enum": [
+                  "Fixed",
+                  "Exp",
+                  "Normal",
+                  "Lognormal",
+                  "Binomial",
+                  "Poisson",
+                  "Logistic",
+                  "Cauchy",
+                  "Geometric",
+                  "Gama",
+                  "Weibull"
+                ],
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/distributionTypes/_fixed"
+              },
+              {
+                "$ref": "#/definitions/distributionTypes/_exp"
+              },
+              {
+                "$ref": "#/definitions/distributionTypes/_normal"
+              },
+              {
+                "$ref": "#/definitions/distributionTypes/_lognormal"
+              },
+              {
+                "$ref": "#/definitions/distributionTypes/_binomial"
+              },
+              {
+                "$ref": "#/definitions/distributionTypes/_poisson"
+              },
+              {
+                "$ref": "#/definitions/distributionTypes/_logistic"
+              },
+              {
+                "$ref": "#/definitions/distributionTypes/_cauchy"
+              },
+              {
+                "$ref": "#/definitions/distributionTypes/_geometric"
+              },
+              {
+                "$ref": "#/definitions/distributionTypes/_gama"
+              },
+              {
+                "$ref": "#/definitions/distributionTypes/_weibull"
+              }
+            ]
+          }
+        ]
+      },
+      "_failureDist": {
+        "allOf": [
+          {
+            "properties": {
+              "failureDistribution": {
+                "default": "No",
+                "description": "Is this machine subject to failures, if not then Time to Repair and Time to failure are ignored",
+                "enum": [
+                  "No",
+                  "Yes"
+                ],
+                "name": "Has failure ?",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          {
+            "$ref": "#/definitions/distributionTypes/_failure"
+          }
+        ]
+      },
+      "_operationType": {
+        "default": "Automatic",
+        "description": "the type of operations that are performed manually in the machine",
+        "enum": [
+          "Automatic",
+          "Manual"
+        ],
+        "type": "string"
+      },
+      "_schedulingRule": {
+        "default": "FIFO",
+        "description": "Scheduling Rule, one of FIFO Priority EDD EOD NumStages RPC LPT SPT MS WINQ",
+        "enum": [
+          "FIFO",
+          "Priority",
+          "EDD",
+          "EOD",
+          "NumStages",
+          "RPC",
+          "LPT",
+          "SPT",
+          "MS",
+          "WINQ",
+          "WT"
+        ],
+        "name": "Scheduling Rule",
+        "type": "string"
+      },
+      "distributionTypes": {
+        "_binomial": {
+          "description": "Binomial",
+          "properties": {
+            "mean": {
+              "default": 0,
+              "type": "number"
+            },
+            "size": {
+              "default": 0,
+              "type": "number"
+            }
+          },
+          "title": "Binomial",
+          "type": "object"
+        },
+        "_cauchy": {
+          "description": "Cauchy",
+          "properties": {
+            "location": {
+              "default": 0,
+              "type": "number"
+            },
+            "scale": {
+              "default": 0,
+              "type": "number"
+            }
+          },
+          "title": "Cauchy",
+          "type": "object"
+        },
+        "_exp": {
+          "description": "Exponential",
+          "properties": {
+            "mean": {
+              "default": 0,
+              "required": true,
+              "type": "number"
+            }
+          },
+          "title": "Exp",
+          "type": "object"
+        },
+        "_failure": {
+          "description": "Fixed",
+          "properties": {
+            "TTF": {
+              "$ref": "#/definitions/_dist",
+              "name": "Time to Failure"
+            },
+            "TTR": {
+              "$ref": "#/definitions/_dist",
+              "name": "Time to Repair"
+            },
+            "repairman": {
+              "description": "Repairman",
+              "required": true,
+              "type": "string"
+            }
+          },
+          "title": "Yes",
+          "type": "object"
+        },
+        "_fixed": {
+          "description": "Fixed",
+          "properties": {
+            "mean": {
+              "default": 0,
+              "required": true,
+              "type": "number"
+            }
+          },
+          "title": "Fixed",
+          "type": "object"
+        },
+        "_gama": {
+          "description": "Gama",
+          "properties": {
+            "rate": {
+              "default": 0,
+              "required": true,
+              "type": "number"
+            },
+            "shape": {
+              "default": 0,
+              "required": true,
+              "type": "number"
+            }
+          },
+          "title": "Gama",
+          "type": "object"
+        },
+        "_geometric": {
+          "description": "Geometric",
+          "properties": {
+            "probability": {
+              "default": 0,
+              "required": true,
+              "type": "number"
+            }
+          },
+          "title": "Geometric",
+          "type": "object"
+        },
+        "_logistic": {
+          "description": "Logistic",
+          "properties": {
+            "location": {
+              "default": 0,
+              "required": true,
+              "type": "number"
+            },
+            "scale": {
+              "default": 0,
+              "required": true,
+              "type": "number"
+            }
+          },
+          "title": "Logistic",
+          "type": "object"
+        },
+        "_lognormal": {
+          "description": "Lognormal",
+          "properties": {
+            "mean": {
+              "_class": "manpy.Property",
+              "default": 0,
+              "name": "Mean",
+              "type": "number"
+            },
+            "stdev": {
+              "_class": "manpy.Property",
+              "default": 0,
+              "name": "Standard Deviation",
+              "type": "number"
+            }
+          },
+          "title": "Lognormal",
+          "type": "object"
+        },
+        "_no": {
+          "description": "No",
+          "title": "No",
+          "type": "string"
+        },
+        "_normal": {
+          "description": "Normal",
+          "properties": {
+            "mean": {
+              "default": 0,
+              "required": true,
+              "type": "number"
+            },
+            "stdev": {
+              "default": 0,
+              "required": true,
+              "type": "number"
+            }
+          },
+          "title": "Normal",
+          "type": "object"
+        },
+        "_poisson": {
+          "description": "Poisson",
+          "properties": {
+            "lambda": {
+              "default": 0,
+              "type": "number"
+            }
+          },
+          "title": "Poisson",
+          "type": "object"
+        },
+        "_weibull": {
+          "description": "Weibull",
+          "properties": {
+            "scale": {
+              "default": 0,
+              "required": true,
+              "type": "number"
+            },
+            "shape": {
+              "default": 0,
+              "required": true,
+              "type": "number"
+            }
+          },
+          "title": "Weibull",
+          "type": "object"
+        }
+      }
+    },
+    "edge": {
+      "description": "Base definition for edge",
+      "properties": {
+        "_class": {
+          "type": "string"
+        },
+        "destination": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "_class",
+        "source",
+        "destination"
+      ],
+      "type": "object"
+    },
+    "node": {
+      "description": "Base definition for node",
+      "properties": {
+        "_class": {
+          "type": "string"
+        },
+        "coordinate": {
+          "properties": {
+            "left": "number",
+            "top": "number"
+          },
+          "type": "object"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "_class"
+      ],
+      "type": "object"
+    }
+  },
+  "constraints": {},
+  "general": {
+    "confidenceLevel": 0.95,
+    "currentDate": "2014/10/01 09:00:00",
+    "ke_url": "",
+    "maxSimTime": -1,
+    "numberOfReplications": 1,
+    "processTimeout": 10,
+    "seed": 1,
+    "timeUnit": "minute",
+    "trace": "Yes"
+  },
+  "graph": {
+    "edge": {
+      "con_23": {
+        "_class": "manpy.Edge",
+        "destination": "M1",
+        "source": "Q1"
+      },
+      "con_35": {
+        "_class": "manpy.Edge",
+        "destination": "E1",
+        "source": "M1"
+      }
+    },
+    "node": {
+      "E1": {
+        "_class": "manpy.Exit",
+        "coordinate": {
+          "left": 0.5243130907600309,
+          "top": 0.29820375702354956
+        },
+        "name": "Stock"
+      },
+      "M1": {
+        "_class": "manpy.Machine",
+        "coordinate": {
+          "left": 0.3449376368747731,
+          "top": 0.3094840728804834
+        },
+        "interruption": {
+          "failure": {
+            "TTF": {
+              "Fixed": {
+                "mean": 0
+              },
+              "distribution": "Fixed"
+            },
+            "TTR": {
+              "Fixed": {
+                "mean": 0
+              },
+              "distribution": "Fixed"
+            },
+            "failureDistribution": "No",
+            "repairman": ""
+          }
+        },
+        "loadTime": {
+          "Fixed": {
+            "mean": 0
+          },
+          "distribution": "Fixed"
+        },
+        "name": "Milling",
+        "operationType": {
+          "load": "Automatic",
+          "processing": "Automatic",
+          "setup": "Automatic"
+        },
+        "processingTime": {
+          "Fixed": {
+            "mean": 1
+          },
+          "distribution": "Fixed"
+        },
+        "setupTime": {
+          "Fixed": {
+            "mean": 0
+          },
+          "distribution": "Fixed"
+        }
+      },
+      "Q1": {
+        "_class": "manpy.Queue",
+        "capacity": 1,
+        "coordinate": {
+          "left": 0.18807489177673384,
+          "top": 0.3094840728804834
+        },
+        "id": "Q1",
+        "name": "Milling Buffer",
+        "schedulingRule": "FIFO"
+      }
+    }
+  },
+  "input": {
+    "machine_shift_spreadsheet": [
+      [
+        "Date",
+        "Machine",
+        "Start",
+        "Stop"
+      ],
+      [
+        null,
+        null,
+        null,
+        null
+      ]
+    ],
+    "repairman_shift_spreadsheet": [
+      [
+        "Date",
+        "Repairman",
+        "Start",
+        "Stop"
+      ],
+      [
+        null,
+        null,
+        null,
+        null
+      ]
+    ],
+    "wip_spreadsheet": [
+      [
+        "ID",
+        "StationID",
+        "Remaining Processing Time"
+      ],
+      [
+        "P1",
+        "M1",
+        "0.3"
+      ],
+      [
+        "P2",
+        "Q1",
+        ""
+      ],
+      [
+        null,
+        null,
+        null
+      ]
+    ]
+  },
+  "result": {
+    "result_list": [
+      {
+        "_class": "manpy.Simulation",
+        "download_trace": {
+          "data": "0M8R4KGxGuEAAAAAAAAAAAAAAAAAAAAAPgADAP7/CQAGAAAAAAAAAAAAAAABAAAACQAAAAAAAAAA\nEAAA/v///wAAAAD+////AAAAAAgAAAD/////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n//////////////////////////////////////////////////////////////////////////8J\nCBAAAAYFALsNzAcAAAAABgAAAOEAAgCwBMEAAgAAAOIAAABcAHAATm9uZSAgICAgICAgICAgICAg\nICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg\nICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIEIAAgCwBGEBAgAAAD0BAgABAJwA\nAgAOABkAAgAAABIAAgAAAGMAAgAAABMAAgAAAK8BAgAAALwBAgAAAEAAAgAAAI0AAgAAAD0AEgDg\nAVoAzz9OKjgAAAAAAAEAWAIiAAIAAAAOAAIAAQC3AQIAAADaAAIAAAAxABUAyAAAAP9/kAEAAAAA\nAQAFAEFyaWFsMQAVAMgAAAD/f5ABAAAAAAEABQBBcmlhbDEAFQDIAAAA/3+QAQAAAAABAAUAQXJp\nYWwxABUAyAAAAP9/kAEAAAAAAQAFAEFyaWFsMQAVAMgAAAD/f5ABAAAAAAEABQBBcmlhbDEAFQDI\nAAAA/3+QAQAAAAABAAUAQXJpYWwxABUAyAAAAP9/kAEAAAAAAQAFAEFyaWFsHgQMAKQABwAAR2Vu\nZXJhbOAAFAAGAKQA9f8gAAD0AAAAAAAAAADAIOAAFAAGAKQA9f8gAAD0AAAAAAAAAADAIOAAFAAG\nAKQA9f8gAAD0AAAAAAAAAADAIOAAFAAGAKQA9f8gAAD0AAAAAAAAAADAIOAAFAAGAKQA9f8gAAD0\nAAAAAAAAAADAIOAAFAAGAKQA9f8gAAD0AAAAAAAAAADAIOAAFAAGAKQA9f8gAAD0AAAAAAAAAADA\nIOAAFAAGAKQA9f8gAAD0AAAAAAAAAADAIOAAFAAGAKQA9f8gAAD0AAAAAAAAAADAIOAAFAAGAKQA\n9f8gAAD0AAAAAAAAAADAIOAAFAAGAKQA9f8gAAD0AAAAAAAAAADAIOAAFAAGAKQA9f8gAAD0AAAA\nAAAAAADAIOAAFAAGAKQA9f8gAAD0AAAAAAAAAADAIOAAFAAGAKQA9f8gAAD0AAAAAAAAAADAIOAA\nFAAGAKQA9f8gAAD0AAAAAAAAAADAIOAAFAAGAKQA9f8gAAD0AAAAAAAAAADAIOAAFAAGAKQAAQAg\nAAD4AAAAAAAAAADAIOAAFAAHAKQAAQAgAAD4AAAAAAAAAADAIJMCBAAAgAD/YAECAAEAhQAPABUE\nAAAAAAcAc2hlZXQgMfwAbwAYAAAACQAAAAMAADAuMwIAAFAxFgAAZW5kZWQgcHJvY2Vzc2luZyBp\nbiBNMQsAAHJlbGVhc2VkIE0xCwAAZ290IGludG8gRTECAABQMgsAAHJlbGVhc2VkIFExCwAAZ290\nIGludG8gTTEDAAAxLjMKAAAACQgQAAAGEAC7DcwHAAAAAAYAAAANAAIAAQAMAAIAZAAPAAIAAQAR\nAAIAAAAQAAgA/Knx0k1iUD9fAAIAAACAAAgAAAAAAAEAAAAlAgQAAAD/AIEAAgABDAACDgAAAAAA\nCAAAAAAAAwAAACoAAgAAACsAAgAAAIIAAgABABsAAgAAABoAAgAAABQABQACAAAmUBUABQACAAAm\nRoMAAgABAIQAAgAAACYACAAzMzMzMzPTPycACAAzMzMzMzPTPygACACF61G4HoXjPykACACuR+F6\nFK7XP6EAIgAJAGQAAQABAAEAgwAsASwBmpmZmZmZuT+amZmZmZm5PwEAEgACAAAA3QACAAAAGQAC\nAAAAYwACAAAAEwACAAAACAIQAAAAAAADAP8AAAAAAAABDwD9AAoAAAAAABEAAAAAAP0ACgAAAAEA\nEQABAAAA/QAKAAAAAgARAAIAAAAIAhAAAQAAAAMA/wAAAAAAAAEPAP0ACgABAAAAEQAAAAAA/QAK\nAAEAAQARAAEAAAD9AAoAAQACABEAAwAAAAgCEAACAAAAAwD/AAAAAAAAAQ8A/QAKAAIAAAARAAAA\nAAD9AAoAAgABABEAAQAAAP0ACgACAAIAEQAEAAAACAIQAAMAAAADAP8AAAAAAAABDwD9AAoAAwAA\nABEAAAAAAP0ACgADAAEAEQAFAAAA/QAKAAMAAgARAAYAAAAIAhAABAAAAAMA/wAAAAAAAAEPAP0A\nCgAEAAAAEQAAAAAA/QAKAAQAAQARAAUAAAD9AAoABAACABEABwAAAAgCEAAFAAAAAwD/AAAAAAAA\nAQ8A/QAKAAUAAAARAAgAAAD9AAoABQABABEABQAAAP0ACgAFAAIAEQACAAAACAIQAAYAAAADAP8A\nAAAAAAABDwD9AAoABgAAABEACAAAAP0ACgAGAAEAEQAFAAAA/QAKAAYAAgARAAMAAAAIAhAABwAA\nAAMA/wAAAAAAAAEPAP0ACgAHAAAAEQAIAAAA/QAKAAcAAQARAAUAAAD9AAoABwACABEABAAAAD4C\nEgC2AgAAAABAAAAAAAAAAAAAAAAKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAIAAAAD\nAAAABAAAAAUAAAAGAAAABwAAAP7////9/////v//////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n//////////////////////////////////////////////////////////////9SAG8AbwB0ACAA\nRQBuAHQAcgB5AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFgAF\nAf//////////AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP7///8AAAAA\nAAAAAFcAbwByAGsAYgBvAG8AawAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAASAAIB////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH///////////////8AAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAD+////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAf///////////////wAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP7///8AAAAAAAAAAA==\n",
+          "mime_type": "application/vnd.ms-excel",
+          "name": "Trace.xls"
+        },
+        "elementList": [
+          {
+            "_class": "manpy.Queue",
+            "family": "Buffer",
+            "id": "Q1",
+            "results": {
+              "wip_stat_list": [
+                [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    0,
+                    1
+                  ],
+                  [
+                    0,
+                    1
+                  ],
+                  [
+                    0.3,
+                    0
+                  ],
+                  [
+                    100,
+                    0
+                  ]
+                ]
+              ]
+            }
+          },
+          {
+            "_class": "manpy.Exit",
+            "family": "Exit",
+            "id": "E1",
+            "results": {
+              "lifespan": [
+                0.8
+              ],
+              "takt_time": [
+                0.65
+              ],
+              "throughput": [
+                2
+              ]
+            }
+          },
+          {
+            "_class": "manpy.Machine",
+            "family": "Server",
+            "id": "M1",
+            "results": {
+              "blockage_ratio": [
+                0
+              ],
+              "break_ratio": [
+                0
+              ],
+              "failure_ratio": [
+                0
+              ],
+              "loading_ratio": [
+                0
+              ],
+              "off_shift_ratio": [
+                0
+              ],
+              "setup_ratio": [
+                0
+              ],
+              "waiting_ratio": [
+                98.7
+              ],
+              "working_ratio": [
+                1.3
+              ]
+            }
+          },
+          {
+            "_class": "manpy.Simulation",
+            "id": "TraceFile",
+            "results": {
+              "trace": "0M8R4KGxGuEAAAAAAAAAAAAAAAAAAAAAPgADAP7/CQAGAAAAAAAAAAAAAAABAAAACQAAAAAAAAAA\nEAAA/v///wAAAAD+////AAAAAAgAAAD/////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n//////////////////////////////////////////////////////////////////////////8J\nCBAAAAYFALsNzAcAAAAABgAAAOEAAgCwBMEAAgAAAOIAAABcAHAATm9uZSAgICAgICAgICAgICAg\nICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg\nICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIEIAAgCwBGEBAgAAAD0BAgABAJwA\nAgAOABkAAgAAABIAAgAAAGMAAgAAABMAAgAAAK8BAgAAALwBAgAAAEAAAgAAAI0AAgAAAD0AEgDg\nAVoAzz9OKjgAAAAAAAEAWAIiAAIAAAAOAAIAAQC3AQIAAADaAAIAAAAxABUAyAAAAP9/kAEAAAAA\nAQAFAEFyaWFsMQAVAMgAAAD/f5ABAAAAAAEABQBBcmlhbDEAFQDIAAAA/3+QAQAAAAABAAUAQXJp\nYWwxABUAyAAAAP9/kAEAAAAAAQAFAEFyaWFsMQAVAMgAAAD/f5ABAAAAAAEABQBBcmlhbDEAFQDI\nAAAA/3+QAQAAAAABAAUAQXJpYWwxABUAyAAAAP9/kAEAAAAAAQAFAEFyaWFsHgQMAKQABwAAR2Vu\nZXJhbOAAFAAGAKQA9f8gAAD0AAAAAAAAAADAIOAAFAAGAKQA9f8gAAD0AAAAAAAAAADAIOAAFAAG\nAKQA9f8gAAD0AAAAAAAAAADAIOAAFAAGAKQA9f8gAAD0AAAAAAAAAADAIOAAFAAGAKQA9f8gAAD0\nAAAAAAAAAADAIOAAFAAGAKQA9f8gAAD0AAAAAAAAAADAIOAAFAAGAKQA9f8gAAD0AAAAAAAAAADA\nIOAAFAAGAKQA9f8gAAD0AAAAAAAAAADAIOAAFAAGAKQA9f8gAAD0AAAAAAAAAADAIOAAFAAGAKQA\n9f8gAAD0AAAAAAAAAADAIOAAFAAGAKQA9f8gAAD0AAAAAAAAAADAIOAAFAAGAKQA9f8gAAD0AAAA\nAAAAAADAIOAAFAAGAKQA9f8gAAD0AAAAAAAAAADAIOAAFAAGAKQA9f8gAAD0AAAAAAAAAADAIOAA\nFAAGAKQA9f8gAAD0AAAAAAAAAADAIOAAFAAGAKQA9f8gAAD0AAAAAAAAAADAIOAAFAAGAKQAAQAg\nAAD4AAAAAAAAAADAIOAAFAAHAKQAAQAgAAD4AAAAAAAAAADAIJMCBAAAgAD/YAECAAEAhQAPABUE\nAAAAAAcAc2hlZXQgMfwAbwAYAAAACQAAAAMAADAuMwIAAFAxFgAAZW5kZWQgcHJvY2Vzc2luZyBp\nbiBNMQsAAHJlbGVhc2VkIE0xCwAAZ290IGludG8gRTECAABQMgsAAHJlbGVhc2VkIFExCwAAZ290\nIGludG8gTTEDAAAxLjMKAAAACQgQAAAGEAC7DcwHAAAAAAYAAAANAAIAAQAMAAIAZAAPAAIAAQAR\nAAIAAAAQAAgA/Knx0k1iUD9fAAIAAACAAAgAAAAAAAEAAAAlAgQAAAD/AIEAAgABDAACDgAAAAAA\nCAAAAAAAAwAAACoAAgAAACsAAgAAAIIAAgABABsAAgAAABoAAgAAABQABQACAAAmUBUABQACAAAm\nRoMAAgABAIQAAgAAACYACAAzMzMzMzPTPycACAAzMzMzMzPTPygACACF61G4HoXjPykACACuR+F6\nFK7XP6EAIgAJAGQAAQABAAEAgwAsASwBmpmZmZmZuT+amZmZmZm5PwEAEgACAAAA3QACAAAAGQAC\nAAAAYwACAAAAEwACAAAACAIQAAAAAAADAP8AAAAAAAABDwD9AAoAAAAAABEAAAAAAP0ACgAAAAEA\nEQABAAAA/QAKAAAAAgARAAIAAAAIAhAAAQAAAAMA/wAAAAAAAAEPAP0ACgABAAAAEQAAAAAA/QAK\nAAEAAQARAAEAAAD9AAoAAQACABEAAwAAAAgCEAACAAAAAwD/AAAAAAAAAQ8A/QAKAAIAAAARAAAA\nAAD9AAoAAgABABEAAQAAAP0ACgACAAIAEQAEAAAACAIQAAMAAAADAP8AAAAAAAABDwD9AAoAAwAA\nABEAAAAAAP0ACgADAAEAEQAFAAAA/QAKAAMAAgARAAYAAAAIAhAABAAAAAMA/wAAAAAAAAEPAP0A\nCgAEAAAAEQAAAAAA/QAKAAQAAQARAAUAAAD9AAoABAACABEABwAAAAgCEAAFAAAAAwD/AAAAAAAA\nAQ8A/QAKAAUAAAARAAgAAAD9AAoABQABABEABQAAAP0ACgAFAAIAEQACAAAACAIQAAYAAAADAP8A\nAAAAAAABDwD9AAoABgAAABEACAAAAP0ACgAGAAEAEQAFAAAA/QAKAAYAAgARAAMAAAAIAhAABwAA\nAAMA/wAAAAAAAAEPAP0ACgAHAAAAEQAIAAAA/QAKAAcAAQARAAUAAAD9AAoABwACABEABAAAAD4C\nEgC2AgAAAABAAAAAAAAAAAAAAAAKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAIAAAAD\nAAAABAAAAAUAAAAGAAAABwAAAP7////9/////v//////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n////////////////////////////////////////////////////////////////////////////\n//////////////////////////////////////////////////////////////9SAG8AbwB0ACAA\nRQBuAHQAcgB5AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFgAF\nAf//////////AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP7///8AAAAA\nAAAAAFcAbwByAGsAYgBvAG8AawAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAASAAIB////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH///////////////8AAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAD+////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAf///////////////wAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP7///8AAAAAAAAAAA==\n"
+            }
+          }
+        ],
+        "exit_output": [
+          [
+            "Exit Id",
+            "Throughput",
+            "Takt Time",
+            "Lifespan"
+          ],
+          [
+            "E1",
+            2,
+            0.65,
+            0.8
+          ]
+        ],
+        "general": {
+          "_class": "manpy.Configuration",
+          "totalExecutionTime": 0.018000125885009766
+        },
+        "key": "default",
+        "queue_statistics": {
+          "options": {
+            "xaxis": {
+              "minTickSize": [
+                1,
+                "minute"
+              ],
+              "mode": "time"
+            }
+          },
+          "series": [
+            {
+              "data": [
+                [
+                  1412154000000,
+                  0
+                ],
+                [
+                  1412154000000,
+                  1
+                ],
+                [
+                  1412154000000,
+                  1
+                ],
+                [
+                  1412154018000,
+                  0
+                ],
+                [
+                  1412160000000,
+                  0
+                ]
+              ],
+              "label": "Q1"
+            }
+          ]
+        },
+        "score": 0,
+        "station_utilization": {
+          "options": {
+            "series": {
+              "bars": {
+                "align": "center",
+                "barWidth": 0.8,
+                "show": true
+              },
+              "stack": true
+            },
+            "xaxis": {
+              "minTickSize": 1,
+              "ticks": [
+                [
+                  0,
+                  "M1"
+                ]
+              ]
+            },
+            "yaxis": {
+              "max": 100
+            }
+          },
+          "series": [
+            {
+              "data": [
+                [
+                  0,
+                  1.3
+                ]
+              ],
+              "label": "Working"
+            },
+            {
+              "data": [
+                [
+                  0,
+                  98.7
+                ]
+              ],
+              "label": "Waiting"
+            },
+            {
+              "data": [
+                [
+                  0,
+                  0
+                ]
+              ],
+              "label": "Failures"
+            },
+            {
+              "data": [
+                [
+                  0,
+                  0
+                ]
+              ],
+              "label": "Blockage"
+            },
+            {
+              "data": [
+                [
+                  0,
+                  0
+                ]
+              ],
+              "label": "Setup"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,139 @@
+{
+     "graph": {
+          "node": {
+               "Q1": {
+                    "capacity": 10,
+                    "name": "Q1",
+                    "top": 0.40909090909090906,
+                    "wip": [
+                         {
+                              "_class": "manpy.Part",
+                              "id": "P1",
+                              "name": "Part1"
+                         },
+                         {
+                              "_class": "manpy.Part",
+                              "id": "P0",
+                              "name": "Part0"
+                         }
+                    ],
+                    "interruptions": {},
+                    "_class": "manpy.Queue",
+                    "left": 0.4414893617021277
+               },
+               "M1A": {
+                    "name": "Machine1A",
+                    "canDeliverOnInterruption": 1,
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 5
+                         }
+                    },
+                    "interruptions": {
+                         "shift": {
+                              "endUnfinished": 1,
+                              "shiftPattern": [
+                                   [
+                                        0,
+                                        3
+                                   ]
+                              ]
+                         }
+                    },
+                    "_class": "manpy.Machine"
+               },
+               "M1B": {
+                    "name": "Machine1B",
+                    "canDeliverOnInterruption": 1,
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 5
+                         }
+                    },
+                    "interruptions": {
+                         "shift": {
+                              "endUnfinished": 1,
+                              "shiftPattern": [
+                                   [
+                                        0,
+                                        3
+                                   ]
+                              ]
+                         }
+                    },
+                    "_class": "manpy.Machine"
+               },
+               "Q2": {
+                    "capacity": 2,
+                    "name": "Q2",
+                    "top": 0.40909090909090906,
+                    "interruptions": {},
+                    "_class": "manpy.Queue",
+                    "left": 0.4414893617021277
+               },
+               "M2": {
+                    "processingTime": {
+                         "Fixed": {
+                              "mean": 10
+                         }
+                    },
+                    "failures": {},
+                    "_class": "manpy.Machine",
+                    "name": "Machine2",
+                    "interruptions": {}
+               },
+               "E1": {
+                    "interruptions": {},
+                    "_class": "manpy.Exit",
+                    "name": "Exit"
+               }
+          },
+          "edge": {
+               "11": {
+                    "source": "Q1",
+                    "destination": "M1B",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "12": {
+                    "source": "M1B",
+                    "destination": "Q2",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "1": {
+                    "source": "Q1",
+                    "destination": "M1A",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "3": {
+                    "source": "Q2",
+                    "destination": "M2",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "2": {
+                    "source": "M1A",
+                    "destination": "Q2",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               },
+               "4": {
+                    "source": "M2",
+                    "destination": "E1",
+                    "data": {},
+                    "_class": "manpy.Edge"
+               }
+          }
+     },
+     "_class": "manpy.Simulation",
+     "general": {
+          "console": "No",
+          "numberOfReplications": "1",
+          "trace": "No",
+          "confidenceLevel": "0.95",
+          "maxSimTime": "-1",
+          "_class": "manpy.Configuration"
+     }
+}

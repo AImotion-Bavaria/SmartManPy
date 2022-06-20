@@ -1,0 +1,150 @@
+{
+     "graph": {
+          "node": {
+               "Q1": {
+                    "capacity": -1,
+                    "name": "Queue1",
+                    "isDummy": "0",
+                    "wip": [
+                         {
+                              "name": "Order1",
+                              "route": [
+                                   {
+                                        "stationIdsList": [
+                                             "Q1"
+                                        ]
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 0.25
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M1"
+                                        ]
+                                   },
+                                   {
+                                        "stationIdsList": [
+                                             "Q2"
+                                        ]
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 1.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M2"
+                                        ],
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 2.0
+                                             }
+                                        }
+                                   },
+                                   {
+                                        "stationIdsList": [
+                                             "E1"
+                                        ]
+                                   }
+                              ],
+                              "manager": "O1",
+                              "isCritical": "1",
+                              "_class": "manpy.Order",
+                              "id": "Or1"
+                         }
+                    ],
+                    "interruptions": {},
+                    "_class": "manpy.QueueManagedJob",
+                    "id": "Q1"
+               },
+               "Q2": {
+                    "capacity": -1,
+                    "name": "Queue2",
+                    "isDummy": "0",
+                    "wip": [
+                         {
+                              "name": "Order2",
+                              "route": [
+                                   {
+                                        "stationIdsList": [
+                                             "Q2"
+                                        ]
+                                   },
+                                   {
+                                        "processingTime": {
+                                             "Fixed": {
+                                                  "mean": 1.0
+                                             }
+                                        },
+                                        "stationIdsList": [
+                                             "M2"
+                                        ],
+                                        "setupTime": {
+                                             "Fixed": {
+                                                  "mean": 0.5
+                                             }
+                                        }
+                                   },
+                                   {
+                                        "stationIdsList": [
+                                             "E1"
+                                        ]
+                                   }
+                              ],
+                              "manager": "O2",
+                              "isCritical": "0",
+                              "_class": "manpy.Order",
+                              "id": "Or2"
+                         }
+                    ],
+                    "interruptions": {},
+                    "_class": "manpy.QueueManagedJob",
+                    "id": "Q2"
+               },
+               "M1": {
+                    "interruptions": {},
+                    "_class": "manpy.MachineManagedJob",
+                    "id": "M1",
+                    "operationType": "MT-Load-Setup",
+                    "name": "Machine1"
+               },
+               "M2": {
+                    "interruptions": {},
+                    "_class": "manpy.MachineManagedJob",
+                    "id": "M2",
+                    "operationType": "MT-Load-Setup",
+                    "name": "Machine2"
+               },
+               "E1": {
+                    "interruptions": {},
+                    "_class": "manpy.ExitJobShop",
+                    "id": "E1",
+                    "name": "Stock"
+               },
+               "O2": {
+                    "interruptions": {},
+                    "_class": "manpy.OperatorManagedJob",
+                    "capacity": 1,
+                    "name": "Operator2"
+               },
+               "O1": {
+                    "interruptions": {},
+                    "_class": "manpy.OperatorManagedJob",
+                    "capacity": 1,
+                    "name": "Operator1"
+               }
+          },
+          "edge": {}
+     },
+     "_class": "manpy.Simulation",
+     "general": {
+          "trace": "No",
+          "_class": "manpy.Configuration",
+          "confidenceLevel": "0.95",
+          "maxSimTime": "-1",
+          "numberOfReplications": "1"
+     }
+}

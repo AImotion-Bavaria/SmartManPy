@@ -1,0 +1,485 @@
+{
+ "_class": "manpy.Simulation",
+ "elementList": [
+  {
+   "_class": "manpy.ExitJobShop",
+   "family": "Exit",
+   "id": "E1",
+   "results": {
+    "lifespan": [
+     11.75
+    ],
+    "takt_time": [
+     2.125
+    ],
+    "throughput": [
+     8
+    ]
+   }
+  },
+  {
+   "_class": "manpy.Job",
+   "family": "Job",
+   "id": "J1",
+   "results": {
+    "completionTime": 17.0,
+    "schedule": [
+     {
+      "entranceTime": 0,
+      "exitTime": 0.0,
+      "stationId": "Q1"
+     },
+     {
+      "entranceTime": 0.0,
+      "exitTime": 1.0,
+      "stationId": "M1"
+     },
+     {
+      "entranceTime": 1.0,
+      "exitTime": 1.0,
+      "stationId": "Q3"
+     },
+     {
+      "entranceTime": 1.0,
+      "exitTime": 4.0,
+      "stationId": "M3"
+     },
+     {
+      "entranceTime": 4.0,
+      "exitTime": 15.0,
+      "stationId": "Q2"
+     },
+     {
+      "entranceTime": 15.0,
+      "exitTime": 17.0,
+      "stationId": "M2"
+     },
+     {
+      "entranceTime": 17.0,
+      "stationId": "E1"
+     }
+    ]
+   }
+  },
+  {
+   "_class": "manpy.Job",
+   "family": "Job",
+   "id": "J2",
+   "results": {
+    "completionTime": 9.0,
+    "schedule": [
+     {
+      "entranceTime": 0,
+      "exitTime": 1.0,
+      "stationId": "Q1"
+     },
+     {
+      "entranceTime": 1.0,
+      "exitTime": 2.0,
+      "stationId": "M1"
+     },
+     {
+      "entranceTime": 2.0,
+      "exitTime": 4.0,
+      "stationId": "Q3"
+     },
+     {
+      "entranceTime": 4.0,
+      "exitTime": 7.0,
+      "stationId": "M3"
+     },
+     {
+      "entranceTime": 7.0,
+      "exitTime": 7.0,
+      "stationId": "Q2"
+     },
+     {
+      "entranceTime": 7.0,
+      "exitTime": 9.0,
+      "stationId": "M2"
+     },
+     {
+      "entranceTime": 9.0,
+      "stationId": "E1"
+     }
+    ]
+   }
+  },
+  {
+   "_class": "manpy.Job",
+   "family": "Job",
+   "id": "J3",
+   "results": {
+    "completionTime": 14.0,
+    "schedule": [
+     {
+      "entranceTime": 0,
+      "exitTime": 2.0,
+      "stationId": "Q1"
+     },
+     {
+      "entranceTime": 2.0,
+      "exitTime": 3.0,
+      "stationId": "M1"
+     },
+     {
+      "entranceTime": 3.0,
+      "exitTime": 9.0,
+      "stationId": "Q3"
+     },
+     {
+      "entranceTime": 9.0,
+      "exitTime": 12.0,
+      "stationId": "M3"
+     },
+     {
+      "entranceTime": 12.0,
+      "exitTime": 12.0,
+      "stationId": "Q2"
+     },
+     {
+      "entranceTime": 12.0,
+      "exitTime": 14.0,
+      "stationId": "M2"
+     },
+     {
+      "entranceTime": 14.0,
+      "stationId": "E1"
+     }
+    ]
+   }
+  },
+  {
+   "_class": "manpy.Job",
+   "family": "Job",
+   "id": "J4",
+   "results": {
+    "completionTime": 7.0,
+    "schedule": [
+     {
+      "entranceTime": 0,
+      "exitTime": 4.0,
+      "stationId": "Q1"
+     },
+     {
+      "entranceTime": 4.0,
+      "exitTime": 5.0,
+      "stationId": "M1"
+     },
+     {
+      "entranceTime": 5.0,
+      "exitTime": 5.0,
+      "stationId": "Q2"
+     },
+     {
+      "entranceTime": 5.0,
+      "exitTime": 7.0,
+      "stationId": "M2"
+     },
+     {
+      "entranceTime": 7.0,
+      "stationId": "E1"
+     }
+    ]
+   }
+  },
+  {
+   "_class": "manpy.Job",
+   "family": "Job",
+   "id": "J5",
+   "results": {
+    "completionTime": 15.0,
+    "schedule": [
+     {
+      "entranceTime": 0,
+      "exitTime": 5.0,
+      "stationId": "Q1"
+     },
+     {
+      "entranceTime": 5.0,
+      "exitTime": 6.0,
+      "stationId": "M1"
+     },
+     {
+      "entranceTime": 6.0,
+      "exitTime": 13.0,
+      "stationId": "Q3"
+     },
+     {
+      "entranceTime": 13.0,
+      "exitTime": 15.0,
+      "stationId": "M3"
+     },
+     {
+      "entranceTime": 15.0,
+      "stationId": "E1"
+     }
+    ]
+   }
+  },
+  {
+   "_class": "manpy.Job",
+   "family": "Job",
+   "id": "J6",
+   "results": {
+    "completionTime": 15.0,
+    "schedule": [
+     {
+      "entranceTime": 0,
+      "exitTime": 3.0,
+      "stationId": "Q1"
+     },
+     {
+      "entranceTime": 3.0,
+      "exitTime": 4.0,
+      "stationId": "M1"
+     },
+     {
+      "entranceTime": 4.0,
+      "exitTime": 12.0,
+      "stationId": "Q3"
+     },
+     {
+      "entranceTime": 12.0,
+      "exitTime": 13.0,
+      "stationId": "M3"
+     },
+     {
+      "entranceTime": 13.0,
+      "exitTime": 14.0,
+      "stationId": "Q2"
+     },
+     {
+      "entranceTime": 14.0,
+      "exitTime": 15.0,
+      "stationId": "M2"
+     },
+     {
+      "entranceTime": 15.0,
+      "stationId": "E1"
+     }
+    ]
+   }
+  },
+  {
+   "_class": "manpy.Job",
+   "family": "Job",
+   "id": "J7",
+   "results": {
+    "completionTime": 8.0,
+    "schedule": [
+     {
+      "entranceTime": 0,
+      "exitTime": 0.0,
+      "stationId": "Q2"
+     },
+     {
+      "entranceTime": 0.0,
+      "exitTime": 1.0,
+      "stationId": "M2"
+     },
+     {
+      "entranceTime": 1.0,
+      "exitTime": 6.0,
+      "stationId": "Q1"
+     },
+     {
+      "entranceTime": 6.0,
+      "exitTime": 8.0,
+      "stationId": "M1"
+     },
+     {
+      "entranceTime": 8.0,
+      "stationId": "E1"
+     }
+    ]
+   }
+  },
+  {
+   "_class": "manpy.Job",
+   "family": "Job",
+   "id": "J8",
+   "results": {
+    "completionTime": 9.0,
+    "schedule": [
+     {
+      "entranceTime": 0,
+      "exitTime": 1.0,
+      "stationId": "Q2"
+     },
+     {
+      "entranceTime": 1.0,
+      "exitTime": 2.0,
+      "stationId": "M2"
+     },
+     {
+      "entranceTime": 2.0,
+      "exitTime": 8.0,
+      "stationId": "Q3"
+     },
+     {
+      "entranceTime": 8.0,
+      "exitTime": 9.0,
+      "stationId": "M3"
+     },
+     {
+      "entranceTime": 9.0,
+      "stationId": "E1"
+     }
+    ]
+   }
+  },
+  {
+   "_class": "manpy.MachineJobShop",
+   "family": "Server",
+   "id": "M1",
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     0.0
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     52.94117647058823
+    ],
+    "working_ratio": [
+     47.05882352941177
+    ]
+   }
+  },
+  {
+   "_class": "manpy.MachineJobShop",
+   "family": "Server",
+   "id": "M2",
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     0.0
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     35.294117647058826
+    ],
+    "working_ratio": [
+     64.70588235294117
+    ]
+   }
+  },
+  {
+   "_class": "manpy.MachineJobShop",
+   "family": "Server",
+   "id": "M3",
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     0.0
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     23.529411764705884
+    ],
+    "working_ratio": [
+     76.47058823529412
+    ]
+   }
+  },
+  {
+   "_class": "manpy.Operator",
+   "family": "Operator",
+   "id": "O1",
+   "results": {
+    "off_shift_ratio": [
+     0.0
+    ],
+    "on_break_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     35.294117647058826
+    ],
+    "working_ratio": [
+     64.70588235294117
+    ]
+   }
+  },
+  {
+   "_class": "manpy.Operator",
+   "family": "Operator",
+   "id": "O2",
+   "results": {
+    "off_shift_ratio": [
+     0.0
+    ],
+    "on_break_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     35.294117647058826
+    ],
+    "working_ratio": [
+     64.70588235294117
+    ]
+   }
+  },
+  {
+   "_class": "manpy.ConditionalBuffer",
+   "family": "Buffer",
+   "id": "Q1",
+   "results": {}
+  },
+  {
+   "_class": "manpy.ConditionalBuffer",
+   "family": "Buffer",
+   "id": "Q2",
+   "results": {}
+  },
+  {
+   "_class": "manpy.ConditionalBuffer",
+   "family": "Buffer",
+   "id": "Q3",
+   "results": {}
+  }
+ ],
+ "general": {
+  "_class": "manpy.Configuration"
+ }
+}

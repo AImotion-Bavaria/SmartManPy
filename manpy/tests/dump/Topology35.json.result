@@ -1,0 +1,166 @@
+{
+ "_class": "manpy.Simulation",
+ "elementList": [
+  {
+   "_class": "manpy.OrderComponent",
+   "family": "Job",
+   "id": "C1",
+   "results": {
+    "completionTime": 1.25,
+    "schedule": [
+     {
+      "entranceTime": 0,
+      "exitTime": 0,
+      "stationId": "Q1"
+     },
+     {
+      "entranceTime": 0,
+      "exitTime": 0.25,
+      "stationId": "M1"
+     },
+     {
+      "entranceTime": 0.25,
+      "exitTime": 0.25,
+      "stationId": "Q2"
+     },
+     {
+      "entranceTime": 0.25,
+      "exitTime": 1.25,
+      "stationId": "M2"
+     },
+     {
+      "entranceTime": 1.25,
+      "stationId": "E1"
+     }
+    ]
+   }
+  },
+  {
+   "_class": "manpy.OrderComponent",
+   "family": "Job",
+   "id": "C2",
+   "results": {
+    "completionTime": 2.25,
+    "schedule": [
+     {
+      "entranceTime": 0,
+      "exitTime": 0,
+      "stationId": "Q2"
+     },
+     {
+      "entranceTime": 0,
+      "exitTime": 0.25,
+      "stationId": "M2"
+     },
+     {
+      "entranceTime": 0.25,
+      "exitTime": 1.25,
+      "stationId": "Q2"
+     },
+     {
+      "entranceTime": 1.25,
+      "exitTime": 2.25,
+      "stationId": "M2"
+     },
+     {
+      "entranceTime": 2.25,
+      "stationId": "E1"
+     }
+    ]
+   }
+  },
+  {
+   "_class": "manpy.ExitJobShop",
+   "family": "Exit",
+   "id": "E1",
+   "results": {
+    "lifespan": [
+     1.75
+    ],
+    "takt_time": [
+     1.125
+    ],
+    "throughput": [
+     2
+    ]
+   }
+  },
+  {
+   "_class": "manpy.MachineJobShop",
+   "family": "Server",
+   "id": "M1",
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     0.0
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     88.88888888888889
+    ],
+    "working_ratio": [
+     11.11111111111111
+    ]
+   }
+  },
+  {
+   "_class": "manpy.MachineJobShop",
+   "family": "Server",
+   "id": "M2",
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     0.0
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     0.0
+    ],
+    "working_ratio": [
+     100.0
+    ]
+   }
+  },
+  {
+   "_class": "manpy.QueueJobShop",
+   "family": "Buffer",
+   "id": "Q1",
+   "results": {}
+  },
+  {
+   "_class": "manpy.QueueJobShop",
+   "family": "Buffer",
+   "id": "Q2",
+   "results": {}
+  }
+ ],
+ "general": {
+  "_class": "manpy.Configuration"
+ }
+}

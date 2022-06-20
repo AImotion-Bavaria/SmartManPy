@@ -1,0 +1,30 @@
+# View builds under:
+# https://eu-west-1.console.aws.amazon.com/codesuite/codebuild/projects/manpy/history
+version: 0.2
+env:
+    # These are managed via:
+    # https://eu-west-1.console.aws.amazon.com/systems-manager/parameters/?region=eu-west-1
+    parameter-store:
+        TWINE_PASSWORD: /CodeBuild/PyPi/Dev/pw
+        TWINE_USERNAME: /CodeBuild/PyPi/Dev/un
+        TWINE_REPOSITORY: /CodeBuild/PyPi/Dev/url
+phases:
+    install:
+        commands:
+            # Add some extra env variables https://github.com/thii/aws-codebuild-extras
+            - echo Installing codebuild-extras...
+            - pip install awscli
+            - curl -fsSL https://raw.githubusercontent.com/thii/aws-codebuild-extras/master/install >> extras.sh
+            - . ./extras.sh
+            - pip install .
+            - pip install -r requirements_dev.txt
+    pre_build:
+        commands:
+            - make lint || true
+            - make test
+    build:
+        commands:
+            - make dist
+    post_build:
+        commands:
+            - bash .codebuild/release.sh

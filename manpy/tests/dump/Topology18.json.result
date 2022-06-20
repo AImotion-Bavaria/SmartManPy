@@ -1,0 +1,179 @@
+{
+ "_class": "manpy.Simulation",
+ "elementList": [
+  {
+   "_class": "manpy.ExitJobShop",
+   "family": "Exit",
+   "id": "E1",
+   "results": {
+    "lifespan": [
+     6.0
+    ],
+    "takt_time": [
+     6.0
+    ],
+    "throughput": [
+     1
+    ]
+   }
+  },
+  {
+   "_class": "manpy.Job",
+   "family": "Job",
+   "id": "J1",
+   "results": {
+    "completionTime": 6.0,
+    "schedule": [
+     {
+      "entranceTime": 0,
+      "exitTime": 0,
+      "stationId": "Q1"
+     },
+     {
+      "entranceTime": 0,
+      "exitTime": 1.0,
+      "stationId": "M1"
+     },
+     {
+      "entranceTime": 1.0,
+      "exitTime": 1.0,
+      "stationId": "Q3"
+     },
+     {
+      "entranceTime": 1.0,
+      "exitTime": 4.0,
+      "stationId": "M3"
+     },
+     {
+      "entranceTime": 4.0,
+      "exitTime": 4.0,
+      "stationId": "Q2"
+     },
+     {
+      "entranceTime": 4.0,
+      "exitTime": 6.0,
+      "stationId": "M2"
+     },
+     {
+      "entranceTime": 6.0,
+      "stationId": "E1"
+     }
+    ]
+   }
+  },
+  {
+   "_class": "manpy.MachineJobShop",
+   "family": "Server",
+   "id": "M1",
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     0.0
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     83.33333333333333
+    ],
+    "working_ratio": [
+     16.666666666666668
+    ]
+   }
+  },
+  {
+   "_class": "manpy.MachineJobShop",
+   "family": "Server",
+   "id": "M2",
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     0.0
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     66.66666666666667
+    ],
+    "working_ratio": [
+     33.333333333333336
+    ]
+   }
+  },
+  {
+   "_class": "manpy.MachineJobShop",
+   "family": "Server",
+   "id": "M3",
+   "results": {
+    "blockage_ratio": [
+     0.0
+    ],
+    "break_ratio": [
+     0.0
+    ],
+    "failure_ratio": [
+     0.0
+    ],
+    "loading_ratio": [
+     0.0
+    ],
+    "off_shift_ratio": [
+     0.0
+    ],
+    "setup_ratio": [
+     0.0
+    ],
+    "waiting_ratio": [
+     50.0
+    ],
+    "working_ratio": [
+     50.0
+    ]
+   }
+  },
+  {
+   "_class": "manpy.QueueJobShop",
+   "family": "Buffer",
+   "id": "Q1",
+   "results": {}
+  },
+  {
+   "_class": "manpy.QueueJobShop",
+   "family": "Buffer",
+   "id": "Q2",
+   "results": {}
+  },
+  {
+   "_class": "manpy.QueueJobShop",
+   "family": "Buffer",
+   "id": "Q3",
+   "results": {}
+  }
+ ],
+ "general": {
+  "_class": "manpy.Configuration"
+ }
+}
