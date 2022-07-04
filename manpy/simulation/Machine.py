@@ -65,6 +65,7 @@ class Machine(CoreObject):
         canDeliverOnInterruption=False,
         technology=None,
         priority=0,
+        control=False,
         **kw,
     ):
         self.type = "Machine"  # String that shows the type of object
@@ -177,6 +178,8 @@ class Machine(CoreObject):
         # attribute to prioritize against competing parallel machines
         self.priority = priority
         self.processed_entities = []
+        self.control = control
+        self.discards = []
 
     # =======================================================================
     # initialize the machine
@@ -233,6 +236,10 @@ class Machine(CoreObject):
         self.processOperatorUnavailable = self.env.event()
         # holds the Operator currently processing the Machine
         self.currentOperator = None
+
+    def condition(self):
+        #Overwrite this method to set a condition
+        return None
 
     @staticmethod
     def getOperationTime(time):
@@ -1066,6 +1073,10 @@ class Machine(CoreObject):
         self.totalOperationTime += self.env.now - self.timeLastOperationStarted
         if type == "Processing":
             self.totalWorkingTime = self.totalOperationTime
+            if self.control == True:
+                if self.condition() == True:
+                    self.removeEntity(activeEntity)
+                    self.discards.append(activeEntity)
         elif type == "Setup":
             self.totalSetupTime = self.totalOperationTime
             # if there are task_ids defined for each step

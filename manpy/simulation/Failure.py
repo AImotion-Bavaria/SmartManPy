@@ -53,7 +53,7 @@ class Failure(ObjectInterruption):
             self, distribution.get("TTF", {"Fixed": {"mean": 100}})
         )
         self.rngTTR = RandomNumberGenerator(
-            self, distribution.get("TTR", {"Fixed": {"mean": 10}})
+            self, distribution.get("TTR", {"Fixed": {"mean": 0}})
         )
         self.name = "F" + str(index)
         self.repairman = repairman  # the resource that may be needed to fix the failure
@@ -74,7 +74,7 @@ class Failure(ObjectInterruption):
 
     def initialize(self):
         ObjectInterruption.initialize(self)
-        self.victimStartsProcess = self.env.event()
+        self.victimStartsProcessing = self.env.event()
         self.victimEndsProcess = self.env.event()
 
     def condition(self):
@@ -208,11 +208,11 @@ class Failure(ObjectInterruption):
                 elif self.deteriorationType == "working":
                     # wait for victim to start process
 
-                    self.expectedSignals["victimStartsProcess"] = 1
+                    self.expectedSignals["victimStartsProcessing"] = 1
 
-                    yield self.victimStartsProcess
+                    yield self.victimStartsProcessing
 
-                    self.victimStartsProcess = self.env.event()
+                    self.victimStartsProcessing = self.env.event()
                     while failureNotTriggered:
                         timeRestartedCounting = self.env.now
 
@@ -229,12 +229,12 @@ class Failure(ObjectInterruption):
                                 self.env.now - timeRestartedCounting
                             )
 
-                            self.expectedSignals["victimStartsProcess"] = 1
+                            self.expectedSignals["victimStartsProcessing"] = 1
 
-                            yield self.victimStartsProcess
+                            yield self.victimStartsProcessing
 
                             # wait for victim to start again processing
-                            self.victimStartsProcess = self.env.event()
+                            self.victimStartsProcessing = self.env.event()
                         else:
                             failureNotTriggered = False
 

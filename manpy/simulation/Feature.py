@@ -14,13 +14,13 @@ class Feature(ObjectInterruption):
     :param threshold: If this threshold is exceeded or subceeded, a Failure will commence
     :param repairman: The resource that may be needed to fix the failure
     :param no_negative: If this value is true, returns 0 for values below 0 of the feature value
+    :param entity: If this value is true, saves the Feature value inside the current Entity
     :param kw: The keyword arguments are mainly used for classification and calculation
     """
-    def __init__(self, id="", name="", victim=None, deteriorationType="constant", distribution={}, contribution=None, repairman=None, no_negative=False, start_time=0, start_value=0, **kw):
+    def __init__(self, id="", name="", victim=None, deteriorationType="constant", distribution={}, contribution=None, repairman=None, no_negative=False, entity=False, start_time=0, start_value=0, **kw):
         ObjectInterruption.__init__(self, id, name, victim=victim)
         self.rngTime = RandomNumberGenerator(self, distribution.get("Time", {"Fixed": {"mean": 100}}))
         self.rngFeature = RandomNumberGenerator(self, distribution.get("Feature", {"Fixed": {"mean": 10}}))
-        self.rngTTR = RandomNumberGenerator(self, distribution.get("TTR", {"Fixed": {"mean": 10}}))
         self.repairman = repairman
         self.id = id
         self.name = name
@@ -28,12 +28,15 @@ class Feature(ObjectInterruption):
         self.deteriorationType = deteriorationType
         self.contribution = contribution
         self.no_negative = no_negative
+        self.entity = entity
         self.start_time = start_time
         self.featureValue = start_value
 
     def initialize(self):
+        if self.entity == True:
+            self.deteriorationType="working"
         ObjectInterruption.initialize(self)
-        self.victimStartsProcess = self.env.event()
+        self.victimStartsProcessing = self.env.event()
         self.victimEndsProcess = self.env.event()
 
     def run(self):
@@ -56,9 +59,14 @@ class Feature(ObjectInterruption):
             # if time to failure counts only in working time
             elif self.deteriorationType == "working":
                 # wait for victim to start process
-                yield self.victimStartsProcess
+                self.expectedSignals["victimStartsProcessing"] = 1
+                yield self.victimStartsProcessing
+                # check if feature belongs to entity
+                if self.entity == True:
+                    remainingTimeTillFeature = timeTillFeature * self.victim.timeToEndCurrentOperation
+                    print(remainingTimeTillFeature)
 
-                self.victimStartsProcess = self.env.event()
+                self.victimStartsProcessing = self.env.event()
                 while featureNotTriggered:
                     timeRestartedCounting = self.env.now
                     self.expectedSignals["victimEndsProcess"] = 1
@@ -71,8 +79,8 @@ class Feature(ObjectInterruption):
                         remainingTimeTillFeature = remainingTimeTillFeature - (self.env.now - timeRestartedCounting)
 
                         # wait for victim to start again processing
-                        yield self.victimStartsProcess
-                        self.victimStartsProcess = self.env.event()
+                        yield self.victimStartsProcessing
+                        self.victimStartsProcessing = self.env.event()
                     else:
                         featureNotTriggered = False
 
@@ -82,7 +90,8 @@ class Feature(ObjectInterruption):
                 if self.featureValue < 0:
                     self.featureValue = 0
             self.outputTrace(self.victim.name, self.victim.id, str(self.featureValue))  # add Feature to DataFrame
-
+            if self.entity == True:
+                self.victim.Res.users[0].set_feature(self.featureValue)
             # check contribution
             if self.contribution != None:
                 for contribution in self.contribution:
