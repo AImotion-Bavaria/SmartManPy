@@ -57,6 +57,7 @@ class ObjectInterruption(ManPyObject):
             "victimIsEmptyBeforeMaintenance": 0,
             "resourceAvailable": 0,
             "victimFailed": 0,
+            "contribution": 0
         }
 
     def initialize(self):
@@ -82,6 +83,7 @@ class ObjectInterruption(ManPyObject):
             "victimIsEmptyBeforeMaintenance": 0,
             "resourceAvailable": 0,
             "victimFailed": 0,
+            "contribution": 0
         }
 
     # ===========================================================================

@@ -11,13 +11,15 @@ class Feature(ObjectInterruption):
     :param victim: The machine to which the feature belongs
     :param deteriorationType: The way the time until the next Feature is counted, working counts only during the operation of the victim, constant is constant
     :param distribution: The statistical distribution of the time and value of the Feature
-    :param threshold: If this threshold is exceeded or subceeded, a Failure will commence
     :param repairman: The resource that may be needed to fix the failure
     :param no_negative: If this value is true, returns 0 for values below 0 of the feature value
+    :param contribute: Needs Failures in a list as an input to contribute the Feature value to conditions
     :param entity: If this value is true, saves the Feature value inside the current Entity
+    :param start_time: The starting time for the feature
+    :param start_value: The starting value, mainly used when setting up a condition
     :param kw: The keyword arguments are mainly used for classification and calculation
     """
-    def __init__(self, id="", name="", victim=None, deteriorationType="constant", distribution={}, contribution=None, repairman=None, no_negative=False, entity=False, start_time=0, start_value=0, **kw):
+    def __init__(self, id="", name="", victim=None, deteriorationType="constant", distribution={}, contribute=None, repairman=None, no_negative=False, entity=False, start_time=0, start_value=0, **kw):
         ObjectInterruption.__init__(self, id, name, victim=victim)
         self.rngTime = RandomNumberGenerator(self, distribution.get("Time", {"Fixed": {"mean": 100}}))
         self.rngFeature = RandomNumberGenerator(self, distribution.get("Feature", {"Fixed": {"mean": 10}}))
@@ -26,7 +28,7 @@ class Feature(ObjectInterruption):
         self.name = name
         self.type = "Failure"
         self.deteriorationType = deteriorationType
-        self.contribution = contribution
+        self.contribute = contribute
         self.no_negative = no_negative
         self.entity = entity
         self.start_time = start_time
@@ -37,7 +39,7 @@ class Feature(ObjectInterruption):
             self.deteriorationType="working"
         ObjectInterruption.initialize(self)
         self.victimStartsProcessing = self.env.event()
-        self.victimEndsProcess = self.env.event()
+        self.victimEndsProcessing = self.env.event()
 
     def run(self):
         """Every Object has to have a run method. Simpy is mainly useed in this function
@@ -47,9 +49,13 @@ class Feature(ObjectInterruption):
 
         :return: None
         """
+        remainingTimeTillFeature = None
         while 1:
-            timeTillFeature = self.rngTime.generateNumber()
-            remainingTimeTillFeature = timeTillFeature
+            while remainingTimeTillFeature == None:
+                timeTillFeature = self.rngTime.generateNumber(start_time=self.start_time)
+                remainingTimeTillFeature = timeTillFeature
+                if remainingTimeTillFeature == None:
+                    yield self.env.timeout(1)
             featureNotTriggered = True
 
             # if time to failure counts not matter the state of the victim
@@ -63,19 +69,18 @@ class Feature(ObjectInterruption):
                 yield self.victimStartsProcessing
                 # check if feature belongs to entity
                 if self.entity == True:
-                    remainingTimeTillFeature = timeTillFeature * self.victim.timeToEndCurrentOperation
-                    print(remainingTimeTillFeature)
+                    remainingTimeTillFeature = timeTillFeature * self.victim.tinM
 
                 self.victimStartsProcessing = self.env.event()
                 while featureNotTriggered:
                     timeRestartedCounting = self.env.now
-                    self.expectedSignals["victimEndsProcess"] = 1
+                    self.expectedSignals["victimEndsProcessing"] = 1
 
                     # wait either for the feature or end of process
-                    receivedEvent = yield self.env.any_of([self.env.timeout(remainingTimeTillFeature), self.victimEndsProcess])
-                    if self.victimEndsProcess in receivedEvent:
-                        self.expectedSignals["victimEndsProcess"] = 0
-                        self.victimEndsProcess = self.env.event()
+                    receivedEvent = yield self.env.any_of([self.env.timeout(remainingTimeTillFeature), self.victimEndsProcessing])
+                    if self.victimEndsProcessing in receivedEvent:
+                        self.expectedSignals["victimEndsProcessing"] = 0
+                        self.victimEndsProcessing = self.env.event()
                         remainingTimeTillFeature = remainingTimeTillFeature - (self.env.now - timeRestartedCounting)
 
                         # wait for victim to start again processing
@@ -90,13 +95,17 @@ class Feature(ObjectInterruption):
                 if self.featureValue < 0:
                     self.featureValue = 0
             self.outputTrace(self.victim.name, self.victim.id, str(self.featureValue))  # add Feature to DataFrame
+            # check contribution
+            if self.contribute != None:
+                for c in self.contribute:
+                    if c.expectedSignals["contribution"]:
+                        self.sendSignal(receiver=c, signal=c.contribution)
+            # check Entity
             if self.entity == True:
                 self.victim.Res.users[0].set_feature(self.featureValue)
-            # check contribution
-            if self.contribution != None:
-                for contribution in self.contribution:
-                    self.sendSignal(receiver=contribution, signal=contribution.contribute)
-
+                self.expectedSignals["victimEndsProcessing"] = 1
+                yield self.victimEndsProcessing
+                self.victimEndsProcessing = self.env.event()
 
 
     def get_feature_value(self):

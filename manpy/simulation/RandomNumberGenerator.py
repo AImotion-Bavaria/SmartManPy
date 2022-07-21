@@ -112,6 +112,8 @@ class RandomNumberGenerator(object):
     def generateNumber(self, start_time=0):
         from .Globals import G
         x = G.env.now - start_time
+        if x < 0:
+            return None
 
         if self.distributionType == "Fixed":  # if the distribution is Fixed
             return eval(self.mean)
