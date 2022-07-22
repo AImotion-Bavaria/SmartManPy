@@ -237,6 +237,7 @@ class Failure(ObjectInterruption):
                             # wait for victim to start again processing
                             self.victimStartsProcessing = self.env.event()
                         else:
+                            self.expectedSignals["victimEndsProcessing"] = 0
                             failureNotTriggered = False
 
                 # if the mode is to wait on tie before interruption add a dummy hold for 0
@@ -312,5 +313,4 @@ class Failure(ObjectInterruption):
                     self.victim.totalFailureTime += self.env.now - failTime
                 self.reactivateVictim()  # since repairing is over, the Machine is reactivated
                 self.victim.Up = True
-                print("up", self.env.now)
                 self.outputTrace(self.victim.name, self.victim.id,  "is up")
