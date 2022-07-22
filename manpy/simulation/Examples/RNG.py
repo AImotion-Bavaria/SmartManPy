@@ -26,7 +26,7 @@ F2 = Failure(victim=M2, distribution={"TTF": {"Normal": {"mean": 10, "stdev": 5,
 Ftr1 = Feature("Ftr1", "Feature1", victim=M1, deteriorationType="constant", contribute=[F1], no_zero=True,
                distribution={"Time": {"Fixed": {"mean": 10}},
                              "Feature": {"Normal": {"mean": "3*x", "stdev": "0.02*x+3", "min": "2.98*x-3", "max": "3.02*x+3"}}})
-Ftr2 = Feature("Ftr2", "Feature2", victim=M1, deteriorationType="working", start_time=0, contribute=[F1],
+Ftr2 = Feature("Ftr2", "Feature2", victim=M1, deteriorationType="working", start_time=60, contribute=[F1],
                distribution={"Time": {"Fixed": {"mean": 5}},
                              "Feature": {"Normal": {"mean": 0.5, "stdev": 0.2, "min": 0.1, "max": 0.9}}})
 
@@ -44,7 +44,7 @@ def main(test=0):
     runSimulation([S, Q, M1, M2, E1, F1, Ftr1, Ftr2], maxSimTime, trace="Yes")
 
     df = G.get_simulation_results_dataframe().drop(columns=["entity_name", "station_name"])
-    ExcelPrinter(df, "RNG_testing")
+    ExcelPrinter(df, "RNG")
     #df.to_csv("RNG_testing.csv", index=False, encoding="utf8")
     #print(df)
 

@@ -34,17 +34,21 @@ dependencies:
     - colorama==0.4.5
     - commonmark==0.9.1
     - coverage==6.4.2
+    - cycler==0.11.0
     - datetime==4.5
     - documenttemplate==4.0
     - docutils==0.18.1
     - extensionclass==4.6
     - flake8==4.0.1
+    - fonttools==4.34.4
     - idna==3.3
     - imagesize==1.4.1
     - importlib-metadata==4.12.0
     - jinja2==3.1.2
     - keyring==23.7.0
+    - kiwisolver==1.4.4
     - markupsafe==2.1.1
+    - matplotlib==3.5.2
     - mccabe==0.6.1
     - multimapping==4.1
     - multipart==0.2.4
@@ -54,6 +58,7 @@ dependencies:
     - pastedeploy==2.1.1
     - persistence==3.3
     - persistent==4.9.0
+    - pillow==9.2.0
     - pkginfo==1.8.3
     - pycodestyle==2.8.0
     - pycparser==2.21

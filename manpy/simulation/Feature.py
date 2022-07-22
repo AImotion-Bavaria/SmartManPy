@@ -16,7 +16,8 @@ class Feature(ObjectInterruption):
     :param contribute: Needs Failures in a list as an input to contribute the Feature value to conditions
     :param entity: If this value is true, saves the Feature value inside the current Entity
     :param start_time: The starting time for the feature
-    :param start_value: The starting value, mainly used when setting up a condition
+    :param start_value: The starting value of the Feature
+    :param random_walk: If this is True, the Feature will continuously take the previous feature_value into account
     :param kw: The keyword arguments are mainly used for classification and calculation
     """
     def __init__(
@@ -47,11 +48,15 @@ class Feature(ObjectInterruption):
         self.entity = entity
         self.start_time = start_time
         self.featureValue = start_value
+        self.random_walk = random_walk
         self.type = "Failure"
 
     def initialize(self):
         if self.entity == True:
             self.deteriorationType="working"
+        if self.victim == None:
+            self.deteriorationType="constant"
+            self.entity=False
         ObjectInterruption.initialize(self)
         self.victimStartsProcessing = self.env.event()
         self.victimEndsProcessing = self.env.event()
@@ -109,7 +114,12 @@ class Feature(ObjectInterruption):
 
 
             # generate the Feature
-            self.featureValue = self.rngFeature.generateNumber(start_time=self.start_time)
+            value = self.rngFeature.generateNumber(start_time=self.start_time)
+            if self.random_walk == True:
+                self.featureValue += value
+            else:
+                self.featureValue = value
+            # check no_negative
             if self.no_negative == True:
                 if self.featureValue < 0:
                     self.featureValue = 0
@@ -125,7 +135,10 @@ class Feature(ObjectInterruption):
                 yield self.victimEndsProcessing
                 self.victimEndsProcessing = self.env.event()
             # add Feature to DataFrame
-            self.outputTrace(self.victim.name, self.victim.id, str(self.featureValue))
+            if self.victim == None:
+                self.outputTrace("--", "--", str(self.featureValue))
+            else:
+                self.outputTrace(self.victim.name, self.victim.id, str(self.featureValue))
 
     def get_feature_value(self):
         return self.featureValue
