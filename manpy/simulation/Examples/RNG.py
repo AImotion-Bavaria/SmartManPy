@@ -41,7 +41,7 @@ def main(test=0):
     maxSimTime = 140
 
     # runSim with trace
-    runSimulation([S, Q, M1, M2, E1, F1, Ftr1, Ftr2], maxSimTime, trace="Yes")
+    runSimulation([S, Q, M1, M2, E1, F1, F2, Ftr1, Ftr2, R], maxSimTime, trace="Yes")
 
     df = G.get_simulation_results_dataframe().drop(columns=["entity_name", "station_name"])
     ExcelPrinter(df, "RNG")

@@ -131,14 +131,16 @@ class Feature(ObjectInterruption):
             # check Entity
             if self.entity == True:
                 self.victim.Res.users[0].set_feature(self.featureValue)
+                self.outputTrace(self.victim.Res.users[0].name, self.victim.Res.users[0].id, str(self.featureValue))
                 self.expectedSignals["victimEndsProcessing"] = 1
                 yield self.victimEndsProcessing
                 self.victimEndsProcessing = self.env.event()
-            # add Feature to DataFrame
-            if self.victim == None:
-                self.outputTrace("--", "--", str(self.featureValue))
             else:
-                self.outputTrace(self.victim.name, self.victim.id, str(self.featureValue))
+                # add Feature to DataFrame
+                if self.victim == None:
+                    self.outputTrace("--", "--", self.featureValue)
+                else:
+                    self.outputTrace(self.victim.name, self.victim.id, str(self.featureValue))
 
     def get_feature_value(self):
         return self.featureValue

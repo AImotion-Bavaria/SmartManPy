@@ -29,7 +29,7 @@ def main(test=0):
     runSimulation([S, M1, E1, Ftr1], maxSimTime, trace="Yes")
 
     df = G.get_simulation_results_dataframe().drop(columns=["entity_name", "station_name"])
-    ExcelPrinter(df, "Quality_Control_testing")
+    ExcelPrinter(df, "Quality_Control")
 
     print("""
             Ausschuss: {}
