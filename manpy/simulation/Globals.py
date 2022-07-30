@@ -599,3 +599,39 @@ def ExcelPrinter(df, filename):
             df[65535 * (i): 65535 * (i + 1)].to_excel(file)
     else:
         df.to_excel("{}.xls".format(filename))
+
+def dfProcessor(df):
+    for index, row in df.iterrows():        # transform entity id's to int, so the df can be sorted
+        df.at[index, "entity_id"] = int(row["entity_id"][4:])
+    control = df[df["message"].str.contains("Process control")].sort_values(by="entity_id")     # all rows which contain process control
+
+    # get number of parts, features
+    if control.empty:
+        parts = df["entity_id"].max()
+        m = int(df[df["station_id"].str.contains("M")]["station_id"].max()[1:]) + 1
+    else:
+        parts = control["entity_id"].max()
+        m = int(control["station_id"].max()[1:]) + 1
+    f = int(df[df["station_id"].str.contains("Ftr")]["station_id"].max()[3:]) + 1
+
+    # set the different columns as lists in a dictionary
+    data = {"Part" : list(control["entity_id"][:parts])}
+    for f in range(f):
+        feature = df[df["station_id"].str.contains("Ftr" + str(f))].sort_values(by="entity_id").iloc[:parts]
+        s = feature["station_name"].max()[1:]
+        data["S{}_F{}_t".format(s, f)] = list(feature["simulation_time"])
+        data["S{}_F{}_v".format(s, f)] = list(feature["message"])
+
+    for m in range(m):
+        station = control[control["station_id"].str.contains("M" + str(m))].iloc[:parts]
+        if len(station) > 0:
+            processControl = list(station["message"])
+            for i in processControl:
+                if "Fail" in i:
+                    processControl[processControl.index(i)] = "Fail"
+                else:
+                    processControl[processControl.index(i)] = "Success"
+            data["S{}_C".format(m)] = processControl
+
+    df = pd.DataFrame(data)
+    return df

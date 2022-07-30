@@ -157,7 +157,7 @@ class Feature(ObjectInterruption):
         """
         from manpy.simulation.Globals import G
 
-        G.trace_list.append([G.env.now, entity_name, entity_id, self.id, self.name, message])
+        G.trace_list.append([G.env.now, entity_name, entity_id, self.id, self.victim.id, message])
 
         entities_list = []
         now = G.env.now

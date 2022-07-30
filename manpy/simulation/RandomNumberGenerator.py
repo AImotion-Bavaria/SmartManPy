@@ -97,8 +97,8 @@ class RandomNumberGenerator(object):
                 parameters[key] = 0.0
         self.mean = str(parameters.get("mean", 0))
         self.stdev = str(parameters.get("stdev", 0))
-        self.min = str(parameters.get("min", 0))
-        self.max = str(parameters.get("max", 0))
+        self.min = str(parameters.get("min", None))
+        self.max = str(parameters.get("max", None))
         self.alpha = str(parameters.get("alpha", 0))
         self.beta = str(parameters.get("beta", 0))
         self.probability = str(parameters.get("probability", 0))
@@ -120,20 +120,34 @@ class RandomNumberGenerator(object):
         elif self.distributionType == "Exp":  # if the distribution is Exponential
             return rnd.exponential(eval(self.mean))
         elif self.distributionType == "Normal":  # if the distribution is Normal
-            if eval(self.max) < eval(self.min):
-                raise ValueError(
-                    "Normal distribution for %s uses wrong "
-                    "parameters. max (%s) > min (%s)"
-                    % (self.obj.id, eval(self.max), eval(self.min))
-                )
+            if (self.max != "None" and self.min != "None"):
+                if eval(self.max) < eval(self.min):
+                    raise ValueError(
+                        "Normal distribution for %s uses wrong "
+                        "parameters. max (%s) > min (%s)"
+                        % (self.obj.id, eval(self.max), eval(self.min))
+                    )
             while 1:
                 number = rnd.normal(eval(self.mean), eval(self.stdev))
-                if (number > eval(self.max) or number < eval(self.min) and eval(self.max) != 0):
-                    # if the number is out of bounds repeat the process
-                    ##if max=0 this means that we did not have time "time" bounds
-                    continue
-                else:  # if the number is in the limits stop the process
+                if self.max == "None" and self.min != "None":
+                    if number < eval(self.min):
+                        continue
+                    else:
+                        return number
+                elif self.max != "None" and self.min == "None":
+                    if number > eval(self.max):
+                        continue
+                    else:
+                        return number
+                elif self.max == "None" and self.min == "None":
                     return number
+                else:
+                    if (number > eval(self.max) or number < eval(self.min)):
+                        # if the number is out of bounds repeat the process
+                        ##if max=0 this means that we did not have time "time" bounds
+                        continue
+                    else:  # if the number is in the limits stop the process
+                        return number
         elif (self.distributionType == "Gamma" or self.distributionType == "Erlang"):
             # if the distribution is gamma or erlang
             # in case shape is given instead of alpha
