@@ -11,13 +11,12 @@ from manpy.simulation.Globals import runSimulation
 
 # define the objects of the model
 R = Repairman("R1", "Bob")
-S = Source(
-    "S1", "Source", interArrivalTime={"Fixed": {"mean": 0.5}}, entity="manpy.Part"
-)
+S = Source("S1", "Source", interArrivalTime={"Fixed": {"mean": 0.5}}, entity="manpy.Part")
 M1 = Machine("M1", "Machine1", processingTime={"Fixed": {"mean": 0.25}})
 Q = Queue("Q1", "Queue")
 M2 = Machine("M2", "Machine2", processingTime={"Fixed": {"mean": 1.5}})
 E = Exit("E1", "Exit")
+
 # create failures
 F1 = Failure(
     victim=M1,

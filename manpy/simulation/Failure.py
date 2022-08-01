@@ -53,7 +53,7 @@ class Failure(ObjectInterruption):
             self, distribution.get("TTF", {"Fixed": {"mean": 100}})
         )
         self.rngTTR = RandomNumberGenerator(
-            self, distribution.get("TTR", {"Fixed": {"mean": 10}})
+            self, distribution.get("TTR", {"Fixed": {"mean": 1}})
         )
         self.name = "F" + str(index)
         self.repairman = repairman  # the resource that may be needed to fix the failure
@@ -74,8 +74,9 @@ class Failure(ObjectInterruption):
 
     def initialize(self):
         ObjectInterruption.initialize(self)
-        self.victimStartsProcess = self.env.event()
-        self.victimEndsProcess = self.env.event()
+        self.victimStartsProcessing = self.env.event()
+        self.victimEndsProcessing = self.env.event()
+        self.contribution = self.env.event()
 
     def condition(self):
         #Overwrite this method to set a condition
@@ -85,12 +86,12 @@ class Failure(ObjectInterruption):
     #    The run method for the failure which has to served by a repairman
     # =======================================================================
     def run(self):
-        if self.condition != None:
+        if self.condition() != None:
             from .Globals import G
-            self.contribute = self.env.event()
             while 1:
-                yield self.contribute
-                self.contribute = self.env.event()
+                self.expectedSignals["contribution"] = 1
+                yield self.contribution
+                self.contribution = self.env.event()
 
                 if self.condition() == True:
                     self.interruptVictim()
@@ -208,34 +209,35 @@ class Failure(ObjectInterruption):
                 elif self.deteriorationType == "working":
                     # wait for victim to start process
 
-                    self.expectedSignals["victimStartsProcess"] = 1
+                    self.expectedSignals["victimStartsProcessing"] = 1
 
-                    yield self.victimStartsProcess
+                    yield self.victimStartsProcessing
 
-                    self.victimStartsProcess = self.env.event()
+                    self.victimStartsProcessing = self.env.event()
                     while failureNotTriggered:
                         timeRestartedCounting = self.env.now
 
-                        self.expectedSignals["victimEndsProcess"] = 1
+                        self.expectedSignals["victimEndsProcessing"] = 1
 
                         # wait either for the failure or end of process
                         receivedEvent = (
                             yield self.env.timeout(remainingTimeToFailure)
-                            | self.victimEndsProcess
+                            | self.victimEndsProcessing
                         )
-                        if self.victimEndsProcess in receivedEvent:
-                            self.victimEndsProcess = self.env.event()
+                        if self.victimEndsProcessing in receivedEvent:
+                            self.victimEndsProcessing = self.env.event()
                             remainingTimeToFailure = remainingTimeToFailure - (
                                 self.env.now - timeRestartedCounting
                             )
 
-                            self.expectedSignals["victimStartsProcess"] = 1
+                            self.expectedSignals["victimStartsProcessing"] = 1
 
-                            yield self.victimStartsProcess
+                            yield self.victimStartsProcessing
 
                             # wait for victim to start again processing
-                            self.victimStartsProcess = self.env.event()
+                            self.victimStartsProcessing = self.env.event()
                         else:
+                            self.expectedSignals["victimEndsProcessing"] = 0
                             failureNotTriggered = False
 
                 # if the mode is to wait on tie before interruption add a dummy hold for 0
@@ -249,7 +251,7 @@ class Failure(ObjectInterruption):
                             yield self.env.timeout(0)
 
                 # interrupt the victim
-                self.interruptVictim()  # interrupt the victim
+                self.interruptVictim()
 
                 # check in the ObjectInterruptions of the victim. If there is a one that is waiting for victimFailed send it
                 for oi in self.victim.objectInterruptions:

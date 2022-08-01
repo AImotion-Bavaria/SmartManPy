@@ -59,12 +59,13 @@ class Machine(CoreObject):
         repairman="None",
         operatorPool="None",
         operationType="None",
-        setupTime=None,
+        setupTime=0,
         loadTime=None,
         preemption={},
         canDeliverOnInterruption=False,
         technology=None,
         priority=0,
+        control=False,
         **kw,
     ):
         self.type = "Machine"  # String that shows the type of object
@@ -73,7 +74,9 @@ class Machine(CoreObject):
 
         processingTime = self.getOperationTime(time=processingTime)
 
+        self.setupTime = setupTime
         setupTime = self.getOperationTime(time=setupTime)
+
 
         loadTime = self.getOperationTime(time=loadTime)
 
@@ -177,6 +180,8 @@ class Machine(CoreObject):
         # attribute to prioritize against competing parallel machines
         self.priority = priority
         self.processed_entities = []
+        self.control = control
+        self.discards = []
 
     # =======================================================================
     # initialize the machine
@@ -221,7 +226,7 @@ class Machine(CoreObject):
         self.loadOperatorAvailable = self.env.event()
         # signal used for preemption
         self.preemptQueue = self.env.event()
-        # signal used for informing objectInterruption objects that the current entity processed has finished processnig
+        # signal used for informing objectInterruption objects that the current entity processed has finished processing
         self.endedLastProcessing = self.env.event()
 
         self.expectedSignals["isRequested"] = 1
@@ -233,6 +238,10 @@ class Machine(CoreObject):
         self.processOperatorUnavailable = self.env.event()
         # holds the Operator currently processing the Machine
         self.currentOperator = None
+
+    def condition(self):
+        #Overwrite this method to set a condition
+        return False
 
     @staticmethod
     def getOperationTime(time):
@@ -489,6 +498,7 @@ class Machine(CoreObject):
         # identify the method to get the operation time and initialise the totalOperationTime
         if type == "Setup":
             self.totalOperationTime = self.totalSetupTime
+            yield self.env.timeout(self.setupTime)
         elif type == "Processing":
             self.totalOperationTime = self.totalWorkingTime
             # if there are task_ids defined for each step
@@ -503,84 +513,99 @@ class Machine(CoreObject):
                             "task_id": self.currentEntity.currentStep["task_id"],
                         }
                     )
-        # variables dedicated to hold the processing times, the time when the Entity entered,
-        # and the processing time left
-        # get the operation time, tinMStarts holds the processing time of the machine
-        self.totalOperationTimeInCurrentEntity = self.calculateTime(type)
-        # timer to hold the operation time left
-        self.tinM = self.totalOperationTimeInCurrentEntity
-        self.timeToEndCurrentOperation = self.env.now + self.tinM
-        # variables used to flag any interruptions and the end of the processing
-        self.interruption = False
-        # local variable that is used to check whether the operation is concluded
-        operationNotFinished = True
-        # if there is a failure that depends on the working time of the Machine
-        # send it the victimStartsProcess signal
-        for oi in self.objectInterruptions:
-            if oi.type == "Failure":
-                if oi.deteriorationType == "working":
-                    if oi.expectedSignals["victimStartsProcessing"]:
-                        self.sendSignal(receiver=oi, signal=oi.victimStartsProcessing)
-        # this loop is repeated until the processing time is expired with no failure
-        # check when the processingEndedFlag switched to false
-        while operationNotFinished:
-            self.expectedSignals["interruptionStart"] = 1
-            self.expectedSignals["preemptQueue"] = 1
-            self.expectedSignals["processOperatorUnavailable"] = 1
-            # dummy variable to keep track of the time that the operation starts after every interruption
+            # variables dedicated to hold the processing times, the time when the Entity entered,
+            # and the processing time left
+            # get the operation time, tinMStarts holds the processing time of the machine
+            self.totalOperationTimeInCurrentEntity = self.calculateTime(type="Processing")
+            # timer to hold the operation time left
+            self.tinM = self.totalOperationTimeInCurrentEntity
+            self.timeToEndCurrentOperation = self.env.now + self.tinM
+            # variables used to flag any interruptions and the end of the processing
+            self.interruption = False
+            # local variable that is used to check whether the operation is concluded
+            operationNotFinished = True
+            # if there is a failure that depends on the working time of the Machine
+            # send it the victimStartsProcess signal
+            for oi in self.objectInterruptions:
+                if oi.type == "Failure":
+                    if oi.deteriorationType == "working":
+                        if oi.expectedSignals["victimStartsProcessing"]:
+                            self.sendSignal(receiver=oi, signal=oi.victimStartsProcessing)
+            # this loop is repeated until the processing time is expired with no failure
+            # check when the processingEndedFlag switched to false
+            while operationNotFinished:
+                self.expectedSignals["interruptionStart"] = 1
+                self.expectedSignals["preemptQueue"] = 1
+                self.expectedSignals["processOperatorUnavailable"] = 1
+                # dummy variable to keep track of the time that the operation starts after every interruption
 
-            # update timeLastOperationStarted both for Machine and Operator (if any)
-            self.timeLastOperationStarted = self.env.now
-            if self.currentOperator:
-                self.currentOperator.timeLastOperationStarted = self.env.now
-            #             # if the type is setup then the time to record is timeLastProcessingStarted
-            #             if type=='Setup':
-            #                 self.timeLastSetupStarted=self.timeLastOperationStarted
-            #             # else if the type is processing then the time to record is timeLastProcessingStarted
-            #             elif type=='Processing':
-            #                 self.timeLastProcessingStarted=self.timeLastOperationStarted
-            # processing starts, update the flags
-            self.isProcessing = True
-            self.currentlyPerforming = type
-            # wait for the processing time left tinM, if no interruption occurs then change the processingEndedFlag and exit loop,
-            #     else (if interrupted()) set interruption flag to true (only if tinM==0),
-            #     and recalculate the processing time left tinM, passivate while waiting for repair.
-            # if a preemption has occurred then react accordingly (proceed with getting the critical entity)
-            receivedEvent = yield self.env.any_of(
-                [
-                    self.interruptionStart,
-                    self.env.timeout(self.tinM),
-                    self.preemptQueue,
-                    self.processOperatorUnavailable,
-                ]
-            )
-            # if a failure occurs while processing the machine is interrupted.
-            if self.interruptionStart in receivedEvent:
-                transmitter, eventTime = self.interruptionStart.value
-                assert (
-                    eventTime == self.env.now
-                ), "the interruption has not been processed on the time of activation"
-                self.interruptionStart = self.env.event()
-                self.interruptionActions(type)  # execute interruption actions
-                # ===========================================================
-                # # release the operator if there is interruption
-                # ===========================================================
-                if self.shouldYield(
-                    operationTypes={str(type): 1}, methods={"isOperated": 1}
-                ):
-                    yield self.env.process(self.release())
-                # loop until we reach at a state that there is no interruption
-                while 1:
-                    self.expectedSignals["interruptionEnd"] = 1
-                    yield self.interruptionEnd  # interruptionEnd to be triggered by ObjectInterruption
-                    transmitter, eventTime = self.interruptionEnd.value
+                # update timeLastOperationStarted both for Machine and Operator (if any)
+                self.timeLastOperationStarted = self.env.now
+                if self.currentOperator:
+                    self.currentOperator.timeLastOperationStarted = self.env.now
+                #             # if the type is setup then the time to record is timeLastProcessingStarted
+                #             if type=='Setup':
+                #                 self.timeLastSetupStarted=self.timeLastOperationStarted
+                #             # else if the type is processing then the time to record is timeLastProcessingStarted
+                #             elif type=='Processing':
+                #                 self.timeLastProcessingStarted=self.timeLastOperationStarted
+                # processing starts, update the flags
+                self.isProcessing = True
+                self.currentlyPerforming = type
+                # wait for the processing time left tinM, if no interruption occurs then change the processingEndedFlag and exit loop,
+                #     else (if interrupted()) set interruption flag to true (only if tinM==0),
+                #     and recalculate the processing time left tinM, passivate while waiting for repair.
+                # if a preemption has occurred then react accordingly (proceed with getting the critical entity)
+                receivedEvent = yield self.env.any_of(
+                    [
+                        self.interruptionStart,
+                        self.env.timeout(self.tinM),
+                        self.preemptQueue,
+                        self.processOperatorUnavailable,
+                    ]
+                )
+                # if a failure occurs while processing the machine is interrupted.
+                if self.interruptionStart in receivedEvent:
+                    transmitter, eventTime = self.interruptionStart.value
                     assert (
                         eventTime == self.env.now
-                    ), "the interruptionEnd was received later than anticipated"
-                    self.interruptionEnd = self.env.event()
+                    ), "the interruption has not been processed on the time of activation"
+                    self.interruptionStart = self.env.event()
+                    self.interruptionActions(type)  # execute interruption actions
+                    # ===========================================================
+                    # # release the operator if there is interruption
+                    # ===========================================================
+                    if self.shouldYield(
+                        operationTypes={str(type): 1}, methods={"isOperated": 1}
+                    ):
+                        yield self.env.process(self.release())
+                    # loop until we reach at a state that there is no interruption
+                    while 1:
+                        self.expectedSignals["interruptionEnd"] = 1
+                        yield self.interruptionEnd  # interruptionEnd to be triggered by ObjectInterruption
+                        transmitter, eventTime = self.interruptionEnd.value
+                        assert (
+                            eventTime == self.env.now
+                        ), "the interruptionEnd was received later than anticipated"
+                        self.interruptionEnd = self.env.event()
 
-                    # check if the machine is active and break
-                    if self.checkIfActive():
+                        # check if the machine is active and break
+                        if self.checkIfActive():
+                            if self.shouldYield(
+                                operationTypes={str(type): 1}, methods={"isInterrupted": 0}
+                            ):
+                                self.timeWaitForOperatorStarted = self.env.now
+                                yield self.env.process(self.request())
+                                self.timeWaitForOperatorEnded = self.env.now
+                                self.operatorWaitTimeCurrentEntity += (
+                                    self.timeWaitForOperatorEnded
+                                    - self.timeWaitForOperatorStarted
+                                )
+                            break
+                        self.postInterruptionActions()  # execute interruption actions
+                        # ===========================================================
+                        # # request a resource after the repair
+                        # ===========================================================
                         if self.shouldYield(
                             operationTypes={str(type): 1}, methods={"isInterrupted": 0}
                         ):
@@ -591,79 +616,64 @@ class Machine(CoreObject):
                                 self.timeWaitForOperatorEnded
                                 - self.timeWaitForOperatorStarted
                             )
-                        break
-                    self.postInterruptionActions()  # execute interruption actions
+
+                # if the processing operator left
+                elif self.processOperatorUnavailable in receivedEvent:
+                    transmitter, eventTime = self.processOperatorUnavailable.value
+                    assert (
+                        self.env.now == eventTime
+                    ), "the operator leaving has not been processed at the time it should"
+                    self.processOperatorUnavailable = self.env.event()
+                    # carry interruption actions
+                    self.interruptionActions(type)
                     # ===========================================================
-                    # # request a resource after the repair
+                    # # release the operator
+                    # ===========================================================
+                    self.currentOperator.totalWorkingTime += (
+                        self.env.now - self.currentOperator.timeLastOperationStarted
+                    )
+                    yield self.env.process(self.release())
+                    from manpy.simulation.Globals import G
+
+                    # append the entity that was stopped to the pending ones
+                    if G.RouterList:
+                        G.pendingEntities.append(self.currentEntity)
+                    # ===========================================================
+                    # # request a resource after the interruption
+                    # ===========================================================
+                    self.timeWaitForOperatorStarted = self.env.now
+                    yield self.env.process(self.request())
+                    self.timeWaitForOperatorEnded = self.env.now
+                    self.operatorWaitTimeCurrentEntity += (
+                        self.timeWaitForOperatorEnded - self.timeWaitForOperatorStarted
+                    )
+                    # carry post interruption actions
+                    self.postInterruptionActions()
+
+                # if the station is reactivated by the preempt method
+                elif self.shouldPreempt:
+                    if self.preemptQueue in receivedEvent:
+                        transmitter, eventTime = self.preemptQueue.value
+                        assert (
+                            eventTime == self.env.now
+                        ), "the preemption must be performed on the time of request"
+                        self.preemptQueue = self.env.event()
+                        self.interruptionActions(type)  # execute interruption actions
+                    # ===========================================================
+                    # # release the operator if there is interruption
                     # ===========================================================
                     if self.shouldYield(
-                        operationTypes={str(type): 1}, methods={"isInterrupted": 0}
+                        operationTypes={str(self.currentlyPerforming): 1},
+                        methods={"isOperated": 1},
                     ):
-                        self.timeWaitForOperatorStarted = self.env.now
-                        yield self.env.process(self.request())
-                        self.timeWaitForOperatorEnded = self.env.now
-                        self.operatorWaitTimeCurrentEntity += (
-                            self.timeWaitForOperatorEnded
-                            - self.timeWaitForOperatorStarted
-                        )
-
-            # if the processing operator left
-            elif self.processOperatorUnavailable in receivedEvent:
-                transmitter, eventTime = self.processOperatorUnavailable.value
-                assert (
-                    self.env.now == eventTime
-                ), "the operator leaving has not been processed at the time it should"
-                self.processOperatorUnavailable = self.env.event()
-                # carry interruption actions
-                self.interruptionActions(type)
-                # ===========================================================
-                # # release the operator
-                # ===========================================================
-                self.currentOperator.totalWorkingTime += (
-                    self.env.now - self.currentOperator.timeLastOperationStarted
-                )
-                yield self.env.process(self.release())
-                from manpy.simulation.Globals import G
-
-                # append the entity that was stopped to the pending ones
-                if G.RouterList:
-                    G.pendingEntities.append(self.currentEntity)
-                # ===========================================================
-                # # request a resource after the interruption
-                # ===========================================================
-                self.timeWaitForOperatorStarted = self.env.now
-                yield self.env.process(self.request())
-                self.timeWaitForOperatorEnded = self.env.now
-                self.operatorWaitTimeCurrentEntity += (
-                    self.timeWaitForOperatorEnded - self.timeWaitForOperatorStarted
-                )
-                # carry post interruption actions
-                self.postInterruptionActions()
-
-            # if the station is reactivated by the preempt method
-            elif self.shouldPreempt:
-                if self.preemptQueue in receivedEvent:
-                    transmitter, eventTime = self.preemptQueue.value
-                    assert (
-                        eventTime == self.env.now
-                    ), "the preemption must be performed on the time of request"
-                    self.preemptQueue = self.env.event()
-                    self.interruptionActions(type)  # execute interruption actions
-                # ===========================================================
-                # # release the operator if there is interruption
-                # ===========================================================
-                if self.shouldYield(
-                    operationTypes={str(self.currentlyPerforming): 1},
-                    methods={"isOperated": 1},
-                ):
-                    yield self.env.process(self.release())
-                self.postInterruptionActions()  # execute interruption actions
-                break
-            # if no interruption occurred the processing in M1 is ended
-            else:
-                if self.processOperatorUnavailable.triggered:
-                    self.processOperatorUnavailable = self.env.event()
-                operationNotFinished = False
+                        yield self.env.process(self.release())
+                    self.postInterruptionActions()  # execute interruption actions
+                    break
+                # if no interruption occurred the processing in M1 is ended
+                else:
+                    if self.processOperatorUnavailable.triggered:
+                        self.processOperatorUnavailable = self.env.event()
+                    operationNotFinished = False
 
     # =======================================================================
     # the main process of the machine
@@ -1090,61 +1100,92 @@ class Machine(CoreObject):
             )
         # if the station has just concluded a processing turn then
         if type == "Processing":
-            # blocking starts
-            self.isBlocked = True
-            self.timeLastBlockageStarted = self.env.now
-            self.printTrace(
-                self.getActiveObjectQueue()[0].name, processEnd=self.objName
-            )
-            # output to trace that the processing in the Machine self.objName ended
-            try:
-                self.outputTrace(
-                    activeObjectQueue[0].name,
-                    activeObjectQueue[0].id,
-                    "Finished processing on " + str(self.id),
-                )
-            except IndexError:
-                pass
-            from .Globals import G
+            if self.control == True and self.condition() == True:
+                self.outputTrace(activeObjectQueue[0].name, activeObjectQueue[0].id, "Failed Process control")
+                self.removeEntity(activeEntity)
+                self.discards.append(activeEntity)
+                # blocking starts
+                self.isBlocked = True
+                self.timeLastBlockageStarted = self.env.now
+                from .Globals import G
+                # update the variables keeping track of Entity related attributes of the machine
+                self.timeLastEntityEnded = self.env.now
+                for oi in self.objectInterruptions:
+                    if oi.type == "Failure":
+                        if oi.deteriorationType == "working":
+                            if oi.expectedSignals["victimEndsProcessing"]:
+                                self.sendSignal(receiver=oi, signal=oi.victimEndsProcessing)
+                if self.isWorkingOnTheLast:
+                    # for the scheduled Object interruptions
+                    # XXX add the SkilledOperatorRouter to this list and perform the signalling only once
+                    for interruption in G.ObjectInterruptionList:
+                        # if the objectInterruption is waiting for a a signal
+                        if (
+                            interruption.victim == self
+                            and interruption.expectedSignals["endedLastProcessing"]
+                        ):
+                            self.sendSignal(receiver=self, signal=self.endedLastProcessing)
+                            interruption.waitingSignal = False
+                            self.isWorkingOnTheLast = False
+                    # set timeLastShiftEnded attribute so that if it is overtime working it is not counted as off-shift time
+                    if self.interruptedBy == "ShiftScheduler":
+                        self.timeLastShiftEnded = self.env.now
+            else:
+                if self.control == True:
+                    self.outputTrace(activeObjectQueue[0].name, activeObjectQueue[0].id, "Succeeded Process control")
+                # blocking starts
+                self.isBlocked = True
+                self.timeLastBlockageStarted = self.env.now
+                self.printTrace(self.getActiveObjectQueue()[0].name, processEnd=self.objName)
+                # output to trace that the processing in the Machine self.objName ended
+                try:
+                    self.outputTrace(
+                        activeObjectQueue[0].name,
+                        activeObjectQueue[0].id,
+                        "Finished processing on " + str(self.id),
+                    )
+                except IndexError:
+                    pass
+                from .Globals import G
 
-            if G.RouterList:
-                # the just processed entity is added to the list of entities
-                # pending for the next processing
-                G.pendingEntities.append(activeObjectQueue[0])
-            # set the variable that flags an Entity is ready to be disposed
-            self.waitToDispose = True
-            # update the variables keeping track of Entity related attributes of the machine
-            self.timeLastEntityEnded = (
-                self.env.now
-            )  # this holds the time that the last entity ended processing in Machine
-            self.nameLastEntityEnded = (
-                self.currentEntity.name
-            )  # this holds the name of the last entity that ended processing in Machine
-            self.completedJobs += 1  # Machine completed one more Job# it will be used
-            self.isProcessingInitialWIP = False
-            # if there is a failure that depends on the working time of the Machine
-            # send it the victimEndsProcess signal
-            for oi in self.objectInterruptions:
-                if oi.type == "Failure":
-                    if oi.deteriorationType == "working":
-                        if oi.expectedSignals["victimEndsProcessing"]:
-                            self.sendSignal(receiver=oi, signal=oi.victimEndsProcessing)
-            # in case Machine just performed the last work before the scheduled maintenance signal the corresponding object
-            if self.isWorkingOnTheLast:
-                # for the scheduled Object interruptions
-                # XXX add the SkilledOperatorRouter to this list and perform the signalling only once
-                for interruption in G.ObjectInterruptionList:
-                    # if the objectInterruption is waiting for a a signal
-                    if (
-                        interruption.victim == self
-                        and interruption.expectedSignals["endedLastProcessing"]
-                    ):
-                        self.sendSignal(receiver=self, signal=self.endedLastProcessing)
-                        interruption.waitingSignal = False
-                        self.isWorkingOnTheLast = False
-                # set timeLastShiftEnded attribute so that if it is overtime working it is not counted as off-shift time
-                if self.interruptedBy == "ShiftScheduler":
-                    self.timeLastShiftEnded = self.env.now
+                if G.RouterList:
+                    # the just processed entity is added to the list of entities
+                    # pending for the next processing
+                    G.pendingEntities.append(activeObjectQueue[0])
+                # set the variable that flags an Entity is ready to be disposed
+                self.waitToDispose = True
+                # update the variables keeping track of Entity related attributes of the machine
+                self.timeLastEntityEnded = (
+                    self.env.now
+                )  # this holds the time that the last entity ended processing in Machine
+                self.nameLastEntityEnded = (
+                    self.currentEntity.name
+                )  # this holds the name of the last entity that ended processing in Machine
+                self.completedJobs += 1  # Machine completed one more Job# it will be used
+                self.isProcessingInitialWIP = False
+                # if there is a failure that depends on the working time of the Machine
+                # send it the victimEndsProcess signal
+                for oi in self.objectInterruptions:
+                    if oi.type == "Failure":
+                        if oi.deteriorationType == "working":
+                            if oi.expectedSignals["victimEndsProcessing"]:
+                                self.sendSignal(receiver=oi, signal=oi.victimEndsProcessing)
+                # in case Machine just performed the last work before the scheduled maintenance signal the corresponding object
+                if self.isWorkingOnTheLast:
+                    # for the scheduled Object interruptions
+                    # XXX add the SkilledOperatorRouter to this list and perform the signalling only once
+                    for interruption in G.ObjectInterruptionList:
+                        # if the objectInterruption is waiting for a a signal
+                        if (
+                            interruption.victim == self
+                            and interruption.expectedSignals["endedLastProcessing"]
+                        ):
+                            self.sendSignal(receiver=self, signal=self.endedLastProcessing)
+                            interruption.waitingSignal = False
+                            self.isWorkingOnTheLast = False
+                    # set timeLastShiftEnded attribute so that if it is overtime working it is not counted as off-shift time
+                    if self.interruptedBy == "ShiftScheduler":
+                        self.timeLastShiftEnded = self.env.now
 
     # =======================================================================
     # actions to be carried out when the processing of an Entity ends
