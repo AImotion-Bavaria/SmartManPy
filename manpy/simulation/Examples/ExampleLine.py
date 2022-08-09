@@ -1,5 +1,5 @@
 from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue
-from manpy.simulation.Globals import runSimulation, G, dfProcessor
+from manpy.simulation.Globals import runSimulation, G, dfProcessor, ExcelPrinter
 
 class Machine_control(Machine):
     def condition(self):
@@ -32,6 +32,7 @@ Kraft = Feature("Ftr3", "Feature4", victim=Löten, entity=True,
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 180, "stdev": 30}}})
 Einsinktiefe = Feature("Ftr4", "Feature5", victim=Löten, entity=True,
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 400, "stdev": 50}}})
+
 #Kleben
 Durchflussgeschwindigkeit = Feature("Ftr5", "Feature6", victim=Kleben, entity=True,
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 50, "stdev": 5}}})
@@ -39,6 +40,8 @@ Temperatur = Feature("Ftr6", "Feature7", victim=Kleben, entity=True,
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 190, "stdev": 10}}})
 Menge = Feature("Ftr7", "Feature8", victim=Kleben, entity=True,
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 400, "stdev": 50}}})
+StecktFest = Failure("Flr0","Failure0", victim=Kleben, entity=True,
+               distribution={"TTF": {"Fixed": {"mean": 0}}, "TTR": {"Normal": {"mean": 2,"stdev": 0.2, "min":0, "probability": 0.05}}})
 
 
 # Routing
@@ -51,12 +54,13 @@ E1.defineRouting([Kleben])
 
 def main(test=0):
     maxSimTime = 480
-    objectList = [S, Löten, Q, Kleben, E1, Spannung, Strom, Widerstand, Kraft, Einsinktiefe, Durchflussgeschwindigkeit, Temperatur, Menge]
+    objectList = [S, Löten, Q, Kleben, E1, StecktFest, Spannung, Strom, Widerstand, Kraft, Einsinktiefe, Durchflussgeschwindigkeit, Temperatur, Menge]
 
     # runSim with trace
     runSimulation(objectList, maxSimTime, trace="Yes")
 
     df = G.get_simulation_results_dataframe().drop(columns=["entity_name"])
+    #ExcelPrinter(df, "ExampleLine")
     df = dfProcessor(df)
     df.to_csv("ExampleLine.csv", index=False, encoding="utf8")
 

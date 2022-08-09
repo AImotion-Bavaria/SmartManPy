@@ -589,6 +589,7 @@ class Machine(CoreObject):
                         ), "the interruptionEnd was received later than anticipated"
                         self.interruptionEnd = self.env.event()
 
+                        self.postInterruptionActions()  # execute interruption actions
                         # check if the machine is active and break
                         if self.checkIfActive():
                             if self.shouldYield(
@@ -602,7 +603,7 @@ class Machine(CoreObject):
                                     - self.timeWaitForOperatorStarted
                                 )
                             break
-                        self.postInterruptionActions()  # execute interruption actions
+
                         # ===========================================================
                         # # request a resource after the repair
                         # ===========================================================
@@ -994,9 +995,7 @@ class Machine(CoreObject):
                         while 1:
                             self.expectedSignals["interruptionEnd"] = 1
                             if not self.canDeliverOnInterruption:
-                                receivedEvent = (
-                                    yield self.interruptionEnd
-                                )  # interruptionEnd to be triggered by ObjectInterruption
+                                receivedEvent = (yield self.interruptionEnd)  # interruptionEnd to be triggered by ObjectInterruption
                             # if the object canDeliverOnInterruption then it has to wait also for canDispose
                             else:
                                 self.expectedSignals["canDispose"] = 1
@@ -1194,6 +1193,11 @@ class Machine(CoreObject):
         # if object was processing add the working time
         # only if object is not preempting though
         # in case of preemption endProcessingActions will be called
+        for oi in self.objectInterruptions:
+            if oi.type == "Failure":
+                if oi.deteriorationType == "working":
+                    if oi.expectedSignals["victimIsInterrupted"]:
+                        self.sendSignal(receiver=oi, signal=oi.victimIsInterrupted)
         if self.isProcessing and not self.shouldPreempt:
             self.totalOperationTime += self.env.now - self.timeLastOperationStarted
             if type == "Processing":
@@ -1246,6 +1250,11 @@ class Machine(CoreObject):
     # actions to be carried out when the processing of an Entity ends
     # =======================================================================
     def postInterruptionActions(self):
+        for oi in self.objectInterruptions:
+            if oi.type == "Failure":
+                if oi.deteriorationType == "working":
+                    if oi.expectedSignals["victimResumesProcessing"]:
+                        self.sendSignal(receiver=oi, signal=oi.victimResumesProcessing)
         activeObjectQueue = self.Res.users
         if len(activeObjectQueue):
             activeEntity = activeObjectQueue[0]

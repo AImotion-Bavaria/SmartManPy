@@ -60,6 +60,8 @@ class Feature(ObjectInterruption):
         ObjectInterruption.initialize(self)
         self.victimStartsProcessing = self.env.event()
         self.victimEndsProcessing = self.env.event()
+        self.victimIsInterrupted = self.env.event()
+        self.victimResumesProcessing = self.env.event()
 
     def run(self):
         """Every Object has to have a run method. Simpy is mainly used in this function
@@ -96,9 +98,10 @@ class Feature(ObjectInterruption):
                 while featureNotTriggered:
                     timeRestartedCounting = self.env.now
                     self.expectedSignals["victimEndsProcessing"] = 1
+                    self.expectedSignals["victimIsInterrupted"] = 1
 
                     # wait either for the feature or end of process
-                    receivedEvent = yield self.env.any_of([self.env.timeout(remainingTimeTillFeature), self.victimEndsProcessing])
+                    receivedEvent = yield self.env.any_of([self.env.timeout(remainingTimeTillFeature), self.victimEndsProcessing, self.victimIsInterrupted])
                     if self.victimEndsProcessing in receivedEvent:
                         self.victimEndsProcessing = self.env.event()
                         remainingTimeTillFeature = remainingTimeTillFeature - (self.env.now - timeRestartedCounting)
@@ -107,8 +110,17 @@ class Feature(ObjectInterruption):
                         self.expectedSignals["victimStartsProcessing"] = 1
                         yield self.victimStartsProcessing
                         self.victimStartsProcessing = self.env.event()
+                    elif self.victimIsInterrupted in receivedEvent:
+                        self.victimIsInterrupted = self.env.event()
+                        remainingTimeTillFeature = remainingTimeTillFeature - (self.env.now - timeRestartedCounting)
+
+                        # wait for victim to start processing again
+                        self.expectedSignals["victimResumesProcessing"] = 1
+                        yield self.victimResumesProcessing
+                        self.victimResumesProcessing = self.env.event()
                     else:
                         self.expectedSignals["victimEndsProcessing"] = 0
+                        self.expectedSignals["victimIsInterrupted"] = 0
                         remainingTimeTillFeature = None
                         featureNotTriggered = False
 

@@ -115,6 +115,9 @@ class RandomNumberGenerator(object):
         if x < 0:
             return None
 
+        if eval(self.probability) != 0:
+            if rnd.binomial(1, eval(self.probability)) == 0:
+                return 0
         if self.distributionType == "Fixed":  # if the distribution is Fixed
             return eval(self.mean)
         elif self.distributionType == "Exp":  # if the distribution is Exponential
@@ -160,7 +163,7 @@ class RandomNumberGenerator(object):
         elif self.distributionType == "Logistic":  # if the distribution is Logistic
             return rnd.logistic(eval(self.location), eval(self.scale))
         elif self.distributionType == "Geometric":  # if the distribution is Geometric
-            return rnd.geometric(eval(self.probability))
+            return rnd.geometric(eval(self.mean))
         elif self.distributionType == "Lognormal":  # if the distribution is Lognormal
             return rnd.lognormal(eval(self.mean), eval(self.stdev))
         elif self.distributionType == "Weibull":  # if the distribution is Weibull

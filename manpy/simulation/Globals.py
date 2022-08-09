@@ -605,22 +605,49 @@ def dfProcessor(df):
         df.at[index, "entity_id"] = int(row["entity_id"][4:])
     control = df[df["message"].str.contains("Process control")].sort_values(by="entity_id")     # all rows which contain process control
 
-    # get number of parts, features
-    if control.empty:
-        parts = df["entity_id"].max()
-        m = int(df[df["station_id"].str.contains("M")]["station_id"].max()[1:]) + 1
-    else:
-        parts = control["entity_id"].max()
-        m = int(control["station_id"].max()[1:]) + 1
-    f = int(df[df["station_id"].str.contains("Ftr")]["station_id"].max()[3:]) + 1
+    # get number of machines, parts, features, failures
+    m = int(df[df["station_id"].str.contains("M")]["station_id"].max()[1:]) + 1
+    parts = int(df[df["message"].str.contains("Finished processing on M" + str(m - 1))]["entity_id"].max()) + 1
+    ftr = int(df[df["station_id"].str.contains("Ftr")]["station_id"].max()[3:]) + 1
+    flr = int(df[df["station_id"].str.contains("Flr")]["station_id"].max()[3:]) + 1
 
     # set the different columns as lists in a dictionary
     data = {"Part" : list(control["entity_id"][:parts])}
-    for f in range(f):
-        feature = df[df["station_id"].str.contains("Ftr" + str(f))].sort_values(by="entity_id").iloc[:parts]
+    for ftr in range(ftr):
+        feature = df[df["station_id"].str.contains("Ftr" + str(ftr))].sort_values(by="entity_id").iloc[:parts]
         s = feature["station_name"].max()[1:]
-        data["S{}_F{}_t".format(s, f)] = list(feature["simulation_time"])
-        data["S{}_F{}_v".format(s, f)] = list(feature["message"])
+        if len(feature) < parts:
+            if feature["entity_id"].max() > parts:
+                feature = feature.iloc[:len(feature)-1]
+            sim_time = [None] * parts
+            message = [None] * parts
+            indexing = list(feature["entity_id"])
+            for i in indexing:
+                sim_time[i] = list(feature["simulation_time"])[indexing.index(i)]
+                message[i] = list(feature["message"])[indexing.index(i)]
+            data["S{}_Ftr{}_t".format(s, ftr)] = sim_time
+            data["S{}_Ftr{}_v".format(s, ftr)] = message
+        else:
+            data["S{}_Ftr{}_t".format(s, ftr)] = list(feature["simulation_time"])
+            data["S{}_Ftr{}_v".format(s, ftr)] = list(feature["message"])
+
+    for flr in range(flr):
+        failure = df[df["station_id"].str.contains("Flr" + str(flr))].sort_values(by="entity_id")
+        s = failure["station_name"].max()[1:]
+        end = list(failure[failure["message"].str.contains("up")]["simulation_time"].iloc[:parts])
+        start = list(failure[failure["message"].str.contains("down")]["simulation_time"].iloc[:len(end)].iloc[:parts])
+        indexing = list(failure[failure["message"].str.contains("up")]["entity_id"])
+        if len(indexing) < parts:
+            start_time = [None] * parts
+            end_time = [None] * parts
+            for i in indexing:
+                start_time[i] = start[indexing.index(i)]
+                end_time[i] = end[indexing.index(i)]
+            data["S{}_Flr{}_s".format(s, flr)] = start_time
+            data["S{}_Flr{}_e".format(s, flr)] = end_time
+        else:
+            data["S{}_Flr{}_s".format(s, flr)] = list(start["simulation_time"])
+            data["S{}_Flr{}_e".format(s, flr)] = list(end["simulation_time"])
 
     for m in range(m):
         station = control[control["station_id"].str.contains("M" + str(m))].iloc[:parts]
