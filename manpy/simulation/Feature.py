@@ -49,7 +49,7 @@ class Feature(ObjectInterruption):
         self.start_time = start_time
         self.featureValue = start_value
         self.random_walk = random_walk
-        self.type = "Failure"
+        self.type = "Feature"
 
     def initialize(self):
         if self.entity == True:
@@ -142,7 +142,7 @@ class Feature(ObjectInterruption):
                         self.sendSignal(receiver=c, signal=c.contribution)
             # check Entity
             if self.entity == True:
-                self.victim.Res.users[0].set_feature(self.featureValue)
+                self.victim.Res.users[0].set_feature(self.featureValue, self.env.now)
                 self.outputTrace(self.victim.Res.users[0].name, self.victim.Res.users[0].id, str(self.featureValue))
                 self.expectedSignals["victimEndsProcessing"] = 1
                 yield self.victimEndsProcessing
@@ -167,18 +167,20 @@ class Feature(ObjectInterruption):
 
         :return: None
         """
-        from manpy.simulation.Globals import G
+        from .Globals import G
 
-        G.trace_list.append([G.env.now, entity_name, entity_id, self.id, self.victim.id, message])
+        if G.trace:
+            G.trace_list.append([G.env.now, entity_name, entity_id, self.id, self.victim.id, message])
 
-        entities_list = []
-        now = G.env.now
+        if G.snapshots:
+            entities_list = []
+            now = G.env.now
 
-        for obj in G.ObjList:
-            if obj.type == "Machine":
-                entities = [x.id for x in obj.Res.users]
-                entities_list.append((now, obj.id, entities))
+            for obj in G.ObjList:
+                if obj.type == "Machine":
+                    entities = [x.id for x in obj.Res.users]
+                    entities_list.append((now, obj.id, entities))
 
-        snapshot = pd.DataFrame(entities_list, columns=["sim_time", "station_id", "entities"])
-        if not G.simulation_snapshots[-1].equals(snapshot):
-            G.simulation_snapshots.append(snapshot)
+            snapshot = pd.DataFrame(entities_list, columns=["sim_time", "station_id", "entities"])
+            if not G.simulation_snapshots[-1].equals(snapshot):
+                G.simulation_snapshots.append(snapshot)

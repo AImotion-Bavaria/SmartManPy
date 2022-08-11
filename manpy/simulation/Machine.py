@@ -527,7 +527,7 @@ class Machine(CoreObject):
             # if there is a failure that depends on the working time of the Machine
             # send it the victimStartsProcess signal
             for oi in self.objectInterruptions:
-                if oi.type == "Failure":
+                if oi.type == "Failure" or oi.type == "Feature":
                     if oi.deteriorationType == "working":
                         if oi.expectedSignals["victimStartsProcessing"]:
                             self.sendSignal(receiver=oi, signal=oi.victimStartsProcessing)
@@ -1110,7 +1110,7 @@ class Machine(CoreObject):
                 # update the variables keeping track of Entity related attributes of the machine
                 self.timeLastEntityEnded = self.env.now
                 for oi in self.objectInterruptions:
-                    if oi.type == "Failure":
+                    if oi.type == "Failure" or oi.type == "Feature":
                         if oi.deteriorationType == "working":
                             if oi.expectedSignals["victimEndsProcessing"]:
                                 self.sendSignal(receiver=oi, signal=oi.victimEndsProcessing)
@@ -1165,7 +1165,7 @@ class Machine(CoreObject):
                 # if there is a failure that depends on the working time of the Machine
                 # send it the victimEndsProcess signal
                 for oi in self.objectInterruptions:
-                    if oi.type == "Failure":
+                    if oi.type == "Failure" or oi.type == "Feature":
                         if oi.deteriorationType == "working":
                             if oi.expectedSignals["victimEndsProcessing"]:
                                 self.sendSignal(receiver=oi, signal=oi.victimEndsProcessing)
@@ -1194,7 +1194,7 @@ class Machine(CoreObject):
         # only if object is not preempting though
         # in case of preemption endProcessingActions will be called
         for oi in self.objectInterruptions:
-            if oi.type == "Failure":
+            if oi.type == "Failure" or oi.type == "Feature":
                 if oi.deteriorationType == "working":
                     if oi.expectedSignals["victimIsInterrupted"]:
                         self.sendSignal(receiver=oi, signal=oi.victimIsInterrupted)
@@ -1251,7 +1251,7 @@ class Machine(CoreObject):
     # =======================================================================
     def postInterruptionActions(self):
         for oi in self.objectInterruptions:
-            if oi.type == "Failure":
+            if oi.type == "Failure" or oi.type == "Feature":
                 if oi.deteriorationType == "working":
                     if oi.expectedSignals["victimResumesProcessing"]:
                         self.sendSignal(receiver=oi, signal=oi.victimResumesProcessing)

@@ -1,5 +1,8 @@
 from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue
-from manpy.simulation.Globals import runSimulation, G, dfProcessor, ExcelPrinter
+from manpy.simulation.Globals import runSimulation, G, ExcelPrinter
+import time
+
+start = time.time()
 
 class Machine_control(Machine):
     def condition(self):
@@ -14,7 +17,7 @@ class Machine_control(Machine):
 
 
 # Objects
-S = Source("S1", "Source", interArrivalTime={"Fixed": {"mean": 0.1}}, entity="manpy.Part", capacity=100)
+S = Source("S1", "Source", interArrivalTime={"Fixed": {"mean": 0.4}}, entity="manpy.Part", capacity=1)
 Löten = Machine("M0", "Löten", processingTime={"Normal": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}})
 Q = Queue("Q", "Queue")
 Kleben = Machine_control("M1", "Kleben", processingTime={"Fixed": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}}, control=True)
@@ -40,6 +43,7 @@ Temperatur = Feature("Ftr6", "Feature7", victim=Kleben, entity=True,
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 190, "stdev": 10}}})
 Menge = Feature("Ftr7", "Feature8", victim=Kleben, entity=True,
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 400, "stdev": 50}}})
+
 StecktFest = Failure("Flr0","Failure0", victim=Kleben, entity=True,
                distribution={"TTF": {"Fixed": {"mean": 0}}, "TTR": {"Normal": {"mean": 2,"stdev": 0.2, "min":0, "probability": 0.05}}})
 
@@ -53,21 +57,21 @@ E1.defineRouting([Kleben])
 
 
 def main(test=0):
-    maxSimTime = 480
+    maxSimTime = 5000
     objectList = [S, Löten, Q, Kleben, E1, StecktFest, Spannung, Strom, Widerstand, Kraft, Einsinktiefe, Durchflussgeschwindigkeit, Temperatur, Menge]
 
-    # runSim with trace
-    runSimulation(objectList, maxSimTime, trace="Yes")
+    runSimulation(objectList, maxSimTime)
 
-    df = G.get_simulation_results_dataframe().drop(columns=["entity_name"])
-    #ExcelPrinter(df, "ExampleLine")
-    df = dfProcessor(df)
+    df = G.get_entity_data()
     df.to_csv("ExampleLine.csv", index=False, encoding="utf8")
 
     print("""
-            Ausschuss: {}
-            Produziert: {}
-            """.format(len(Kleben.discards), E1.numOfExits))
+            Ausschuss:          {}
+            Produziert:         {}
+            Blockiert für:      {:.2f}
+            Simulationszeit:    {}
+            Laufzeit:           {:.2f}
+            """.format(len(Kleben.discards), E1.numOfExits, Kleben.totalBlockageTime, maxSimTime, time.time() - start))
 
 if __name__ == "__main__":
     main()
