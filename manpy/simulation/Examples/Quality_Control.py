@@ -1,4 +1,4 @@
-from manpy.simulation.imports import Repairman, Machine, Source, Exit, Failure, Feature
+from manpy.simulation.imports import Machine, Source, Exit, Feature
 from manpy.simulation.Globals import runSimulation, G, ExcelPrinter
 
 class Machine_control(Machine):
@@ -26,7 +26,7 @@ def main(test=0):
     maxSimTime = 480
 
     # runSim with trace
-    runSimulation([S, M1, E1, Ftr1], maxSimTime, trace="Yes")
+    runSimulation([S, M1, E1, Ftr1], maxSimTime, trace=True)
 
     df = G.get_simulation_results_dataframe().drop(columns=["entity_name", "station_name"])
     ExcelPrinter(df, "Quality_Control")

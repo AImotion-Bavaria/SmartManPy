@@ -170,7 +170,7 @@ class Feature(ObjectInterruption):
         from .Globals import G
 
         if G.trace:
-            G.trace_list.append([G.env.now, entity_name, entity_id, self.id, self.victim.id, message])
+            G.trace_list.append([G.env.now, entity_name, entity_id, self.id, self.id, message])
 
         if G.snapshots:
             entities_list = []

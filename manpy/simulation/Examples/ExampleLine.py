@@ -1,5 +1,5 @@
 from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue
-from manpy.simulation.Globals import runSimulation, G, ExcelPrinter
+from manpy.simulation.Globals import runSimulation, getEntityData
 import time
 
 start = time.time()
@@ -62,7 +62,7 @@ def main(test=0):
 
     runSimulation(objectList, maxSimTime)
 
-    df = G.get_entity_data()
+    df = getEntityData()
     df.to_csv("ExampleLine.csv", index=False, encoding="utf8")
 
     print("""

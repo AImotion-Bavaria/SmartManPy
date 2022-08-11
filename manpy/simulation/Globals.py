@@ -180,36 +180,6 @@ class G:
 
         return entity_hist
 
-    @staticmethod
-    def get_entity_data():
-        feature_index = 0
-        ftr_st = []         # list of (features, corresponding station)
-        columns = []        # name of columns
-        df_list = []        # list for the DataFrame
-
-        # set stations
-        for oi in G.ObjectInterruptionList:
-            if oi.type == "Feature":
-                ftr_st.append((feature_index, int(oi.victim.id[1:])))
-                feature_index += 1
-
-        # set columns
-        for ftr in ftr_st:
-            columns.append("S{}_Ftr{}_t".format(ftr[1], ftr[0]))
-            columns.append("S{}_Ftr{}_v".format(ftr[1], ftr[0]))
-
-        # set df_list
-        for entity in G.EntityList:
-            l = [None] * len(entity.features) * 2
-            for i in range(len(l)):
-                if i % 2 == 0:
-                    l[i] = entity.feature_times[i//2]
-                else:
-                    l[i] = entity.features[i//2]
-            df_list.append(l)
-
-        return pd.DataFrame(df_list, columns = columns)
-
 
 # =======================================================================
 # method to move entities exceeding a certain safety stock
@@ -622,7 +592,6 @@ def runSimulation(
             object.postProcessing()
 
 def ExcelPrinter(df, filename):
-    #df = G.get_simulation_results_dataframe()
     number_sheets = df.shape[0] // 65535 + 1
 
     if number_sheets > 1:
@@ -632,3 +601,31 @@ def ExcelPrinter(df, filename):
     else:
         df.to_excel("{}.xls".format(filename))
 
+def getEntityData() -> pd.DataFrame:
+    feature_index = 0
+    ftr_st = []         # list of (features, corresponding station)
+    columns = []        # name of columns
+    df_list = []        # list for the DataFrame
+
+    # set stations
+    for oi in G.ObjectInterruptionList:
+        if oi.type == "Feature":
+            ftr_st.append((feature_index, int(oi.victim.id[1:])))
+            feature_index += 1
+
+    # set columns
+    for ftr in ftr_st:
+        columns.append("S{}_Ftr{}_t".format(ftr[1], ftr[0]))
+        columns.append("S{}_Ftr{}_v".format(ftr[1], ftr[0]))
+
+    # set df_list
+    for entity in G.EntityList:
+        l = [None] * len(entity.features) * 2
+        for i in range(len(l)):
+            if i % 2 == 0:
+                l[i] = entity.feature_times[i//2]
+            else:
+                l[i] = entity.features[i//2]
+        df_list.append(l)
+
+    return pd.DataFrame(df_list, columns = columns)
