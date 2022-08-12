@@ -115,9 +115,11 @@ class RandomNumberGenerator(object):
         if x < 0:
             return None
 
+        # checks if probability has been set and rolls if a number should be generated
         if eval(self.probability) != 0:
             if rnd.binomial(1, eval(self.probability)) == 0:
                 return 0
+
         if self.distributionType == "Fixed":  # if the distribution is Fixed
             return eval(self.mean)
         elif self.distributionType == "Exp":  # if the distribution is Exponential

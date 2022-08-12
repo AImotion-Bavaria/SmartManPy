@@ -325,25 +325,3 @@ class Failure(ObjectInterruption):
                     self.reactivateVictim()  # since repairing is over, the Machine is reactivated
                     self.victim.Up = True
                     self.outputTrace(self.victim.name, self.victim.id,  "is up")
-
-    def outputTrace(self, entity_name: str, entity_id: str, message: str):
-        from .Globals import G
-
-        if G.trace:
-            if self.entity == True:
-                G.trace_list.append([G.env.now, self.victim.Res.users[0].name, self.victim.Res.users[0].id, self.id, self.victim.id, message])
-            else:
-                G.trace_list.append([G.env.now, entity_name, entity_id, self.id, self.name, message])
-
-        if G.snapshots:
-            entities_list = []
-            now = G.env.now
-
-            for obj in G.ObjList:
-                if obj.type == "Machine":
-                    entities = [x.id for x in obj.Res.users]
-                    entities_list.append((now, obj.id, entities))
-
-            snapshot = pd.DataFrame(entities_list, columns=["sim_time", "station_id", "entities"])
-            if not G.simulation_snapshots[-1].equals(snapshot):
-                G.simulation_snapshots.append(snapshot)

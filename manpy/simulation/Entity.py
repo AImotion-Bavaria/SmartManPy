@@ -97,6 +97,7 @@ class Entity(ManPyObject):
         self.remainingSetupTime = remainingSetupTime
         self.status = status
         self.features = []
+        self.feature_times = []
 
     # ===========================================================================
     # return the responsible operator for the current step, not implemented for entities
@@ -134,5 +135,6 @@ class Entity(ManPyObject):
     def getRequiredParts(self):
         return []
 
-    def set_feature(self, feature):
+    def set_feature(self, feature, time):
         self.features.append(feature)
+        self.feature_times.append(time)

@@ -510,16 +510,18 @@ def runSimulation(
     objectList=[],
     maxSimTime=100,
     numberOfReplications=1,
-    trace="No",
+    trace=False,
     snapshots=False,
     seed=1,
     env=None,
+    data="No"
 ):
     G.numberOfReplications = numberOfReplications
     G.trace = trace
     G.snapshots = snapshots
     G.maxSimTime = float(maxSimTime)
     G.seed = seed
+    G.data = data
 
     G.ObjList = []
     G.ObjectInterruptionList = []
@@ -590,7 +592,6 @@ def runSimulation(
             object.postProcessing()
 
 def ExcelPrinter(df, filename):
-    #df = G.get_simulation_results_dataframe()
     number_sheets = df.shape[0] // 65535 + 1
 
     if number_sheets > 1:
@@ -600,65 +601,31 @@ def ExcelPrinter(df, filename):
     else:
         df.to_excel("{}.xls".format(filename))
 
-def dfProcessor(df):
-    for index, row in df.iterrows():        # transform entity id's to int, so the df can be sorted
-        df.at[index, "entity_id"] = int(row["entity_id"][4:])
-    control = df[df["message"].str.contains("Process control")].sort_values(by="entity_id")     # all rows which contain process control
+def getEntityData() -> pd.DataFrame:
+    feature_index = 0
+    ftr_st = []         # list of (features, corresponding station)
+    columns = []        # name of columns
+    df_list = []        # list for the DataFrame
 
-    # get number of machines, parts, features, failures
-    m = int(df[df["station_id"].str.contains("M")]["station_id"].max()[1:]) + 1
-    parts = int(df[df["message"].str.contains("Finished processing on M" + str(m - 1))]["entity_id"].max()) + 1
-    ftr = int(df[df["station_id"].str.contains("Ftr")]["station_id"].max()[3:]) + 1
-    flr = int(df[df["station_id"].str.contains("Flr")]["station_id"].max()[3:]) + 1
+    # set stations
+    for oi in G.ObjectInterruptionList:
+        if oi.type == "Feature":
+            ftr_st.append((feature_index, int(oi.victim.id[1:])))
+            feature_index += 1
 
-    # set the different columns as lists in a dictionary
-    data = {"Part" : list(control["entity_id"][:parts])}
-    for ftr in range(ftr):
-        feature = df[df["station_id"].str.contains("Ftr" + str(ftr))].sort_values(by="entity_id").iloc[:parts]
-        s = feature["station_name"].max()[1:]
-        if len(feature) < parts:
-            if feature["entity_id"].max() > parts:
-                feature = feature.iloc[:len(feature)-1]
-            sim_time = [None] * parts
-            message = [None] * parts
-            indexing = list(feature["entity_id"])
-            for i in indexing:
-                sim_time[i] = list(feature["simulation_time"])[indexing.index(i)]
-                message[i] = list(feature["message"])[indexing.index(i)]
-            data["S{}_Ftr{}_t".format(s, ftr)] = sim_time
-            data["S{}_Ftr{}_v".format(s, ftr)] = message
-        else:
-            data["S{}_Ftr{}_t".format(s, ftr)] = list(feature["simulation_time"])
-            data["S{}_Ftr{}_v".format(s, ftr)] = list(feature["message"])
+    # set columns
+    for ftr in ftr_st:
+        columns.append("S{}_Ftr{}_t".format(ftr[1], ftr[0]))
+        columns.append("S{}_Ftr{}_v".format(ftr[1], ftr[0]))
 
-    for flr in range(flr):
-        failure = df[df["station_id"].str.contains("Flr" + str(flr))].sort_values(by="entity_id")
-        s = failure["station_name"].max()[1:]
-        end = list(failure[failure["message"].str.contains("up")]["simulation_time"].iloc[:parts])
-        start = list(failure[failure["message"].str.contains("down")]["simulation_time"].iloc[:len(end)].iloc[:parts])
-        indexing = list(failure[failure["message"].str.contains("up")]["entity_id"])
-        if len(indexing) < parts:
-            start_time = [None] * parts
-            end_time = [None] * parts
-            for i in indexing:
-                start_time[i] = start[indexing.index(i)]
-                end_time[i] = end[indexing.index(i)]
-            data["S{}_Flr{}_s".format(s, flr)] = start_time
-            data["S{}_Flr{}_e".format(s, flr)] = end_time
-        else:
-            data["S{}_Flr{}_s".format(s, flr)] = list(start["simulation_time"])
-            data["S{}_Flr{}_e".format(s, flr)] = list(end["simulation_time"])
+    # set df_list
+    for entity in G.EntityList:
+        l = [None] * len(entity.features) * 2
+        for i in range(len(l)):
+            if i % 2 == 0:
+                l[i] = entity.feature_times[i//2]
+            else:
+                l[i] = entity.features[i//2]
+        df_list.append(l)
 
-    for m in range(m):
-        station = control[control["station_id"].str.contains("M" + str(m))].iloc[:parts]
-        if len(station) > 0:
-            processControl = list(station["message"])
-            for i in processControl:
-                if "Fail" in i:
-                    processControl[processControl.index(i)] = "Fail"
-                else:
-                    processControl[processControl.index(i)] = "Success"
-            data["S{}_C".format(m)] = processControl
-
-    df = pd.DataFrame(data)
-    return df
+    return pd.DataFrame(df_list, columns = columns)
