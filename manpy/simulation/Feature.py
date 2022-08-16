@@ -136,7 +136,6 @@ class Feature(ObjectInterruption):
                 for key in list(self.dependent.keys()):
                     if key != "Function":
                         locals()[key] = self.dependent.get(key).featureValue
-                print(eval(self.dependent["Function"]))
                 self.distribution["Feature"][list(self.distribution["Feature"].keys())[0]]["mean"] = eval(self.dependent["Function"])
                 self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
 
