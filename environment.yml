@@ -2,22 +2,77 @@ name: manPyExperiments
 channels:
   - defaults
 dependencies:
+  - argon2-cffi=21.3.0=pyhd3eb1b0_0
+  - argon2-cffi-bindings=21.2.0=py310h2bbff1b_0
+  - asttokens=2.0.5=pyhd3eb1b0_0
+  - attrs=21.4.0=pyhd3eb1b0_0
+  - backcall=0.2.0=pyhd3eb1b0_0
+  - beautifulsoup4=4.11.1=py310haa95532_0
   - bzip2=1.0.8=he774522_0
-  - ca-certificates=2022.4.26=haa95532_0
+  - ca-certificates=2022.07.19=haa95532_0
   - certifi=2022.6.15=py310haa95532_0
+  - colorama=0.4.5=py310haa95532_0
+  - debugpy=1.5.1=py310hd77b12b_0
+  - decorator=5.1.1=pyhd3eb1b0_0
+  - defusedxml=0.7.1=pyhd3eb1b0_0
+  - entrypoints=0.4=py310haa95532_0
+  - executing=0.8.3=pyhd3eb1b0_0
+  - ipykernel=6.9.1=py310haa95532_0
+  - ipython=8.4.0=py310haa95532_0
+  - ipython_genutils=0.2.0=pyhd3eb1b0_1
+  - jedi=0.18.1=py310haa95532_1
+  - jsonschema=4.4.0=py310haa95532_0
+  - jupyter_client=7.2.2=py310haa95532_0
+  - jupyter_core=4.10.0=py310haa95532_0
+  - jupyterlab_pygments=0.1.2=py_0
   - libffi=3.4.2=hd77b12b_4
+  - libsodium=1.0.18=h62dcd97_0
+  - markupsafe=2.1.1=py310h2bbff1b_0
+  - matplotlib-inline=0.1.2=pyhd3eb1b0_2
+  - mistune=0.8.4=py310h2bbff1b_1000
+  - nbclient=0.5.13=py310haa95532_0
+  - nbconvert=6.4.4=py310haa95532_0
+  - nbformat=5.3.0=py310haa95532_0
+  - nest-asyncio=1.5.5=py310haa95532_0
+  - notebook=6.4.11=py310haa95532_0
   - openssl=1.1.1q=h2bbff1b_0
+  - packaging=21.3=pyhd3eb1b0_0
+  - pandocfilters=1.5.0=pyhd3eb1b0_0
+  - parso=0.8.3=pyhd3eb1b0_0
+  - pickleshare=0.7.5=pyhd3eb1b0_1003
   - pip=22.1.2=py310haa95532_0
+  - prometheus_client=0.13.1=pyhd3eb1b0_0
+  - prompt-toolkit=3.0.20=pyhd3eb1b0_0
+  - pure_eval=0.2.2=pyhd3eb1b0_0
+  - pycparser=2.21=pyhd3eb1b0_0
+  - pyrsistent=0.18.0=py310h2bbff1b_0
   - python=3.10.4=hbb2ffb3_0
+  - python-dateutil=2.8.2=pyhd3eb1b0_0
+  - python-fastjsonschema=2.15.1=pyhd3eb1b0_0
+  - pywin32=302=py310h2bbff1b_2
+  - pywinpty=2.0.2=py310h5da7b33_0
+  - pyzmq=23.2.0=py310hd77b12b_0
+  - send2trash=1.8.0=pyhd3eb1b0_1
   - setuptools=61.2.0=py310haa95532_0
+  - six=1.16.0=pyhd3eb1b0_1
   - sqlite=3.38.5=h2bbff1b_0
+  - stack_data=0.2.0=pyhd3eb1b0_0
+  - terminado=0.13.1=py310haa95532_0
+  - testpath=0.6.0=py310haa95532_0
   - tk=8.6.12=h2bbff1b_0
+  - tornado=6.1=py310h2bbff1b_0
+  - traitlets=5.1.1=pyhd3eb1b0_0
+  - typing-extensions=4.1.1=hd3eb1b0_0
+  - typing_extensions=4.1.1=pyh06a4308_0
   - tzdata=2022a=hda174b7_0
   - vc=14.2=h21ff451_1
   - vs2015_runtime=14.27.29016=h5e58377_2
+  - wcwidth=0.2.5=pyhd3eb1b0_0
   - wheel=0.37.1=pyhd3eb1b0_0
   - wincertstore=0.2=py310haa95532_2
+  - winpty=0.4.3=4
   - xz=5.2.5=h8cc25b3_1
+  - zeromq=4.3.4=hd77b12b_0
   - zlib=1.2.12=h8cc25b3_2
   - pip:
     - accesscontrol==5.3.1
@@ -25,13 +80,11 @@ dependencies:
     - alabaster==0.7.12
     - authencoding==4.3
     - babel==2.10.3
-    - beautifulsoup4==4.11.1
     - bleach==5.0.1
     - btrees==4.10.0
     - cffi==1.15.1
     - chameleon==3.10.1
     - charset-normalizer==2.1.0
-    - colorama==0.4.5
     - commonmark==0.9.1
     - coverage==6.4.2
     - cycler==0.11.0
@@ -45,15 +98,14 @@ dependencies:
     - imagesize==1.4.1
     - importlib-metadata==4.12.0
     - jinja2==3.1.2
+    - joblib==1.1.0
     - keyring==23.7.0
     - kiwisolver==1.4.4
-    - markupsafe==2.1.1
     - matplotlib==3.5.2
     - mccabe==0.6.1
     - multimapping==4.1
     - multipart==0.2.4
     - numpy==1.23.1
-    - packaging==21.3
     - pandas==1.4.3
     - pastedeploy==2.1.1
     - persistence==3.3
@@ -61,11 +113,9 @@ dependencies:
     - pillow==9.2.0
     - pkginfo==1.8.3
     - pycodestyle==2.8.0
-    - pycparser==2.21
     - pyflakes==2.4.0
     - pygments==2.12.0
     - pyparsing==3.0.9
-    - python-dateutil==2.8.2
     - python-gettext==4.0
     - pytz==2022.1
     - pywin32-ctypes==0.2.0
@@ -76,8 +126,9 @@ dependencies:
     - rfc3986==2.0.0
     - rich==12.5.1
     - roman==3.3
+    - scikit-learn==1.1.2
+    - scipy==1.9.0
     - simpy==4.0.1
-    - six==1.16.0
     - snowballstemmer==2.2.0
     - soupsieve==2.3.2.post1
     - sphinx==5.0.2
@@ -87,6 +138,7 @@ dependencies:
     - sphinxcontrib-jsmath==1.0.1
     - sphinxcontrib-qthelp==1.0.3
     - sphinxcontrib-serializinghtml==1.1.5
+    - threadpoolctl==3.1.0
     - transaction==3.0.1
     - twine==4.0.1
     - urllib3==1.26.10

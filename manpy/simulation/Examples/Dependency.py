@@ -1,5 +1,6 @@
 from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue
 from manpy.simulation.Globals import runSimulation, getEntityData
+from manpy.simulation.Examples.MLExperiment import SGD_clf
 import time
 
 start = time.time()
@@ -39,8 +40,8 @@ Einsinktiefe = Feature("Ftr4", "Feature5", victim=Löten, entity=True,
 #Kleben
 Durchflussgeschwindigkeit = Feature("Ftr5", "Feature6", victim=Kleben, entity=True,
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 50, "stdev": 5}}})
-Temperatur = Feature("Ftr6", "Feature7", victim=Kleben, entity=True,
-               distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 190, "stdev": 10}}})
+Temperatur = Feature("Ftr6", "Feature7", victim=Kleben, entity=True, dependent={"Function" : "2*x + 90", "x" : Durchflussgeschwindigkeit},
+               distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"stdev": 1}}})
 Menge = Feature("Ftr7", "Feature8", victim=Kleben, entity=True,
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 400, "stdev": 50}}})
 
@@ -57,13 +58,14 @@ E1.defineRouting([Kleben])
 
 
 def main(test=0):
-    maxSimTime = 200
+    maxSimTime = 100000
     objectList = [S, Löten, Q, Kleben, E1, StecktFest, Spannung, Strom, Widerstand, Kraft, Einsinktiefe, Durchflussgeschwindigkeit, Temperatur, Menge]
 
     runSimulation(objectList, maxSimTime)
 
     df = getEntityData()
     df.to_csv("Dependency.csv", index=False, encoding="utf8")
+    accuracy = SGD_clf(df)
 
     print("""
             Ausschuss:          {}
@@ -71,7 +73,9 @@ def main(test=0):
             Blockiert für:      {:.2f}
             Simulationszeit:    {}
             Laufzeit:           {:.2f}
-            """.format(len(Kleben.discards), E1.numOfExits, Kleben.totalBlockageTime, maxSimTime, time.time() - start))
+
+            Accuracy SGDClassifier: {:.2f}
+            """.format(len(Kleben.discards), E1.numOfExits, Kleben.totalBlockageTime, maxSimTime, time.time() - start, accuracy))
 
 if __name__ == "__main__":
     main()

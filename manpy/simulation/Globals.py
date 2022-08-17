@@ -617,15 +617,23 @@ def getEntityData() -> pd.DataFrame:
     for ftr in ftr_st:
         columns.append("S{}_Ftr{}_t".format(ftr[1], ftr[0]))
         columns.append("S{}_Ftr{}_v".format(ftr[1], ftr[0]))
+    columns.append("Result")
 
     # set df_list
     for entity in G.EntityList:
-        l = [None] * len(entity.features) * 2
-        for i in range(len(l)):
+        l = [None] * (len(entity.features) * 2 + 1)
+        for i in range(len(l) - 1):
             if i % 2 == 0:
                 l[i] = entity.feature_times[i//2]
             else:
                 l[i] = entity.features[i//2]
-        df_list.append(l)
+        for e in G.ExitList:
+            if entity in e.Entities:
+                l[-1] = "Success"
+                break
+            else:
+                l[-1] = "Fail"
+        if len(l) == len(columns):
+            df_list.append(l)
 
     return pd.DataFrame(df_list, columns = columns)
