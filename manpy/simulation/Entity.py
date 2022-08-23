@@ -28,6 +28,7 @@ Class that acts as an abstract. It should have no instances. All the Entities sh
 # from SimPy.Simulation import now
 import simpy
 from .ManPyObject import ManPyObject
+from manpy.simulation.Globals import G
 
 # ===========================================================================
 # The entity object
@@ -96,8 +97,8 @@ class Entity(ManPyObject):
         self.remainingProcessingTime = remainingProcessingTime
         self.remainingSetupTime = remainingSetupTime
         self.status = status
-        self.features = []
-        self.feature_times = []
+        self.features = [None] * len(G.ftr_st)
+        self.feature_times = [None] * len(G.ftr_st)
 
     # ===========================================================================
     # return the responsible operator for the current step, not implemented for entities
@@ -135,6 +136,6 @@ class Entity(ManPyObject):
     def getRequiredParts(self):
         return []
 
-    def set_feature(self, feature, time):
-        self.features.append(feature)
-        self.feature_times.append(time)
+    def set_feature(self, feature, time, indexing):
+        self.features[G.ftr_st.index(indexing)] = feature
+        self.feature_times[G.ftr_st.index(indexing)] = time

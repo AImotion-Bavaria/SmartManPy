@@ -1,6 +1,7 @@
 import pandas as pd
 from .ObjectInterruption import ObjectInterruption
 from .RandomNumberGenerator import RandomNumberGenerator
+from manpy.simulation.Globals import G
 
 
 class Feature(ObjectInterruption):
@@ -50,6 +51,8 @@ class Feature(ObjectInterruption):
         self.featureValue = start_value
         self.random_walk = random_walk
         self.type = "Feature"
+
+        G.FeatureList.append(self)
 
     def initialize(self):
         if self.entity == True:
@@ -142,7 +145,8 @@ class Feature(ObjectInterruption):
                         self.sendSignal(receiver=c, signal=c.contribution)
             # check Entity
             if self.entity == True:
-                self.victim.Res.users[0].set_feature(self.featureValue, self.env.now)
+                # add Feature value and time to Entity
+                self.victim.Res.users[0].set_feature(self.featureValue, self.env.now, (int(self.id[3:]), int(self.victim.id[1:])))
                 self.outputTrace(self.victim.Res.users[0].name, self.victim.Res.users[0].id, str(self.featureValue))
                 self.expectedSignals["victimEndsProcessing"] = 1
                 yield self.victimEndsProcessing
@@ -170,7 +174,7 @@ class Feature(ObjectInterruption):
         from .Globals import G
 
         if G.trace:
-            G.trace_list.append([G.env.now, entity_name, entity_id, self.id, self.id, message])
+            G.trace_list.append([G.env.now, entity_name, entity_id, self.id, self.name, message])
 
         if G.snapshots:
             entities_list = []

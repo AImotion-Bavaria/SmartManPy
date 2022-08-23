@@ -177,7 +177,6 @@ class Assembly(CoreObject):
             # wait until the Queue can accept an entity and one predecessor requests it
 
             self.expectedSignals["isRequested"] = 1
-
             yield self.isRequested  # [self.isRequested,self.canDispose, self.loadOperatorAvailable]
             if self.isRequested.value:
                 transmitter, eventTime = self.isRequested.value

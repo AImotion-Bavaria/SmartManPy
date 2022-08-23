@@ -821,7 +821,6 @@ class Machine(CoreObject):
                 self.timeLoadEnded = self.env.now
                 self.loadTimeCurrentEntity = self.timeLoadEnded - self.timeLoadStarted
                 self.totalLoadTime += self.loadTimeCurrentEntity
-
             # ===================================================================
             # ===================================================================
             # ===================================================================

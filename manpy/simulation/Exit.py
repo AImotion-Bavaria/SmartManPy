@@ -58,6 +58,7 @@ class Exit(CoreObject):
         self.Res = simpy.Resource(self.env, capacity=float("inf"))
         # The number of resource that exited through this exit.
         # XXX bug: cannot output as json when nothing has exited.
+        self.Entities = []
         self.numOfExits = 0
         self.totalNumberOfUnitsExited = 0
         self.totalLifespan = 0
@@ -143,6 +144,7 @@ class Exit(CoreObject):
                 and self.checkIfSystemEmpty()
             ):
                 self.endSimulation()
+        self.Entities.append(activeEntity)
         return activeEntity
 
     @staticmethod
