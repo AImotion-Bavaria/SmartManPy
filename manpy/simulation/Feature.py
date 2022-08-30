@@ -52,7 +52,8 @@ class Feature(ObjectInterruption):
         self.contribute = contribute
         self.entity = entity
         self.start_time = start_time
-        self.featureValue = start_value
+        self.featureHistory = [start_value]
+        self.featureValue = self.featureHistory[-1]
         self.random_walk = random_walk
         self.dependent = dependent
         self.type = "Feature"
@@ -151,6 +152,8 @@ class Feature(ObjectInterruption):
             if self.no_negative == True:
                 if self.featureValue < 0:
                     self.featureValue = 0
+
+            self.featureHistory.append(self.featureValue)
 
             # check contribution
             if self.contribute != None:
