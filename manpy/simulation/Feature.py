@@ -140,6 +140,7 @@ class Feature(ObjectInterruption):
                         locals()[key] = self.dependent.get(key).featureValue
                         locals()[key+'_history'] = self.dependent.get(key).featureHistory
                 # print(eval(self.dependent["Function"]))
+
                 self.distribution["Feature"][list(self.distribution["Feature"].keys())[0]]["mean"] = eval(self.dependent["Function"])
                 self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
 
