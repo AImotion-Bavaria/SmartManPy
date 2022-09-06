@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from .ObjectInterruption import ObjectInterruption
 from .RandomNumberGenerator import RandomNumberGenerator
 from manpy.simulation.Globals import G
@@ -19,6 +20,7 @@ class Feature(ObjectInterruption):
     :param start_time: The starting time for the feature
     :param start_value: The starting value of the Feature
     :param random_walk: If this is True, the Feature will continuously take the previous feature_value into account
+    :param dependent: A dictionary containing a Function and the corresponding variables, to determine dependencies between features
     :param kw: The keyword arguments are mainly used for classification and calculation
     """
     def __init__(
@@ -35,21 +37,27 @@ class Feature(ObjectInterruption):
         start_time=0,
         start_value=0,
         random_walk=False,
+        dependent=None,
         **kw
     ):
         ObjectInterruption.__init__(self, id, name, victim=victim)
         self.id = id
         self.name = name
         self.deteriorationType = deteriorationType
-        self.rngTime = RandomNumberGenerator(self, distribution.get("Time", {"Fixed": {"mean": 100}}))
-        self.rngFeature = RandomNumberGenerator(self, distribution.get("Feature", {"Fixed": {"mean": 10}}))
+        self.distribution = distribution
+        if distribution.keys().__contains__("Feature") == False:
+            self.distribution["Feature"] = {"Fixed": {"mean": 10}}
+        self.rngTime = RandomNumberGenerator(self, self.distribution.get("Time", {"Fixed": {"mean": 100}}))
+        self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
         self.repairman = repairman
         self.no_negative = no_negative
         self.contribute = contribute
         self.entity = entity
         self.start_time = start_time
-        self.featureValue = start_value
+        self.featureHistory = [start_value]
+        self.featureValue = self.featureHistory[-1]
         self.random_walk = random_walk
+        self.dependent = dependent
         self.type = "Feature"
 
         G.FeatureList.append(self)
@@ -129,20 +137,36 @@ class Feature(ObjectInterruption):
 
 
             # generate the Feature
+            if self.dependent:
+                for key in list(self.dependent.keys()):
+                    if key != "Function":
+                        locals()[key] = self.dependent.get(key).featureValue
+                        locals()[key+'_history'] = self.dependent.get(key).featureHistory
+                # print(eval(self.dependent["Function"]))
+
+                self.distribution["Feature"][list(self.distribution["Feature"].keys())[0]]["mean"] = eval(self.dependent["Function"])
+                self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
+
             value = self.rngFeature.generateNumber(start_time=self.start_time)
+
             if self.random_walk == True:
                 self.featureValue += value
             else:
                 self.featureValue = value
+
             # check no_negative
             if self.no_negative == True:
                 if self.featureValue < 0:
                     self.featureValue = 0
+
+            self.featureHistory.append(self.featureValue)
+
             # check contribution
             if self.contribute != None:
                 for c in self.contribute:
                     if c.expectedSignals["contribution"]:
                         self.sendSignal(receiver=c, signal=c.contribution)
+
             # check Entity
             if self.entity == True:
                 # add Feature value and time to Entity
@@ -151,6 +175,7 @@ class Feature(ObjectInterruption):
                 self.expectedSignals["victimEndsProcessing"] = 1
                 yield self.victimEndsProcessing
                 self.victimEndsProcessing = self.env.event()
+
             else:
                 # add Feature to DataFrame
                 if self.victim == None:

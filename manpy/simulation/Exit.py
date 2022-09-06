@@ -62,6 +62,7 @@ class Exit(CoreObject):
         self.numOfExits = 0
         self.totalNumberOfUnitsExited = 0
         self.totalLifespan = 0
+        self.Entities = []
 
         self.totalTaktTime = 0  # the total time between to consecutive exits
         self.intervalThroughPutList = []
@@ -75,7 +76,7 @@ class Exit(CoreObject):
             yield self.isRequested
             self.isRequested = self.env.event()
             # TODO: insert extra controls to check whether the self.giver attribute is correctly updated
-            self.getEntity()
+            self.Entities.append(self.getEntity())
             self.signalGiver()
 
     # =======================================================================

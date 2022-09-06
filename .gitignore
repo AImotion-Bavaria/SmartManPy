@@ -100,3 +100,11 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# Data Artifacts
+*.csv
+*.xls
+
+# PyCharm Files
+
+.idea/

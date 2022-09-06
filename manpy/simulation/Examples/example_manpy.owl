@@ -1,0 +1,905 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#"
+     xml:base="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:swrl="http://www.w3.org/2003/11/swrl#"
+     xmlns:swrla="http://swrl.stanford.edu/ontologies/3.3/swrla.owl#"
+     xmlns:swrlb="http://www.w3.org/2003/11/swrlb#"
+     xmlns:example_manpy="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#">
+    <owl:Ontology rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy">
+        <rdfs:comment>Exemplary ontology for simulated data coming from a test use case in ManPy.</rdfs:comment>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled -->
+
+    <owl:AnnotationProperty rdf:about="http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#atSameTimeAs -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#atSameTimeAs">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#hasCause -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#hasCause">
+        <rdfs:range rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Cause"/>
+        <owl:propertyChainAxiom rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#isInSituation"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#hasCause"/>
+        </owl:propertyChainAxiom>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#hasObservation -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#hasObservation"/>
+    
+
+
+    <!-- http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#hosts -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#hosts">
+        <owl:inverseOf rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#isHostedBy"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#isHostedBy -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#isHostedBy"/>
+    
+
+
+    <!-- http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#isInSituation -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#isInSituation"/>
+    
+
+
+    <!-- http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#isPartOf -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#isPartOf"/>
+    
+
+
+    <!-- http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#madeBySensor -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#madeBySensor">
+        <owl:inverseOf rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#madeObservation"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#madeObservation -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#madeObservation"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#hasDescription -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#hasDescription">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#hasTimeStamp -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#hasTimeStamp">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#hasValue -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#hasValue">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Cause -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Cause"/>
+    
+
+
+    <!-- http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Observation -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Observation"/>
+    
+
+
+    <!-- http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Resource -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Resource"/>
+    
+
+
+    <!-- http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Sensor -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Sensor"/>
+    
+
+
+    <!-- http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Situation -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Situation"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Machine1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Machine1">
+        <rdf:type rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Resource"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Machine2 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Machine2">
+        <rdf:type rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Resource"/>
+        <isPartOf rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Machine1"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#SensorTM1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#SensorTM1">
+        <rdf:type rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Sensor"/>
+        <isHostedBy rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Machine1"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#SensorTM2 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#SensorTM2">
+        <rdf:type rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Sensor"/>
+        <isHostedBy rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Machine2"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#causeInM2 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#causeInM2">
+        <rdf:type rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Cause"/>
+        <hasDescription rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Problem with cooling system of M2.</hasDescription>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#causeUnknown -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#causeUnknown">
+        <rdf:type rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Cause"/>
+        <hasDescription rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cause is unknown.</hasDescription>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#highTemperatureM1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#highTemperatureM1">
+        <rdf:type rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Situation"/>
+        <hasCause rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#causeUnknown"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#highTemperatureM1M2 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#highTemperatureM1M2">
+        <rdf:type rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Situation"/>
+        <hasCause rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#causeInM2"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#highTemperatureM2 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#highTemperatureM2">
+        <rdf:type rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Situation"/>
+        <hasCause rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#causeUnknown"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#lowTemperature -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#lowTemperature">
+        <rdf:type rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Situation"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#normalTemperature -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#normalTemperature">
+        <rdf:type rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Situation"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#obsTM1_test -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#obsTM1_test">
+        <rdf:type rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Observation"/>
+        <madeBySensor rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#SensorTM1"/>
+        <hasTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">10</hasTimeStamp>
+        <hasValue rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">32</hasValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#obsTM2_test -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#obsTM2_test">
+        <rdf:type rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Observation"/>
+        <madeBySensor rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#SensorTM2"/>
+        <hasTimeStamp rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">10</hasTimeStamp>
+        <hasValue rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">32</hasValue>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Rules
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#o">
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#val">
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#obs1">
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#obs2">
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#t1">
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#t2">
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#val1">
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#val2">
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+    </rdf:Description>
+    <rdf:Description>
+        <swrla:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrla:isRuleEnabled>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Classify observations from Sensor2 to high temperature</rdfs:comment>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">S3</rdfs:label>
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                        <swrl:classPredicate rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Observation"/>
+                        <swrl:argument1 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#o"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+                                <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#hasValue"/>
+                                <swrl:argument1 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#o"/>
+                                <swrl:argument2 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#val"/>
+                            </rdf:Description>
+                        </rdf:first>
+                        <rdf:rest>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                <rdf:first>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#BuiltinAtom"/>
+                                        <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#greaterThan"/>
+                                        <swrl:arguments>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                                                <rdf:first rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#val"/>
+                                                <rdf:rest>
+                                                    <rdf:Description>
+                                                        <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                                                        <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">23</rdf:first>
+                                                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                                    </rdf:Description>
+                                                </rdf:rest>
+                                            </rdf:Description>
+                                        </swrl:arguments>
+                                    </rdf:Description>
+                                </rdf:first>
+                                <rdf:rest>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                        <rdf:first>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                                <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#madeBySensor"/>
+                                                <swrl:argument1 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#o"/>
+                                                <swrl:argument2 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#SensorTM2"/>
+                                            </rdf:Description>
+                                        </rdf:first>
+                                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                    </rdf:Description>
+                                </rdf:rest>
+                            </rdf:Description>
+                        </rdf:rest>
+                    </rdf:Description>
+                </rdf:rest>
+            </rdf:Description>
+        </swrl:body>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#isInSituation"/>
+                        <swrl:argument1 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#o"/>
+                        <swrl:argument2 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#highTemperatureM2"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            </rdf:Description>
+        </swrl:head>
+    </rdf:Description>
+    <rdf:Description>
+        <swrla:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrla:isRuleEnabled>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Classify observations to normal temperature</rdfs:comment>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">S5</rdfs:label>
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                        <swrl:classPredicate rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Observation"/>
+                        <swrl:argument1 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#o"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+                                <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#hasValue"/>
+                                <swrl:argument1 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#o"/>
+                                <swrl:argument2 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#val"/>
+                            </rdf:Description>
+                        </rdf:first>
+                        <rdf:rest>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                <rdf:first>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#BuiltinAtom"/>
+                                        <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#lessThan"/>
+                                        <swrl:arguments>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                                                <rdf:first rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#val"/>
+                                                <rdf:rest>
+                                                    <rdf:Description>
+                                                        <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                                                        <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">23</rdf:first>
+                                                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                                    </rdf:Description>
+                                                </rdf:rest>
+                                            </rdf:Description>
+                                        </swrl:arguments>
+                                    </rdf:Description>
+                                </rdf:first>
+                                <rdf:rest>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                        <rdf:first>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#BuiltinAtom"/>
+                                                <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#greaterThan"/>
+                                                <swrl:arguments>
+                                                    <rdf:Description>
+                                                        <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                                                        <rdf:first rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#val"/>
+                                                        <rdf:rest>
+                                                            <rdf:Description>
+                                                                <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                                                                <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">20</rdf:first>
+                                                                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                                            </rdf:Description>
+                                                        </rdf:rest>
+                                                    </rdf:Description>
+                                                </swrl:arguments>
+                                            </rdf:Description>
+                                        </rdf:first>
+                                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                    </rdf:Description>
+                                </rdf:rest>
+                            </rdf:Description>
+                        </rdf:rest>
+                    </rdf:Description>
+                </rdf:rest>
+            </rdf:Description>
+        </swrl:body>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#isInSituation"/>
+                        <swrl:argument1 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#o"/>
+                        <swrl:argument2 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#normalTemperature"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            </rdf:Description>
+        </swrl:head>
+    </rdf:Description>
+    <rdf:Description>
+        <swrla:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrla:isRuleEnabled>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Classify observations from Sensor1 to high temperature</rdfs:comment>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">S1</rdfs:label>
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                        <swrl:classPredicate rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Observation"/>
+                        <swrl:argument1 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#o"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+                                <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#hasValue"/>
+                                <swrl:argument1 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#o"/>
+                                <swrl:argument2 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#val"/>
+                            </rdf:Description>
+                        </rdf:first>
+                        <rdf:rest>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                <rdf:first>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#BuiltinAtom"/>
+                                        <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#greaterThan"/>
+                                        <swrl:arguments>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                                                <rdf:first rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#val"/>
+                                                <rdf:rest>
+                                                    <rdf:Description>
+                                                        <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                                                        <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">23</rdf:first>
+                                                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                                    </rdf:Description>
+                                                </rdf:rest>
+                                            </rdf:Description>
+                                        </swrl:arguments>
+                                    </rdf:Description>
+                                </rdf:first>
+                                <rdf:rest>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                        <rdf:first>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                                <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#madeBySensor"/>
+                                                <swrl:argument1 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#o"/>
+                                                <swrl:argument2 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#SensorTM1"/>
+                                            </rdf:Description>
+                                        </rdf:first>
+                                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                    </rdf:Description>
+                                </rdf:rest>
+                            </rdf:Description>
+                        </rdf:rest>
+                    </rdf:Description>
+                </rdf:rest>
+            </rdf:Description>
+        </swrl:body>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#isInSituation"/>
+                        <swrl:argument1 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#o"/>
+                        <swrl:argument2 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#highTemperatureM1"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            </rdf:Description>
+        </swrl:head>
+    </rdf:Description>
+    <rdf:Description>
+        <swrla:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrla:isRuleEnabled>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Classify observation to low temperature</rdfs:comment>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">S6</rdfs:label>
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                        <swrl:classPredicate rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Observation"/>
+                        <swrl:argument1 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#o"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+                                <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#hasValue"/>
+                                <swrl:argument1 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#o"/>
+                                <swrl:argument2 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#val"/>
+                            </rdf:Description>
+                        </rdf:first>
+                        <rdf:rest>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                <rdf:first>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#BuiltinAtom"/>
+                                        <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#lessThan"/>
+                                        <swrl:arguments>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                                                <rdf:first rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#val"/>
+                                                <rdf:rest>
+                                                    <rdf:Description>
+                                                        <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                                                        <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">20</rdf:first>
+                                                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                                    </rdf:Description>
+                                                </rdf:rest>
+                                            </rdf:Description>
+                                        </swrl:arguments>
+                                    </rdf:Description>
+                                </rdf:first>
+                                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                            </rdf:Description>
+                        </rdf:rest>
+                    </rdf:Description>
+                </rdf:rest>
+            </rdf:Description>
+        </swrl:body>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#isInSituation"/>
+                        <swrl:argument1 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#o"/>
+                        <swrl:argument2 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#lowTemperature"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            </rdf:Description>
+        </swrl:head>
+    </rdf:Description>
+    <rdf:Description>
+        <swrla:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrla:isRuleEnabled>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Infer if observations are at the same time</rdfs:comment>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">S4</rdfs:label>
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                        <swrl:classPredicate rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Observation"/>
+                        <swrl:argument1 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#obs1"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                                <swrl:classPredicate rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Observation"/>
+                                <swrl:argument1 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#obs2"/>
+                            </rdf:Description>
+                        </rdf:first>
+                        <rdf:rest>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                <rdf:first>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+                                        <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#hasTimeStamp"/>
+                                        <swrl:argument1 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#obs1"/>
+                                        <swrl:argument2 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#t1"/>
+                                    </rdf:Description>
+                                </rdf:first>
+                                <rdf:rest>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                        <rdf:first>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+                                                <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#hasTimeStamp"/>
+                                                <swrl:argument1 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#obs2"/>
+                                                <swrl:argument2 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#t2"/>
+                                            </rdf:Description>
+                                        </rdf:first>
+                                        <rdf:rest>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                                <rdf:first>
+                                                    <rdf:Description>
+                                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#BuiltinAtom"/>
+                                                        <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#equal"/>
+                                                        <swrl:arguments rdf:parseType="Collection">
+                                                            <rdf:Description rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#t1"/>
+                                                            <rdf:Description rdf:about="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#t2"/>
+                                                        </swrl:arguments>
+                                                    </rdf:Description>
+                                                </rdf:first>
+                                                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                            </rdf:Description>
+                                        </rdf:rest>
+                                    </rdf:Description>
+                                </rdf:rest>
+                            </rdf:Description>
+                        </rdf:rest>
+                    </rdf:Description>
+                </rdf:rest>
+            </rdf:Description>
+        </swrl:body>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#atSameTimeAs"/>
+                        <swrl:argument1 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#obs1"/>
+                        <swrl:argument2 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#obs2"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            </rdf:Description>
+        </swrl:head>
+    </rdf:Description>
+    <rdf:Description>
+        <swrla:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrla:isRuleEnabled>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Classify observations from both Sensor1 and Sensor2 to high temperature</rdfs:comment>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">S2</rdfs:label>
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                        <swrl:classPredicate rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#Observation"/>
+                        <swrl:argument1 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#obs1"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#BuiltinAtom"/>
+                                <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#greaterThan"/>
+                                <swrl:arguments>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                                        <rdf:first rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#val2"/>
+                                        <rdf:rest>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                                                <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">23</rdf:first>
+                                                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                            </rdf:Description>
+                                        </rdf:rest>
+                                    </rdf:Description>
+                                </swrl:arguments>
+                            </rdf:Description>
+                        </rdf:first>
+                        <rdf:rest>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                <rdf:first>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#BuiltinAtom"/>
+                                        <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#greaterThan"/>
+                                        <swrl:arguments>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                                                <rdf:first rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#val1"/>
+                                                <rdf:rest>
+                                                    <rdf:Description>
+                                                        <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                                                        <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">23</rdf:first>
+                                                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                                    </rdf:Description>
+                                                </rdf:rest>
+                                            </rdf:Description>
+                                        </swrl:arguments>
+                                    </rdf:Description>
+                                </rdf:first>
+                                <rdf:rest>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                        <rdf:first>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                                <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#atSameTimeAs"/>
+                                                <swrl:argument1 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#obs1"/>
+                                                <swrl:argument2 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#obs2"/>
+                                            </rdf:Description>
+                                        </rdf:first>
+                                        <rdf:rest>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                                <rdf:first>
+                                                    <rdf:Description>
+                                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+                                                        <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#hasValue"/>
+                                                        <swrl:argument1 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#obs1"/>
+                                                        <swrl:argument2 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#val1"/>
+                                                    </rdf:Description>
+                                                </rdf:first>
+                                                <rdf:rest>
+                                                    <rdf:Description>
+                                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                                        <rdf:first>
+                                                            <rdf:Description>
+                                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+                                                                <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#hasValue"/>
+                                                                <swrl:argument1 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#obs2"/>
+                                                                <swrl:argument2 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#val2"/>
+                                                            </rdf:Description>
+                                                        </rdf:first>
+                                                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                                    </rdf:Description>
+                                                </rdf:rest>
+                                            </rdf:Description>
+                                        </rdf:rest>
+                                    </rdf:Description>
+                                </rdf:rest>
+                            </rdf:Description>
+                        </rdf:rest>
+                    </rdf:Description>
+                </rdf:rest>
+            </rdf:Description>
+        </swrl:body>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#isInSituation"/>
+                        <swrl:argument1 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#obs2"/>
+                        <swrl:argument2 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#highTemperatureM1M2"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#isInSituation"/>
+                                <swrl:argument1 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#obs1"/>
+                                <swrl:argument2 rdf:resource="http://www.semanticweb.org/radtke/ontologies/2022/7/example_manpy#highTemperatureM1M2"/>
+                            </rdf:Description>
+                        </rdf:first>
+                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                    </rdf:Description>
+                </rdf:rest>
+            </rdf:Description>
+        </swrl:head>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi -->
+
