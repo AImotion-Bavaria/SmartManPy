@@ -7,14 +7,15 @@ start = time.time()
 class Machine_control(Machine):
     def condition(self):
         activeEntity = self.Res.users[0]
-        means = [1.6, 3500, 450, 180, 400, 50, 190, 400]
-        stdevs = [0.2, 200, 50, 30, 50, 5, 10, 50]
+        means = [1.6, 3500, 450, 180, 400, 50, 190, 400, 200000]
+        stdevs = [0.2, 200, 50, 30, 50, 5, 10, 50, 10000]
         for idx, feature in enumerate(activeEntity.features):
-            min = means[idx] - 2 * stdevs[idx]
-            max = means[idx] + 2 * stdevs[idx]
-            if feature < min or feature > max:
-                return True
-
+            if feature != None:
+                min = means[idx] - 2 * stdevs[idx]
+                max = means[idx] + 2 * stdevs[idx]
+                if feature < min or feature > max:
+                    return True
+        return False
 
 # Objects
 Frame.capacity = 1
@@ -23,7 +24,7 @@ S1 = Source("S1", "Source", interArrivalTime={"Fixed": {"mean": 0.4}}, entity="m
 Löten = Machine("M0", "Löten", processingTime={"Normal": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}})
 Kleben = Machine("M1", "Kleben", processingTime={"Fixed": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}})
 A = Assembly("A", "Assembly")
-Montage = Machine_control("M2", "Montage", processingTime={"Fixed": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}})
+Montage = Machine_control("M2", "Montage", processingTime={"Fixed": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}}, control=True)
 E = Exit("E", "Exit")
 
 # Löten
@@ -66,11 +67,11 @@ E.defineRouting([Montage])
 
 def main(test=0):
     maxSimTime = 200
-    objectList = [S0, S1, Löten, Kleben, A, Montage, E, StecktFest, Spannung, Strom, Widerstand, Kraft, Einsinktiefe, Durchflussgeschwindigkeit, Temperatur, Menge, Druck]
+    objectList = [S0, S1, Löten, Kleben, A, Montage, E, Spannung, Strom, Widerstand, Kraft, Einsinktiefe, Durchflussgeschwindigkeit, Temperatur, Menge, Druck]
 
     runSimulation(objectList, maxSimTime, trace=True)
 
-    df = getEntityData(time=False)
+    df = getEntityData([E], discards=[Montage])
     df.to_csv("Merging.csv", index=False, encoding="utf8")
 
     print("""

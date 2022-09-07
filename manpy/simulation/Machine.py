@@ -180,8 +180,12 @@ class Machine(CoreObject):
         # attribute to prioritize against competing parallel machines
         self.priority = priority
         self.processed_entities = []
+
         self.control = control
+        # list for Entities who fail control
         self.discards = []
+        # list for finished Entities
+        self.entities = []
 
     # =======================================================================
     # initialize the machine
@@ -1100,6 +1104,7 @@ class Machine(CoreObject):
         if type == "Processing":
             if self.control == True and self.condition() == True:
                 self.outputTrace(activeObjectQueue[0].name, activeObjectQueue[0].id, "Failed Process control")
+                activeEntity.features[-1] = "Fail"
                 self.removeEntity(activeEntity)
                 self.discards.append(activeEntity)
                 # blocking starts
@@ -1131,6 +1136,8 @@ class Machine(CoreObject):
             else:
                 if self.control == True:
                     self.outputTrace(activeObjectQueue[0].name, activeObjectQueue[0].id, "Succeeded Process control")
+                    activeEntity.features[-1] = "Success"
+                self.entities.append(activeEntity)
                 # blocking starts
                 self.isBlocked = True
                 self.timeLastBlockageStarted = self.env.now

@@ -58,11 +58,10 @@ class Exit(CoreObject):
         self.Res = simpy.Resource(self.env, capacity=float("inf"))
         # The number of resource that exited through this exit.
         # XXX bug: cannot output as json when nothing has exited.
-        self.Entities = []
         self.numOfExits = 0
         self.totalNumberOfUnitsExited = 0
         self.totalLifespan = 0
-        self.Entities = []
+        self.entities = []
 
         self.totalTaktTime = 0  # the total time between to consecutive exits
         self.intervalThroughPutList = []
@@ -76,7 +75,7 @@ class Exit(CoreObject):
             yield self.isRequested
             self.isRequested = self.env.event()
             # TODO: insert extra controls to check whether the self.giver attribute is correctly updated
-            self.Entities.append(self.getEntity())
+            self.entities.append(self.getEntity())
             self.signalGiver()
 
     # =======================================================================
@@ -145,7 +144,6 @@ class Exit(CoreObject):
                 and self.checkIfSystemEmpty()
             ):
                 self.endSimulation()
-        self.Entities.append(activeEntity)
         return activeEntity
 
     @staticmethod

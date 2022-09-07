@@ -608,7 +608,7 @@ def ExcelPrinter(df, filename):
     else:
         df.to_excel("{}.xls".format(filename))
 
-def getEntityData(time=True) -> pd.DataFrame:
+def getEntityData(objectList=[], discards=[], time=False) -> pd.DataFrame:
     columns = []        # name of columns
     df_list = []        # list for the DataFrame
 
@@ -621,21 +621,31 @@ def getEntityData(time=True) -> pd.DataFrame:
 
     # set df_list
     for entity in G.EntityList:
+        check = False # if this is True, the Entity gets added to the Dataframe
+
+        # check objectList for the current Entity
+        for o in objectList:
+            if entity in o.entities:
+                check = True
+                break
+        # check every Machine discard for the current Entity
+        for m in discards:
+            if entity in m.discards:
+                check = True
+                break
+        if check == False:
+            continue
+
         if time:
-            l = [None] * (len(entity.features) * 2)
+            l = [None] * (len(G.ftr_st) * 2 + 1)
             for i in range(len(l)):
                 if i % 2 == 0:
-                    l[i] = entity.feature_times[i // 2]
-                else:
                     l[i] = entity.features[i // 2]
+                else:
+                    l[i] = entity.feature_times[i // 2]
         else:
             l = entity.features
-        for e in G.ExitList:
-            if entity in e.Entities:
-                l.append("Success")
-                break
-            else:
-                l.append("Fail")
+
         if len(l) == len(columns):
             df_list.append(l)
 
