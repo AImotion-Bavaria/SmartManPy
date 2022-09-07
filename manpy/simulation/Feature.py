@@ -1,6 +1,8 @@
 import pandas as pd
+import numpy as np
 from .ObjectInterruption import ObjectInterruption
 from .RandomNumberGenerator import RandomNumberGenerator
+from manpy.simulation.Globals import G
 
 
 class Feature(ObjectInterruption):
@@ -45,9 +47,6 @@ class Feature(ObjectInterruption):
         self.name = name
         self.deteriorationType = deteriorationType
         self.distribution = distribution
-
-        # Object that handles switching and deals with the different distributions/RNGs?
-
         if distribution.keys().__contains__("Feature") == False:
             self.distribution["Feature"] = {"Fixed": {"mean": 10}}
         self.rngTime = RandomNumberGenerator(self, self.distribution.get("Time", {"Fixed": {"mean": 100}}))
@@ -57,11 +56,14 @@ class Feature(ObjectInterruption):
         self.contribute = contribute
         self.entity = entity
         self.start_time = start_time
+        self.featureHistory = [start_value]
+        self.featureValue = self.featureHistory[-1]
         self.end_time = end_time
-        self.featureValue = start_value
         self.random_walk = random_walk
         self.dependent = dependent
         self.type = "Feature"
+
+        G.FeatureList.append(self)
 
     def initialize(self):
         if self.entity == True:
@@ -144,17 +146,13 @@ class Feature(ObjectInterruption):
             if self.dependent:
                 for key in list(self.dependent.keys()):
                     if key != "Function":
-                        locals()[key] = self.dependent.get(key).featureValue  # Necessary for eval statements
-                print(eval(self.dependent["Function"]))
-                # TODO Are other distributions possible?
+                        locals()[key] = self.dependent.get(key).featureValue
+                        locals()[key+'_history'] = self.dependent.get(key).featureHistory
+
                 self.distribution["Feature"][list(self.distribution["Feature"].keys())[0]]["mean"] = eval(self.dependent["Function"])
-                # TODO Is this correct? If a feature depends on others, is there radomness present? -> If based on a formula, we have the fixed distribtution!
                 self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
 
-            # TODO analog mit statemachine: RNG neu ziehen(bleibt gleich normalerweise), jeder get call verändert etwas
-            # Veränderung (zb verschleiss) wird vorher pro feature definiert
-
-            value = self.rngFeature.generateNumber(start_time=self.start_time, end_time=self.end_time)
+            value = self.rngFeature.generateNumber(start_time=self.start_time)
 
             if self.random_walk == True:
                 self.featureValue += value
@@ -166,6 +164,8 @@ class Feature(ObjectInterruption):
                 if self.featureValue < 0:
                     self.featureValue = 0
 
+            self.featureHistory.append(self.featureValue)
+
             # check contribution
             if self.contribute != None:
                 for c in self.contribute:
@@ -174,7 +174,8 @@ class Feature(ObjectInterruption):
 
             # check Entity
             if self.entity == True:
-                self.victim.Res.users[0].set_feature(self.featureValue, self.env.now)
+                # add Feature value and time to Entity
+                self.victim.Res.users[0].set_feature(self.featureValue, self.env.now, (self.id, self.victim.id))
                 self.outputTrace(self.victim.Res.users[0].name, self.victim.Res.users[0].id, str(self.featureValue))
                 self.expectedSignals["victimEndsProcessing"] = 1
                 yield self.victimEndsProcessing
@@ -203,7 +204,7 @@ class Feature(ObjectInterruption):
         from .Globals import G
 
         if G.trace:
-            G.trace_list.append([G.env.now, entity_name, entity_id, self.id, self.id, message])
+            G.trace_list.append([G.env.now, entity_name, entity_id, self.id, self.name, message])
 
         if G.snapshots:
             entities_list = []
