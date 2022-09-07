@@ -32,6 +32,8 @@ import simpy
 import xlwt
 from .RandomNumberGenerator import RandomNumberGenerator
 from .CoreObject import CoreObject
+from . import Globals
+from .Entity import Entity
 
 # ===============================================================================
 # the Assembly object
@@ -41,7 +43,7 @@ class Assembly(CoreObject):
     # ===========================================================================
     # initialize the object
     # ===========================================================================
-    def __init__(self, id="", name="", processingTime=None, inputsDict=None, **kw):
+    def __init__(self, id="", name="", processingTime=None, entity="manpy.Part", inputsDict=None, **kw):
         self.type = "Assembly"  # String that shows the type of object
         self.next = []  # list with the next objects in the flow
         self.previous = []  # list with the previous objects in the flow
@@ -74,6 +76,13 @@ class Assembly(CoreObject):
         # then the giverObjects have to be blocked for the time
         # that the machine is being loaded
         from .Globals import G
+
+        if isinstance(entity, str):
+            self.item = Globals.getClassFromName(entity)
+        elif isinstance(entity, Entity) or issubclass(entity, Entity):
+            self.item = entity
+
+        self.numberOfArrivals = 0
 
         G.AssemblyList.append(self)
 
@@ -164,6 +173,7 @@ class Assembly(CoreObject):
         )
         self.Res = simpy.Resource(self.env, 1)
         self.Res.users = []
+        self.numberOfArrivals = 0
 
     #         self.Res.waitQ=[]
 
@@ -173,11 +183,21 @@ class Assembly(CoreObject):
     def run(self):
         activeObjectQueue = self.getActiveObjectQueue()
         while 1:
+            from .Globals import G
+
+            # Create new Entity
+            entity = self.createEntity()
+            entity.creationTime = self.env.now
+            entity.startTime = self.env.now
+            entity.currentStation = self
+            G.EntityList.append(entity)
+            G.numberOfEntities += 1
+            self.numberOfArrivals += 1
+
             self.printTrace(self.id, waitEvent="")
             # wait until the Queue can accept an entity and one predecessor requests it
 
             self.expectedSignals["isRequested"] = 1
-
             yield self.isRequested  # [self.isRequested,self.canDispose, self.loadOperatorAvailable]
             if self.isRequested.value:
                 transmitter, eventTime = self.isRequested.value
@@ -185,7 +205,9 @@ class Assembly(CoreObject):
                 # reset the isRequested signal parameter
                 self.isRequested = self.env.event()
 
-                self.getEntity("Frame")  # get the Frame
+                frame = self.getEntity("Frame")  # get the Frame
+                entity.features = frame.features.copy()
+                entity.feature_times = frame.feature_times.copy()
 
                 for i in range(
                     self.getActiveObjectQueue()[0].capacity
@@ -199,7 +221,17 @@ class Assembly(CoreObject):
                         # reset the isRequested signal parameter
                         self.isRequested = self.env.event()
                         # TODO: fix the getEntity 'Part' case
-                        self.getEntity("Part")
+                        part = self.getEntity("Part")
+
+                        # Fill features and feature_times of new Entity
+                        for i in range(len(entity.feature_times)):
+                            if entity.features[i] == None:
+                                entity.features[i] = part.features[i]
+                            if entity.feature_times[i] == None:
+                                entity.feature_times[i] = part.feature_times[i]
+
+                # set new Entity as active Entity
+                self.getActiveObjectQueue()[0] = entity
 
                 self.expectedSignals["isRequested"] = 0
 
@@ -335,6 +367,10 @@ class Assembly(CoreObject):
         if callerObject == None:
             return len(activeObjectQueue) == 0
         thecaller = callerObject
+        # if the object holds a finished item then return False
+        if len(activeObjectQueue) > 0:
+            if activeObjectQueue[0].type == "Part":
+                return False
         # if the object holds nothing then return true
         if len(self.getActiveObjectQueue()) == 0:
             return not activeObject.entryIsAssignedTo()
@@ -465,3 +501,12 @@ class Assembly(CoreObject):
         json["results"]["waiting_ratio"] = self.Waiting
 
         G.outputJSON["elementList"].append(json)
+
+    def createEntity(self):
+        from .Globals import G
+
+        self.printTrace(self.id, create="")
+        return self.item(
+            id=self.item.type + str(G.numberOfEntities),
+            name=self.item.type + str(self.numberOfArrivals),
+        )  # return the newly created Entity

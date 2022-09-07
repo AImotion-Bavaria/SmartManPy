@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from .ObjectInterruption import ObjectInterruption
 from .RandomNumberGenerator import RandomNumberGenerator
+from manpy.simulation.Globals import G
 
 
 class Feature(ObjectInterruption):
@@ -58,6 +59,8 @@ class Feature(ObjectInterruption):
         self.random_walk = random_walk
         self.dependent = dependent
         self.type = "Feature"
+
+        G.FeatureList.append(self)
 
     def initialize(self):
         if self.entity == True:
@@ -139,7 +142,6 @@ class Feature(ObjectInterruption):
                     if key != "Function":
                         locals()[key] = self.dependent.get(key).featureValue
                         locals()[key+'_history'] = self.dependent.get(key).featureHistory
-                # print(eval(self.dependent["Function"]))
 
                 self.distribution["Feature"][list(self.distribution["Feature"].keys())[0]]["mean"] = eval(self.dependent["Function"])
                 self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
@@ -166,7 +168,8 @@ class Feature(ObjectInterruption):
 
             # check Entity
             if self.entity == True:
-                self.victim.Res.users[0].set_feature(self.featureValue, self.env.now)
+                # add Feature value and time to Entity
+                self.victim.Res.users[0].set_feature(self.featureValue, self.env.now, (self.id, self.victim.id))
                 self.outputTrace(self.victim.Res.users[0].name, self.victim.Res.users[0].id, str(self.featureValue))
                 self.expectedSignals["victimEndsProcessing"] = 1
                 yield self.victimEndsProcessing
@@ -195,7 +198,7 @@ class Feature(ObjectInterruption):
         from .Globals import G
 
         if G.trace:
-            G.trace_list.append([G.env.now, entity_name, entity_id, self.id, self.id, message])
+            G.trace_list.append([G.env.now, entity_name, entity_id, self.id, self.name, message])
 
         if G.snapshots:
             entities_list = []

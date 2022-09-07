@@ -106,6 +106,7 @@ class G:
     MachineManagedJobList = []
     QueueManagedJobList = []
     ModelResourceList = []
+    FeatureList = []
 
     JobList = []
     WipList = []
@@ -527,6 +528,7 @@ def runSimulation(
     G.ObjectInterruptionList = []
     G.ObjectResourceList = []
     G.trace_list = []
+    G.ftr_st = []   # list of (feature, corresponding station)
 
     from .CoreObject import CoreObject
     from .ObjectInterruption import ObjectInterruption
@@ -540,6 +542,11 @@ def runSimulation(
             G.ObjectInterruptionList.append(object)
         elif issubclass(object.__class__, ObjectResource):
             G.ObjectResourceList.append(object)
+
+    # set ftr_st
+    for f in G.FeatureList:
+        G.ftr_st.append((f.id, f.victim.id))
+
 
     # run the replications
     for i in range(G.numberOfReplications):
@@ -601,38 +608,44 @@ def ExcelPrinter(df, filename):
     else:
         df.to_excel("{}.xls".format(filename))
 
-def getEntityData() -> pd.DataFrame:
-    feature_index = 0
-    ftr_st = []         # list of (features, corresponding station)
+def getEntityData(objectList=[], discards=[], time=False) -> pd.DataFrame:
     columns = []        # name of columns
     df_list = []        # list for the DataFrame
 
-    # set stations
-    for oi in G.ObjectInterruptionList:
-        if oi.type == "Feature":
-            ftr_st.append((feature_index, int(oi.victim.id[1:])))
-            feature_index += 1
-
     # set columns
-    for ftr in ftr_st:
-        columns.append("S{}_Ftr{}_t".format(ftr[1], ftr[0]))
-        columns.append("S{}_Ftr{}_v".format(ftr[1], ftr[0]))
+    for ftr in G.ftr_st:
+        if time:
+            columns.append("{}_{}_t".format(ftr[1], ftr[0]))
+        columns.append("{}_{}_v".format(ftr[1], ftr[0]))
     columns.append("Result")
 
     # set df_list
     for entity in G.EntityList:
-        l = [None] * (len(entity.features) * 2 + 1)
-        for i in range(len(l) - 1):
-            if i % 2 == 0:
-                l[i] = entity.feature_times[i//2]
-            else:
-                l[i] = entity.features[i//2]
-        for e in G.ExitList:
-            if entity in e.Entities:
-                l[-1] = "Success"
+        check = False # if this is True, the Entity gets added to the Dataframe
+
+        # check objectList for the current Entity
+        for o in objectList:
+            if entity in o.entities:
+                check = True
                 break
-            else:
-                l[-1] = "Fail"
+        # check every Machine discard for the current Entity
+        for m in discards:
+            if entity in m.discards:
+                check = True
+                break
+        if check == False:
+            continue
+
+        if time:
+            l = [None] * (len(G.ftr_st) * 2 + 1)
+            for i in range(len(l)):
+                if i % 2 == 0:
+                    l[i] = entity.features[i // 2]
+                else:
+                    l[i] = entity.feature_times[i // 2]
+        else:
+            l = entity.features
+
         if len(l) == len(columns):
             df_list.append(l)
 
