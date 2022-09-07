@@ -619,6 +619,7 @@ def getEntityData() -> pd.DataFrame:
         columns.append("S{}_Ftr{}_v".format(ftr[1], ftr[0]))
 
     # set df_list
+    # TODO we need to match feature values and names
     for entity in G.EntityList:
         l = [None] * len(entity.features) * 2
         for i in range(len(l)):

@@ -16,6 +16,7 @@ class Feature(ObjectInterruption):
     :param contribute: Needs Failures in a list as an input to contribute the Feature value to conditions
     :param entity: If this value is true, saves the Feature value inside the current Entity
     :param start_time: The starting time for the feature
+    :param end_time: The end time for the feature
     :param start_value: The starting value of the Feature
     :param random_walk: If this is True, the Feature will continuously take the previous feature_value into account
     :param dependent: A dictionary containing a Function and the corresponding variables, to determine dependencies between features
@@ -33,6 +34,7 @@ class Feature(ObjectInterruption):
         contribute=None,
         entity=False,
         start_time=0,
+        end_time=0,
         start_value=0,
         random_walk=False,
         dependent=None,
@@ -43,6 +45,9 @@ class Feature(ObjectInterruption):
         self.name = name
         self.deteriorationType = deteriorationType
         self.distribution = distribution
+
+        # Object that handles switching and deals with the different distributions/RNGs?
+
         if distribution.keys().__contains__("Feature") == False:
             self.distribution["Feature"] = {"Fixed": {"mean": 10}}
         self.rngTime = RandomNumberGenerator(self, self.distribution.get("Time", {"Fixed": {"mean": 100}}))
@@ -52,6 +57,7 @@ class Feature(ObjectInterruption):
         self.contribute = contribute
         self.entity = entity
         self.start_time = start_time
+        self.end_time = end_time
         self.featureValue = start_value
         self.random_walk = random_walk
         self.dependent = dependent
@@ -80,7 +86,7 @@ class Feature(ObjectInterruption):
         remainingTimeTillFeature = None
         while 1:
             while remainingTimeTillFeature == None:
-                timeTillFeature = self.rngTime.generateNumber(start_time=self.start_time)
+                timeTillFeature = self.rngTime.generateNumber(start_time=self.start_time, end_time=self.end_time)
                 remainingTimeTillFeature = timeTillFeature
                 if remainingTimeTillFeature == None:
                     yield self.env.timeout(1)
@@ -114,7 +120,9 @@ class Feature(ObjectInterruption):
 
                         # wait for victim to start processing again
                         self.expectedSignals["victimStartsProcessing"] = 1
+                        # wait till signal arrives
                         yield self.victimStartsProcessing
+                        # reset to be able to yield again
                         self.victimStartsProcessing = self.env.event()
                     elif self.victimIsInterrupted in receivedEvent:
                         self.victimIsInterrupted = self.env.event()
@@ -125,6 +133,7 @@ class Feature(ObjectInterruption):
                         yield self.victimResumesProcessing
                         self.victimResumesProcessing = self.env.event()
                     else:
+                        # only set to reset of events occur
                         self.expectedSignals["victimEndsProcessing"] = 0
                         self.expectedSignals["victimIsInterrupted"] = 0
                         remainingTimeTillFeature = None
@@ -135,12 +144,17 @@ class Feature(ObjectInterruption):
             if self.dependent:
                 for key in list(self.dependent.keys()):
                     if key != "Function":
-                        locals()[key] = self.dependent.get(key).featureValue
+                        locals()[key] = self.dependent.get(key).featureValue  # Necessary for eval statements
                 print(eval(self.dependent["Function"]))
+                # TODO Are other distributions possible?
                 self.distribution["Feature"][list(self.distribution["Feature"].keys())[0]]["mean"] = eval(self.dependent["Function"])
+                # TODO Is this correct? If a feature depends on others, is there radomness present? -> If based on a formula, we have the fixed distribtution!
                 self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
 
-            value = self.rngFeature.generateNumber(start_time=self.start_time)
+            # TODO analog mit statemachine: RNG neu ziehen(bleibt gleich normalerweise), jeder get call verändert etwas
+            # Veränderung (zb verschleiss) wird vorher pro feature definiert
+
+            value = self.rngFeature.generateNumber(start_time=self.start_time, end_time=self.end_time)
 
             if self.random_walk == True:
                 self.featureValue += value

@@ -25,7 +25,9 @@ E1 = Exit("E1", "Exit1")
 
 # ObjectInterruption
 # Löten
-Spannung = Feature("Ftr0", "Feature1", victim=Löten, entity=True,
+Spannung = Feature("Ftr0", "Feature1", victim=Löten, entity=True, start_time=10, end_time=20,
+               distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 1.6, "stdev": 0.2}}})
+Spannung2 = Feature("Ftr0", "Feature1", victim=Löten, entity=True, start_time=200, end_time=0,
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 1.6, "stdev": 0.2}}})
 Strom = Feature("Ftr1", "Feature2", victim=Löten, entity=True,
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 3500, "stdev": 200}}})
@@ -57,7 +59,7 @@ E1.defineRouting([Kleben])
 
 
 def main(test=0):
-    maxSimTime = 5000
+    maxSimTime = 50
     objectList = [S, Löten, Q, Kleben, E1, StecktFest, Spannung, Strom, Widerstand, Kraft, Einsinktiefe, Durchflussgeschwindigkeit, Temperatur, Menge]
 
     runSimulation(objectList, maxSimTime)
