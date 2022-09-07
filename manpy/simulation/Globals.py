@@ -545,7 +545,7 @@ def runSimulation(
 
     # set ftr_st
     for f in G.FeatureList:
-        G.ftr_st.append((int(f.id[3:]), int(f.victim.id[1:])))
+        G.ftr_st.append((f.id, f.victim.id))
 
 
     # run the replications
@@ -615,8 +615,8 @@ def getEntityData(time=True) -> pd.DataFrame:
     # set columns
     for ftr in G.ftr_st:
         if time:
-            columns.append("S{}_Ftr{}_t".format(ftr[1], ftr[0]))
-        columns.append("S{}_Ftr{}_v".format(ftr[1], ftr[0]))
+            columns.append("{}_{}_t".format(ftr[1], ftr[0]))
+        columns.append("{}_{}_v".format(ftr[1], ftr[0]))
     columns.append("Result")
 
     # set df_list

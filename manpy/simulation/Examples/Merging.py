@@ -1,4 +1,4 @@
-from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Assembly, Queue
+from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Assembly, Frame
 from manpy.simulation.Globals import runSimulation, getEntityData, ExcelPrinter, G
 import time
 
@@ -17,12 +17,11 @@ class Machine_control(Machine):
 
 
 # Objects
+Frame.capacity = 1
 S0 = Source("S0", "Source", interArrivalTime={"Fixed": {"mean": 0.4}}, entity="manpy.Part", capacity=1)
-S1 = Source("S1", "Source", interArrivalTime={"Fixed": {"mean": 0.4}}, entity="manpy.Part", capacity=1)
+S1 = Source("S1", "Source", interArrivalTime={"Fixed": {"mean": 0.4}}, entity="manpy.Frame", capacity=1)
 Löten = Machine("M0", "Löten", processingTime={"Normal": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}})
-Q0 = Queue("Q0", "Queue0")
 Kleben = Machine("M1", "Kleben", processingTime={"Fixed": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}})
-Q1 = Queue("Q1", "Queue1")
 A = Assembly("A", "Assembly")
 Montage = Machine_control("M2", "Montage", processingTime={"Fixed": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}})
 E = Exit("E", "Exit")
@@ -73,8 +72,6 @@ def main(test=0):
 
     df = getEntityData(time=False)
     df.to_csv("Merging.csv", index=False, encoding="utf8")
-    df = G.get_simulation_results_dataframe()
-    ExcelPrinter(df, "Merging")
 
     print("""
             Ausschuss:          {}

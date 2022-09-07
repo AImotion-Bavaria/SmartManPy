@@ -142,7 +142,6 @@ class Feature(ObjectInterruption):
                     if key != "Function":
                         locals()[key] = self.dependent.get(key).featureValue
                         locals()[key+'_history'] = self.dependent.get(key).featureHistory
-                # print(eval(self.dependent["Function"]))
 
                 self.distribution["Feature"][list(self.distribution["Feature"].keys())[0]]["mean"] = eval(self.dependent["Function"])
                 self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
@@ -170,7 +169,7 @@ class Feature(ObjectInterruption):
             # check Entity
             if self.entity == True:
                 # add Feature value and time to Entity
-                self.victim.Res.users[0].set_feature(self.featureValue, self.env.now, (int(self.id[3:]), int(self.victim.id[1:])))
+                self.victim.Res.users[0].set_feature(self.featureValue, self.env.now, (self.id, self.victim.id))
                 self.outputTrace(self.victim.Res.users[0].name, self.victim.Res.users[0].id, str(self.featureValue))
                 self.expectedSignals["victimEndsProcessing"] = 1
                 yield self.victimEndsProcessing
