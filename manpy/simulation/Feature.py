@@ -31,6 +31,7 @@ class Feature(ObjectInterruption):
         victim=None,
         deteriorationType="constant",
         distribution={},
+        distribution_state_controller=None,
         repairman=None,
         no_negative=False,
         contribute=None,
@@ -46,10 +47,18 @@ class Feature(ObjectInterruption):
         self.id = id
         self.name = name
         self.deteriorationType = deteriorationType
-        self.distribution = distribution
-        if distribution.keys().__contains__("Feature") == False:
+
+        self.distribution_state_controller = distribution_state_controller
+
+        if self.distribution_state_controller:
+            self.distribution = self.distribution_state_controller.get_initial_state()
+        else:
+            self.distribution = distribution
+
+        if self.distribution.keys().__contains__("Feature") == False: # TODO is self.distribution instead of distribution right?
             self.distribution["Feature"] = {"Fixed": {"mean": 10}}
-        self.rngTime = RandomNumberGenerator(self, self.distribution.get("Time", {"Fixed": {"mean": 100}}))
+
+        self.rngTime = RandomNumberGenerator(self, self.distribution.get("Time", {"Fixed": {"mean": 1}}))
         self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
         self.repairman = repairman
         self.no_negative = no_negative
@@ -141,6 +150,11 @@ class Feature(ObjectInterruption):
                         remainingTimeTillFeature = None
                         featureNotTriggered = False
 
+            if self.distribution_state_controller:
+                self.distribution = self.distribution_state_controller.get_and_update()
+                # TODO is this necessary? does it make sense to change the time?
+                self.rngTime = RandomNumberGenerator(self, self.distribution.get("Time", {"Fixed": {"mean": 1}}))
+                self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
 
             # generate the Feature
             if self.dependent:

@@ -1,5 +1,6 @@
-from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue
+from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue, SimpleStateController
 from manpy.simulation.Globals import runSimulation, getEntityData
+
 import time
 
 start = time.time()
@@ -7,8 +8,8 @@ start = time.time()
 class Machine_control(Machine):
     def condition(self):
         activeEntity = self.Res.users[0]
-        means = [1.6, 3500, 450, 180, 400, 50, 190, 400]
-        stdevs = [0.2, 200, 50, 30, 50, 5, 10, 50]
+        means = [1.6, 3500, 450, 180, 400, 50, 190, 400, 1]
+        stdevs = [0.2, 200, 50, 30, 50, 5, 10, 50, 2]
         for idx, feature in enumerate(activeEntity.features):
             if feature != None: # TODO why necessary?
                 min = means[idx] - 2 * stdevs[idx]
@@ -45,6 +46,13 @@ Temperatur = Feature("Ftr6", "Feature7", victim=Kleben, entity=True,
 Menge = Feature("Ftr7", "Feature8", victim=Kleben, entity=True,
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 400, "stdev": 50}}})
 
+dists = [{"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 1, "stdev":2}}},
+         {"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 100, "stdev":2}}}]
+boundaries = {(0, 25): 0, (25, None): 1}
+distribution_controller = SimpleStateController(states=dists, boundaries=boundaries, amount_per_step=1)
+
+Test = Feature("Ftr8", "Feature9", victim=Kleben, entity=True, distribution_state_controller=distribution_controller)
+
 StecktFest = Failure("Flr0", "Failure0", victim=Kleben, entity=True,
                distribution={"TTF": {"Fixed": {"mean": 0}}, "TTR": {"Normal": {"mean": 2,"stdev": 0.2, "min":0, "probability": 0.05}}})
 
@@ -59,12 +67,12 @@ E1.defineRouting([Kleben])
 
 def main(test=0):
     maxSimTime = 50
-    objectList = [S, Löten, Q, Kleben, E1, StecktFest, Spannung, Strom, Widerstand, Kraft, Einsinktiefe, Durchflussgeschwindigkeit, Temperatur, Menge]
+    objectList = [S, Löten, Q, Kleben, E1, StecktFest, Spannung, Strom, Widerstand, Kraft, Einsinktiefe, Durchflussgeschwindigkeit, Temperatur, Menge, Test]
 
     runSimulation(objectList, maxSimTime)
 
-    df = getEntityData()
-    df.to_csv("ExampleLine.csv", index=False, encoding="utf8")
+    df = getEntityData([E1], discards=[Kleben])
+    df.to_csv("DistributionShift.csv", index=False, encoding="utf8")
 
     print("""
             Ausschuss:          {}

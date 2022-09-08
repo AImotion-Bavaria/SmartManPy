@@ -112,11 +112,15 @@ class RandomNumberGenerator(object):
     def generateNumber(self, start_time=0, end_time=0):
         from .Globals import G
 
-        start_time_not_reached = G.env.now <= start_time
+        x = G.env.now - start_time
+        if x < 0:
+            return None
+
+        '''start_time_not_reached = G.env.now <= start_time
         end_time_reached = G.env.now > end_time
 
-        '''if start_time_not_reached:
-            return None'''
+        if start_time_not_reached:
+            return None
 
         if start_time > 0 and end_time > 0:
             if start_time_not_reached or end_time_reached:
@@ -129,7 +133,7 @@ class RandomNumberGenerator(object):
         elif start_time_not_reached == 0 and end_time > 0:
             if end_time_reached:
                 print("None")
-                return None
+                return None'''
 
         # checks if probability has been set and rolls if a number should be generated
         if eval(self.probability) != 0:
