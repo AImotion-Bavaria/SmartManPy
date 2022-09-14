@@ -614,9 +614,9 @@ def getEntityData(objectList=[], discards=[], time=False) -> pd.DataFrame:
 
     # set columns
     for ftr in G.ftr_st:
+        columns.append("{}_{}_v".format(ftr[1], ftr[0]))
         if time:
             columns.append("{}_{}_t".format(ftr[1], ftr[0]))
-        columns.append("{}_{}_v".format(ftr[1], ftr[0]))
     columns.append("Result")
 
     # set df_list
