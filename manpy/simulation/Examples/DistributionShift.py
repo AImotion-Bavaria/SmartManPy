@@ -48,13 +48,15 @@ Menge = Feature("Ftr7", "Feature8", victim=Kleben, entity=True,
 
 dists = [{"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 1, "stdev":2}}},
          {"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 100, "stdev":2}}}]
-boundaries = {(0, 25): 0, (25, None): 1}
-distribution_controller = SimpleStateController(states=dists, boundaries=boundaries, amount_per_step=1)
+boundaries = {(0, 300): 0, (300, None): 1}
+distribution_controller = SimpleStateController(states=dists, boundaries=boundaries, amount_per_step=0.7, reset_amount=None)
 
-Test = Feature("Ftr8", "Feature9", victim=Kleben, entity=True, distribution_state_controller=distribution_controller)
+Test = Feature("Ftr8", "Feature9", victim=Kleben, entity=True, distribution_state_controller=distribution_controller,
+               deteriorationType="constant")
 
 StecktFest = Failure("Flr0", "Failure0", victim=Kleben, entity=True,
-               distribution={"TTF": {"Fixed": {"mean": 0}}, "TTR": {"Normal": {"mean": 2,"stdev": 0.2, "min":0, "probability": 0.05}}})
+               # distribution={"TTF": {"Fixed": {"mean": 0}}, "TTR": {"Normal": {"mean": 2,"stdev": 0.2, "min":0, "probability": 0.05}}})
+                distribution={"TTF": {"Fixed": {"mean": 500}}, "TTR": {"Normal": {"mean": 20,"stdev": 0.2, "min":1}}})
 
 
 # Routing
@@ -66,12 +68,12 @@ E1.defineRouting([Kleben])
 
 
 def main(test=0):
-    maxSimTime = 50
+    maxSimTime = 5000
     objectList = [S, Löten, Q, Kleben, E1, StecktFest, Spannung, Strom, Widerstand, Kraft, Einsinktiefe, Durchflussgeschwindigkeit, Temperatur, Menge, Test]
 
     runSimulation(objectList, maxSimTime)
 
-    df = getEntityData([E1], discards=[Kleben])
+    df = getEntityData([E1], discards=[Kleben], time=True)
     df.to_csv("DistributionShift.csv", index=False, encoding="utf8")
 
     print("""

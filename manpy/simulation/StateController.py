@@ -32,9 +32,9 @@ class SimpleStateController(StateController):
            Example: states = [state0, state1, state2]
            boundaries = {(0, 150): 0, (150, 300): 1, (300, None): 2}
     :param amount_per_step: A number that defines how much wear is added per step.
+    :param reset_amount: When the account value reaches this amount, the StateController gets reset.
     """
-
-    def __init__(self, states: list, boundaries: dict, amount_per_step, initial_state_index=0):
+    def __init__(self, states: list, boundaries: dict, amount_per_step, initial_state_index=0, reset_amount=None):
 
         self.states = states
         self.boundaries = boundaries
@@ -43,6 +43,7 @@ class SimpleStateController(StateController):
         self.account = 0
         self.current_state_index = initial_state_index
         self.initial_state_index = initial_state_index
+        self.reset_amount = reset_amount
 
     def get_initial_state(self):
         return self.states[self.initial_state_index]
@@ -51,11 +52,16 @@ class SimpleStateController(StateController):
         output = self.states[self.current_state_index]
 
         self.account += self.amount_per_step
-        self.current_state_index = self.__get_current_state()
+
+        if self.reset_amount is not None and self.account >= self.reset_amount:
+            self.reset()
+        else:
+            self.current_state_index = self.__get_current_state()
 
         return output
 
     def reset(self):
+        print(">>> Reset SimpleStateController <<<")
         self.account = 0
         self.current_state_index = self.initial_state_index
 

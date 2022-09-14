@@ -251,6 +251,7 @@ class Failure(ObjectInterruption):
 
                 downtime = self.rngTTR.generateNumber()
                 if downtime != 0:
+                    print("Started failure")
                     # if the mode is to wait on tie before interruption add a dummy hold for 0
                     # this is done so that if processing finishes exactly at the time of interruption
                     # the processing will finish first (if this mode is selected)

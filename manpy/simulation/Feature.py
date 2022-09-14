@@ -13,6 +13,9 @@ class Feature(ObjectInterruption):
     :param victim: The machine to which the feature belongs
     :param deteriorationType: The way the time until the next Feature is counted, working counts only during the operation of the victim, constant is constant
     :param distribution: The statistical distribution of the time and value of the Feature
+    :param distribution_state_controller: StateController that can contain different distributions.
+    :param reset_distributions: Active with deteriorationType working; Resets distribution_state_controller when the
+           victim is interrupted (=repaired)
     :param repairman: The resource that may be needed to fix the failure
     :param no_negative: If this value is true, returns 0 for values below 0 of the feature value
     :param contribute: Needs Failures in a list as an input to contribute the Feature value to conditions
@@ -29,9 +32,10 @@ class Feature(ObjectInterruption):
         id="",
         name="",
         victim=None,
-        deteriorationType="constant",
+        deteriorationType="working",
         distribution={},
         distribution_state_controller=None,
+        reset_distributions=True,
         repairman=None,
         no_negative=False,
         contribute=None,
@@ -49,6 +53,7 @@ class Feature(ObjectInterruption):
         self.deteriorationType = deteriorationType
 
         self.distribution_state_controller = distribution_state_controller
+        self.reset_distributions = reset_distributions
 
         if self.distribution_state_controller:
             self.distribution = self.distribution_state_controller.get_initial_state()
@@ -126,6 +131,7 @@ class Feature(ObjectInterruption):
                     # wait either for the feature or end of process
                     receivedEvent = yield self.env.any_of([self.env.timeout(remainingTimeTillFeature), self.victimEndsProcessing, self.victimIsInterrupted])
                     if self.victimEndsProcessing in receivedEvent:
+                        print("victimEndsProcessing")
                         self.victimEndsProcessing = self.env.event()
                         remainingTimeTillFeature = remainingTimeTillFeature - (self.env.now - timeRestartedCounting)
 
@@ -138,10 +144,15 @@ class Feature(ObjectInterruption):
                     elif self.victimIsInterrupted in receivedEvent:
                         self.victimIsInterrupted = self.env.event()
                         remainingTimeTillFeature = remainingTimeTillFeature - (self.env.now - timeRestartedCounting)
-
+                        print("victimIsInterrupted")
                         # wait for victim to start processing again
                         self.expectedSignals["victimResumesProcessing"] = 1
+
                         yield self.victimResumesProcessing
+
+                        if self.distribution_state_controller and self.reset_distributions:
+                            self.distribution_state_controller.reset()
+
                         self.victimResumesProcessing = self.env.event()
                     else:
                         # only set to reset of events occur
