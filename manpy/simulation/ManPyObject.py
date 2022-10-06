@@ -173,6 +173,7 @@ class ManPyObject(object):
     # sends a signal
     # ===========================================================================
     def sendSignal(self, sender=None, receiver=None, signal=None, succeedTuple=None):
+        from .Globals import G
         assert signal, "there is no signal defined"
         assert receiver, "there is no receiver defined for the signal"
         if not sender:
@@ -182,6 +183,9 @@ class ManPyObject(object):
         # send the signal
         signal.succeed(succeedTuple)
         # reset the expected signals of the receiver to 0
+        if hasattr(receiver, "name"):
+            if receiver.name == "Feature9":
+                pass
         for key, value in list(receiver.expectedSignals.items()):
             receiver.expectedSignals[key] = 0
 

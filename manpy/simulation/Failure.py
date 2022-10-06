@@ -96,14 +96,24 @@ class Failure(ObjectInterruption):
                 self.expectedSignals["contribution"] = 1
                 yield self.contribution
                 self.contribution = self.env.event()
+                # for oi in self.victim.objectInterruptions:
+                #     oi.expectedSignals["victimFailed"] = 1
+
+                # TODO test deterioration type constant, zb raumtemperatur (entity false, deterioration type false)
+                # TODO test code from non condtional part and ignore contribution
 
                 if self.condition() == True:
-                    self.interruptVictim()
-
                     # check in the ObjectInterruptions of the victim. If there is a one that is waiting for victimFailed send it
                     for oi in self.victim.objectInterruptions:
+                        # TODO Why cant I catch victimFailed in the Feature that triggered the cond. failure?
                         if oi.expectedSignals["victimFailed"]:
+                            print("Sending VictimFailed")
+                            # TODO dirty solution
+                            # oi.victimFailed = oi.env.event()
                             self.sendSignal(receiver=oi, signal=oi.victimFailed)
+
+                    self.interruptVictim()
+                    print("Condition True")
                     self.victim.Up = False
                     self.victim.timeLastFailure = self.env.now
                     self.outputTrace(self.victim.name, self.victim.id, "is down")
@@ -251,7 +261,7 @@ class Failure(ObjectInterruption):
 
                 downtime = self.rngTTR.generateNumber()
                 if downtime != 0:
-                    print("Started failure")
+
                     # if the mode is to wait on tie before interruption add a dummy hold for 0
                     # this is done so that if processing finishes exactly at the time of interruption
                     # the processing will finish first (if this mode is selected)
@@ -262,7 +272,6 @@ class Failure(ObjectInterruption):
                             ):
                                 yield self.env.timeout(0)
 
-                    # interrupt the victim
                     self.interruptVictim()
 
                     # check in the ObjectInterruptions of the victim. If there is a one that is waiting for victimFailed send it

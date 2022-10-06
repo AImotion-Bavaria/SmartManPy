@@ -126,6 +126,7 @@ class ObjectInterruption(ManPyObject):
     # interrupts the victim
     # ===========================================================================
     def interruptVictim(self):
+        print(f"Starting failure at {self.env.now}")
         # inform the victim by whom will it be interrupted
         # TODO: reconsider what happens when failure and ShiftScheduler (e.g.) signal simultaneously
         if self.victim.expectedSignals["interruptionStart"]:
@@ -145,6 +146,7 @@ class ObjectInterruption(ManPyObject):
     # reactivate the victim
     # ===========================================================================
     def reactivateVictim(self):
+        print(f"Ending failure at {self.env.now}")
         if self.victim.expectedSignals["interruptionEnd"]:
             self.sendSignal(receiver=self.victim, signal=self.victim.interruptionEnd)
             # reset the interruptionStart event of the victim

@@ -56,7 +56,10 @@ class SimpleStateController(StateController):
         if self.reset_amount is not None and self.account >= self.reset_amount:
             self.reset()
         else:
+            previous_state_index = self.current_state_index
             self.current_state_index = self.__get_current_state()
+            if previous_state_index is not self.current_state_index:
+                print(f"Change state to index {self.current_state_index}")
 
         return output
 
@@ -87,7 +90,7 @@ class SimpleStateController(StateController):
 
         return res[0]
 
-# TODO Graduelle veränderungen
+# TODO Graduelle veränderungen -> mehrere Verteilungen zusammenaddieren zb
 
 if __name__ == '__main__':
     states = ["A", "B", "C"]

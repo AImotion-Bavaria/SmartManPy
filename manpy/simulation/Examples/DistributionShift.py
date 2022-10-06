@@ -1,5 +1,5 @@
-from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue, SimpleStateController
-from manpy.simulation.Globals import runSimulation, getEntityData
+from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue, SimpleStateController, Repairman
+from manpy.simulation.Globals import runSimulation, getEntityData, G
 
 import time
 
@@ -17,8 +17,19 @@ class Machine_control(Machine):
                 if feature < min or feature > max:
                     return True
 
+class Failure_conditional(Failure):
+    def condition(self):
+        value_1 = Test.get_feature_value()
+        if value_1 > 10:
+            print("Fail")
+            # Test.start_time = G.env.now
+            return True
+        else:
+            return False
+
 
 # Objects
+R = Repairman("R1", "Sascha")
 S = Source("S1", "Source", interArrivalTime={"Fixed": {"mean": 0.4}}, entity="manpy.Part", capacity=1)
 Löten = Machine("M0", "Löten", processingTime={"Normal": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}})
 Q = Queue("Q", "Queue")
@@ -46,17 +57,21 @@ Temperatur = Feature("Ftr6", "Feature7", victim=Kleben, entity=True,
 Menge = Feature("Ftr7", "Feature8", victim=Kleben, entity=True,
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 400, "stdev": 50}}})
 
+StecktFest = Failure_conditional("Flr0", "Failure0", victim=Kleben, conditional=True,
+            distribution={"TTR": {"Fixed": {"mean": 5}}}, repairman=R)
+
+# StecktFest = Failure("Flr0", "Failure0", victim=Kleben, entity=True, deteriorationType="working",
+#                distribution={"TTF": {"Fixed": {"mean": 0}},
+#                              "TTR": {"Normal": {"mean": 2,"stdev": 0.2, "min":0, "probability": 0.05}}})
+
 dists = [{"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 1, "stdev":2}}},
          {"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 100, "stdev":2}}}]
-boundaries = {(0, 300): 0, (300, None): 1}
-distribution_controller = SimpleStateController(states=dists, boundaries=boundaries, amount_per_step=0.7, reset_amount=None)
+boundaries = {(0, 10): 0, (10, None): 1}
+distribution_controller = SimpleStateController(states=dists, boundaries=boundaries, amount_per_step=1.0, reset_amount=None)
 
-Test = Feature("Ftr8", "Feature9", victim=Kleben, entity=True, distribution_state_controller=distribution_controller,
-               deteriorationType="constant")
+Test = Feature("Ftr8", "Feature9", victim=Kleben, distribution_state_controller=distribution_controller,
+               deteriorationType="working",contribute=[StecktFest], reset_distributions=True, entity=True)
 
-StecktFest = Failure("Flr0", "Failure0", victim=Kleben, entity=True,
-               # distribution={"TTF": {"Fixed": {"mean": 0}}, "TTR": {"Normal": {"mean": 2,"stdev": 0.2, "min":0, "probability": 0.05}}})
-                distribution={"TTF": {"Fixed": {"mean": 500}}, "TTR": {"Normal": {"mean": 20,"stdev": 0.2, "min":1}}})
 
 
 # Routing
@@ -67,9 +82,9 @@ Kleben.defineRouting([Q], [E1])
 E1.defineRouting([Kleben])
 
 
-def main(test=0):
-    maxSimTime = 5000
-    objectList = [S, Löten, Q, Kleben, E1, StecktFest, Spannung, Strom, Widerstand, Kraft, Einsinktiefe, Durchflussgeschwindigkeit, Temperatur, Menge, Test]
+def main():
+    maxSimTime = 50
+    objectList = [S, R, Löten, Q, Kleben, E1, StecktFest, Spannung, Strom, Widerstand, Kraft, Einsinktiefe, Durchflussgeschwindigkeit, Temperatur, Menge, Test]
 
     runSimulation(objectList, maxSimTime)
 
