@@ -93,18 +93,26 @@ class Failure(ObjectInterruption):
         if self.condition() != None:
             from .Globals import G
             while 1:
+                failureNotTriggered = True
                 self.expectedSignals["contribution"] = 1
                 yield self.contribution
                 self.contribution = self.env.event()
                 # for oi in self.victim.objectInterruptions:
                 #     oi.expectedSignals["victimFailed"] = 1
 
-                # TODO test deterioration type constant, zb raumtemperatur (entity false, deterioration type false)
-                # TODO test code from non condtional part and ignore contribution
+                # wait for victim to start process
+
+                for oi in self.victim.objectInterruptions:
+                    if oi.name == "Feature9":
+                        print("#Failure 1#", oi.expectedSignals)
 
                 if self.condition() == True:
+                    self.interruptVictim()
+
                     # check in the ObjectInterruptions of the victim. If there is a one that is waiting for victimFailed send it
                     for oi in self.victim.objectInterruptions:
+                        if oi.name == "Feature9":
+                            print("#Failure#", oi.expectedSignals)
                         # TODO Why cant I catch victimFailed in the Feature that triggered the cond. failure?
                         if oi.expectedSignals["victimFailed"]:
                             print("Sending VictimFailed")
@@ -112,7 +120,7 @@ class Failure(ObjectInterruption):
                             # oi.victimFailed = oi.env.event()
                             self.sendSignal(receiver=oi, signal=oi.victimFailed)
 
-                    self.interruptVictim()
+
                     print("Condition True")
                     self.victim.Up = False
                     self.victim.timeLastFailure = self.env.now
@@ -179,6 +187,10 @@ class Failure(ObjectInterruption):
                 remainingTimeToFailure = timeToFailure
                 failureNotTriggered = True
 
+                for oi in self.victim.objectInterruptions:
+                    if oi.name == "Feature9":
+                        print("#Failure 1#", oi.expectedSignals)
+
                 # if time to failure counts not matter the state of the victim
                 if self.deteriorationType == "constant":
                     yield self.env.timeout(remainingTimeToFailure)
@@ -221,6 +233,8 @@ class Failure(ObjectInterruption):
 
                 # if time to failure counts only in working time
                 elif self.deteriorationType == "working":
+
+
                     # wait for victim to start process
                     self.expectedSignals["victimStartsProcessing"] = 1
 
@@ -243,6 +257,8 @@ class Failure(ObjectInterruption):
                             | self.victimEndsProcessing
                         )
 
+                        # This happens because the victim stopped processing before remainingTimeToFailure passed;
+                        # That means the countdown is paused until the victim starts processing
                         if self.victimEndsProcessing in receivedEvent:
                             self.victimEndsProcessing = self.env.event()
                             remainingTimeToFailure = remainingTimeToFailure - (
@@ -255,6 +271,8 @@ class Failure(ObjectInterruption):
 
                             # wait for victim to start again processing
                             self.victimStartsProcessing = self.env.event()
+
+                        # Countdown to failure is over
                         else:
                             self.expectedSignals["victimEndsProcessing"] = 0
                             failureNotTriggered = False
@@ -276,6 +294,9 @@ class Failure(ObjectInterruption):
 
                     # check in the ObjectInterruptions of the victim. If there is a one that is waiting for victimFailed send it
                     for oi in self.victim.objectInterruptions:
+                        if oi.name == "Feature9":
+                            print("#Failure#", oi.expectedSignals)
+
                         if oi.expectedSignals["victimFailed"]:
                             self.sendSignal(receiver=oi, signal=oi.victimFailed)
                     self.victim.Up = False

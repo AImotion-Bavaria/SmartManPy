@@ -70,7 +70,7 @@ boundaries = {(0, 10): 0, (10, None): 1}
 distribution_controller = SimpleStateController(states=dists, boundaries=boundaries, amount_per_step=1.0, reset_amount=None)
 
 Test = Feature("Ftr8", "Feature9", victim=Kleben, distribution_state_controller=distribution_controller,
-               deteriorationType="working",contribute=[StecktFest], reset_distributions=True, entity=True)
+               deteriorationType="constant",contribute=[StecktFest], reset_distributions=True, entity=False)
 
 
 
