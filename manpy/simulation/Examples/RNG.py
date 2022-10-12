@@ -1,4 +1,4 @@
-from manpy.simulation.imports import Repairman, Machine, Source, Exit, Failure, Queue, Feature
+from manpy.simulation.imports import Repairman, Machine, Source, Exit, Failure, Queue, Feature, SimpleStateController
 from manpy.simulation.Globals import runSimulation, G, ExcelPrinter
 
 class Failure_conditional(Failure):
@@ -22,13 +22,19 @@ E1 = Exit("E1", "Exit1")
 
 # ObjectInterruption
 F1 = Failure_conditional(victim=M1, conditional=True, distribution={"TTR": {"Fixed": {"mean": 30}}})
-F2 = Failure(victim=M2, distribution={"TTF": {"Normal": {"mean": 10, "stdev": 5, "min": 3, "max": 17}}, "TTR": {"Fixed": {"mean": 1}}}, repairman=R)
-Ftr1 = Feature("Ftr1", "Feature1", victim=M1, deteriorationType="constant", contribute=[F1], no_zero=True,
+#F2 = Failure(victim=M2, distribution={"TTF": {"Normal": {"mean": 10, "stdev": 5, "min": 3, "max": 17}}, "TTR": {"Fixed": {"mean": 1}}}, repairman=R)
+Ftr1 = Feature("Ftr1", "Feature1", victim=M1, deteriorationType="working", contribute=[F1], no_zero=True,
                distribution={"Time": {"Fixed": {"mean": 10}},
                              "Feature": {"Normal": {"mean": "3*x", "stdev": "0.02*x+3", "min": "2.98*x-3", "max": "3.02*x+3"}}})
-Ftr2 = Feature("Ftr2", "Feature2", victim=M1, deteriorationType="working", start_time=60, contribute=[F1],
-               distribution={"Time": {"Fixed": {"mean": 5}},
-                             "Feature": {"Normal": {"mean": 0.5, "stdev": 0.2, "min": 0.1, "max": 0.9}}})
+
+dists = [{"Time": {"Fixed": {"mean": 5}}, "Feature": {"Normal": {"mean": 0.5, "stdev": 0.2, "min": 0.1, "max": 0.9}}},
+         {"Time": {"Fixed": {"mean": 5}}, "Feature": {"Normal": {"mean": 0.5, "stdev": 0.2, "min": 0.1, "max": 0.9}}}]
+boundaries = {(0, 10): 0, (10, None): 1}
+distribution_controller = SimpleStateController(states=dists, boundaries=boundaries, amount_per_step=1.0, reset_amount=None)
+Ftr2 = Feature("Ftr2", "Feature9", victim=M1, deteriorationType="working", start_time=60, contribute=[F1],
+               #distribution={"Time": {"Fixed": {"mean": 5}},
+               #              "Feature": {"Normal": {"mean": 0.5, "stdev": 0.2, "min": 0.1, "max": 0.9}}}
+               distribution_state_controller=distribution_controller, reset_distributions=True)
 
 # Routing
 S.defineRouting([M1])
@@ -41,7 +47,7 @@ def main(test=0):
     maxSimTime = 140
 
     # runSim with trace
-    runSimulation([S, Q, M1, M2, E1, F1, F2, Ftr1, Ftr2, R], maxSimTime, trace="Yes")
+    runSimulation([S, Q, M1, M2, E1, F1, Ftr1, Ftr2, R], maxSimTime, trace="Yes")
 
     df = G.get_simulation_results_dataframe().drop(columns=["entity_name", "station_name"])
     ExcelPrinter(df, "RNG")
