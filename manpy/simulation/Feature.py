@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 from .ObjectInterruption import ObjectInterruption
 from .RandomNumberGenerator import RandomNumberGenerator
 from manpy.simulation.Globals import G
@@ -111,12 +110,30 @@ class Feature(ObjectInterruption):
 
             # if time to failure counts not matter the state of the victim
             if self.deteriorationType == "constant":
-                yield self.env.timeout(remainingTimeTillFeature)
+                self.expectedSignals["victimFailed"] = 1
+
+                while featureNotTriggered:
+                    timeRestartedCounting = self.env.now
+                    receivedEvent = yield self.env.any_of([self.env.timeout(remainingTimeTillFeature),
+                                                           self.victimFailed])
+                    if self.victimFailed in receivedEvent:
+                        self.victimFailed = self.env.event()
+                        remainingTimeTillFeature = remainingTimeTillFeature - (self.env.now - timeRestartedCounting)
+                        if self.name == "Feature9":
+                            print(f"{self.name}: victimFailed")
+
+                        if self.distribution_state_controller and self.reset_distributions:
+                            self.distribution_state_controller.reset()
+                    else:
+                        self.expectedSignals["victimFailed"] = 0
+                        remainingTimeTillFeature = None
+                        featureNotTriggered = False
 
             # if time to failure counts only in working time
             elif self.deteriorationType == "working":
                 # wait for victim to start process
                 self.expectedSignals["victimStartsProcessing"] = 1
+                self.expectedSignals["victimFailed"] = 1
                 yield self.victimStartsProcessing
                 self.victimStartsProcessing = self.env.event()
 
@@ -144,7 +161,8 @@ class Feature(ObjectInterruption):
 
                     # In line before, reset of expected signals occurs
                     if self.victimEndsProcessing in receivedEvent:
-                        print(f"{self.name}:victimEndsProcessing")
+                        if self.name == "Feature9":
+                            print(f"{self.name}:victimEndsProcessing")
                         self.victimEndsProcessing = self.env.event()
                         remainingTimeTillFeature = remainingTimeTillFeature - (self.env.now - timeRestartedCounting)
 
@@ -158,7 +176,8 @@ class Feature(ObjectInterruption):
                     elif self.victimIsInterrupted in receivedEvent:
                         self.victimIsInterrupted = self.env.event()
                         remainingTimeTillFeature = remainingTimeTillFeature - (self.env.now - timeRestartedCounting)
-                        print(f"{self.name}: victimIsInterrupted")
+                        if self.name == "Feature9":
+                            print(f"{self.name}: victimIsInterrupted")
                         # wait for victim to start processing again
                         self.expectedSignals["victimResumesProcessing"] = 1
 
@@ -169,7 +188,8 @@ class Feature(ObjectInterruption):
                     elif self.victimFailed in receivedEvent:
                         self.victimFailed = self.env.event()
                         remainingTimeTillFeature = remainingTimeTillFeature - (self.env.now - timeRestartedCounting)
-                        print(f"{self.name}: victimFailed")
+                        if self.name == "Feature9":
+                            print(f"{self.name}: victimFailed")
 
                         if self.distribution_state_controller and self.reset_distributions:
                             self.distribution_state_controller.reset()
