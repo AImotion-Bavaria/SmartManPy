@@ -102,10 +102,6 @@ class Failure(ObjectInterruption):
 
                 # wait for victim to start process
 
-                for oi in self.victim.objectInterruptions:
-                    if oi.name == "Feature9":
-                        print("#Failure 1#", oi.expectedSignals)
-
                 if self.condition() == True:
                     self.interruptVictim()
 
@@ -186,10 +182,6 @@ class Failure(ObjectInterruption):
                 timeToFailure = self.rngTTF.generateNumber()
                 remainingTimeToFailure = timeToFailure
                 failureNotTriggered = True
-
-                for oi in self.victim.objectInterruptions:
-                    if oi.name == "Feature9":
-                        print("#Failure 1#", oi.expectedSignals)
 
                 # if time to failure counts not matter the state of the victim
                 if self.deteriorationType == "constant":

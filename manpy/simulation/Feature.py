@@ -134,18 +134,13 @@ class Feature(ObjectInterruption):
                     timeRestartedCounting = self.env.now
                     self.expectedSignals["victimEndsProcessing"] = 1
                     self.expectedSignals["victimIsInterrupted"] = 1
-                    self.expectedSignals["victimFailed"] = 1
+                    # self.expectedSignals["victimFailed"] = 1
                     # wait either for the feature or end of process
                     receivedEvent = yield self.env.any_of([self.env.timeout(remainingTimeTillFeature),
                                                            self.victimEndsProcessing,
                                                            self.victimIsInterrupted,
                                                            self.victimFailed])
 
-                    if self.name == "Feature9":
-                        print("#Feature#", self.expectedSignals)
-
-                    if self.name == "Feature9":
-                        print(receivedEvent)
 
                     # In line before, reset of expected signals occurs
                     if self.victimEndsProcessing in receivedEvent:
@@ -180,7 +175,6 @@ class Feature(ObjectInterruption):
                             self.distribution_state_controller.reset()
                     else:
                         # only set to reset of events occur
-                        print("!!!!!!!!!!!!! Reset signals")
                         self.expectedSignals["victimEndsProcessing"] = 0
                         self.expectedSignals["victimIsInterrupted"] = 0
                         self.expectedSignals["victimFailed"] = 0
