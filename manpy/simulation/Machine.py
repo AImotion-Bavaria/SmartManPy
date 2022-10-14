@@ -1203,6 +1203,7 @@ class Machine(CoreObject):
             if oi.type == "Failure" or oi.type == "Feature":
                 if oi.deteriorationType == "working":
                     if oi.expectedSignals["victimIsInterrupted"]:
+                        print(f"Sending victimIsInterrupted to {oi.name}")
                         self.sendSignal(receiver=oi, signal=oi.victimIsInterrupted)
         if self.isProcessing and not self.shouldPreempt:
             self.totalOperationTime += self.env.now - self.timeLastOperationStarted

@@ -5,17 +5,17 @@ import time
 
 start = time.time()
 
-class Machine_control(Machine):
-    def condition(self):
-        activeEntity = self.Res.users[0]
-        means = [1.6, 3500, 450, 180, 400, 50, 190, 400, 1]
-        stdevs = [0.2, 200, 50, 30, 50, 5, 10, 50, 2]
-        for idx, feature in enumerate(activeEntity.features):
-            if feature != None: # TODO why necessary?
-                min = means[idx] - 2 * stdevs[idx]
-                max = means[idx] + 2 * stdevs[idx]
-                if feature < min or feature > max:
-                    return True
+# class Machine_control(Machine):
+#     def condition(self):
+#         activeEntity = self.Res.users[0]
+#         means = [1.6, 3500, 450, 180, 400, 50, 190, 400, 1]
+#         stdevs = [0.2, 200, 50, 30, 50, 5, 10, 50, 2]
+#         for idx, feature in enumerate(activeEntity.features):
+#             if feature != None: # TODO why necessary?
+#                 min = means[idx] - 2 * stdevs[idx]
+#                 max = means[idx] + 2 * stdevs[idx]
+#                 if feature < min or feature > max:
+#                     return True
 
 class Failure_conditional(Failure):
     def condition(self):
@@ -30,11 +30,14 @@ class Failure_conditional(Failure):
 
 # Objects
 R = Repairman("R1", "Sascha")
-S = Source("S1", "Source", interArrivalTime={"Fixed": {"mean": 0.4}}, entity="manpy.Part", capacity=1)
+S = Source("S1", "Source", interArrivalTime={"Fixed": {"mean": 0.4}}, entity="manpy.Part", capacity=100)
 Löten = Machine("M0", "Löten", processingTime={"Normal": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}})
 Q = Queue("Q", "Queue")
-Kleben = Machine_control("M1", "Kleben", processingTime={"Fixed": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}}, control=True)
+#Kleben = Machine_control("M1", "Kleben", processingTime={"Fixed": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}}, control=True)
+
+Kleben = Machine("M1", "Kleben", processingTime={"Normal": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}})
 E1 = Exit("E1", "Exit1")
+
 
 # ObjectInterruption
 # Löten
@@ -58,7 +61,7 @@ Menge = Feature("Ftr7", "Feature8", victim=Kleben, entity=True,
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 400, "stdev": 50}}})
 
 StecktFest = Failure_conditional("Flr0", "Failure0", victim=Kleben, conditional=True,
-            distribution={"TTR": {"Fixed": {"mean": 5}}}, repairman=R)
+            distribution={"TTR": {"Fixed": {"mean": 5}}})
 
 # StecktFest = Failure("Flr0", "Failure0", victim=Kleben, entity=True, deteriorationType="working",
 #                distribution={"TTF": {"Fixed": {"mean": 0}},
@@ -69,8 +72,10 @@ dists = [{"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 1, "std
 boundaries = {(0, 10): 0, (10, None): 1}
 distribution_controller = SimpleStateController(states=dists, boundaries=boundaries, amount_per_step=1.0, reset_amount=None)
 
-Test = Feature("Ftr8", "Feature9", victim=Kleben, distribution_state_controller=distribution_controller,
-               deteriorationType="working",contribute=[StecktFest], reset_distributions=True, entity=True)
+Test = Feature("Ftr8", "Feature9", victim=Kleben,
+               distribution_state_controller=distribution_controller,
+               # distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 100, "stdev":2}}},
+               deteriorationType="working", contribute=[StecktFest], reset_distributions=True, entity=True)
 
 
 

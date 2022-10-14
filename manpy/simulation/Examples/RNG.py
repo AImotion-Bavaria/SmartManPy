@@ -28,10 +28,10 @@ Ftr1 = Feature("Ftr1", "Feature1", victim=M1, deteriorationType="working", contr
                              "Feature": {"Normal": {"mean": "3*x", "stdev": "0.02*x+3", "min": "2.98*x-3", "max": "3.02*x+3"}}})
 
 dists = [{"Time": {"Fixed": {"mean": 5}}, "Feature": {"Normal": {"mean": 0.5, "stdev": 0.2, "min": 0.1, "max": 0.9}}},
-         {"Time": {"Fixed": {"mean": 5}}, "Feature": {"Normal": {"mean": 0.5, "stdev": 0.2, "min": 0.1, "max": 0.9}}}]
+         {"Time": {"Fixed": {"mean": 5}}, "Feature": {"Normal": {"mean": 2, "stdev": 0.2, "min": 0.1, "max": 0.9}}}]
 boundaries = {(0, 10): 0, (10, None): 1}
 distribution_controller = SimpleStateController(states=dists, boundaries=boundaries, amount_per_step=1.0, reset_amount=None)
-Ftr2 = Feature("Ftr2", "Feature9", victim=M1, deteriorationType="working", start_time=60, contribute=[F1],
+Ftr2 = Feature("Ftr2", "Feature9", victim=M1, deteriorationType="working", entity=True, start_time=60, contribute=[F1],
                #distribution={"Time": {"Fixed": {"mean": 5}},
                #              "Feature": {"Normal": {"mean": 0.5, "stdev": 0.2, "min": 0.1, "max": 0.9}}}
                distribution_state_controller=distribution_controller, reset_distributions=True)
@@ -44,7 +44,7 @@ M2.defineRouting([Q], [E1])
 E1.defineRouting([M2])
 
 def main(test=0):
-    maxSimTime = 140
+    maxSimTime = 500
 
     # runSim with trace
     runSimulation([S, Q, M1, M2, E1, F1, Ftr1, Ftr2, R], maxSimTime, trace="Yes")

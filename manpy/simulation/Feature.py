@@ -89,7 +89,6 @@ class Feature(ObjectInterruption):
         self.victimEndsProcessing = self.env.event()
         self.victimIsInterrupted = self.env.event()
         self.victimResumesProcessing = self.env.event()
-        self.victimFailed = self.env.event()
 
     def run(self):
         """Every Object has to have a run method. Simpy is mainly used in this function
@@ -111,28 +110,26 @@ class Feature(ObjectInterruption):
             # if time to failure counts not matter the state of the victim
             if self.deteriorationType == "constant":
                 if self.contribute != None:
-
-                    self.expectedSignals["victimFailed"] = 1
+                    self.expectedSignals["victimIsInterrupted"] = 1
 
                     while featureNotTriggered:
                         timeRestartedCounting = self.env.now
                         receivedEvent = yield self.env.any_of([self.env.timeout(remainingTimeTillFeature),
-                                                               self.victimFailed])
-                        if self.victimFailed in receivedEvent:
-                            self.victimFailed = self.env.event()
+                                                               self.victimIsInterrupted])
+                        if self.victimIsInterrupted in receivedEvent:
+                            self.victimIsInterrupted = self.env.event()
                             remainingTimeTillFeature = remainingTimeTillFeature - (self.env.now - timeRestartedCounting)
                             if self.name == "Feature9":
-                                print(f"{self.name}: victimFailed")
+                                print(f"{self.name}: victimInterrupted")
 
                             if self.distribution_state_controller and self.reset_distributions:
                                 self.distribution_state_controller.reset()
                         else:
-                            self.expectedSignals["victimFailed"] = 0
+                            self.expectedSignals["victimIsInterrupted"] = 0
                             remainingTimeTillFeature = None
                             featureNotTriggered = False
                 else:
                     yield self.env.timeout(remainingTimeTillFeature)
-
 
             # if time to failure counts only in working time
             elif self.deteriorationType == "working":
@@ -141,9 +138,6 @@ class Feature(ObjectInterruption):
                 yield self.victimStartsProcessing
                 self.victimStartsProcessing = self.env.event()
 
-                """self.expectedSignals["victimFailed"] = 1
-                yield self.victimFailed
-                self.victimFailed = self.env.event()"""
 
                 # check if feature belongs to entity
                 if self.entity == True:
@@ -160,16 +154,10 @@ class Feature(ObjectInterruption):
                                                            self.victimEndsProcessing,
                                                            self.victimIsInterrupted])
 
-                    if self.name == "Feature9":
-                        print("#Feature#", self.expectedSignals)
-
-                    if self.name == "Feature9":
-                        print(receivedEvent)
-
                     # In line before, reset of expected signals occurs
                     if self.victimEndsProcessing in receivedEvent:
 
-                        print(f"{self.name}:victimEndsProcessing")
+                        #print(f"{self.name}:victimEndsProcessing")
                         self.victimEndsProcessing = self.env.event()
                         remainingTimeTillFeature = remainingTimeTillFeature - (self.env.now - timeRestartedCounting)
 
@@ -188,6 +176,7 @@ class Feature(ObjectInterruption):
                         print(f"{self.name}: victimIsInterrupted")
                         # wait for victim to start processing again
                         self.expectedSignals["victimResumesProcessing"] = 1
+
                         if self.distribution_state_controller and self.reset_distributions:
                             self.distribution_state_controller.reset()
 
@@ -196,20 +185,10 @@ class Feature(ObjectInterruption):
                         self.victimResumesProcessing = self.env.event()
 
 
-
-                    elif self.victimFailed in receivedEvent:
-                        self.victimFailed = self.env.event()
-                        remainingTimeTillFeature = remainingTimeTillFeature - (self.env.now - timeRestartedCounting)
-
-                        print(f"{self.name}: victimFailed")
-
-
                     else:
                         # only set to reset of events occur
-                        # print("!!!!!!!!!!!!! Reset signals")
                         self.expectedSignals["victimEndsProcessing"] = 0
                         self.expectedSignals["victimIsInterrupted"] = 0
-                        self.expectedSignals["victimFailed"] = 0
                         remainingTimeTillFeature = None
                         featureNotTriggered = False
 

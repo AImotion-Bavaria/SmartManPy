@@ -97,23 +97,15 @@ class Failure(ObjectInterruption):
                 self.expectedSignals["contribution"] = 1
                 yield self.contribution
                 self.contribution = self.env.event()
-                # for oi in self.victim.objectInterruptions:
-                #     oi.expectedSignals["victimFailed"] = 1
 
                 # wait for victim to start process
-
                 if self.condition() == True:
                     self.interruptVictim()
 
                     # check in the ObjectInterruptions of the victim. If there is a one that is waiting for victimFailed send it
                     for oi in self.victim.objectInterruptions:
-                        if oi.name == "Feature9":
-                            print("#Failure#", oi.expectedSignals)
-                        # TODO Why cant I catch victimFailed in the Feature that triggered the cond. failure?
                         if oi.expectedSignals["victimFailed"]:
                             print("Sending VictimFailed")
-                            # TODO dirty solution
-                            # oi.victimFailed = oi.env.event()
                             self.sendSignal(receiver=oi, signal=oi.victimFailed)
 
 

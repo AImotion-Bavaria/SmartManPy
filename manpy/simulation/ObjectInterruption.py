@@ -130,6 +130,7 @@ class ObjectInterruption(ManPyObject):
         # inform the victim by whom will it be interrupted
         # TODO: reconsider what happens when failure and ShiftScheduler (e.g.) signal simultaneously
         if self.victim.expectedSignals["interruptionStart"]:
+            print(f"Sending interruptionStart to {self.victim.name}")
             self.victim.interruptedBy = self.type
             self.sendSignal(receiver=self.victim, signal=self.victim.interruptionStart)
             # ToDo following is needed for synching, check why
