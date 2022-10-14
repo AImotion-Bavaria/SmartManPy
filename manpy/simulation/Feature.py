@@ -110,24 +110,29 @@ class Feature(ObjectInterruption):
 
             # if time to failure counts not matter the state of the victim
             if self.deteriorationType == "constant":
-                self.expectedSignals["victimFailed"] = 1
+                if self.contribute != None:
 
-                while featureNotTriggered:
-                    timeRestartedCounting = self.env.now
-                    receivedEvent = yield self.env.any_of([self.env.timeout(remainingTimeTillFeature),
-                                                           self.victimFailed])
-                    if self.victimFailed in receivedEvent:
-                        self.victimFailed = self.env.event()
-                        remainingTimeTillFeature = remainingTimeTillFeature - (self.env.now - timeRestartedCounting)
-                        if self.name == "Feature9":
-                            print(f"{self.name}: victimFailed")
+                    self.expectedSignals["victimFailed"] = 1
 
-                        if self.distribution_state_controller and self.reset_distributions:
-                            self.distribution_state_controller.reset()
-                    else:
-                        self.expectedSignals["victimFailed"] = 0
-                        remainingTimeTillFeature = None
-                        featureNotTriggered = False
+                    while featureNotTriggered:
+                        timeRestartedCounting = self.env.now
+                        receivedEvent = yield self.env.any_of([self.env.timeout(remainingTimeTillFeature),
+                                                               self.victimFailed])
+                        if self.victimFailed in receivedEvent:
+                            self.victimFailed = self.env.event()
+                            remainingTimeTillFeature = remainingTimeTillFeature - (self.env.now - timeRestartedCounting)
+                            if self.name == "Feature9":
+                                print(f"{self.name}: victimFailed")
+
+                            if self.distribution_state_controller and self.reset_distributions:
+                                self.distribution_state_controller.reset()
+                        else:
+                            self.expectedSignals["victimFailed"] = 0
+                            remainingTimeTillFeature = None
+                            featureNotTriggered = False
+                else:
+                    yield self.env.timeout(remainingTimeTillFeature)
+
 
             # if time to failure counts only in working time
             elif self.deteriorationType == "working":
