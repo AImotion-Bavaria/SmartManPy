@@ -126,6 +126,7 @@ class ObjectInterruption(ManPyObject):
     # interrupts the victim
     # ===========================================================================
     def interruptVictim(self):
+        print("!!!!!!!!!!!!!")
         print(f"Starting failure at {self.env.now}")
         # inform the victim by whom will it be interrupted
         # TODO: reconsider what happens when failure and ShiftScheduler (e.g.) signal simultaneously

@@ -568,8 +568,13 @@ class Machine(CoreObject):
                         self.processOperatorUnavailable,
                     ]
                 )
+                print(f"{self.name} received {receivedEvent}")
                 # if a failure occurs while processing the machine is interrupted.
+                print(f"{self.name} Expecting interruptionStart")
+                if self.name == "Kleben":
+                    print(f"{self.name} expects {self.expectedSignals}")
                 if self.interruptionStart in receivedEvent:
+                    print(f"{self.name} received interruptionStart")
                     transmitter, eventTime = self.interruptionStart.value
                     assert (
                         eventTime == self.env.now
@@ -593,6 +598,7 @@ class Machine(CoreObject):
                         ), "the interruptionEnd was received later than anticipated"
                         self.interruptionEnd = self.env.event()
 
+                        print("Hello Machine.py Line 596")
                         self.postInterruptionActions()  # execute interruption actions
                         # check if the machine is active and break
                         if self.checkIfActive():
@@ -653,6 +659,7 @@ class Machine(CoreObject):
                         self.timeWaitForOperatorEnded - self.timeWaitForOperatorStarted
                     )
                     # carry post interruption actions
+                    print("Hello L656")
                     self.postInterruptionActions()
 
                 # if the station is reactivated by the preempt method
@@ -672,6 +679,7 @@ class Machine(CoreObject):
                         methods={"isOperated": 1},
                     ):
                         yield self.env.process(self.release())
+                        print("Hello L676")
                     self.postInterruptionActions()  # execute interruption actions
                     break
                 # if no interruption occurred the processing in M1 is ended
@@ -1033,6 +1041,7 @@ class Machine(CoreObject):
                                 self.canDispose = self.env.event()
                                 self.signalReceiver()
                                 continue
+                        print("Machine L1036")
                         self.postInterruptionActions()
                         if self.signalReceiver():
                             self.timeLastBlockageStarted = self.env.now
@@ -1203,7 +1212,7 @@ class Machine(CoreObject):
             if oi.type == "Failure" or oi.type == "Feature":
                 if oi.deteriorationType == "working":
                     if oi.expectedSignals["victimIsInterrupted"]:
-                        print(f"Sending victimIsInterrupted to {oi.name}")
+                        print(f"{self.name} Sending victimIsInterrupted to {oi.name}")
                         self.sendSignal(receiver=oi, signal=oi.victimIsInterrupted)
         if self.isProcessing and not self.shouldPreempt:
             self.totalOperationTime += self.env.now - self.timeLastOperationStarted
@@ -1257,10 +1266,13 @@ class Machine(CoreObject):
     # actions to be carried out when the processing of an Entity ends
     # =======================================================================
     def postInterruptionActions(self):
+        print(f"Post Interruption in {self.name}")
         for oi in self.objectInterruptions:
             if oi.type == "Failure" or oi.type == "Feature":
                 if oi.deteriorationType == "working":
+                    print(f"{oi.name} expects {oi.expectedSignals}")
                     if oi.expectedSignals["victimResumesProcessing"]:
+                        print(f"{self.name} sending victimResumesProcessing to {oi.name}")
                         self.sendSignal(receiver=oi, signal=oi.victimResumesProcessing)
         activeObjectQueue = self.Res.users
         if len(activeObjectQueue):

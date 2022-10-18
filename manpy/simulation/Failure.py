@@ -90,7 +90,7 @@ class Failure(ObjectInterruption):
     #    The run method for the failure which has to served by a repairman
     # =======================================================================
     def run(self):
-        if self.condition() != None:
+        if self.condition() != None and self.conditional:
             from .Globals import G
             while 1:
                 failureNotTriggered = True

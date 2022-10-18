@@ -182,17 +182,14 @@ class Feature(ObjectInterruption):
 
                         yield self.victimResumesProcessing
 
+                        print(f"{self.name} Resuming")
                         self.victimResumesProcessing = self.env.event()
-
-
                     else:
                         # only set to reset of events occur
                         self.expectedSignals["victimEndsProcessing"] = 0
                         self.expectedSignals["victimIsInterrupted"] = 0
                         remainingTimeTillFeature = None
                         featureNotTriggered = False
-
-
 
             if self.distribution_state_controller:
                 self.distribution = self.distribution_state_controller.get_and_update()
