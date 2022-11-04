@@ -56,7 +56,7 @@ class Failure(ObjectInterruption):
         self.rngTTR = RandomNumberGenerator(
             self, distribution.get("TTR", {"Fixed": {"mean": 1}})
         )
-        self.name = "F" + str(index)
+        self.name = "F" + str(index) # TODO self.name = name here?
         self.repairman = repairman  # the resource that may be needed to fix the failure
         # if now resource is needed this will be "None"
         self.type = "Failure"

@@ -119,8 +119,8 @@ class Feature(ObjectInterruption):
                         if self.victimIsInterrupted in receivedEvent:
                             self.victimIsInterrupted = self.env.event()
                             remainingTimeTillFeature = remainingTimeTillFeature - (self.env.now - timeRestartedCounting)
-                            if self.name == "Feature9":
-                                print(f"{self.name}: victimInterrupted")
+
+                            print(f"{self.name}: victimInterrupted")
 
                             if self.distribution_state_controller and self.reset_distributions:
                                 self.distribution_state_controller.reset()
@@ -180,12 +180,14 @@ class Feature(ObjectInterruption):
                         if self.distribution_state_controller and self.reset_distributions:
                             self.distribution_state_controller.reset()
 
+                        print(f"{self.name} waiting to resume")
                         yield self.victimResumesProcessing
 
                         print(f"{self.name} Resuming")
                         self.victimResumesProcessing = self.env.event()
                     else:
                         # only set to reset of events occur
+                        # print(f"{self.name} Reset expected Signals")
                         self.expectedSignals["victimEndsProcessing"] = 0
                         self.expectedSignals["victimIsInterrupted"] = 0
                         remainingTimeTillFeature = None

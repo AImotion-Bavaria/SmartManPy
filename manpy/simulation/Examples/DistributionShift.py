@@ -33,49 +33,62 @@ R = Repairman("R1", "Sascha")
 S = Source("S1", "Source", interArrivalTime={"Fixed": {"mean": 0.4}}, entity="manpy.Part", capacity=100)
 Löten = Machine("M0", "Löten", processingTime={"Normal": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}})
 Q = Queue("Q", "Queue")
-Kleben = Machine_control("M1", "Kleben", processingTime={"Fixed": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}}, control=True)
+Kleben = Machine_control("M1", "Kleben",
+                         processingTime={"Fixed": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}},
+                         # processingTime={"Fixed": {"mean": 0.8}},
+                         control=True)
 
 # Kleben = Machine("M1", "Kleben", processingTime={"Normal": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}})
 E1 = Exit("E1", "Exit1")
 
+##### CONFIG #####
+# TODO Feature Time seems to have huge impact on the event system
+# TODO Setting Feature Cycle to values  =!= 1 triggers postInterruption ??????? wtf
+feature_cycle_time = 0.9
+##################
 
 # ObjectInterruption
 # Löten
 Spannung = Feature("Ftr0", "Feature1", victim=Löten, entity=True,
-               distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 1.6, "stdev": 0.2}}})
+               distribution={"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 1.6, "stdev": 0.2}}})
 Strom = Feature("Ftr1", "Feature2", victim=Löten, entity=True,
-               distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 3500, "stdev": 200}}})
+               distribution={"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 3500, "stdev": 200}}})
 Widerstand = Feature("Ftr2", "Feature3", victim=Löten, entity=True,
-               distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 450, "stdev": 50}}})
+               distribution={"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 450, "stdev": 50}}})
 Kraft = Feature("Ftr3", "Feature4", victim=Löten, entity=True,
-               distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 180, "stdev": 30}}})
+               distribution={"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 180, "stdev": 30}}})
 Einsinktiefe = Feature("Ftr4", "Feature5", victim=Löten, entity=True,
-               distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 400, "stdev": 50}}})
+               distribution={"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 400, "stdev": 50}}})
 
 #Kleben
-Durchflussgeschwindigkeit = Feature("Ftr5", "Feature6", victim=Kleben, entity=True,
-               distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 50, "stdev": 5}}})
-Temperatur = Feature("Ftr6", "Feature7", victim=Kleben, entity=True,
-               distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 190, "stdev": 10}}})
-Menge = Feature("Ftr7", "Feature8", victim=Kleben, entity=True,
-               distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 400, "stdev": 50}}})
+Durchflussgeschwindigkeit = Feature("Ftr5", "Feature6", victim=Kleben,
+                                    entity=True,
+               distribution={"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 50, "stdev": 5}}})
+Temperatur = Feature("Ftr6", "Feature7", victim=Kleben,
+                     entity=True,
+               distribution={"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 190, "stdev": 10}}})
+Menge = Feature("Ftr7", "Feature8", victim=Kleben,
+                entity=True,
+               distribution={"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 400, "stdev": 50}}})
 
 StecktFest = Failure_conditional("Flr0", "Failure0", victim=Kleben, conditional=True,
-            distribution={"TTR": {"Fixed": {"mean": 5}}})
+            distribution={"TTF": {"Fixed": {"mean": 0}, "TTR": {"Fixed": {"mean": 5}}}}, waitOnTie=True)
 
 # StecktFest = Failure("Flr0", "Failure0", victim=Kleben, entity=True, deteriorationType="working",
 #                distribution={"TTF": {"Fixed": {"mean": 0}},
 #                              "TTR": {"Normal": {"mean": 2,"stdev": 0.2, "min":0, "probability": 0.05}}})
 
-dists = [{"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 1, "stdev":2}}},
-         {"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 100, "stdev":2}}}]
+dists = [{"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 1, "stdev":2}}},
+         {"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 100, "stdev":2}}}]
 boundaries = {(0, 10): 0, (10, None): 1}
 distribution_controller = SimpleStateController(states=dists, boundaries=boundaries, amount_per_step=1.0, reset_amount=None)
 
 Test = Feature("Ftr8", "Feature9", victim=Kleben,
                distribution_state_controller=distribution_controller,
                # distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 100, "stdev":2}}},
-               deteriorationType="working", contribute=[StecktFest], reset_distributions=True, entity=True)
+               deteriorationType="working", contribute=[StecktFest], reset_distributions=True,
+               entity=True
+               )
 
 
 
@@ -88,7 +101,7 @@ E1.defineRouting([Kleben])
 
 
 def main():
-    maxSimTime = 50
+    maxSimTime = 150
     objectList = [S, R, Löten, Q, Kleben, E1, StecktFest, Spannung, Strom, Widerstand, Kraft, Einsinktiefe, Durchflussgeschwindigkeit, Temperatur, Menge, Test]
 
     runSimulation(objectList, maxSimTime)
