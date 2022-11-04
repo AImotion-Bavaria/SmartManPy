@@ -37,7 +37,7 @@ class SimulationExamples(TestCase):
     """
 
     def testTwoServers(self):
-        from manpy.simulation.Examples import main
+        from manpy.simulation.Examples.Old.TwoServers import main
 
         result = main(test=1)
         self.assertEqual(result["parts"], 732)
@@ -59,7 +59,7 @@ class SimulationExamples(TestCase):
         self.assertTrue(49.99 < result["working_ratio"] < 50.01)
 
     def testClearBatchLines(self):
-        from manpy.simulation.Examples import main
+        from manpy.simulation.Examples.Old.ClearBatchLines import main
 
         result = main(test=1)
         self.assertEqual(result["batches"], 89)
@@ -68,7 +68,7 @@ class SimulationExamples(TestCase):
         self.assertTrue(93.81 < result["waiting_ratio_M3"] < 93.82)
 
     def testDecompositionOfBatches(self):
-        from manpy.simulation.Examples import main
+        from manpy.simulation.Examples.Old.DecompositionOfBatches import main
 
         result = main(test=1)
         self.assertEqual(result["subbatches"], 2302)
@@ -101,7 +101,7 @@ class SimulationExamples(TestCase):
         self.assertEqual(result, expectedResult)
 
     def testJobShop2EDD(self):
-        from manpy.simulation.Examples import main
+        from manpy.simulation.Examples.Old.JobShop2EDD import main
 
         result = main(test=1)
         expectedResult = [
@@ -128,7 +128,7 @@ class SimulationExamples(TestCase):
         self.assertEqual(result, expectedResult)
 
     def testJobShop2MC(self):
-        from manpy.simulation.Examples import main
+        from manpy.simulation.Examples.Old.JobShop2MC import main
 
         result = main(test=1)
         expectedResult = [
@@ -182,7 +182,7 @@ class SimulationExamples(TestCase):
         self.assertEqual(result, expectedResult)
 
     def testJobShop2RPC(self):
-        from manpy.simulation.Examples import main
+        from manpy.simulation.Examples.Old.JobShop2RPC import main
 
         result = main(test=1)
         expectedResult = [
@@ -236,14 +236,14 @@ class SimulationExamples(TestCase):
         self.assertEqual(result["NumM2"], 220)
 
     def testServerWithShift1(self):
-        from manpy.simulation.Examples import main
+        from manpy.simulation.Examples.Old.ServerWithShift1 import main
 
         result = main(test=1)
         self.assertEqual(result["parts"], 3)
         self.assertTrue(49.99 < result["working_ratio"] < 50.01)
 
     def testServerWithShift2(self):
-        from manpy.simulation.Examples import main
+        from manpy.simulation.Examples.Old.ServerWithShift2 import main
 
         result = main(test=1)
         self.assertEqual(result["parts"], 16)
@@ -272,7 +272,7 @@ class SimulationExamples(TestCase):
         self.assertEqual(result["working_ratio"], 100)
 
     def testSettingWip2(self):
-        from manpy.simulation.Examples import main
+        from manpy.simulation.Examples.Old.SettingWip2 import main
 
         result = main(test=1)
         self.assertEqual(result["parts"], 2)
@@ -280,7 +280,7 @@ class SimulationExamples(TestCase):
         self.assertEqual(result["working_ratio"], 100)
 
     def testSettingWip3(self):
-        from manpy.simulation.Examples import main
+        from manpy.simulation.Examples.Old.SettingWip3 import main
 
         result = main(test=1)
         self.assertEqual(result["parts"], 2)
@@ -288,7 +288,7 @@ class SimulationExamples(TestCase):
         self.assertEqual(result["working_ratio"], 100)
 
     def testBalancingABuffer(self):
-        from manpy.simulation.Examples import main
+        from manpy.simulation.Examples.Old.BalancingABuffer import main
 
         result = main(test=1)
         self.assertEqual(result["parts"], 13)
@@ -303,7 +303,7 @@ class SimulationExamples(TestCase):
         self.assertTrue(83.32 < result["working_ratio"] < 83.34)
 
     def testSettingWip3(self):
-        from manpy.simulation.Examples import main
+        from manpy.simulation.Examples.Old.SettingWip3 import main
 
         result = main(test=1)
         self.assertEqual(result["parts"], 2)
@@ -311,7 +311,7 @@ class SimulationExamples(TestCase):
         self.assertEqual(result["working_ratio"], 100)
 
     def testNonStarvingLine(self):
-        from manpy.simulation.Examples import main
+        from manpy.simulation.Examples.Old.NonStarvingLine import main
 
         result = main(test=1)
         self.assertEqual(result["parts"], 9)
@@ -337,7 +337,51 @@ class SimulationExamples(TestCase):
         self.assertEqual(result, 2)
 
     def testBufferAllocation(self):
-        from manpy.simulation.Examples import main
+        from manpy.simulation.Examples.Old.BufferAllocation import main
 
         result = main(test=1)
         self.assertTrue(80 < result["parts"] < 1000)
+
+    def testExampleLine(self):
+        from manpy.simulation.Examples.ExampleLine import main
+
+        result = main(test=1)
+
+        self.assertGreaterEqual(len(result["Entities"]), len(result["Discards"]) + result["Exits"],
+                                "Number of Entities should be higher than Discards+Exits\nEntities: {}\nDiscards: {}\nExits: {}".format(len(result["Entities"]), len(result["Discards"]), result["Exits"]))
+        for key in result:
+            if key.__contains__("Ftr"):
+                self.assertGreaterEqual(len(result[key]), len(result["Discards"]) + result["Exits"],
+                                        "Number of Features should be higher than Discards+Exits\nFeatures: {}\nDiscards: {}\nExits: {}".format(len(result[key]), len(result["Discards"]), result["Exits"]))
+
+    def testRandomWalk(self):
+        from manpy.simulation.Examples.Random_Walk import main
+
+        result = main(test=1)
+
+        for idx in range(1, len(result["Ftr1"])):
+            self.assertGreaterEqual(result["Ftr1"][idx] - result["Ftr1"][idx - 1], -10,
+                                    "RandomWalk should be higher than -10\nIt instead is: ".format(result["Ftr1"][idx]))
+            self.assertLowerEqual(result["Ftr1"][idx] - result["Ftr1"][idx - 1], 10,
+                                    "RandomWalk should be lower than 10\nIt instead is: ".format(result["Ftr1"][idx]))
+    def testDependency(self):
+        from manpy.simulation.Examples.Dependency import main
+
+        result = main(test=1)
+
+        for idx in range(len(result["Spannung"])):
+            self.assertEqual(result["Strom"][idx], 1000*result["Spannung"][idx] + 1900,
+                             "Strom should be: {}\nIt instead is: {}".format(result["Strom"][idx], 1000*result["Spannung"][idx] + 1900))
+            self.assertEqual(result["Widerstand"][idx], (result["Spannung"][idx]/result["Strom"][idx]*1000000),
+                             "Widerstand should be: {}\nIt instead is: {}".format(result["Widerstand"][idx], (result["Spannung"][idx]/result["Strom"][idx]*1000000)))
+
+    def testMerging(self):
+        from manpy.simulation.Examples.Merging import main
+
+        result = main(test=1)
+
+        for e in result["Exits"]:
+            self.assertNotIn(None, e.features,
+                             "Features have not been merged completeply: {}".format(e.features))
+        self.assertIn(None, result["FirstEntity"].features,
+                      "First Entity should not contain all Features: {}".format(result["FirstEntity"].features))

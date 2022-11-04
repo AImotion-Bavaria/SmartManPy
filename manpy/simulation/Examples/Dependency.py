@@ -58,10 +58,17 @@ E1.defineRouting([Kleben])
 
 
 def main(test=0):
-    maxSimTime = 100000
+    maxSimTime = 100
     objectList = [S, Löten, Q, Kleben, E1, StecktFest, Spannung, Strom, Widerstand, Kraft, Einsinktiefe, Durchflussgeschwindigkeit, Temperatur, Menge]
 
     runSimulation(objectList, maxSimTime)
+
+    if test:
+        result = {}
+        result["Spannung"] = Spannung.featureHistory
+        result["Strom"] = Strom.featureHistory
+        result["Widerstand"] = Widerstand.featureHistory
+        return result
 
     df = getEntityData()
     df.to_csv("Dependency.csv", index=False, encoding="utf8")

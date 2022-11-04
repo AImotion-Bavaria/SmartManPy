@@ -1,5 +1,5 @@
 from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue
-from manpy.simulation.Globals import runSimulation, getEntityData
+from manpy.simulation.Globals import runSimulation, getEntityData, G
 import time
 
 start = time.time()
@@ -9,6 +9,7 @@ class Machine_control(Machine):
         activeEntity = self.Res.users[0]
         means = [1.6, 3500, 450, 180, 400, 50, 190, 400]
         stdevs = [0.2, 200, 50, 30, 50, 5, 10, 50]
+        print(len(activeEntity.features))
         for idx, feature in enumerate(activeEntity.features):
             min = means[idx] - 2 * stdevs[idx]
             max = means[idx] + 2 * stdevs[idx]
@@ -56,11 +57,23 @@ Kleben.defineRouting([Q], [E1])
 E1.defineRouting([Kleben])
 
 
-def main(test=0):
-    maxSimTime = 5000
+def main(test=1):
+    maxSimTime = 1000
     objectList = [S, Löten, Q, Kleben, E1, StecktFest, Spannung, Strom, Widerstand, Kraft, Einsinktiefe, Durchflussgeschwindigkeit, Temperatur, Menge]
 
     runSimulation(objectList, maxSimTime)
+
+    # return Results for test
+    if test:
+        result = {}
+        for o in objectList:
+            if type(o) == Feature:
+                result[o.id] = o.featureHistory
+        result["Discards"] = Kleben.discards
+        result["Exits"] = E1.numOfExits
+        result["Entities"] = G.EntityList
+
+        return result
 
     df = getEntityData()
     df.to_csv("ExampleLine.csv", index=False, encoding="utf8")

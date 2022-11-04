@@ -97,7 +97,7 @@ class Entity(ManPyObject):
         self.remainingProcessingTime = remainingProcessingTime
         self.remainingSetupTime = remainingSetupTime
         self.status = status
-        self.features = [None] * (len(G.ftr_st) + 1)
+        self.features = [None] * len(G.ftr_st)
         self.feature_times = [None] * len(G.ftr_st)
 
     # ===========================================================================
