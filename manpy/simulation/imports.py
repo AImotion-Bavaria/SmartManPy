@@ -60,6 +60,7 @@ from manpy.simulation.NonStarvingEntry import NonStarvingEntry
 from manpy.simulation.RoutingQueue import RoutingQueue
 from manpy.simulation.Feature import Feature
 from manpy.simulation.StateController import SimpleStateController
+from manpy.simulation.FeatureNew import FeatureNew
 
 # Entities
 from manpy.simulation.Job import Job

@@ -531,10 +531,17 @@ class Machine(CoreObject):
             # if there is a failure that depends on the working time of the Machine
             # send it the victimStartsProcess signal
             for oi in self.objectInterruptions:
-                if oi.type == "Failure" or oi.type == "Feature":
+                if oi.type == "Failure":
                     if oi.deteriorationType == "working":
                         if oi.expectedSignals["victimStartsProcessing"]:
                             self.sendSignal(receiver=oi, signal=oi.victimStartsProcessing)
+
+            for op in self.objectProperties:
+                if op.type == "Feature":
+                    if op.deteriorationType == "working":
+                        if op.expectedSignals["victimStartsProcessing"]:
+                            self.sendSignal(receiver=op, signal=op.victimStartsProcessing)
+
             # this loop is repeated until the processing time is expired with no failure
             # check when the processingEndedFlag switched to false
             while operationNotFinished:
@@ -857,6 +864,7 @@ class Machine(CoreObject):
                 not self.isProcessingInitialWIP
             ):  # if we are in the state of having initial wip no need to take an Entity
                 self.currentEntity = self.getEntity()
+
             else:
                 # find out if the initialWIP requires manual operations (manual/setup)
                 self.checkInitialOperationTypes()
@@ -942,7 +950,11 @@ class Machine(CoreObject):
             # ===================================================================
             # ===================================================================
             # ===================================================================
-
+            for op in self.objectProperties:
+                if op.type == "Feature":
+                    if op.expectedSignals["machineProcessing"]:
+                        print(f"Sending machineProcessing to {op.name}")
+                        self.sendSignal(receiver=op, signal=op.machineProcessing)
             yield self.env.process(self.operation(type="Processing"))
             self.endOperationActions(type="Processing")
 
@@ -1123,10 +1135,17 @@ class Machine(CoreObject):
                 # update the variables keeping track of Entity related attributes of the machine
                 self.timeLastEntityEnded = self.env.now
                 for oi in self.objectInterruptions:
-                    if oi.type == "Failure" or oi.type == "Feature":
+                    if oi.type == "Failure":
                         if oi.deteriorationType == "working":
                             if oi.expectedSignals["victimEndsProcessing"]:
                                 self.sendSignal(receiver=oi, signal=oi.victimEndsProcessing)
+
+                for op in self.objectProperties:
+                    if op.type == "Feature":
+                        if op.deteriorationType == "working":
+                            if op.expectedSignals["victimEndsProcessing"]:
+                                self.sendSignal(receiver=op, signal=op.victimEndsProcessing)
+
                 if self.isWorkingOnTheLast:
                     # for the scheduled Object interruptions
                     # XXX add the SkilledOperatorRouter to this list and perform the signalling only once
@@ -1180,10 +1199,17 @@ class Machine(CoreObject):
                 # if there is a failure that depends on the working time of the Machine
                 # send it the victimEndsProcess signal
                 for oi in self.objectInterruptions:
-                    if oi.type == "Failure" or oi.type == "Feature":
+                    if oi.type == "Failure":
                         if oi.deteriorationType == "working":
                             if oi.expectedSignals["victimEndsProcessing"]:
                                 self.sendSignal(receiver=oi, signal=oi.victimEndsProcessing)
+
+                for op in self.objectProperties:
+                    if op.type == "Feature":
+                        if op.deteriorationType == "working":
+                            if op.expectedSignals["victimEndsProcessing"]:
+                                self.sendSignal(receiver=op, signal=op.victimEndsProcessing)
+
                 # in case Machine just performed the last work before the scheduled maintenance signal the corresponding object
                 if self.isWorkingOnTheLast:
                     # for the scheduled Object interruptions
@@ -1209,11 +1235,19 @@ class Machine(CoreObject):
         # only if object is not preempting though
         # in case of preemption endProcessingActions will be called
         for oi in self.objectInterruptions:
-            if oi.type == "Failure" or oi.type == "Feature":
+            if oi.type == "Feature":
                 if oi.deteriorationType == "working":
                     if oi.expectedSignals["victimIsInterrupted"]:
                         print(f"{self.name} Sending victimIsInterrupted to {oi.name}")
                         self.sendSignal(receiver=oi, signal=oi.victimIsInterrupted)
+
+        for op in self.objectProperties:
+            if op.type == "Feature":
+                if op.deteriorationType == "working":
+                    if op.expectedSignals["victimIsInterrupted"]:
+                        print(f"{self.name} Sending victimIsInterrupted to {op.name}")
+                        self.sendSignal(receiver=op, signal=op.victimIsInterrupted)
+
         if self.isProcessing and not self.shouldPreempt:
             self.totalOperationTime += self.env.now - self.timeLastOperationStarted
             if type == "Processing":
@@ -1268,12 +1302,21 @@ class Machine(CoreObject):
     def postInterruptionActions(self):
         print(f"Post Interruption in {self.name}")
         for oi in self.objectInterruptions:
-            if oi.type == "Failure" or oi.type == "Feature":
+            if oi.type == "Failure":
                 if oi.deteriorationType == "working":
-                    print(f"{oi.name} expects {oi.expectedSignals}")
+                    print(f"OI {oi.name} expects {oi.expectedSignals}")
                     if oi.expectedSignals["victimResumesProcessing"]:
                         print(f"{self.name} sending victimResumesProcessing to {oi.name}")
                         self.sendSignal(receiver=oi, signal=oi.victimResumesProcessing)
+
+        for op in self.objectProperties:
+            if op.type == "Feature":
+                if op.deteriorationType == "working":
+                    print(f"OP {op.name} expects {op.expectedSignals}")
+                    if op.expectedSignals["victimResumesProcessing"]:
+                        print(f"{self.name} sending victimResumesProcessing to {op.name}")
+                        self.sendSignal(receiver=op, signal=op.victimResumesProcessing)
+
         activeObjectQueue = self.Res.users
         if len(activeObjectQueue):
             activeEntity = activeObjectQueue[0]

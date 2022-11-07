@@ -41,6 +41,7 @@ class G:
     EntityList = []  # a list that holds all the Entities
     ObjectResourceList = []
     ObjectInterruptionList = []
+    ObjectPropertyList = []
     RouterList = []
     simulation_snapshots = [pd.DataFrame()]
 
@@ -256,6 +257,7 @@ def findObjectById(id):
         + G.ObjectResourceList
         + G.EntityList
         + G.ObjectInterruptionList
+        + G.ObjectPropertyList
         + G.OrderList
     ):
         if obj.id == id:
@@ -532,6 +534,7 @@ def runSimulation(
 
     from .CoreObject import CoreObject
     from .ObjectInterruption import ObjectInterruption
+    from .ObjectProperty import ObjectProperty
     from .ObjectResource import ObjectResource
     from .Entity import Entity
 
@@ -540,6 +543,8 @@ def runSimulation(
             G.ObjList.append(object)
         elif issubclass(object.__class__, ObjectInterruption):
             G.ObjectInterruptionList.append(object)
+        elif issubclass(object.__class__, ObjectProperty):
+            G.ObjectPropertyList.append(object)
         elif issubclass(object.__class__, ObjectResource):
             G.ObjectResourceList.append(object)
 
@@ -560,13 +565,17 @@ def runSimulation(
 
         # initialize all the objects
         for object in (
-            G.ObjList + G.ObjectInterruptionList + G.ObjectResourceList + G.EntityList
+            G.ObjList + G.ObjectInterruptionList + G.ObjectResourceList + G.EntityList + G.ObjectPropertyList
         ):
             object.initialize()
 
         # activate all the objects
         for object in G.ObjectInterruptionList:
             G.env.process(object.run())
+
+        for object in G.ObjectPropertyList:
+            G.env.process(object.run())
+
         # activate all the objects
         for object in G.ObjList:
             G.env.process(object.run())

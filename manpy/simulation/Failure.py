@@ -108,6 +108,10 @@ class Failure(ObjectInterruption):
                             print("Sending VictimFailed")
                             self.sendSignal(receiver=oi, signal=oi.victimFailed)
 
+                    for op in self.victim.objectProperties:
+                        if op.expectedSignals["victimFailed"]:
+                            self.sendSignal(receiver=op, signal=op.victimFailed)
+
 
                     print("Condition True")
                     self.victim.Up = False
@@ -283,6 +287,11 @@ class Failure(ObjectInterruption):
 
                         if oi.expectedSignals["victimFailed"]:
                             self.sendSignal(receiver=oi, signal=oi.victimFailed)
+
+                    for op in self.victim.objectProperties:
+                        if op.expectedSignals["victimFailed"]:
+                            self.sendSignal(receiver=op, signal=op.victimFailed)
+
                     self.victim.Up = False
                     self.victim.timeLastFailure = self.env.now
 

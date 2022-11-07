@@ -1,4 +1,4 @@
-from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue, SimpleStateController, Repairman
+from manpy.simulation.imports import Machine, Source, Exit, Failure, FeatureNew, Queue, SimpleStateController, Repairman
 from manpy.simulation.Globals import runSimulation, getEntityData, G, ExcelPrinter
 
 import time
@@ -22,7 +22,7 @@ class Failure_conditional(Failure):
         value_1 = Test.get_feature_value()
         if value_1 > 10:
             print("Fail")
-            # Test.start_time = G.env.now
+            Test.start_time = G.env.now
             return True
         else:
             return False
@@ -49,45 +49,46 @@ feature_cycle_time = 0.9
 
 # ObjectInterruption
 # Löten
-Spannung = Feature("Ftr0", "Feature1", victim=Löten, entity=True,
+Spannung = FeatureNew("Ftr0", "Feature1", victim=Löten, entity=True,
                distribution={"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 1.6, "stdev": 0.2}}})
-Strom = Feature("Ftr1", "Feature2", victim=Löten, entity=True,
+Strom = FeatureNew("Ftr1", "Feature2", victim=Löten, entity=True,
                distribution={"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 3500, "stdev": 200}}})
-Widerstand = Feature("Ftr2", "Feature3", victim=Löten, entity=True,
+Widerstand = FeatureNew("Ftr2", "Feature3", victim=Löten, entity=True,
                distribution={"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 450, "stdev": 50}}})
-Kraft = Feature("Ftr3", "Feature4", victim=Löten, entity=True,
+Kraft = FeatureNew("Ftr3", "Feature4", victim=Löten, entity=True,
                distribution={"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 180, "stdev": 30}}})
-Einsinktiefe = Feature("Ftr4", "Feature5", victim=Löten, entity=True,
+Einsinktiefe = FeatureNew("Ftr4", "Feature5", victim=Löten, entity=True,
                distribution={"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 400, "stdev": 50}}})
 
 #Kleben
-Durchflussgeschwindigkeit = Feature("Ftr5", "Feature6", victim=Kleben,
+Durchflussgeschwindigkeit = FeatureNew("Ftr5", "Feature6", victim=Kleben,
                                     entity=True,
                distribution={"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 50, "stdev": 5}}})
-Temperatur = Feature("Ftr6", "Feature7", victim=Kleben,
+Temperatur = FeatureNew("Ftr6", "Feature7", victim=Kleben,
                      entity=True,
                distribution={"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 190, "stdev": 10}}})
-Menge = Feature("Ftr7", "Feature8", victim=Kleben,
+Menge = FeatureNew("Ftr7", "Feature8", victim=Kleben,
                 entity=True,
                distribution={"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 400, "stdev": 50}}})
 
-StecktFest = Failure_conditional("Flr0", "Failure0", victim=Kleben, conditional=True,
-            distribution={"TTF": {"Fixed": {"mean": 0}, "TTR": {"Fixed": {"mean": 5}}}}, waitOnTie=True)
+# StecktFest = Failure_conditional("Flr0", "Failure0", victim=Kleben, conditional=True,
+#             distribution={"TTF": {"Fixed": {"mean": 0}, "TTR": {"Fixed": {"mean": 5}}}}, waitOnTie=True)
 
-# StecktFest = Failure("Flr0", "Failure0", victim=Kleben, entity=True, deteriorationType="working",
-#                distribution={"TTF": {"Fixed": {"mean": 0}},
-#                              "TTR": {"Normal": {"mean": 2,"stdev": 0.2, "min":0, "probability": 0.05}}})
+StecktFest = Failure("Flr0", "Failure0", victim=Kleben, entity=True, deteriorationType="working",
+               distribution={"TTF": {"Fixed": {"mean": 0}},
+                             "TTR": {"Normal": {"mean": 2,"stdev": 0.2, "min":0, "probability": 0.05}}})
 
 dists = [{"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 1, "stdev":2}}},
          {"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 100, "stdev":2}}}]
-boundaries = {(0, 10): 0, (10, None): 1}
+boundaries = {(0, 25): 0, (25, None): 1}
 distribution_controller = SimpleStateController(states=dists, boundaries=boundaries, amount_per_step=1.0, reset_amount=None)
 
-Test = Feature("Ftr8", "Feature9", victim=Kleben,
+Test = FeatureNew("Ftr8", "Feature9", victim=Kleben,
                distribution_state_controller=distribution_controller,
                # distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 100, "stdev":2}}},
-               deteriorationType="working", contribute=[StecktFest], reset_distributions=True,
+               deteriorationType="constant", contribute=[StecktFest], reset_distributions=True,
                entity=True
+
                )
 
 
