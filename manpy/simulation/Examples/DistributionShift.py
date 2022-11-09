@@ -71,12 +71,12 @@ Menge = FeatureNew("Ftr7", "Feature8", victim=Kleben,
                 entity=True,
                distribution={"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 400, "stdev": 50}}})
 
-# StecktFest = Failure_conditional("Flr0", "Failure0", victim=Kleben, conditional=True,
-#             distribution={"TTF": {"Fixed": {"mean": 0}, "TTR": {"Fixed": {"mean": 5}}}}, waitOnTie=True)
+StecktFest = Failure_conditional("Flr0", "Failure0", victim=Kleben, conditional=True,
+            distribution={"TTF": {"Fixed": {"mean": 0}, "TTR": {"Fixed": {"mean": 5}}}}, waitOnTie=True)
 
-StecktFest = Failure("Flr0", "Failure0", victim=Kleben, entity=True, deteriorationType="working",
-               distribution={"TTF": {"Fixed": {"mean": 0}},
-                             "TTR": {"Normal": {"mean": 2,"stdev": 0.2, "min":0, "probability": 0.05}}})
+# StecktFest = Failure("Flr0", "Failure0", victim=Kleben, entity=True, deteriorationType="working",
+#                distribution={"TTF": {"Fixed": {"mean": 0}},
+#                              "TTR": {"Normal": {"mean": 2,"stdev": 0.2, "min":0, "probability": 0.05}}})
 
 dists = [{"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 1, "stdev":2}}},
          {"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 100, "stdev":2}}}]

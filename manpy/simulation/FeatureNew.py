@@ -77,13 +77,13 @@ class FeatureNew(ObjectProperty):
         G.FeatureList.append(self)
 
     def initialize(self):
-        if self.entity == True:
-            self.deteriorationType="working"
-        if self.victim == None:
-            self.deteriorationType="constant"
-            self.entity=False
+        # if self.entity == True:
+        #     self.deteriorationType="working"
+        # if self.victim == None:
+        #     self.deteriorationType="constant"
+        #     self.entity=False
         ObjectProperty.initialize(self)
-        self.victimStartsProcessing = self.env.event()
+        # self.victimStartsProcessing = self.env.event()
         # self.victimEndsProcessing = self.env.event()
         self.victimIsInterrupted = self.env.event()
         self.victimResumesProcessing = self.env.event()
@@ -91,16 +91,12 @@ class FeatureNew(ObjectProperty):
 
     def run(self):
         """Every Object has to have a run method. Simpy is mainly used in this function
-
-        :remainingTimeTillFeature: The time until the next Feature should occur
-        :featureNotTriggered: Boolean for if the Feature has already been generated
-
         :return: None
         """
 
         while 1:
             self.expectedSignals["machineProcessing"] = 1
-            self.expectedSignals["victimIsInterrupted"] = 1 # TODO maybe victimFailed?
+            self.expectedSignals["victimIsInterrupted"] = 1  # TODO maybe victimFailed?
 
             receivedEvent = yield self.env.any_of([
                self.victimIsInterrupted,
@@ -168,6 +164,7 @@ class FeatureNew(ObjectProperty):
                     # add Feature value and time to Entity
                     self.victim.Res.users[0].set_feature(self.featureValue, self.env.now, (self.id, self.victim.id))
                     self.outputTrace(self.victim.Res.users[0].name, self.victim.Res.users[0].id, str(self.featureValue))
+                    # TODO why was this here?
                     # self.expectedSignals["victimEndsProcessing"] = 1
                     # yield self.victimEndsProcessing
                     # self.victimEndsProcessing = self.env.event()

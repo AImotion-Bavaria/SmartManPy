@@ -1243,10 +1243,9 @@ class Machine(CoreObject):
 
         for op in self.objectProperties:
             if op.type == "Feature":
-                if op.deteriorationType == "working":
-                    if op.expectedSignals["victimIsInterrupted"]:
-                        print(f"{self.name} Sending victimIsInterrupted to {op.name}")
-                        self.sendSignal(receiver=op, signal=op.victimIsInterrupted)
+                if op.expectedSignals["victimIsInterrupted"]:
+                    print(f"{self.name} Sending victimIsInterrupted to {op.name}")
+                    self.sendSignal(receiver=op, signal=op.victimIsInterrupted)
 
         if self.isProcessing and not self.shouldPreempt:
             self.totalOperationTime += self.env.now - self.timeLastOperationStarted
@@ -1311,11 +1310,10 @@ class Machine(CoreObject):
 
         for op in self.objectProperties:
             if op.type == "Feature":
-                if op.deteriorationType == "working":
-                    print(f"OP {op.name} expects {op.expectedSignals}")
-                    if op.expectedSignals["victimResumesProcessing"]:
-                        print(f"{self.name} sending victimResumesProcessing to {op.name}")
-                        self.sendSignal(receiver=op, signal=op.victimResumesProcessing)
+                print(f"OP {op.name} expects {op.expectedSignals}")
+                if op.expectedSignals["victimResumesProcessing"]:
+                    print(f"{self.name} sending victimResumesProcessing to {op.name}")
+                    self.sendSignal(receiver=op, signal=op.victimResumesProcessing)
 
         activeObjectQueue = self.Res.users
         if len(activeObjectQueue):
