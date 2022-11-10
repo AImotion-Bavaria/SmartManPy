@@ -63,6 +63,7 @@ class EntityGenerator(object):
                 #self.victim.outputTrace(
                 #    entity_name=entity.name, entity_id=entity.id, message="generated"
                 #)
+
                 self.victim.getActiveObjectQueue().append(entity)
                 self.victim.numberOfArrivals += 1
                 G.numberOfEntities += 1

@@ -38,6 +38,7 @@ class Feature(ObjectInterruption):
         start_value=0,
         random_walk=False,
         dependent=None,
+        timeseries=None,
         **kw
     ):
         ObjectInterruption.__init__(self, id, name, victim=victim)
@@ -59,10 +60,14 @@ class Feature(ObjectInterruption):
         self.random_walk = random_walk
         self.dependent = dependent
         self.type = "Feature"
+        self.timeseries = timeseries
 
         G.FeatureList.append(self)
 
     def initialize(self):
+        if self.timeseries != None:
+            self.step_time = (self.timeseries["I_time"][1] - self.timeseries["I_time"][0]) / self.timeseries["DataPoints"]
+            self.step_value = (self.timeseries["I_value"][1] - self.timeseries["I_value"][0]) / self.timeseries["DataPoints"]
         if self.entity == True:
             self.deteriorationType="working"
         if self.victim == None:
@@ -74,6 +79,81 @@ class Feature(ObjectInterruption):
         self.victimIsInterrupted = self.env.event()
         self.victimResumesProcessing = self.env.event()
 
+    def generate_feature(self, n, value=None):
+        print("generate")
+        if value:
+            self.featureValue = value
+        else:
+            # check timeseries
+            if self.timeseries != None:
+                if self.dependent == None:
+                    x = self.timeseries["I_value"][0] + (self.stepsize * n)
+                    self.distribution["Feature"][list(self.distribution["Feature"].keys())[0]]["mean"] = eval(
+                        self.timeseries["Function"])
+                    self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
+                if n + 1 == self.timeseries["DataPoints"]:
+                    self.generate_feature(n, 0)
+                    n = 0
+                else:
+                    n += 1
+
+            # check dependent
+            if self.dependent:
+                for key in list(self.dependent.keys()):
+                    if key != "Function":
+                        self.dependent["Function"] = self.dependent["Function"].replace(key, str(self.dependent.get(
+                            key).featureValue))
+                self.distribution["Feature"][list(self.distribution["Feature"].keys())[0]]["mean"] = eval(
+                    self.dependent["Function"])
+                self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
+
+            value = self.rngFeature.generateNumber(start_time=self.start_time)
+
+            if self.random_walk == True:
+                self.featureValue += value
+            else:
+                self.featureValue = value
+
+            # check no_negative
+            if self.no_negative == True:
+                if self.featureValue < 0:
+                    self.featureValue = 0
+
+        self.featureHistory.append(self.featureValue)
+
+        # check contribution
+        if self.contribute != None:
+            for c in self.contribute:
+                if c.expectedSignals["contribution"]:
+                    self.sendSignal(receiver=c, signal=c.contribution)
+
+        # send data to QuestDB
+        if G.db:
+            G.sender.row(
+                self.name,
+                columns={"time": self.env.now, "value": self.featureValue}
+            )
+            G.sender.flush()
+
+        # check Entity
+        if self.entity == True:
+            # add Feature value and time to Entity
+            self.victim.Res.users[0].set_feature(self.featureValue, self.env.now, (self.id, self.victim.id))
+            self.outputTrace(self.victim.Res.users[0].name, self.victim.Res.users[0].id, str(self.featureValue))
+            if self.timeseries == None:
+                self.expectedSignals["victimEndsProcessing"] = 1
+                yield self.victimEndsProcessing
+                self.victimEndsProcessing = self.env.event()
+
+        else:
+            # add Feature to DataFrame
+            if self.victim == None:
+                self.outputTrace("--", "--", self.featureValue)
+            else:
+                self.outputTrace(self.victim.name, self.victim.id, str(self.featureValue))
+
+        return n
+
     def run(self):
         """Every Object has to have a run method. Simpy is mainly used in this function
 
@@ -83,6 +163,7 @@ class Feature(ObjectInterruption):
         :return: None
         """
         remainingTimeTillFeature = None
+        n = 0
         while 1:
             while remainingTimeTillFeature == None:
                 timeTillFeature = self.rngTime.generateNumber(start_time=self.start_time)
@@ -91,20 +172,68 @@ class Feature(ObjectInterruption):
                     yield self.env.timeout(1)
             featureNotTriggered = True
 
-            # if time to failure counts not matter the state of the victim
+            # time to feature always counts
             if self.deteriorationType == "constant":
+                # check if feature is a timeseries
+                if self.timeseries != None:
+                    if self.env.now < self.timeseries["I_time"][0]:
+                        remainingTimeTillFeature = self.timeseries["I_time"][0] - self.env.now
+                    elif self.env.now > self.timeseries["I_time"][1]:
+                        remainingTimeTillFeature = float("inf")
+                    else:
+                        remainingTimeTillFeature = self.stepsize
                 yield self.env.timeout(remainingTimeTillFeature)
 
-            # if time to failure counts only in working time
+            # time to feature counts only in working time
             elif self.deteriorationType == "working":
                 # wait for victim to start process
                 self.expectedSignals["victimStartsProcessing"] = 1
-                yield self.victimStartsProcessing
-                self.victimStartsProcessing = self.env.event()
+                if self.timeseries != None:
+                    if n == 0:
+                        yield self.victimStartsProcessing
+                        self.victimStartsProcessing = self.env.event()
+                else:
+                    yield self.victimStartsProcessing
+                    self.victimStartsProcessing = self.env.event()
 
                 # check if feature belongs to entity
-                if self.entity == True:
+                if self.entity:
                     remainingTimeTillFeature = timeTillFeature * self.victim.tinM
+
+                # check if feature is a timeseries
+                if self.timeseries != None:
+                    if self.entity:
+                        if n == 0:
+                            entity_time = self.victim.tinM
+                            start = self.env.now
+                        if self.victim.timeLastFailureEnded > start:
+                            if (entity_time * self.timeseries["I_time"][0]) - (self.env.now - start - (self.victim.timeLastFailureEnded - self.victim.tinM)) > 0:
+                                remainingTimeTillFeature = (entity_time * self.timeseries["I_time"][0]) - (self.env.now - start - (self.victim.timeLastFailureEnded - self.victim.tinM))
+                            elif (entity_time * self.timeseries["I_time"][1]) - (self.env.now - start - (self.victim.timeLastFailureEnded - self.victim.tinM)) < 0:
+                                remainingTimeTillFeature = (1 - self.timeseries["I_time"][1] + self.timeseries["I_time"][0]) * entity_time
+                            else:
+                                if n == 0:
+                                    remainingTimeTillFeature = 0
+                                else:
+                                    remainingTimeTillFeature = self.stepsize
+                        else:
+                            if self.env.now < start + entity_time * self.timeseries["I_time"][0]:
+                                remainingTimeTillFeature = entity_time * self.timeseries["I_time"][0]
+                            # elif self.env.now > start + entity_time * self.timeseries["I_time"][1]:
+                            #     remainingTimeTillFeature = (1 - self.timeseries["I_time"][1] + self.timeseries["I_time"][0]) * entity_time
+                            else:
+                                if n == 0:
+                                    remainingTimeTillFeature = 0.1*10**-10
+                                    self.generate_feature(n, 0)
+                                else:
+                                    remainingTimeTillFeature = self.stepsize
+                    else:
+                        if self.env.now < self.timeseries["I_time"][0]:
+                            remainingTimeTillFeature = self.timeseries["I_time"][0] - self.env.now
+                        elif self.env.now > self.timeseries["I_time"][1]:
+                            remainingTimeTillFeature = float("inf")
+                        else:
+                            remainingTimeTillFeature = self.stepsize
 
                 while featureNotTriggered:
                     timeRestartedCounting = self.env.now
@@ -135,52 +264,7 @@ class Feature(ObjectInterruption):
                         remainingTimeTillFeature = None
                         featureNotTriggered = False
 
-
-            # generate the Feature
-            if self.dependent:
-                for key in list(self.dependent.keys()):
-                    if key != "Function":
-                        locals()[key] = self.dependent.get(key).featureValue
-                        locals()[key+'_history'] = self.dependent.get(key).featureHistory
-
-                self.distribution["Feature"][list(self.distribution["Feature"].keys())[0]]["mean"] = eval(self.dependent["Function"])
-                self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
-
-            value = self.rngFeature.generateNumber(start_time=self.start_time)
-
-            if self.random_walk == True:
-                self.featureValue += value
-            else:
-                self.featureValue = value
-
-            # check no_negative
-            if self.no_negative == True:
-                if self.featureValue < 0:
-                    self.featureValue = 0
-
-            self.featureHistory.append(self.featureValue)
-
-            # check contribution
-            if self.contribute != None:
-                for c in self.contribute:
-                    if c.expectedSignals["contribution"]:
-                        self.sendSignal(receiver=c, signal=c.contribution)
-
-            # check Entity
-            if self.entity == True:
-                # add Feature value and time to Entity
-                self.victim.Res.users[0].set_feature(self.featureValue, self.env.now, (self.id, self.victim.id))
-                self.outputTrace(self.victim.Res.users[0].name, self.victim.Res.users[0].id, str(self.featureValue))
-                self.expectedSignals["victimEndsProcessing"] = 1
-                yield self.victimEndsProcessing
-                self.victimEndsProcessing = self.env.event()
-
-            else:
-                # add Feature to DataFrame
-                if self.victim == None:
-                    self.outputTrace("--", "--", self.featureValue)
-                else:
-                    self.outputTrace(self.victim.name, self.victim.id, str(self.featureValue))
+            n = self.generate_feature(n)
 
     def get_feature_value(self):
         return self.featureValue

@@ -9,7 +9,6 @@ class Machine_control(Machine):
         activeEntity = self.Res.users[0]
         means = [1.6, 3500, 450, 180, 400, 50, 190, 400]
         stdevs = [0.2, 200, 50, 30, 50, 5, 10, 50]
-        print(len(activeEntity.features))
         for idx, feature in enumerate(activeEntity.features):
             min = means[idx] - 2 * stdevs[idx]
             max = means[idx] + 2 * stdevs[idx]
@@ -57,7 +56,7 @@ Kleben.defineRouting([Q], [E1])
 E1.defineRouting([Kleben])
 
 
-def main(test=1):
+def main(test=0):
     maxSimTime = 1000
     objectList = [S, Löten, Q, Kleben, E1, StecktFest, Spannung, Strom, Widerstand, Kraft, Einsinktiefe, Durchflussgeschwindigkeit, Temperatur, Menge]
 
