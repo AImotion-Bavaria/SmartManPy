@@ -120,7 +120,7 @@ class FeatureNew(ObjectProperty):
             elif self.machineProcessing in receivedEvent:
                 self.machineProcessing = self.env.event()
 
-                print(f"{self.name} received machineProcessing")
+                # print(f"{self.name} received machineProcessing")
 
                 if self.distribution_state_controller:
                     self.distribution = self.distribution_state_controller.get_and_update()
@@ -139,7 +139,7 @@ class FeatureNew(ObjectProperty):
                     self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
 
                 value = self.rngFeature.generateNumber(start_time=self.start_time)
-                print("Value")
+                # print("Value")
 
                 if self.random_walk == True:
                     self.featureValue += value

@@ -953,7 +953,7 @@ class Machine(CoreObject):
             for op in self.objectProperties:
                 if op.type == "Feature":
                     if op.expectedSignals["machineProcessing"]:
-                        print(f"Sending machineProcessing to {op.name}")
+                        # print(f"Sending machineProcessing to {op.name}")
                         self.sendSignal(receiver=op, signal=op.machineProcessing)
             yield self.env.process(self.operation(type="Processing"))
             self.endOperationActions(type="Processing")

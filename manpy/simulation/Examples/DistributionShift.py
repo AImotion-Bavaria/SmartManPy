@@ -72,7 +72,7 @@ Menge = FeatureNew("Ftr7", "Feature8", victim=Kleben,
                distribution={"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 400, "stdev": 50}}})
 
 StecktFest = Failure_conditional("Flr0", "Failure0", victim=Kleben, conditional=True,
-            distribution={"TTF": {"Fixed": {"mean": 0}, "TTR": {"Fixed": {"mean": 5}}}}, waitOnTie=True)
+            distribution={"TTF": {"Fixed": {"mean": 0}}, "TTR": {"Fixed": {"mean": 20}}}, waitOnTie=True)
 
 # StecktFest = Failure("Flr0", "Failure0", victim=Kleben, entity=True, deteriorationType="working",
 #                distribution={"TTF": {"Fixed": {"mean": 0}},

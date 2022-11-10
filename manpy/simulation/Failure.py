@@ -130,10 +130,12 @@ class Failure(ObjectInterruption):
                             # update the time that the repair started
                             timeOperationStarted = self.env.now
                             self.repairman.timeLastOperationStarted = self.env.now
-
+                            ttr = self.rngTTR.generateNumber()
+                            print(f"TTR is {ttr}")
                             yield self.env.timeout(
-                                self.rngTTR.generateNumber()
+                                ttr
                             )  # wait until the repairing process is over
+                            print(f"Ended timeout at {self.env.now}")
                             self.victim.totalFailureTime += self.env.now - failTime
                             self.reactivateVictim()  # since repairing is over, the Machine is reactivated
                             self.victim.Up = True
@@ -144,9 +146,12 @@ class Failure(ObjectInterruption):
                             )
                         continue
 
+                    ttr = self.rngTTR.generateNumber()
+                    print(f"TTR is {ttr}")
                     yield self.env.timeout(
-                        self.rngTTR.generateNumber()
+                        ttr
                     )  # wait until the repairing process is over
+                    print(f"Ended timeout at {self.env.now}")
 
                     # add the failure
                     # if victim is off shift add only the fail time before the shift ended
