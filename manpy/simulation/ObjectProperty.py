@@ -102,13 +102,7 @@ class ObjectProperty(ManPyObject):
 
         self.env = G.env
         self.call = False
-        # events that are send by one interruption to all the other interruptions that might wait for them
-        self.victimOffShift = self.env.event()
-        self.victimOnShift = self.env.event()
-        self.victimFailed = self.env.event()
-        # flags that show if the interruption waits for the event
-        self.isWaitingForVictimOffShift = False
-        self.isWaitingForVictimOnShift = False
+        # events that are send by one interruption to all the other interruptions that might wait for the
         # list of expected signals of an interruption (values can be used as flags to inform on which signals is the interruption currently yielding)
         self.expectedSignals = {
             # "victimOffShift": 0,
