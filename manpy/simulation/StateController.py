@@ -92,6 +92,19 @@ class SimpleStateController(StateController):
 
 # TODO Graduelle veränderungen -> mehrere Verteilungen zusammenaddieren zb
 
+class ContinuosStateController(StateController):
+    # TODO eg change mean of normal dist
+
+    def get_and_update(self):
+        pass
+
+    def reset(self):
+        pass
+
+    def get_initial_state(self):
+        pass
+
+
 if __name__ == '__main__':
     states = ["A", "B", "C"]
     boundaries = {(0, 150): 0, (150, 300): 1, (300, None): 2}
