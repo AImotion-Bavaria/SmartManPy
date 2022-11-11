@@ -81,3 +81,10 @@ class RandomNumberGeneratorTestCase(TestCase):
         self.assertRaises(
             ValueError, RandomNumberGenerator, obj, distribution="Unknown"
         )
+
+    def testProbability(self):
+        rng = RandomNumberGenerator(obj, distribution={"Fixed": {"mean": 1,  "probability": 0}})
+        self.assertEqual(rng.generateNumber(), 0)
+
+        rng = RandomNumberGenerator(obj, distribution={"Fixed": {"mean": 1, "probability": 1}})
+        self.assertEqual(rng.generateNumber(), 1)

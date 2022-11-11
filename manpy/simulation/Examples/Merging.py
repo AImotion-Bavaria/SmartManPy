@@ -71,6 +71,12 @@ def main(test=0):
 
     runSimulation(objectList, maxSimTime, trace=True)
 
+    if test:
+        result = {}
+        result["Exits"] = E.entities
+        result["FirstEntity"] = G.EntityList[0]
+        return result
+
     df = getEntityData([E], discards=[Montage])
     df.to_csv("Merging.csv", index=False, encoding="utf8")
 

@@ -22,6 +22,11 @@ def main(test=0):
     # runSim with trace
     runSimulation([S, M1, E1, Ftr1], maxSimTime, trace=True)
 
+    if test:
+        result = {}
+        result["Ftr1"] = Ftr1.featureHistory
+        return result
+
     df = G.get_simulation_results_dataframe().drop(columns=["entity_name", "station_name"])
     ExcelPrinter(df, "Random_Walk")
 

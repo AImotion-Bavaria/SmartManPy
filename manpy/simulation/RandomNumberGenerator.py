@@ -101,7 +101,7 @@ class RandomNumberGenerator(object):
         self.max = str(parameters.get("max", None))
         self.alpha = str(parameters.get("alpha", 0))
         self.beta = str(parameters.get("beta", 0))
-        self.probability = str(parameters.get("probability", 0))
+        self.probability = str(parameters.get("probability", None))
         self.shape = str(parameters.get("shape", 0))
         self.scale = str(parameters.get("scale", 0))
         self.location = str(parameters.get("location", 0))
@@ -136,7 +136,7 @@ class RandomNumberGenerator(object):
                 return None'''
 
         # checks if probability has been set and rolls if a number should be generated
-        if eval(self.probability) != 0:
+        if eval(self.probability) != None:
             if rnd.binomial(1, eval(self.probability)) == 0:
                 return 0
 
