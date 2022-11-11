@@ -578,8 +578,7 @@ class Machine(CoreObject):
                 # print(f"{self.name} received {receivedEvent}")
                 # if a failure occurs while processing the machine is interrupted.
                 # print(f"{self.name} Expecting interruptionStart")
-                if self.name == "Kleben":
-                    print(f"{self.name} expects {self.expectedSignals}")
+
                 if self.interruptionStart in receivedEvent:
                     print(f"{self.name} received interruptionStart")
                     transmitter, eventTime = self.interruptionStart.value

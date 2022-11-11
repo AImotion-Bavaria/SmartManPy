@@ -14,12 +14,32 @@ Abstract class for all kinds of object properties that are generated in somehow 
 # from SimPy.Simulation import Process, Resource, reactivate, now
 import simpy
 from .ManPyObject import ManPyObject
+from .RandomNumberGenerator import RandomNumberGenerator
+import pandas as pd
 
 # ===============================================================================
 # The ObjectProperty process
 # ===============================================================================
 class ObjectProperty(ManPyObject):
-    def __init__(self, id="", name="", victim=None, **kw):
+    def __init__(
+        self,
+        id="",
+        name="",
+        victim=None,
+        deteriorationType="working",
+        distribution={},
+        distribution_state_controller=None,
+        reset_distributions=True,
+        no_negative=False,
+        contribute=None,
+        entity=False,
+        start_time=0,
+        end_time=0,
+        start_value=0,
+        random_walk=False,
+        dependent=None,
+        **kw
+    ):
         ManPyObject.__init__(self, id, name)
         self.victim = victim
         # variable used to hand in control to the objectInterruption
@@ -46,6 +66,36 @@ class ObjectProperty(ManPyObject):
             "victimIsInterrupted": 0,
             "victimResumesProcessing": 0
         }
+
+        self.id = id
+        self.name = name
+        self.deteriorationType = deteriorationType
+
+        self.distribution_state_controller = distribution_state_controller
+        self.reset_distributions = reset_distributions
+
+        if self.distribution_state_controller:
+            self.distribution = self.distribution_state_controller.get_initial_state()
+        else:
+            self.distribution = distribution
+
+        if not self.distribution.keys().__contains__("Feature"):
+            self.distribution["Feature"] = {"Fixed": {"mean": 10}}
+
+        self.rngTime = RandomNumberGenerator(self, self.distribution.get("Time", {"Fixed": {"mean": 1}}))
+        self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
+        self.no_negative = no_negative
+        self.contribute = contribute
+        self.entity = entity
+        self.start_time = start_time
+        self.featureHistory = [start_value]
+        self.featureValue = self.featureHistory[-1]
+        self.end_time = end_time
+        self.random_walk = random_walk
+        self.dependent = dependent
+        self.type = "Feature"
+
+        G.FeatureList.append(self)
 
     def initialize(self):
         from .Globals import G
@@ -116,3 +166,35 @@ class ObjectProperty(ManPyObject):
 
         if G.console == "Yes":  # output only if the user has selected to
             print((self.env.now, entityName, message))
+
+    def get_feature_value(self):
+        return self.featureValue
+
+    def outputTrace(self, entity_name: str, entity_id: str, message: str):
+        """
+        Overwrites the ouputTrace function to better suite Features
+
+        :param entity_name: The Name of the target Machine
+        :param entity_id: The ID of the target Machine
+        :param message: The value of the Feature
+
+        :return: None
+        """
+        from .Globals import G
+
+        if G.trace:
+            G.trace_list.append([G.env.now, entity_name, entity_id, self.id, self.name, message])
+
+        if G.snapshots:
+            entities_list = []
+            now = G.env.now
+
+            for obj in G.ObjList:
+                if obj.type == "Machine":
+                    entities = [x.id for x in obj.Res.users]
+                    entities_list.append((now, obj.id, entities))
+
+            snapshot = pd.DataFrame(entities_list, columns=["sim_time", "station_id", "entities"])
+            if not G.simulation_snapshots[-1].equals(snapshot):
+                G.simulation_snapshots.append(snapshot)
+

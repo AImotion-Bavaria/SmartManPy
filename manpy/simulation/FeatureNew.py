@@ -1,7 +1,6 @@
-import pandas as pd
+
 from .ObjectProperty import ObjectProperty
 from .RandomNumberGenerator import RandomNumberGenerator
-from manpy.simulation.Globals import G
 
 
 class FeatureNew(ObjectProperty):
@@ -45,46 +44,27 @@ class FeatureNew(ObjectProperty):
         dependent=None,
         **kw
     ):
-        ObjectProperty.__init__(self, id, name, victim=victim)
-        self.id = id
-        self.name = name
-        self.deteriorationType = deteriorationType
+        ObjectProperty.__init__(self, id,
+                                name,
+                                victim=victim,
+                                deteriorationType=deteriorationType,
+                                distribution=distribution,
+                                distribution_state_controller=distribution_state_controller,
+                                reset_distributions=reset_distributions,
+                                no_negative=no_negative,
+                                contribute=contribute,
+                                entity=entity,
+                                start_time=start_time,
+                                end_time=end_time,
+                                start_value=start_value,
+                                random_walk=random_walk,
+                                dependent=dependent
+                                )
 
-        self.distribution_state_controller = distribution_state_controller
-        self.reset_distributions = reset_distributions
-
-        if self.distribution_state_controller:
-            self.distribution = self.distribution_state_controller.get_initial_state()
-        else:
-            self.distribution = distribution
-
-        if self.distribution.keys().__contains__("Feature") == False: # TODO is self.distribution instead of distribution right?
-            self.distribution["Feature"] = {"Fixed": {"mean": 10}}
-
-        self.rngTime = RandomNumberGenerator(self, self.distribution.get("Time", {"Fixed": {"mean": 1}}))
-        self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
-        self.no_negative = no_negative
-        self.contribute = contribute
-        self.entity = entity
-        self.start_time = start_time
-        self.featureHistory = [start_value]
-        self.featureValue = self.featureHistory[-1]
-        self.end_time = end_time
-        self.random_walk = random_walk
-        self.dependent = dependent
-        self.type = "Feature"
-
-        G.FeatureList.append(self)
 
     def initialize(self):
-        # if self.entity == True:
-        #     self.deteriorationType="working"
-        # if self.victim == None:
-        #     self.deteriorationType="constant"
-        #     self.entity=False
+
         ObjectProperty.initialize(self)
-        # self.victimStartsProcessing = self.env.event()
-        # self.victimEndsProcessing = self.env.event()
         self.victimIsInterrupted = self.env.event()
         self.victimResumesProcessing = self.env.event()
         self.machineProcessing = self.env.event()
@@ -164,10 +144,6 @@ class FeatureNew(ObjectProperty):
                     # add Feature value and time to Entity
                     self.victim.Res.users[0].set_feature(self.featureValue, self.env.now, (self.id, self.victim.id))
                     self.outputTrace(self.victim.Res.users[0].name, self.victim.Res.users[0].id, str(self.featureValue))
-                    # TODO why was this here?
-                    # self.expectedSignals["victimEndsProcessing"] = 1
-                    # yield self.victimEndsProcessing
-                    # self.victimEndsProcessing = self.env.event()
 
                 else:
                     # add Feature to DataFrame
@@ -180,33 +156,3 @@ class FeatureNew(ObjectProperty):
                 self.expectedSignals["machineProcessing"] = 0
                 self.expectedSignals["victimIsInterrupted"] = 0
 
-    def get_feature_value(self):
-        return self.featureValue
-
-
-    def outputTrace(self, entity_name: str, entity_id: str, message: str):
-        """Overwrites the ouputTrace function to better suite Features
-
-        :param entity_name: The Name of the target Machine
-        :param entity_id: The ID of the target Machine
-        :param message: The value of the Feature
-
-        :return: None
-        """
-        from .Globals import G
-
-        if G.trace:
-            G.trace_list.append([G.env.now, entity_name, entity_id, self.id, self.name, message])
-
-        if G.snapshots:
-            entities_list = []
-            now = G.env.now
-
-            for obj in G.ObjList:
-                if obj.type == "Machine":
-                    entities = [x.id for x in obj.Res.users]
-                    entities_list.append((now, obj.id, entities))
-
-            snapshot = pd.DataFrame(entities_list, columns=["sim_time", "station_id", "entities"])
-            if not G.simulation_snapshots[-1].equals(snapshot):
-                G.simulation_snapshots.append(snapshot)
