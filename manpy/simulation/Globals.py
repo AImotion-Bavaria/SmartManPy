@@ -549,9 +549,7 @@ def runSimulation(
             G.ObjectResourceList.append(object)
 
     # set ftr_st
-    #print(G.FeatureList)
     for f in G.FeatureList:
-        #print(type(f))
         G.ftr_st.append((f.id, f.victim.id))
 
 

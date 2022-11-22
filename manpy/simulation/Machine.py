@@ -537,10 +537,8 @@ class Machine(CoreObject):
                             self.sendSignal(receiver=oi, signal=oi.victimStartsProcessing)
 
             for op in self.objectProperties:
-                if op.type == "Feature":
-                    if op.deteriorationType == "working":
-                        if op.expectedSignals["victimStartsProcessing"]:
-                            self.sendSignal(receiver=op, signal=op.victimStartsProcessing)
+                if op.expectedSignals["victimStartsProcessing"]:
+                    self.sendSignal(receiver=op, signal=op.victimStartsProcessing)
 
             # this loop is repeated until the processing time is expired with no failure
             # check when the processingEndedFlag switched to false
@@ -950,10 +948,8 @@ class Machine(CoreObject):
             # ===================================================================
             # ===================================================================
             for op in self.objectProperties:
-                if op.type == "Feature":
-                    if op.expectedSignals["machineProcessing"]:
-                        # print(f"Sending machineProcessing to {op.name}")
-                        self.sendSignal(receiver=op, signal=op.machineProcessing)
+                if op.expectedSignals["machineProcessing"]:
+                    self.sendSignal(receiver=op, signal=op.machineProcessing)
             yield self.env.process(self.operation(type="Processing"))
             self.endOperationActions(type="Processing")
 
@@ -1140,10 +1136,8 @@ class Machine(CoreObject):
                                 self.sendSignal(receiver=oi, signal=oi.victimEndsProcessing)
 
                 for op in self.objectProperties:
-                    if op.type == "Feature":
-                        if op.deteriorationType == "working":
-                            if op.expectedSignals["victimEndsProcessing"]:
-                                self.sendSignal(receiver=op, signal=op.victimEndsProcessing)
+                    if op.expectedSignals["victimEndsProcessing"]:
+                        self.sendSignal(receiver=op, signal=op.victimEndsProcessing)
 
                 if self.isWorkingOnTheLast:
                     # for the scheduled Object interruptions
@@ -1204,10 +1198,8 @@ class Machine(CoreObject):
                                 self.sendSignal(receiver=oi, signal=oi.victimEndsProcessing)
 
                 for op in self.objectProperties:
-                    if op.type == "Feature":
-                        if op.deteriorationType == "working":
-                            if op.expectedSignals["victimEndsProcessing"]:
-                                self.sendSignal(receiver=op, signal=op.victimEndsProcessing)
+                    if op.expectedSignals["victimEndsProcessing"]:
+                        self.sendSignal(receiver=op, signal=op.victimEndsProcessing)
 
                 # in case Machine just performed the last work before the scheduled maintenance signal the corresponding object
                 if self.isWorkingOnTheLast:
@@ -1241,10 +1233,7 @@ class Machine(CoreObject):
                         self.sendSignal(receiver=oi, signal=oi.victimIsInterrupted)
 
         for op in self.objectProperties:
-            if op.type == "Feature":
-                if op.expectedSignals["victimIsInterrupted"]:
-                    print(f"{self.name} Sending victimIsInterrupted to {op.name}")
-                    self.sendSignal(receiver=op, signal=op.victimIsInterrupted)
+            self.sendSignal(receiver=op, signal=op.victimIsInterrupted)
 
         if self.isProcessing and not self.shouldPreempt:
             self.totalOperationTime += self.env.now - self.timeLastOperationStarted
@@ -1308,11 +1297,8 @@ class Machine(CoreObject):
                         self.sendSignal(receiver=oi, signal=oi.victimResumesProcessing)
 
         for op in self.objectProperties:
-            if op.type == "Feature":
-                print(f"OP {op.name} expects {op.expectedSignals}")
-                if op.expectedSignals["victimResumesProcessing"]:
-                    print(f"{self.name} sending victimResumesProcessing to {op.name}")
-                    self.sendSignal(receiver=op, signal=op.victimResumesProcessing)
+            if op.expectedSignals["victimResumesProcessing"]:
+                self.sendSignal(receiver=op, signal=op.victimResumesProcessing)
 
         activeObjectQueue = self.Res.users
         if len(activeObjectQueue):

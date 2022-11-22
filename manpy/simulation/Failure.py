@@ -287,9 +287,6 @@ class Failure(ObjectInterruption):
 
                     # check in the ObjectInterruptions of the victim. If there is a one that is waiting for victimFailed send it
                     for oi in self.victim.objectInterruptions:
-                        if oi.name == "Feature9":
-                            print("#Failure#", oi.expectedSignals)
-
                         if oi.expectedSignals["victimFailed"]:
                             self.sendSignal(receiver=oi, signal=oi.victimFailed)
 
