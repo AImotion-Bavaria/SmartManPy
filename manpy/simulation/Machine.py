@@ -30,7 +30,6 @@ Models a machine that can also have failures
 import simpy
 import numpy as np
 
-from .Failure import Failure
 from .CoreObject import CoreObject
 
 from .OperatorRouter import Router
@@ -40,6 +39,8 @@ from .OperatedPoolBroker import Broker
 from .OperatorPool import OperatorPool
 
 from .RandomNumberGenerator import RandomNumberGenerator
+
+from .Globals import G
 
 # ===========================================================================
 # the Machine object
@@ -1084,6 +1085,8 @@ class Machine(CoreObject):
     # actions to be performed after an operation (setup or processing)
     # ===========================================================================
     def endOperationActions(self, type):
+        from .Globals import G
+
         activeObjectQueue = self.Res.users
         activeEntity = activeObjectQueue[0]
         # set isProcessing to False
@@ -1110,9 +1113,15 @@ class Machine(CoreObject):
         # update totalWorking time for operator and also print trace
         if self.currentOperator:
             operator = self.currentOperator
-            self.outputTrace(
-                operator.name, operator.id, "ended a process in " + self.objName
-            )
+            self.outputTrace(operator.name, operator.id, "ended a process in " + self.objName)
+
+            # send data to QuestDB
+            if G.db:
+                G.sender.row(
+                    self.name,
+                    columns={"time": self.env.now, "message": operator.id + " ended a process in " + self.objName}
+                )
+
             operator.totalWorkingTime += (
                 self.env.now - operator.timeLastOperationStarted
             )
@@ -1120,6 +1129,12 @@ class Machine(CoreObject):
         if type == "Processing":
             if self.control == True and self.condition() == True:
                 self.outputTrace(activeObjectQueue[0].name, activeObjectQueue[0].id, "Failed Process control")
+                # send data to QuestDB
+                if G.db:
+                    G.sender.row(
+                        self.name,
+                        columns={"time": self.env.now, "message": activeObjectQueue[0].id + " failed Process control"}
+                    )
                 activeEntity.features[-1] = "Fail"
                 self.removeEntity(activeEntity)
                 self.discards.append(activeEntity)
@@ -1157,6 +1172,12 @@ class Machine(CoreObject):
             else:
                 if self.control == True:
                     self.outputTrace(activeObjectQueue[0].name, activeObjectQueue[0].id, "Succeeded Process control")
+                    # send data to QuestDB
+                    if G.db:
+                        G.sender.row(
+                            self.name,
+                            columns={"time": self.env.now, "message": activeObjectQueue[0].id + " succeeded Process control"}
+                        )
                     activeEntity.features[-1] = "Success"
                 self.entities.append(activeEntity)
                 # blocking starts
@@ -1170,6 +1191,12 @@ class Machine(CoreObject):
                         activeObjectQueue[0].id,
                         "Finished processing on " + str(self.id),
                     )
+                    # send Data to QuestDB
+                    if G.db:
+                        G.sender.row(
+                            self.name,
+                            columns={"time": self.env.now, "message": activeObjectQueue[0].id + " finished processing"}
+                        )
                 except IndexError:
                     pass
                 from .Globals import G
@@ -1255,6 +1282,12 @@ class Machine(CoreObject):
                 activeObjectQueue[0].id,
                 "Interrupted at " + self.objName,
             )
+            # send Data to QuestDB
+            if G.db:
+                G.sender.row(
+                    self.name,
+                    columns={"time": self.env.now, "message": "Interrupted"}
+                )
             # recalculate the processing time left tinM
             if self.timeLastOperationStarted >= 0:
                 self.tinM = round(
@@ -1320,6 +1353,12 @@ class Machine(CoreObject):
                     + " for "
                     + str(self.env.now - self.breakTime),
                 )
+                # send Data to QuestDB
+                if G.db:
+                    G.sender.row(
+                        self.name,
+                        columns={"time": self.env.now, "message": activeObjectQueue[0].id + " passivated in " + self.objName + " for " + str(self.env.now - self.breakTime)}
+                    )
         # when a machine returns from failure while trying to deliver an entity
         else:
             # calculate the time the Machine was down while trying to dispose the current Entity,
@@ -1537,6 +1576,7 @@ class Machine(CoreObject):
     #                   prepare the machine to be released
     # =======================================================================
     def releaseOperator(self):
+        from .Globals import G
         # this checks if the operator is working on the last element.
         # If yes the time that he was set off-shift should be updated
         operator = self.currentOperator
@@ -1560,11 +1600,25 @@ class Machine(CoreObject):
             operator.operatorDedicatedTo = None
             self.toBeOperated = False
             self.outputTrace(operator.name, operator.id, "Left " + str(self.id))
+            # send Data to QuestDB
+            if G.db:
+                G.sender.row(
+                    self.name,
+                    columns={"time": self.env.now,
+                             "message": operator.id + " left " + str(self.id)}
+                )
         # XXX in case of skilled operators which stay at the same station should that change
         elif not operator.operatorDedicatedTo == self:
             operator.unAssign()  # set the flag operatorAssignedTo to None
             operator.workingStation = None
             self.outputTrace(operator.name, operator.id, "Left " + str(self.id))
+            # send Data to QuestDB
+            if G.db:
+                G.sender.row(
+                    self.name,
+                    columns={"time": self.env.now,
+                             "message": operator.id + " left " + str(self.id)}
+                )
             # if the Router is expecting for signal send it
             from .Globals import G
             from .SkilledOperatorRouter import SkilledRouter
