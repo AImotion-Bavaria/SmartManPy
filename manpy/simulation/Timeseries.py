@@ -85,6 +85,7 @@ class Timeseries(ObjectProperty):
             yield self.victimStartsProcessing
             self.victimStartsProcessing = self.env.event()
 
+            print(self.victim.tinM)
             steptime = self.victim.tinM / self.distribution["DataPoints"]
             remainingTimeTillFeature = steptime
             steps = 0
@@ -166,11 +167,6 @@ class Timeseries(ObjectProperty):
                         self.outputTrace(self.victim.Res.users[0].name, self.victim.Res.users[0].id,
                                          str(self.featureValue))
 
-                        # add Feature to Trace
-                        if self.victim == None:
-                            self.outputTrace("--", "--", self.featureValue)
-                        else:
-                            self.outputTrace(self.victim.name, self.victim.id, str(self.featureValue))
 
                     else:
                         x = self.distribution["Interval"][0] + (self.stepsize * steps)
@@ -210,11 +206,6 @@ class Timeseries(ObjectProperty):
                         self.outputTrace(self.victim.Res.users[0].name, self.victim.Res.users[0].id,
                                          str(self.featureValue))
 
-                        # add Feature to Trace
-                        if self.victim == None:
-                            self.outputTrace("--", "--", self.featureValue)
-                        else:
-                            self.outputTrace(self.victim.name, self.victim.id, str(self.featureValue))
 
                     remainingTimeTillFeature = steptime
                     steps += 1

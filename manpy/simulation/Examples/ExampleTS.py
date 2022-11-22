@@ -1,5 +1,5 @@
 from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue, Timeseries
-from manpy.simulation.Globals import runSimulation, getEntityData, G
+from manpy.simulation.Globals import runSimulation, getEntityData, G, ExcelPrinter
 import time
 
 start = time.time()
@@ -62,22 +62,12 @@ def main(test=0):
     maxSimTime = 50
     objectList = [S, Löten, Q, Kleben, E1, StecktFest, Spannung, Strom, Widerstand, Kraft, Einsinktiefe, Durchflussgeschwindigkeit, Temperatur, Menge]
 
-    runSimulation(objectList, maxSimTime)
+    runSimulation(objectList, maxSimTime, trace=True)
 
-    # return Results for test
-    if test:
-        result = {}
-        for o in objectList:
-            if type(o) == Feature:
-                result[o.id] = o.featureHistory
-        result["Discards"] = Kleben.discards
-        result["Exits"] = E1.numOfExits
-        result["Entities"] = G.EntityList
-
-        return result
-
-    df = getEntityData()
-    df.to_csv("ExampleTS.csv", index=False, encoding="utf8")
+    #df = getEntityData()
+    #df.to_csv("ExampleTS.csv", index=False, encoding="utf8")
+    df = G.get_simulation_results_dataframe()
+    ExcelPrinter(df, "ExampleTS.py")
 
     print("""
             Ausschuss:          {}
