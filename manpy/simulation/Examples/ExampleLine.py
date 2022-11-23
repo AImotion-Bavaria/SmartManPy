@@ -9,12 +9,12 @@ class Machine_control(Machine):
         activeEntity = self.Res.users[0]
         means = [1.6, 3500, 450, 180, 400, 50, 190, 400]
         stdevs = [0.2, 200, 50, 30, 50, 5, 10, 50]
-        print(len(activeEntity.features))
         for idx, feature in enumerate(activeEntity.features):
-            min = means[idx] - 2 * stdevs[idx]
-            max = means[idx] + 2 * stdevs[idx]
-            if feature < min or feature > max:
-                return True
+            if feature != None: # TODO why necessary?
+                min = means[idx] - 2 * stdevs[idx]
+                max = means[idx] + 2 * stdevs[idx]
+                if feature < min or feature > max:
+                    return True
 
 
 # Objects
@@ -45,7 +45,7 @@ Temperatur = Feature("Ftr6", "Feature7", victim=Kleben, entity=True,
 Menge = Feature("Ftr7", "Feature8", victim=Kleben, entity=True,
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 400, "stdev": 50}}})
 
-StecktFest = Failure("Flr0","Failure0", victim=Kleben, entity=True,
+StecktFest = Failure("Flr0", "Failure0", victim=Kleben, entity=True,
                distribution={"TTF": {"Fixed": {"mean": 0}}, "TTR": {"Normal": {"mean": 2,"stdev": 0.2, "min":0, "probability": 0.05}}})
 
 
@@ -57,8 +57,8 @@ Kleben.defineRouting([Q], [E1])
 E1.defineRouting([Kleben])
 
 
-def main(test=1):
-    maxSimTime = 1000
+def main(test=0):
+    maxSimTime = 50
     objectList = [S, Löten, Q, Kleben, E1, StecktFest, Spannung, Strom, Widerstand, Kraft, Einsinktiefe, Durchflussgeschwindigkeit, Temperatur, Menge]
 
     runSimulation(objectList, maxSimTime)

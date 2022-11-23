@@ -58,6 +58,9 @@ class CoreObject(ManPyObject):
         # list that holds the objectInterruptions that have this element as victim
         self.objectInterruptions = []
 
+        # list that holds the objectProperties that have this elements as victim
+        self.objectProperties = []
+
         # default attributes set so that the CoreObject has them
         self.isPreemptive = False
         self.resetOnPreemption = False

@@ -1,40 +1,44 @@
 # ===========================================================================
-# Copyright 2013 University of Limerick
-#
-# This file is part of DREAM.
-#
-# DREAM is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# DREAM is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Lesser General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser General Public License
-# along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
+# TODO new copyright notice
 # ===========================================================================
 
 """
 Created on 18 Aug 2013
 
-@author: George
+@author: LodesL
 """
 """
-Class that acts as an abstract. It should have no instances. All object interruptions (eg failures, breaks) should inherit from it
+Abstract class for all kinds of object properties that are generated in somehow regular interval. Example: Features
 """
 
 # from SimPy.Simulation import Process, Resource, reactivate, now
 import simpy
 from .ManPyObject import ManPyObject
+from .RandomNumberGenerator import RandomNumberGenerator
+import pandas as pd
 
 # ===============================================================================
-# The ObjectInterruption process
+# The ObjectProperty process
 # ===============================================================================
-class ObjectInterruption(ManPyObject):
-    def __init__(self, id="", name="", victim=None, **kw):
+class ObjectProperty(ManPyObject):
+    def __init__(
+        self,
+        id="",
+        name="",
+        victim=None,
+        distribution={},
+        entity=True,
+        distribution_state_controller=None,
+        reset_distributions=True,
+        no_negative=False,
+        contribute=None,
+        start_time=0,
+        end_time=0,
+        start_value=0,
+        random_walk=False,
+        dependent=None,
+        **kw
+    ):
         ManPyObject.__init__(self, id, name)
         self.victim = victim
         # variable used to hand in control to the objectInterruption
@@ -44,46 +48,65 @@ class ObjectInterruption(ManPyObject):
         # G.ObjectInterruptionList.append(self)
         # append the interruption to the list that victim (if any) holds
         if self.victim:
-            if isinstance(self.victim.objectInterruptions, list):
-                self.victim.objectInterruptions.append(self)
+            if isinstance(self.victim.objectProperties, list):
+                self.victim.objectProperties.append(self)
         # list of expected signals of an interruption (values can be used as flags to inform on which signals is the interruption currently yielding)
         self.expectedSignals = {
-            "victimOffShift": 0,
-            "victimOnShift": 0,
             "victimStartsProcessing": 0,
             "victimEndsProcessing": 0,
             "isCalled": 0,
-            "endedLastProcessing": 0,
-            "victimIsEmptyBeforeMaintenance": 0,
-            "resourceAvailable": 0,
             "victimFailed": 0,
             "contribution": 0,
             "victimIsInterrupted": 0,
             "victimResumesProcessing": 0
         }
 
+        self.id = id
+        self.name = name
+
+        self.entity = entity
+
+        self.distribution_state_controller = distribution_state_controller
+        self.reset_distributions = reset_distributions
+
+        if self.distribution_state_controller:
+            self.distribution = self.distribution_state_controller.get_initial_state()
+        else:
+            self.distribution = distribution
+
+        if not self.distribution.keys().__contains__("Feature"):
+            self.distribution["Feature"] = {"Fixed": {"mean": 10}}
+
+        self.rngTime = RandomNumberGenerator(self, self.distribution.get("Time", {"Fixed": {"mean": 1}}))
+        self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
+        self.no_negative = no_negative
+        self.contribute = contribute
+        self.start_time = start_time
+        self.featureHistory = [start_value]
+        self.featureValue = self.featureHistory[-1]
+        self.end_time = end_time
+        self.random_walk = random_walk
+        self.dependent = dependent
+        self.type = "Feature"
+
+        G.FeatureList.append(self)
+
     def initialize(self):
         from .Globals import G
 
         self.env = G.env
         self.call = False
-        # events that are send by one interruption to all the other interruptions that might wait for them
-        self.victimOffShift = self.env.event()
-        self.victimOnShift = self.env.event()
-        self.victimFailed = self.env.event()
-        # flags that show if the interruption waits for the event
-        self.isWaitingForVictimOffShift = False
-        self.isWaitingForVictimOnShift = False
+        # events that are send by one interruption to all the other interruptions that might wait for the
         # list of expected signals of an interruption (values can be used as flags to inform on which signals is the interruption currently yielding)
         self.expectedSignals = {
-            "victimOffShift": 0,
-            "victimOnShift": 0,
+            # "victimOffShift": 0,
+            # "victimOnShift": 0,
             "victimStartsProcessing": 0,
             "victimEndsProcessing": 0,
             "isCalled": 0,
-            "endedLastProcessing": 0,
-            "victimIsEmptyBeforeMaintenance": 0,
-            "resourceAvailable": 0,
+            # "endedLastProcessing": 0,
+            # "victimIsEmptyBeforeMaintenance": 0,
+            # " resourceAvailable": 0,
             "victimFailed": 0,
             "contribution": 0,
             "victimIsInterrupted": 0,
@@ -123,43 +146,6 @@ class ObjectInterruption(ManPyObject):
         return len(self.getVictimQueue()) == 0
 
     # ===========================================================================
-    # interrupts the victim
-    # ===========================================================================
-    def interruptVictim(self):
-        # print(f"Starting failure at {self.env.now}")
-        # inform the victim by whom will it be interrupted
-        # TODO: reconsider what happens when failure and ShiftScheduler (e.g.) signal simultaneously
-        if self.victim.expectedSignals["interruptionStart"]:
-            # print(f"Sending interruptionStart to {self.victim.name}")
-            self.victim.interruptedBy = self.type
-            self.sendSignal(receiver=self.victim, signal=self.victim.interruptionStart)
-            # ToDo following is needed for synching, check why
-            self.victim.expectedSignals["interruptionEnd"] = 1
-        else:
-            self.victim.isBlocked = False
-            self.victim.isProcessing = False
-        # if the machines are operated by dedicated operators
-        if self.victim.dedicatedOperator:
-            # request allocation
-            self.victim.requestAllocation()
-
-    # ===========================================================================
-    # reactivate the victim
-    # ===========================================================================
-    def reactivateVictim(self):
-        # print(f"Ending failure at {self.env.now}")
-        if self.victim.expectedSignals["interruptionEnd"]:
-            self.sendSignal(receiver=self.victim, signal=self.victim.interruptionEnd)
-            # reset the interruptionStart event of the victim
-            self.victim.interruptionStart = self.env.event()
-            # TODO: reconsider what happens when failure and ShiftScheduler (e.g.) signal simultaneously
-            self.victim.interruptedBy = None
-        # if the machines are operated by dedicated operators
-        if self.victim.dedicatedOperator:
-            # request allocation
-            self.victim.requestAllocation()
-
-    # ===========================================================================
     # prints message to the console
     # ===========================================================================
     # print message in the console. Format is (Simulation Time | Entity or Frame Name | message)
@@ -168,3 +154,35 @@ class ObjectInterruption(ManPyObject):
 
         if G.console == "Yes":  # output only if the user has selected to
             print((self.env.now, entityName, message))
+
+    def get_feature_value(self):
+        return self.featureValue
+
+    def outputTrace(self, entity_name: str, entity_id: str, message: str):
+        """
+        Overwrites the ouputTrace function to better suite Features
+
+        :param entity_name: The Name of the target Machine
+        :param entity_id: The ID of the target Machine
+        :param message: The value of the Feature
+
+        :return: None
+        """
+        from .Globals import G
+
+        if G.trace:
+            G.trace_list.append([G.env.now, entity_name, entity_id, self.id, self.name, message])
+
+        if G.snapshots:
+            entities_list = []
+            now = G.env.now
+
+            for obj in G.ObjList:
+                if obj.type == "Machine":
+                    entities = [x.id for x in obj.Res.users]
+                    entities_list.append((now, obj.id, entities))
+
+            snapshot = pd.DataFrame(entities_list, columns=["sim_time", "station_id", "entities"])
+            if not G.simulation_snapshots[-1].equals(snapshot):
+                G.simulation_snapshots.append(snapshot)
+

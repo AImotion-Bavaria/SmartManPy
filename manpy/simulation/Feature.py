@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 from .ObjectInterruption import ObjectInterruption
 from .RandomNumberGenerator import RandomNumberGenerator
 from manpy.simulation.Globals import G
@@ -13,11 +12,15 @@ class Feature(ObjectInterruption):
     :param victim: The machine to which the feature belongs
     :param deteriorationType: The way the time until the next Feature is counted, working counts only during the operation of the victim, constant is constant
     :param distribution: The statistical distribution of the time and value of the Feature
+    :param distribution_state_controller: StateController that can contain different distributions.
+    :param reset_distributions: Active with deteriorationType working; Resets distribution_state_controller when the
+           victim is interrupted (=repaired)
     :param repairman: The resource that may be needed to fix the failure
     :param no_negative: If this value is true, returns 0 for values below 0 of the feature value
     :param contribute: Needs Failures in a list as an input to contribute the Feature value to conditions
     :param entity: If this value is true, saves the Feature value inside the current Entity
     :param start_time: The starting time for the feature
+    :param end_time: The end time for the feature
     :param start_value: The starting value of the Feature
     :param random_walk: If this is True, the Feature will continuously take the previous feature_value into account
     :param dependent: A dictionary containing a Function and the corresponding variables, to determine dependencies between features
@@ -28,13 +31,16 @@ class Feature(ObjectInterruption):
         id="",
         name="",
         victim=None,
-        deteriorationType="constant",
+        deteriorationType="working",
         distribution={},
+        distribution_state_controller=None,
+        reset_distributions=True,
         repairman=None,
         no_negative=False,
         contribute=None,
         entity=False,
         start_time=0,
+        end_time=0,
         start_value=0,
         random_walk=False,
         dependent=None,
@@ -44,10 +50,19 @@ class Feature(ObjectInterruption):
         self.id = id
         self.name = name
         self.deteriorationType = deteriorationType
-        self.distribution = distribution
-        if distribution.keys().__contains__("Feature") == False:
+
+        self.distribution_state_controller = distribution_state_controller
+        self.reset_distributions = reset_distributions
+
+        if self.distribution_state_controller:
+            self.distribution = self.distribution_state_controller.get_initial_state()
+        else:
+            self.distribution = distribution
+
+        if self.distribution.keys().__contains__("Feature") == False: # TODO is self.distribution instead of distribution right?
             self.distribution["Feature"] = {"Fixed": {"mean": 10}}
-        self.rngTime = RandomNumberGenerator(self, self.distribution.get("Time", {"Fixed": {"mean": 100}}))
+
+        self.rngTime = RandomNumberGenerator(self, self.distribution.get("Time", {"Fixed": {"mean": 1}}))
         self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
         self.repairman = repairman
         self.no_negative = no_negative
@@ -56,6 +71,7 @@ class Feature(ObjectInterruption):
         self.start_time = start_time
         self.featureHistory = [start_value]
         self.featureValue = self.featureHistory[-1]
+        self.end_time = end_time
         self.random_walk = random_walk
         self.dependent = dependent
         self.type = "Feature"
@@ -85,7 +101,7 @@ class Feature(ObjectInterruption):
         remainingTimeTillFeature = None
         while 1:
             while remainingTimeTillFeature == None:
-                timeTillFeature = self.rngTime.generateNumber(start_time=self.start_time)
+                timeTillFeature = self.rngTime.generateNumber(start_time=self.start_time, end_time=self.end_time)
                 remainingTimeTillFeature = timeTillFeature
                 if remainingTimeTillFeature == None:
                     yield self.env.timeout(1)
@@ -93,7 +109,25 @@ class Feature(ObjectInterruption):
 
             # if time to failure counts not matter the state of the victim
             if self.deteriorationType == "constant":
-                yield self.env.timeout(remainingTimeTillFeature)
+                if self.contribute != None:
+                    self.expectedSignals["victimIsInterrupted"] = 1
+
+                    while featureNotTriggered:
+                        timeRestartedCounting = self.env.now
+                        receivedEvent = yield self.env.any_of([self.env.timeout(remainingTimeTillFeature),
+                                                               self.victimIsInterrupted])
+                        if self.victimIsInterrupted in receivedEvent:
+                            self.victimIsInterrupted = self.env.event()
+                            remainingTimeTillFeature = remainingTimeTillFeature - (self.env.now - timeRestartedCounting)
+
+                            if self.distribution_state_controller and self.reset_distributions:
+                                self.distribution_state_controller.reset()
+                        else:
+                            self.expectedSignals["victimIsInterrupted"] = 0
+                            remainingTimeTillFeature = None
+                            featureNotTriggered = False
+                else:
+                    yield self.env.timeout(remainingTimeTillFeature)
 
             # if time to failure counts only in working time
             elif self.deteriorationType == "working":
@@ -102,39 +136,64 @@ class Feature(ObjectInterruption):
                 yield self.victimStartsProcessing
                 self.victimStartsProcessing = self.env.event()
 
+
                 # check if feature belongs to entity
                 if self.entity == True:
                     remainingTimeTillFeature = timeTillFeature * self.victim.tinM
 
+
                 while featureNotTriggered:
+
                     timeRestartedCounting = self.env.now
                     self.expectedSignals["victimEndsProcessing"] = 1
                     self.expectedSignals["victimIsInterrupted"] = 1
-
                     # wait either for the feature or end of process
-                    receivedEvent = yield self.env.any_of([self.env.timeout(remainingTimeTillFeature), self.victimEndsProcessing, self.victimIsInterrupted])
+                    receivedEvent = yield self.env.any_of([self.env.timeout(remainingTimeTillFeature),
+                                                           self.victimEndsProcessing,
+                                                           self.victimIsInterrupted])
+
+                    # In line before, reset of expected signals occurs
                     if self.victimEndsProcessing in receivedEvent:
+
                         self.victimEndsProcessing = self.env.event()
                         remainingTimeTillFeature = remainingTimeTillFeature - (self.env.now - timeRestartedCounting)
 
                         # wait for victim to start processing again
                         self.expectedSignals["victimStartsProcessing"] = 1
+                        # wait till signal arrives
                         yield self.victimStartsProcessing
+
+                        # reset to be able to yield again
                         self.victimStartsProcessing = self.env.event()
                     elif self.victimIsInterrupted in receivedEvent:
                         self.victimIsInterrupted = self.env.event()
                         remainingTimeTillFeature = remainingTimeTillFeature - (self.env.now - timeRestartedCounting)
 
+                        # print(f"{self.name}: victimIsInterrupted")
                         # wait for victim to start processing again
                         self.expectedSignals["victimResumesProcessing"] = 1
+
+                        if self.distribution_state_controller and self.reset_distributions:
+                            self.distribution_state_controller.reset()
+
+                        # print(f"{self.name} waiting to resume")
                         yield self.victimResumesProcessing
+
+                        # print(f"{self.name} Resuming")
                         self.victimResumesProcessing = self.env.event()
                     else:
+                        # only set to reset of events occur
+                        # print(f"{self.name} Reset expected Signals")
                         self.expectedSignals["victimEndsProcessing"] = 0
                         self.expectedSignals["victimIsInterrupted"] = 0
                         remainingTimeTillFeature = None
                         featureNotTriggered = False
 
+            if self.distribution_state_controller:
+                self.distribution = self.distribution_state_controller.get_and_update()
+                # TODO is this necessary? does it make sense to change the time?
+                self.rngTime = RandomNumberGenerator(self, self.distribution.get("Time", {"Fixed": {"mean": 1}}))
+                self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
 
             # generate the Feature
             if self.dependent:
