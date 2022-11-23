@@ -120,8 +120,6 @@ class Feature(ObjectInterruption):
                             self.victimIsInterrupted = self.env.event()
                             remainingTimeTillFeature = remainingTimeTillFeature - (self.env.now - timeRestartedCounting)
 
-                            print(f"{self.name}: victimInterrupted")
-
                             if self.distribution_state_controller and self.reset_distributions:
                                 self.distribution_state_controller.reset()
                         else:
@@ -157,7 +155,6 @@ class Feature(ObjectInterruption):
                     # In line before, reset of expected signals occurs
                     if self.victimEndsProcessing in receivedEvent:
 
-                        #print(f"{self.name}:victimEndsProcessing")
                         self.victimEndsProcessing = self.env.event()
                         remainingTimeTillFeature = remainingTimeTillFeature - (self.env.now - timeRestartedCounting)
 
@@ -171,19 +168,18 @@ class Feature(ObjectInterruption):
                     elif self.victimIsInterrupted in receivedEvent:
                         self.victimIsInterrupted = self.env.event()
                         remainingTimeTillFeature = remainingTimeTillFeature - (self.env.now - timeRestartedCounting)
-                        print("")
 
-                        print(f"{self.name}: victimIsInterrupted")
+                        # print(f"{self.name}: victimIsInterrupted")
                         # wait for victim to start processing again
                         self.expectedSignals["victimResumesProcessing"] = 1
 
                         if self.distribution_state_controller and self.reset_distributions:
                             self.distribution_state_controller.reset()
 
-                        print(f"{self.name} waiting to resume")
+                        # print(f"{self.name} waiting to resume")
                         yield self.victimResumesProcessing
 
-                        print(f"{self.name} Resuming")
+                        # print(f"{self.name} Resuming")
                         self.victimResumesProcessing = self.env.event()
                     else:
                         # only set to reset of events occur

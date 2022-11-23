@@ -105,7 +105,7 @@ class Failure(ObjectInterruption):
                     # check in the ObjectInterruptions of the victim. If there is a one that is waiting for victimFailed send it
                     for oi in self.victim.objectInterruptions:
                         if oi.expectedSignals["victimFailed"]:
-                            print("Sending VictimFailed")
+                            # print("Sending VictimFailed")
                             self.sendSignal(receiver=oi, signal=oi.victimFailed)
 
                     for op in self.victim.objectProperties:
@@ -113,7 +113,7 @@ class Failure(ObjectInterruption):
                             self.sendSignal(receiver=op, signal=op.victimFailed)
 
 
-                    print("Condition True")
+                    # print("Condition True")
                     self.victim.Up = False
                     self.victim.timeLastFailure = self.env.now
                     self.outputTrace(self.victim.name, self.victim.id, "is down")
@@ -131,11 +131,10 @@ class Failure(ObjectInterruption):
                             timeOperationStarted = self.env.now
                             self.repairman.timeLastOperationStarted = self.env.now
                             ttr = self.rngTTR.generateNumber()
-                            print(f"TTR is {ttr}")
                             yield self.env.timeout(
                                 ttr
                             )  # wait until the repairing process is over
-                            print(f"Ended timeout at {self.env.now}")
+                            # print(f"Ended timeout at {self.env.now}")
                             self.victim.totalFailureTime += self.env.now - failTime
                             self.reactivateVictim()  # since repairing is over, the Machine is reactivated
                             self.victim.Up = True
@@ -147,11 +146,11 @@ class Failure(ObjectInterruption):
                         continue
 
                     ttr = self.rngTTR.generateNumber()
-                    print(f"TTR is {ttr}")
+                    # print(f"TTR is {ttr}")
                     yield self.env.timeout(
                         ttr
                     )  # wait until the repairing process is over
-                    print(f"Ended timeout at {self.env.now}")
+                    # print(f"Ended timeout at {self.env.now}")
 
                     # add the failure
                     # if victim is off shift add only the fail time before the shift ended
@@ -287,9 +286,6 @@ class Failure(ObjectInterruption):
 
                     # check in the ObjectInterruptions of the victim. If there is a one that is waiting for victimFailed send it
                     for oi in self.victim.objectInterruptions:
-                        if oi.name == "Feature9":
-                            print("#Failure#", oi.expectedSignals)
-
                         if oi.expectedSignals["victimFailed"]:
                             self.sendSignal(receiver=oi, signal=oi.victimFailed)
 

@@ -85,17 +85,17 @@ class FeatureNew(ObjectProperty):
 
             if self.victimIsInterrupted in receivedEvent:
                 self.victimIsInterrupted = self.env.event()
-                print(f"{self.name}: victimIsInterrupted")
+                # print(f"{self.name}: victimIsInterrupted")
                 # wait for victim to start processing again
                 self.expectedSignals["victimResumesProcessing"] = 1
 
                 if self.distribution_state_controller and self.reset_distributions:
                     self.distribution_state_controller.reset()
 
-                print(f"{self.name} waiting to resume")
+                # print(f"{self.name} waiting to resume")
                 yield self.victimResumesProcessing
 
-                print(f"{self.name} Resuming")
+                # print(f"{self.name} Resuming")
                 self.victimResumesProcessing = self.env.event()
             elif self.machineProcessing in receivedEvent:
                 self.machineProcessing = self.env.event()
@@ -119,7 +119,6 @@ class FeatureNew(ObjectProperty):
                     self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
 
                 value = self.rngFeature.generateNumber(start_time=self.start_time)
-                # print("Value")
 
                 if self.random_walk == True:
                     self.featureValue += value
