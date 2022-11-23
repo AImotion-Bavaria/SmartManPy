@@ -21,7 +21,7 @@ class Failure_conditional(Failure):
     def condition(self):
         value_1 = Test.get_feature_value()
         if value_1 > 10:
-            print("Fail")
+            print("Failure!")
             Test.start_time = G.env.now
             return True
         else:

@@ -51,14 +51,9 @@ class ObjectProperty(ManPyObject):
                 self.victim.objectProperties.append(self)
         # list of expected signals of an interruption (values can be used as flags to inform on which signals is the interruption currently yielding)
         self.expectedSignals = {
-            # "victimOffShift": 0,
-            # "victimOnShift": 0,
             "victimStartsProcessing": 0,
             "victimEndsProcessing": 0,
             "isCalled": 0,
-            # "endedLastProcessing": 0,
-            # "victimIsEmptyBeforeMaintenance": 0,
-            # "resourceAvailable": 0,
             "victimFailed": 0,
             "contribution": 0,
             "victimIsInterrupted": 0,
