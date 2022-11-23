@@ -538,9 +538,8 @@ class Machine(CoreObject):
 
             for op in self.objectProperties:
                 if op.type == "Feature":
-                    if op.deteriorationType == "working":
-                        if op.expectedSignals["victimStartsProcessing"]:
-                            self.sendSignal(receiver=op, signal=op.victimStartsProcessing)
+                    if op.expectedSignals["victimStartsProcessing"]:
+                        self.sendSignal(receiver=op, signal=op.victimStartsProcessing)
 
             # this loop is repeated until the processing time is expired with no failure
             # check when the processingEndedFlag switched to false
@@ -1134,9 +1133,8 @@ class Machine(CoreObject):
 
                 for op in self.objectProperties:
                     if op.type == "Feature":
-                        if op.deteriorationType == "working":
-                            if op.expectedSignals["victimEndsProcessing"]:
-                                self.sendSignal(receiver=op, signal=op.victimEndsProcessing)
+                        if op.expectedSignals["victimEndsProcessing"]:
+                            self.sendSignal(receiver=op, signal=op.victimEndsProcessing)
 
                 if self.isWorkingOnTheLast:
                     # for the scheduled Object interruptions
@@ -1198,9 +1196,8 @@ class Machine(CoreObject):
 
                 for op in self.objectProperties:
                     if op.type == "Feature":
-                        if op.deteriorationType == "working":
-                            if op.expectedSignals["victimEndsProcessing"]:
-                                self.sendSignal(receiver=op, signal=op.victimEndsProcessing)
+                        if op.expectedSignals["victimEndsProcessing"]:
+                            self.sendSignal(receiver=op, signal=op.victimEndsProcessing)
 
                 # in case Machine just performed the last work before the scheduled maintenance signal the corresponding object
                 if self.isWorkingOnTheLast:

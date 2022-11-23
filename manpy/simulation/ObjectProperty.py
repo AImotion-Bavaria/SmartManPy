@@ -26,13 +26,12 @@ class ObjectProperty(ManPyObject):
         id="",
         name="",
         victim=None,
-        deteriorationType="working",
         distribution={},
+        entity=True,
         distribution_state_controller=None,
         reset_distributions=True,
         no_negative=False,
         contribute=None,
-        entity=False,
         start_time=0,
         end_time=0,
         start_value=0,
@@ -53,14 +52,9 @@ class ObjectProperty(ManPyObject):
                 self.victim.objectProperties.append(self)
         # list of expected signals of an interruption (values can be used as flags to inform on which signals is the interruption currently yielding)
         self.expectedSignals = {
-            # "victimOffShift": 0,
-            # "victimOnShift": 0,
             "victimStartsProcessing": 0,
             "victimEndsProcessing": 0,
             "isCalled": 0,
-            # "endedLastProcessing": 0,
-            # "victimIsEmptyBeforeMaintenance": 0,
-            # "resourceAvailable": 0,
             "victimFailed": 0,
             "contribution": 0,
             "victimIsInterrupted": 0,
@@ -69,7 +63,8 @@ class ObjectProperty(ManPyObject):
 
         self.id = id
         self.name = name
-        self.deteriorationType = deteriorationType
+
+        self.entity = entity
 
         self.distribution_state_controller = distribution_state_controller
         self.reset_distributions = reset_distributions
@@ -86,7 +81,6 @@ class ObjectProperty(ManPyObject):
         self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
         self.no_negative = no_negative
         self.contribute = contribute
-        self.entity = entity
         self.start_time = start_time
         self.featureHistory = [start_value]
         self.featureValue = self.featureHistory[-1]
