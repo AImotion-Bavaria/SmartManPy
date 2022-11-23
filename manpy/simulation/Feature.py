@@ -81,17 +81,16 @@ class Feature(ObjectProperty):
 
             if self.victimIsInterrupted in receivedEvent:
                 self.victimIsInterrupted = self.env.event()
-                print(f"{self.name}: victimIsInterrupted")
+                # print(f"{self.name}: victimIsInterrupted")
                 # wait for victim to start processing again
                 self.expectedSignals["victimResumesProcessing"] = 1
 
                 if self.distribution_state_controller and self.reset_distributions:
                     self.distribution_state_controller.reset()
 
-                self.expectedSignals["victimResumesProcessing"] = 1
                 yield self.victimResumesProcessing
 
-                print(f"{self.name} Resuming")
+                # print(f"{self.name} Resuming")
                 self.victimResumesProcessing = self.env.event()
             elif self.machineProcessing in receivedEvent:
                 self.machineProcessing = self.env.event()
