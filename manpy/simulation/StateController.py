@@ -31,14 +31,14 @@ class SimpleStateController(StateController):
            Intervals are defined as a tuple: (lower, upper). The lower bound is included, upper bound is not included.
            Example: states = [state0, state1, state2]
            boundaries = {(0, 150): 0, (150, 300): 1, (300, None): 2}
-    :param amount_per_step: A number that defines how much wear is added per step.
+    :param wear_per_step: A number that defines how much wear is added per step.
     :param reset_amount: When the account value reaches this amount, the StateController gets reset.
     """
-    def __init__(self, states: list, boundaries: dict, amount_per_step, initial_state_index=0, reset_amount=None):
+    def __init__(self, states: list, boundaries: dict, wear_per_step, initial_state_index=0, reset_amount=None):
 
         self.states = states
         self.boundaries = boundaries
-        self.amount_per_step = amount_per_step
+        self.wear_per_step = wear_per_step
 
         self.account = 0
         self.current_state_index = initial_state_index
@@ -51,7 +51,7 @@ class SimpleStateController(StateController):
     def get_and_update(self):
         output = self.states[self.current_state_index]
 
-        self.account += self.amount_per_step
+        self.account += self.wear_per_step
 
         if self.reset_amount is not None and self.account >= self.reset_amount:
             self.reset()
@@ -90,20 +90,56 @@ class SimpleStateController(StateController):
 
         return res[0]
 
-# TODO Graduelle veränderungen -> mehrere Verteilungen zusammenaddieren zb
 
-class ContinuosStateController(StateController):
-    # TODO eg change mean of normal dist
+class ContinuosNormalDistribution(StateController):
+    def __init__(self, wear_per_step, break_point, mean_change_per_step, initial_mean, std, defect_mean, defect_std):
+        """
+        Normal Distribution that changes its mean value with each step. Optionally, a defect can occur after a defined
+        period.
+        :param wear_per_step: How much wear happens per step
+        :param break_point: When this value of wear is reached, a defect happens. Will be ignored if None
+        :param mean_change_per_step: Value that is added to the mean of the normal distribution in each step
+        :param initial_mean: Initial mean value of the normal distribution
+        :param std: STD of the normal distribution, does not change
+        :param defect_mean: Mean value in the defect state
+        :param defect_std: STD in the defect state
+        """
 
-    def get_and_update(self):
-        pass
+        self.wear_per_step = wear_per_step
+        self.break_point = break_point
+        self.mean_change_per_step = mean_change_per_step
 
-    def reset(self):
-        pass
+        self.initial_mean = initial_mean
+        self.std = std
+
+        self.account = 0
+
+        self.current_mean = self.initial_mean
+        self.defect_mean = defect_mean
+        self.defect_std = defect_std
 
     def get_initial_state(self):
-        pass
+        return self.__get_distribution(self.initial_mean, self.std)
 
+    def get_and_update(self):
+        if self.break_point is not None and self.account >= self.break_point:
+            mean = self.defect_mean
+            std = self.defect_std
+        else:
+            self.current_mean += self.mean_change_per_step
+            mean = self.current_mean
+            std = self.std
+            self.account += self.wear_per_step
+
+        return self.__get_distribution(mean, std)
+
+    def __get_distribution(self, mean, std):
+        return {"Feature": {"Normal": {"mean": mean, "stdev": std}}}
+
+    def reset(self):
+        print(">>> Reset SimpleStateController <<<")
+        self.current_mean = self.initial_mean
+        self.account = 0
 
 if __name__ == '__main__':
     states = ["A", "B", "C"]
