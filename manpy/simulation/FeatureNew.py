@@ -96,12 +96,13 @@ class FeatureNew(ObjectProperty):
                 # print(f"{self.name} Resuming")
                 self.victimResumesProcessing = self.env.event()
             elif self.machineProcessing in receivedEvent:
+                self.label = None
                 self.machineProcessing = self.env.event()
 
                 # print(f"{self.name} received machineProcessing")
 
                 if self.distribution_state_controller:
-                    self.distribution = self.distribution_state_controller.get_and_update()
+                    self.distribution, self.label = self.distribution_state_controller.get_and_update()
                     # TODO is this necessary? does it make sense to change the time?
                     self.rngTime = RandomNumberGenerator(self, self.distribution.get("Time", {"Fixed": {"mean": 1}}))
                     self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
@@ -139,7 +140,7 @@ class FeatureNew(ObjectProperty):
                 # check Entity
                 if self.entity == True:
                     # add Feature value and time to Entity
-                    self.victim.Res.users[0].set_feature(self.featureValue, self.env.now, (self.id, self.victim.id))
+                    self.victim.Res.users[0].set_feature(self.featureValue, self.label, self.env.now, (self.id, self.victim.id))
                     self.outputTrace(self.victim.Res.users[0].name, self.victim.Res.users[0].id, str(self.featureValue))
 
                 else:

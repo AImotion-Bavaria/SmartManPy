@@ -17,6 +17,16 @@ class Machine_control(Machine):
                 if feature < min or feature > max:
                     return True
 
+class Machine_control2(Machine):
+    """
+    Another approach for quality control: label is determined by features. if >= 1 feature has label "defect", the
+    entity does not pass the quality inspection
+    """
+    def condition(self):
+        activeEntity = self.Res.users[0]
+        if any(activeEntity.labels):
+            return True
+
 class Failure_conditional(Failure):
     def condition(self):
         value_1 = Test.get_feature_value()
@@ -80,8 +90,10 @@ StecktFest = Failure_conditional("Flr0", "Failure0", victim=Kleben, conditional=
 
 dists = [{"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 1, "stdev":2}}},
          {"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 100, "stdev":2}}}]
+labels = [False, True]
 boundaries = {(0, 25): 0, (25, None): 1}
-distribution_controller = SimpleStateController(states=dists, boundaries=boundaries, wear_per_step=1.0, reset_amount=None)
+distribution_controller = SimpleStateController(states=dists, boundaries=boundaries, wear_per_step=1.0,
+                                                labels=labels, reset_amount=None)
 
 Test = FeatureNew("Ftr8", "Feature9", victim=Kleben,
                distribution_state_controller=distribution_controller,
