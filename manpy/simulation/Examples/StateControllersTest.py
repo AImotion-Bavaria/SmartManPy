@@ -7,7 +7,7 @@ def generate_n_values(state_controller, num_values, reset_every_nth_step=None):
     values = list()
 
     for i in range(num_values):
-        distribution = state_controller.get_and_update()
+        distribution, _ = state_controller.get_and_update()
         rng_feature = RandomNumberGenerator(object(), distribution.get("Feature"))
         value = rng_feature.generateNumber()
         values.append(value)
@@ -19,8 +19,7 @@ def generate_n_values(state_controller, num_values, reset_every_nth_step=None):
     return values
 
 
-if __name__ == "__main__":
-    # TODO test Weibull
+def demonstrate_ContinuosNormalDistribution():
     feature_cycle_time = 1.
     dists = [{"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 1, "stdev": 2}}},
              {"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 100, "stdev": 2}}}]
@@ -57,6 +56,11 @@ if __name__ == "__main__":
     plt.legend()
     plt.title(f"Mean Change: {mean_change_per_step}")
     plt.show()
+
+
+if __name__ == "__main__":
+    # TODO test Weibull
+    demonstrate_ContinuosNormalDistribution()
 
 
 

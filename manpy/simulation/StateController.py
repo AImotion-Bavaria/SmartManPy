@@ -1,3 +1,5 @@
+import numpy as np
+
 class StateController:
     """
     Abstract base class for all StateControllers. A StateController must provide a get_and_update() and reset() method.
@@ -34,8 +36,14 @@ class SimpleStateController(StateController):
     :param wear_per_step: A number that defines how much wear is added per step.
     :param reset_amount: When the account value reaches this amount, the StateController gets reset.
     """
-    def __init__(self, states: list, boundaries: dict, wear_per_step, labels=None,
-                 initial_state_index=0, reset_amount=None):
+    def __init__(self,
+                 states: list,
+                 boundaries: dict,
+                 wear_per_step,
+                 labels=None,
+                 initial_state_index=0,
+                 reset_amount=None
+                 ):
 
         self.states = states
 
@@ -101,7 +109,15 @@ class SimpleStateController(StateController):
 
 
 class ContinuosNormalDistribution(StateController):
-    def __init__(self, wear_per_step, break_point, mean_change_per_step, initial_mean, std, defect_mean, defect_std):
+    def __init__(self,
+                 wear_per_step,
+                 break_point,
+                 mean_change_per_step,
+                 initial_mean,
+                 std,
+                 defect_mean,
+                 defect_std
+                 ):
         """
         Normal Distribution that changes its mean value with each step. Optionally, a defect can occur after a defined
         period. Provides label.
@@ -151,6 +167,45 @@ class ContinuosNormalDistribution(StateController):
         print(">>> Reset SimpleStateController <<<")
         self.current_mean = self.initial_mean
         self.account = 0
+
+
+class RandomFailureStateController(StateController):
+    def __init__(self,
+                 failure_probability,
+                 ok_controller: ContinuosNormalDistribution,
+                 defect_controller: ContinuosNormalDistribution
+                 ):
+        """
+        Orchestrates two ContinuosNormalDistributionControllers. Using a Bernoulli-Distribution, it chooses either the
+        ok or the defect distribution.
+
+        :param failure_probability: Probability of failure for the Bernoulli-Distribution.
+        :param ok_controller:
+        :param defect_controller:
+        """
+        self.failure_probability = failure_probability
+        self.ok_controller = ok_controller
+        self.defect_controller = defect_controller
+
+    def get_initial_state(self):
+        return self.ok_controller.get_initial_state()
+
+    def get_and_update(self):
+        defect = int(np.random.binomial(1, self.failure_probability))
+
+        if defect == 1:
+            dist, _ = self.defect_controller.get_and_update()
+            label = True
+        else:
+            dist, _ = self.ok_controller.get_and_update()
+            label = False
+
+        return dist, label
+
+    def reset(self):
+        self.ok_controller.reset()
+        self.defect_controller.reset()
+
 
 if __name__ == '__main__':
     states = ["A", "B", "C"]

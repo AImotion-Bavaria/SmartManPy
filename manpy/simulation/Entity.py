@@ -97,6 +97,7 @@ class Entity(ManPyObject):
         self.remainingProcessingTime = remainingProcessingTime
         self.remainingSetupTime = remainingSetupTime
         self.status = status
+        # TODO + 1 was meant to be the label
         self.features = [None] * (len(G.ftr_st) + 1)
         self.labels = [None] * (len(G.ftr_st) + 1)
         self.feature_times = [None] * len(G.ftr_st)
