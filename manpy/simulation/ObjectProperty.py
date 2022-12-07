@@ -62,8 +62,7 @@ class ObjectProperty(ManPyObject):
             "victimFailed": 0,
             "contribution": 0,
             "victimIsInterrupted": 0,
-            "victimResumesProcessing": 0,
-            "machineProcessing": 0
+            "victimResumesProcessing": 0
         }
 
         self.id = id
@@ -113,8 +112,7 @@ class ObjectProperty(ManPyObject):
             "victimFailed": 0,
             "contribution": 0,
             "victimIsInterrupted": 0,
-            "victimResumesProcessing": 0,
-            "machineProcessing" :0
+            "victimResumesProcessing": 0
         }
 
     # ===========================================================================

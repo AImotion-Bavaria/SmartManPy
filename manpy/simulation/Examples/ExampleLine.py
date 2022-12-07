@@ -1,5 +1,5 @@
 from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue
-from manpy.simulation.Globals import runSimulation, getEntityData, G
+from manpy.simulation.Globals import runSimulation, getEntityData, G, ExcelPrinter
 import time
 
 start = time.time()
@@ -26,23 +26,23 @@ E1 = Exit("E1", "Exit1")
 
 # ObjectInterruption
 # Löten
-Spannung = Feature("Ftr0", "Feature1", victim=Löten, entity=True,
+Spannung = Feature("Ftr0", "Feature1", victim=Löten,
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 1.6, "stdev": 0.2}}})
-Strom = Feature("Ftr1", "Feature2", victim=Löten, entity=True,
+Strom = Feature("Ftr1", "Feature2", victim=Löten,
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 3500, "stdev": 200}}})
-Widerstand = Feature("Ftr2", "Feature3", victim=Löten, entity=True,
+Widerstand = Feature("Ftr2", "Feature3", victim=Löten,
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 450, "stdev": 50}}})
-Kraft = Feature("Ftr3", "Feature4", victim=Löten, entity=True,
+Kraft = Feature("Ftr3", "Feature4", victim=Löten,
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 180, "stdev": 30}}})
-Einsinktiefe = Feature("Ftr4", "Feature5", victim=Löten, entity=True,
+Einsinktiefe = Feature("Ftr4", "Feature5", victim=Löten,
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 400, "stdev": 50}}})
 
 #Kleben
-Durchflussgeschwindigkeit = Feature("Ftr5", "Feature6", victim=Kleben, entity=True,
+Durchflussgeschwindigkeit = Feature("Ftr5", "Feature6", victim=Kleben,
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 50, "stdev": 5}}})
-Temperatur = Feature("Ftr6", "Feature7", victim=Kleben, entity=True,
+Temperatur = Feature("Ftr6", "Feature7", victim=Kleben,
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 190, "stdev": 10}}})
-Menge = Feature("Ftr7", "Feature8", victim=Kleben, entity=True,
+Menge = Feature("Ftr7", "Feature8", victim=Kleben,
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 400, "stdev": 50}}})
 
 StecktFest = Failure("Flr0", "Failure0", victim=Kleben, entity=True,
@@ -59,9 +59,9 @@ E1.defineRouting([Kleben])
 
 def main(test=0):
     maxSimTime = 50
-    objectList = [S, Löten, Q, Kleben, E1, StecktFest, Spannung, Strom, Widerstand, Kraft, Einsinktiefe, Durchflussgeschwindigkeit, Temperatur, Menge]
+    objectList = [S, Löten, Q, Kleben, E1, Spannung, Strom, Widerstand, Kraft, Einsinktiefe, Durchflussgeschwindigkeit, Temperatur, Menge]
 
-    runSimulation(objectList, maxSimTime)
+    runSimulation(objectList, maxSimTime, trace=True, db=True)
 
     # return Results for test
     if test:
@@ -75,8 +75,10 @@ def main(test=0):
 
         return result
 
-    df = getEntityData()
-    df.to_csv("ExampleLine.csv", index=False, encoding="utf8")
+    df = G.get_simulation_results_dataframe()
+    ExcelPrinter(df, "ExampleLine")
+    # df = getEntityData()
+    # df.to_csv("ExampleLine.csv", index=False, encoding="utf8")
 
     print("""
             Ausschuss:          {}

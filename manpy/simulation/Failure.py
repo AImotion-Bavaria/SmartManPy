@@ -124,6 +124,7 @@ class Failure(ObjectInterruption):
                             columns={"time": self.env.now,
                                      "message": self.victim.id + " is down"}
                         )
+                        G.sender.flush()
                     # update the failure time
                     failTime = self.env.now
                     if (
@@ -152,6 +153,7 @@ class Failure(ObjectInterruption):
                                     columns={"time": self.env.now,
                                              "message": self.victim.id + " is up"}
                                 )
+                                G.sender.flush()
 
                             self.repairman.totalWorkingTime += (
                                 self.env.now - timeOperationStarted
@@ -192,6 +194,7 @@ class Failure(ObjectInterruption):
                             columns={"time": self.env.now,
                                      "message": self.victim.id + " is up"}
                         )
+                        G.sender.flush()
 
         else:
             while 1:
@@ -322,6 +325,7 @@ class Failure(ObjectInterruption):
                             columns={"time": self.env.now,
                                      "message": self.victim.id + " is down"}
                         )
+                        G.sender.flush()
 
                     # update the failure time
                     failTime = self.env.now
@@ -351,6 +355,7 @@ class Failure(ObjectInterruption):
                                     columns={"time": self.env.now,
                                              "message": self.victim.id + " is up"}
                                 )
+                                G.sender.flush()
 
                             self.repairman.totalWorkingTime += (
                                 self.env.now - timeOperationStarted

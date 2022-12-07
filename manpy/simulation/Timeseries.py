@@ -70,7 +70,7 @@ class Timeseries(ObjectProperty):
             self.stepsize = (self.distribution["Interval"][1] - self.distribution["Interval"][0]) / self.distribution["DataPoints"]
         self.victimIsInterrupted = self.env.event()
         self.victimStartsProcessing = self.env.event()
-        self.machineProcessing = self.env.event()
+        self.victimEndsProcessing = self.env.event()
 
     def run(self):
         """Every Object has to have a run method. Simpy is mainly used in this function
@@ -85,20 +85,19 @@ class Timeseries(ObjectProperty):
             yield self.victimStartsProcessing
             self.victimStartsProcessing = self.env.event()
 
-            print(self.victim.tinM)
             steptime = self.victim.tinM / self.distribution["DataPoints"]
             remainingTimeTillFeature = steptime
             steps = 0
 
             while machineIsRunning:
                 timeRestartedCounting = self.env.now
-                self.expectedSignals["machineProcessing"] = 1
+                self.expectedSignals["victimEndsProcessing"] = 1
                 self.expectedSignals["victimIsInterrupted"] = 1
 
                 receivedEvent = yield self.env.any_of([
                     self.env.timeout(remainingTimeTillFeature),
                     self.victimIsInterrupted,
-                    self.machineProcessing
+                    self.victimEndsProcessing
                 ])
 
                 if self.victimIsInterrupted in receivedEvent:
@@ -114,8 +113,8 @@ class Timeseries(ObjectProperty):
                     yield self.victimResumesProcessing
                     self.victimResumesProcessing = self.env.event()
 
-                elif self.machineProcessing in receivedEvent:
-                    self.machineProcessing = self.env.event()
+                elif self.victimEndsProcessing in receivedEvent:
+                    self.victimEndsProcessing = self.env.event()
                     remainingTimeTillFeature = remainingTimeTillFeature - (self.env.now - timeRestartedCounting)
 
                     if self.distribution_state_controller:
@@ -187,7 +186,7 @@ class Timeseries(ObjectProperty):
                         self.featureHistory.append(self.featureValue)
 
                         # send data to QuestDB
-                        if G.db:
+                        if G.db == False:
                             G.sender.row(
                                 self.name,
                                 columns={"time": self.env.now, "value": self.featureValue}
@@ -212,7 +211,7 @@ class Timeseries(ObjectProperty):
 
                     # check if it was the last step
                     if steps == self.distribution["DataPoints"]:
-                        self.expectedSignals["machineProcessing"] = 0
+                        self.expectedSignals["victimEndsProcessing"] = 0
                         self.expectedSignals["victimIsInterrupted"] = 0
                         remainingTimeTillFeature = None
                         machineIsRunning = False

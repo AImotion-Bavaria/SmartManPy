@@ -1,6 +1,7 @@
 
 from .ObjectProperty import ObjectProperty
 from .RandomNumberGenerator import RandomNumberGenerator
+from manpy.simulation.Globals import G
 
 
 class Feature(ObjectProperty):
@@ -63,7 +64,7 @@ class Feature(ObjectProperty):
         ObjectProperty.initialize(self)
         self.victimIsInterrupted = self.env.event()
         self.victimResumesProcessing = self.env.event()
-        self.machineProcessing = self.env.event()
+        self.victimEndsProcessing = self.env.event()
 
     def run(self):
         """Every Object has to have a run method. Simpy is mainly used in this function
@@ -71,12 +72,12 @@ class Feature(ObjectProperty):
         """
 
         while 1:
-            self.expectedSignals["machineProcessing"] = 1
+            self.expectedSignals["victimEndsProcessing"] = 1
             self.expectedSignals["victimIsInterrupted"] = 1  # TODO maybe victimFailed?
 
             receivedEvent = yield self.env.any_of([
                self.victimIsInterrupted,
-               self.machineProcessing
+               self.victimEndsProcessing
             ])
 
             if self.victimIsInterrupted in receivedEvent:
@@ -93,10 +94,10 @@ class Feature(ObjectProperty):
 
                 print(f"{self.name} Resuming")
                 self.victimResumesProcessing = self.env.event()
-            elif self.machineProcessing in receivedEvent:
-                self.machineProcessing = self.env.event()
+            elif self.victimEndsProcessing in receivedEvent:
+                self.victimEndsProcessing = self.env.event()
 
-                # print(f"{self.name} received machineProcessing")
+                # print(f"{self.name} received victimEndsProcessing")
 
                 if self.distribution_state_controller:
                     self.distribution = self.distribution_state_controller.get_and_update()
@@ -129,6 +130,26 @@ class Feature(ObjectProperty):
 
                 self.featureHistory.append(self.featureValue)
 
+                # send data to QuestDB
+                # from questdb.ingress import Sender
+                # with Sender(host='localhost', port=9009) as sender:
+                #     sender.row(
+                #         self.name,
+                #         columns={"time": self.env.now, "value": self.featureValue}
+                #     )
+                # G.sender.flush()
+
+                from manpy.simulation.Globals import G
+                try:
+                    if G.db:
+                        G.sender.row(
+                            self.name,
+                            columns={"time": self.env.now, "value": self.featureValue}
+                        )
+                        G.sender.flush()
+                except:
+                    print("Ohhhh")
+
                 # check contribution
                 if self.contribute != None:
                     for c in self.contribute:
@@ -137,8 +158,12 @@ class Feature(ObjectProperty):
 
 
                 # add Feature value and time to Entity
-                self.victim.Res.users[0].set_feature(self.featureValue, self.env.now, (self.id, self.victim.id))
-                self.outputTrace(self.victim.Res.users[0].name, self.victim.Res.users[0].id, str(self.featureValue))
+                try:
+                    self.victim.activeEntity.set_feature(self.featureValue, self.env.now, (self.id, self.victim.id))
+                    self.outputTrace(self.victim.activeEntity.name, self.victim.activeEntity.id, str(self.featureValue))
+                except IndexError:
+                    print(self.victim.activeEntity)
+
 
                 # add Feature to Trace
                 if self.victim == None:
@@ -147,6 +172,5 @@ class Feature(ObjectProperty):
                     self.outputTrace(self.victim.name, self.victim.id, str(self.featureValue))
 
             else:
-                self.expectedSignals["machineProcessing"] = 0
+                self.expectedSignals["victimEndsProcessing"] = 0
                 self.expectedSignals["victimIsInterrupted"] = 0
-

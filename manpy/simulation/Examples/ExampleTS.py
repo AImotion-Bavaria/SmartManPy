@@ -62,12 +62,12 @@ def main(test=0):
     maxSimTime = 50
     objectList = [S, Löten, Q, Kleben, E1, StecktFest, Spannung, Strom, Widerstand, Kraft, Einsinktiefe, Durchflussgeschwindigkeit, Temperatur, Menge]
 
-    runSimulation(objectList, maxSimTime, trace=True)
+    runSimulation(objectList, maxSimTime, trace=True, db=False)
 
     #df = getEntityData()
     #df.to_csv("ExampleTS.csv", index=False, encoding="utf8")
     df = G.get_simulation_results_dataframe()
-    ExcelPrinter(df, "ExampleTS.py")
+    ExcelPrinter(df, "ExampleTS")
 
     print("""
             Ausschuss:          {}
