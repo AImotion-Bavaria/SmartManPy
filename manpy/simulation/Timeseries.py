@@ -148,11 +148,10 @@ class Timeseries(ObjectProperty):
 
                         # send data to QuestDB
                         if G.db:
-                            G.sender.row(
+                            G.buffer.row(
                                 self.name,
                                 columns={"time": self.env.now, "value": self.featureValue}
                             )
-                            G.sender.flush()
 
                         # check contribution
                         if self.contribute != None:
@@ -186,12 +185,11 @@ class Timeseries(ObjectProperty):
                         self.featureHistory.append(self.featureValue)
 
                         # send data to QuestDB
-                        if G.db == False:
-                            G.sender.row(
+                        if G.db:
+                            G.buffer.row(
                                 self.name,
                                 columns={"time": self.env.now, "value": self.featureValue}
                             )
-                            G.sender.flush()
 
                         # check contribution
                         if self.contribute != None:
