@@ -168,6 +168,8 @@ class ContinuosNormalDistribution(StateController):
         self.current_mean = self.initial_mean
         self.account = 0
 
+# TODO kurtosis
+
 
 class RandomFailureStateController(StateController):
     def __init__(self,
