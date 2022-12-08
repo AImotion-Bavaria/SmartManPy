@@ -59,7 +59,8 @@ from manpy.simulation.OrderDecomposition import OrderDecomposition
 from manpy.simulation.NonStarvingEntry import NonStarvingEntry
 from manpy.simulation.RoutingQueue import RoutingQueue
 from manpy.simulation.Feature import Feature
-from manpy.simulation.StateController import SimpleStateController, ContinuosNormalDistribution
+from manpy.simulation.StateController import SimpleStateController, ContinuosNormalDistribution, \
+    RandomDefectStateController
 from manpy.simulation.FeatureNew import FeatureNew
 
 # Entities

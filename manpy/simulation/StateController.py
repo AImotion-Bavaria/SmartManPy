@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class StateController:
     """
     Abstract base class for all StateControllers. A StateController must provide a get_and_update() and reset() method.
@@ -171,7 +172,7 @@ class ContinuosNormalDistribution(StateController):
 # TODO kurtosis
 
 
-class RandomFailureStateController(StateController):
+class RandomDefectStateController(StateController):
     def __init__(self,
                  failure_probability,
                  ok_controller: ContinuosNormalDistribution,
