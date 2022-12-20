@@ -2,6 +2,7 @@
 from .ObjectProperty import ObjectProperty
 from .RandomNumberGenerator import RandomNumberGenerator
 from manpy.simulation.Globals import G
+import copy
 
 
 class Timeseries(ObjectProperty):
@@ -147,12 +148,17 @@ class Timeseries(ObjectProperty):
                         self.featureHistory.append(self.featureValue)
 
                         # send data to QuestDB
-                        if G.db:
-                            G.sender.row(
-                                self.name,
-                                columns={"time": self.env.now, "value": self.featureValue}
-                            )
-                            G.sender.flush()
+                        # TODO: make it work with floats
+                        self.featureValue = int(self.featureValue)
+                        try:
+                            if G.db:
+                                G.sender.row(
+                                    self.name,
+                                    columns={"time": self.env.now, "value": self.featureValue}
+                                )
+                                G.sender.flush()
+                        except:
+                            print("Quest-DB error: dependent TS")
 
                         # check contribution
                         if self.contribute != None:
@@ -170,8 +176,9 @@ class Timeseries(ObjectProperty):
                     else:
                         x = self.distribution["Interval"][0] + (self.stepsize * steps)
                         self.distribution["Feature"][list(self.distribution["Feature"].keys())[0]]["mean"] = eval(self.distribution["Function"])
-
+                        self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
                         value = self.rngFeature.generateNumber(start_time=self.start_time)
+
 
                         if self.random_walk == True:
                             self.featureValue += value
@@ -186,12 +193,15 @@ class Timeseries(ObjectProperty):
                         self.featureHistory.append(self.featureValue)
 
                         # send data to QuestDB
-                        if G.db == False:
-                            G.sender.row(
-                                self.name,
-                                columns={"time": self.env.now, "value": self.featureValue}
-                            )
-                            G.sender.flush()
+                        try:
+                            if G.db:
+                                G.sender.row(
+                                    self.name,
+                                    columns={"time": self.env.now, "value": self.featureValue}
+                                )
+                                G.sender.flush()
+                        except:
+                            print("Quest-DB error: non-dependent TS")
 
                         # check contribution
                         if self.contribute != None:
@@ -204,6 +214,7 @@ class Timeseries(ObjectProperty):
                                                              (self.id, self.victim.id))
                         self.outputTrace(self.victim.Res.users[0].name, self.victim.Res.users[0].id,
                                          str(self.featureValue))
+
 
 
                     remainingTimeTillFeature = steptime

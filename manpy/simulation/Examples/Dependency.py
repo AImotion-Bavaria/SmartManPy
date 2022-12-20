@@ -26,23 +26,23 @@ E1 = Exit("E1", "Exit1")
 
 # ObjectInterruption
 # Löten
-Spannung = Feature("Ftr0", "Feature1", victim=Löten, entity=True,
+Spannung = Feature("Ftr0", "Feature0", victim=Löten, entity=True,
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 1.6, "stdev": 0.2}}})
-Strom = Feature("Ftr1", "Feature2", victim=Löten, entity=True, dependent={"Function" : "1000*x + 1900", "x" : Spannung},
+Strom = Feature("Ftr1", "Feature1", victim=Löten, entity=True, dependent={"Function" : "1000*x + 1900", "x" : Spannung},
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"stdev": 2}}})
-Widerstand = Feature("Ftr2", "Feature3", victim=Löten, entity=True, dependent={"Function" : "(V/I)*1000000", "V" : Spannung, "I" : Strom},
+Widerstand = Feature("Ftr2", "Feature2", victim=Löten, entity=True, dependent={"Function" : "(V/I)*1000000", "V" : Spannung, "I" : Strom},
                distribution={"Time": {"Fixed": {"mean": 1}}})
-Kraft = Feature("Ftr3", "Feature4", victim=Löten, entity=True,
+Kraft = Feature("Ftr3", "Feature3", victim=Löten, entity=True,
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 180, "stdev": 30}}})
-Einsinktiefe = Feature("Ftr4", "Feature5", victim=Löten, entity=True,
+Einsinktiefe = Feature("Ftr4", "Feature4", victim=Löten, entity=True,
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 400, "stdev": 50}}})
 
 #Kleben
-Durchflussgeschwindigkeit = Feature("Ftr5", "Feature6", victim=Kleben, entity=True,
+Durchflussgeschwindigkeit = Feature("Ftr5", "Feature5", victim=Kleben, entity=True,
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 50, "stdev": 5}}})
-Temperatur = Feature("Ftr6", "Feature7", victim=Kleben, entity=True, dependent={"Function" : "2*x + 90", "x" : Durchflussgeschwindigkeit},
+Temperatur = Feature("Ftr6", "Feature6", victim=Kleben, entity=True, dependent={"Function" : "2*x + 90", "x" : Durchflussgeschwindigkeit},
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"stdev": 1}}})
-Menge = Feature("Ftr7", "Feature8", victim=Kleben, entity=True,
+Menge = Feature("Ftr7", "Feature7", victim=Kleben, entity=True,
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 400, "stdev": 50}}})
 
 StecktFest = Failure("Flr0","Failure0", victim=Kleben, entity=True,

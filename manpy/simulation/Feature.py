@@ -147,7 +147,7 @@ class Feature(ObjectProperty):
                         )
                         G.sender.flush()
                 except:
-                    print("Ohhhh")
+                    print("Quest-DB error: Feature")
 
                 # check contribution
                 if self.contribute != None:
