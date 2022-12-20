@@ -27,7 +27,6 @@ class ObjectProperty(ManPyObject):
         name="",
         victim=None,
         distribution={},
-        entity=True,
         distribution_state_controller=None,
         reset_distributions=True,
         no_negative=False,
@@ -63,8 +62,6 @@ class ObjectProperty(ManPyObject):
 
         self.id = id
         self.name = name
-
-        self.entity = entity
 
         self.distribution_state_controller = distribution_state_controller
         self.reset_distributions = reset_distributions

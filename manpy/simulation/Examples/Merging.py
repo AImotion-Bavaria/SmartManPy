@@ -28,23 +28,23 @@ Montage = Machine_control("M2", "Montage", processingTime={"Fixed": {"mean": 0.8
 E = Exit("E", "Exit")
 
 # Löten
-Spannung = Feature("Ftr0", "Feature1", victim=Löten, entity=True,
+Spannung = Feature("Ftr0", "Feature0", victim=Löten, entity=True,
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 1.6, "stdev": 0.2}}})
-Strom = Feature("Ftr1", "Feature2", victim=Löten, entity=True,
+Strom = Feature("Ftr1", "Feature1", victim=Löten, entity=True,
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 3500, "stdev": 200}}})
-Widerstand = Feature("Ftr2", "Feature3", victim=Löten, entity=True,
+Widerstand = Feature("Ftr2", "Feature2", victim=Löten, entity=True,
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 450, "stdev": 50}}})
-Kraft = Feature("Ftr3", "Feature4", victim=Löten, entity=True,
+Kraft = Feature("Ftr3", "Feature3", victim=Löten, entity=True,
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 180, "stdev": 30}}})
-Einsinktiefe = Feature("Ftr4", "Feature5", victim=Löten, entity=True,
+Einsinktiefe = Feature("Ftr4", "Feature4", victim=Löten, entity=True,
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 400, "stdev": 50}}})
 
 # Kleben
-Durchflussgeschwindigkeit = Feature("Ftr5", "Feature6", victim=Kleben, entity=True,
+Durchflussgeschwindigkeit = Feature("Ftr5", "Feature5", victim=Kleben, entity=True,
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 50, "stdev": 5}}})
-Temperatur = Feature("Ftr6", "Feature7", victim=Kleben, entity=True,
+Temperatur = Feature("Ftr6", "Feature6", victim=Kleben, entity=True,
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 190, "stdev": 10}}})
-Menge = Feature("Ftr7", "Feature8", victim=Kleben, entity=True,
+Menge = Feature("Ftr7", "Feature7", victim=Kleben, entity=True,
                distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 400, "stdev": 50}}})
 
 
