@@ -141,11 +141,10 @@ class Feature(ObjectProperty):
                 from manpy.simulation.Globals import G
                 try:
                     if G.db:
-                        G.sender.row(
+                        G.buffer.row(
                             self.name,
                             columns={"time": self.env.now, "value": self.featureValue}
                         )
-                        G.sender.flush()
                 except:
                     print("Quest-DB error: Feature")
 

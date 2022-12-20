@@ -31,7 +31,7 @@ import pandas as pd
 import simpy
 import xlwt
 import numpy
-from questdb.ingress import Sender
+from questdb.ingress import Sender, Buffer
 
 
 # ===========================================================================
@@ -556,7 +556,8 @@ def runSimulation(
         G.ftr_st.append((f.id, f.victim.id))
 
     # connect to QuestDB
-    with Sender(host='localhost', port=9009) as G.sender:
+    with Sender(host='localhost', port=9009) as sender:
+        G.buffer = Buffer()
         # run the replications
         for i in range(G.numberOfReplications):
             G.env = env or simpy.Environment()
@@ -610,7 +611,7 @@ def runSimulation(
             # carry on the post processing operations for every object in the topology
             for object in G.ObjList + G.ObjectResourceList:
                 object.postProcessing()
-        G.sender.flush()
+        sender.flush(G.buffer)
 
 def ExcelPrinter(df, filename):
     number_sheets = df.shape[0] // 65535 + 1
