@@ -22,7 +22,7 @@ Frame.capacity = 1
 S0 = Source("S0", "Source", interArrivalTime={"Fixed": {"mean": 0.4}}, entity="manpy.Part", capacity=1)
 S1 = Source("S1", "Source", interArrivalTime={"Fixed": {"mean": 0.4}}, entity="manpy.Frame", capacity=1)
 Löten = Machine("M0", "Löten", processingTime={"Normal": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}})
-Kleben = Machine("M1", "Kleben", processingTime={"Fixed": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}})
+Kleben = Machine("M1", "Kleben", processingTime={"Fixed": {"mean": 0.8}})
 A = Assembly("A", "Assembly")
 Montage = Machine_control("M2", "Montage", processingTime={"Fixed": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}}, control=True)
 E = Exit("E", "Exit")
@@ -69,7 +69,7 @@ def main(test=0):
     maxSimTime = 200
     objectList = [S0, S1, Löten, Kleben, A, Montage, E, Spannung, Strom, Widerstand, Kraft, Einsinktiefe, Durchflussgeschwindigkeit, Temperatur, Menge, Druck]
 
-    runSimulation(objectList, maxSimTime, trace=True)
+    runSimulation(objectList, maxSimTime)
 
     if test:
         result = {}
@@ -79,6 +79,9 @@ def main(test=0):
 
     df = getEntityData([E], discards=[Montage])
     df.to_csv("Merging.csv", index=False, encoding="utf8")
+
+    df = getEntityData([Montage], time=True)
+    df.to_csv("Merging_Test.csv", index=False, encoding="utf8")
 
     print("""
             Ausschuss:          {}

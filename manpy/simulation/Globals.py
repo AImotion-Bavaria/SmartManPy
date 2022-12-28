@@ -534,6 +534,7 @@ def runSimulation(
     G.trace_list = []
     G.ftr_st = []   # list of (feature, corresponding station)
     G.db = db
+    G.objectList = objectList
 
     from .CoreObject import CoreObject
     from .ObjectInterruption import ObjectInterruption
@@ -553,11 +554,69 @@ def runSimulation(
 
     # set ftr_st
     for f in G.FeatureList:
-        G.ftr_st.append((f.id, f.victim.id))
+        if f.victim == None:
+            G.ftr_st.append((f.id, None))
+        else:
+            G.ftr_st.append((f.id, f.victim.id))
 
     # connect to QuestDB
-    with Sender(host='localhost', port=9009) as sender:
-        G.buffer = Buffer()
+    if G.db:
+        with Sender(host='localhost', port=9009) as G.sender:
+            # run the replications
+            for i in range(G.numberOfReplications):
+                G.env = env or simpy.Environment()
+                # this is where all the simulation object 'live'
+
+                G.EntityList = []
+                for object in objectList:
+                    if issubclass(object.__class__, Entity):
+                        G.EntityList.append(object)
+
+                # initialize all the objects
+                for object in (
+                    G.ObjList + G.ObjectInterruptionList + G.ObjectResourceList + G.EntityList + G.ObjectPropertyList
+                ):
+                    object.initialize()
+
+                # activate all the objects
+                for object in G.ObjectInterruptionList:
+                    G.env.process(object.run())
+
+                for object in G.ObjectPropertyList:
+                    G.env.process(object.run())
+
+                # activate all the objects
+                for object in G.ObjList:
+                    G.env.process(object.run())
+
+                # set the WIP
+                setWIP(G.EntityList)
+
+                G.env.run(until=G.maxSimTime)  # run the simulation
+
+                # identify from the exits what is the time that the last entity has ended.
+                endList = []
+                from manpy.simulation.Exit import Exit
+
+                for object in G.ObjList:
+                    if issubclass(object.__class__, Exit):
+                        endList.append(object.timeLastEntityLeft)
+
+                # identify the time of the last event
+                if G.env.now == float("inf"):
+                    G.maxSimTime = float(max(endList))
+                # do not let G.maxSimTime=0 so that there will be no crash
+                if G.maxSimTime == 0:
+                    print("simulation ran for 0 time, something may have gone wrong")
+                    import sys
+
+                    sys.exit()
+
+                # carry on the post processing operations for every object in the topology
+                for object in G.ObjList + G.ObjectResourceList:
+                    object.postProcessing()
+            G.sender.flush()
+    else:
         # run the replications
         for i in range(G.numberOfReplications):
             G.env = env or simpy.Environment()
@@ -611,7 +670,6 @@ def runSimulation(
             # carry on the post processing operations for every object in the topology
             for object in G.ObjList + G.ObjectResourceList:
                 object.postProcessing()
-        sender.flush(G.buffer)
 
 def ExcelPrinter(df, filename):
     number_sheets = df.shape[0] // 65535 + 1

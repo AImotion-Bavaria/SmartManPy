@@ -36,6 +36,13 @@ class SimulationExamples(TestCase):
     correct, you could commit, your new dumps will be used as new reference.
     """
 
+    def tearDown(self):
+        from manpy.simulation.Globals import G
+
+        for o in G.objectList:
+            del o
+        del G
+
     def testTwoServers(self):
         from manpy.simulation.Examples.Old.TwoServers import main
 
@@ -370,10 +377,10 @@ class SimulationExamples(TestCase):
         result = main(test=1)
 
         for idx in range(len(result["Spannung"])):
-            self.assertEqual(result["Strom"][idx], 1000*result["Spannung"][idx] + 1900,
-                             "Strom should be: {}\nIt instead is: {}".format(result["Strom"][idx], 1000*result["Spannung"][idx] + 1900))
-            self.assertEqual(result["Widerstand"][idx], (result["Spannung"][idx]/result["Strom"][idx]*1000000),
-                             "Widerstand should be: {}\nIt instead is: {}".format(result["Widerstand"][idx], (result["Spannung"][idx]/result["Strom"][idx]*1000000)))
+            self.assertEqual(1000*result["Spannung"][idx] + 1900, result["Strom"][idx],
+                             "Strom should be: {}\nIt instead is: {}".format(1000*result["Spannung"][idx] + 1900, result["Strom"][idx], idx,result["Spannung"][idx]))
+            self.assertEqual((result["Spannung"][idx]/result["Strom"][idx]*1000000), result["Widerstand"][idx],
+                             "Widerstand should be: {}\nIt instead is: {}".format((result["Spannung"][idx]/result["Strom"][idx]*1000000), result["Widerstand"][idx]))
 
     def testMerging(self):
         from manpy.simulation.Examples.Merging import main

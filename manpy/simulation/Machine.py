@@ -234,6 +234,8 @@ class Machine(CoreObject):
         self.preemptQueue = self.env.event()
         # signal used for informing objectInterruption objects that the current entity processed has finished processing
         self.endedLastProcessing = self.env.event()
+        # signal used for waiting for ObjectProperties to end
+        self.objectPropertyEnd = self.env.event()
 
         self.expectedSignals["isRequested"] = 1
         self.expectedSignals["interruptionEnd"] = 1
@@ -947,6 +949,7 @@ class Machine(CoreObject):
             yield self.env.process(self.operation(type="Processing"))
             self.endOperationActions(type="Processing")
 
+
             # ===================================================================
             # ===================================================================
             # ===================================================================
@@ -1109,10 +1112,11 @@ class Machine(CoreObject):
 
             # send data to QuestDB
             if G.db:
-                G.buffer.row(
+                G.sender.row(
                     self.name,
                     columns={"time": self.env.now, "message": operator.id + " ended a process in " + self.objName}
                 )
+                G.sender.flush()
 
             operator.totalWorkingTime += (
                 self.env.now - operator.timeLastOperationStarted
@@ -1127,15 +1131,22 @@ class Machine(CoreObject):
             for op in self.objectProperties:
                 if op.expectedSignals["victimEndsProcessing"]:
                     self.sendSignal(receiver=op, signal=op.victimEndsProcessing)
+                    self.expectedSignals["objectPropertyEnd"] = 1
+                    yield self.objectPropertyEnd
+                    self.objectPropertyEnd = self.env.event()
+
+
+            self.entities.append(self.activeEntity)
 
             if self.control == True and self.condition() == True:
                 self.outputTrace(activeObjectQueue[0].name, activeObjectQueue[0].id, "Failed Process control")
                 # send data to QuestDB
                 if G.db:
-                    G.buffer.row(
+                    G.sender.row(
                         self.name,
                         columns={"time": self.env.now, "message": activeObjectQueue[0].id + " failed Process control"}
                     )
+                    G.sender.flush()
                 self.activeEntity.features[-1] = "Fail"
                 self.removeEntity(self.activeEntity)
                 self.discards.append(self.activeEntity)
@@ -1167,12 +1178,13 @@ class Machine(CoreObject):
                     self.outputTrace(activeObjectQueue[0].name, activeObjectQueue[0].id, "Succeeded Process control")
                     # send data to QuestDB
                     if G.db:
-                        G.buffer.row(
+                        G.sender.row(
                             self.name,
                             columns={"time": self.env.now, "message": activeObjectQueue[0].id + " succeeded Process control"}
                         )
+                        G.sender.flush()
                     self.activeEntity.features[-1] = "Success"
-                self.entities.append(self.activeEntity)
+
                 # blocking starts
                 self.isBlocked = True
                 self.timeLastBlockageStarted = self.env.now
@@ -1186,10 +1198,11 @@ class Machine(CoreObject):
                     )
                     # send Data to QuestDB
                     if G.db:
-                        G.buffer.row(
+                        G.sender.row(
                             self.name,
                             columns={"time": self.env.now, "message": activeObjectQueue[0].id + " finished processing"}
                         )
+                        G.sender.flush()
                 except IndexError:
                     pass
                 from .Globals import G
@@ -1227,6 +1240,7 @@ class Machine(CoreObject):
                     # set timeLastShiftEnded attribute so that if it is overtime working it is not counted as off-shift time
                     if self.interruptedBy == "ShiftScheduler":
                         self.timeLastShiftEnded = self.env.now
+
 
     # =======================================================================
     # actions to be carried out when the processing of an Entity ends
@@ -1267,10 +1281,11 @@ class Machine(CoreObject):
             )
             # send Data to QuestDB
             if G.db:
-                G.buffer.row(
+                G.sender.row(
                     self.name,
                     columns={"time": self.env.now, "message": "Interrupted"}
                 )
+                G.sender.flush()
             # recalculate the processing time left tinM
             if self.timeLastOperationStarted >= 0:
                 self.tinM = round(
@@ -1338,10 +1353,11 @@ class Machine(CoreObject):
                 )
                 # send Data to QuestDB
                 if G.db:
-                    G.buffer.row(
+                    G.sender.row(
                         self.name,
                         columns={"time": self.env.now, "message": activeObjectQueue[0].id + " passivated in " + self.objName + " for " + str(self.env.now - self.breakTime)}
                     )
+                    G.sender.flush()
         # when a machine returns from failure while trying to deliver an entity
         else:
             # calculate the time the Machine was down while trying to dispose the current Entity,
@@ -1585,11 +1601,12 @@ class Machine(CoreObject):
             self.outputTrace(operator.name, operator.id, "Left " + str(self.id))
             # send Data to QuestDB
             if G.db:
-                G.buffer.row(
+                G.sender.row(
                     self.name,
                     columns={"time": self.env.now,
                              "message": operator.id + " left " + str(self.id)}
                 )
+                G.sender.flush()
         # XXX in case of skilled operators which stay at the same station should that change
         elif not operator.operatorDedicatedTo == self:
             operator.unAssign()  # set the flag operatorAssignedTo to None
@@ -1597,11 +1614,12 @@ class Machine(CoreObject):
             self.outputTrace(operator.name, operator.id, "Left " + str(self.id))
             # send Data to QuestDB
             if G.db:
-                G.buffer.row(
+                G.sender.row(
                     self.name,
                     columns={"time": self.env.now,
                              "message": operator.id + " left " + str(self.id)}
                 )
+                G.sender.flush()
             # if the Router is expecting for signal send it
             from .Globals import G
             from .SkilledOperatorRouter import SkilledRouter

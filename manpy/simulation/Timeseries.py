@@ -135,85 +135,88 @@ class Timeseries(ObjectProperty):
                         self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
                         value = self.rngFeature.generateNumber(start_time=self.start_time)
 
-                        if self.random_walk == True:
-                            self.featureValue += value
-                        else:
-                            self.featureValue = value
-
-                        # check no_negative
-                        if self.no_negative == True:
-                            if self.featureValue < 0:
-                                self.featureValue = 0
-
-                        self.featureHistory.append(self.featureValue)
-
-                        # send data to QuestDB
-                        # TODO: make it work with floats
-                        self.featureValue = int(self.featureValue)
-                        try:
-                            if G.db:
-                                G.sender.row(
-                                    self.name,
-                                    columns={"time": self.env.now, "value": self.featureValue}
-                                )
-                                G.sender.flush()
-                        except:
-                            print("Quest-DB error: dependent TS")
-
-                        # check contribution
-                        if self.contribute != None:
-                            for c in self.contribute:
-                                if c.expectedSignals["contribution"]:
-                                    self.sendSignal(receiver=c, signal=c.contribution)
-
-                        # add Feature value and time to Entity
-                        self.victim.Res.users[0].set_feature(self.featureValue, self.env.now,
-                                                             (self.id, self.victim.id))
-                        self.outputTrace(self.victim.Res.users[0].name, self.victim.Res.users[0].id,
-                                         str(self.featureValue))
-
-
                     else:
                         x = self.distribution["Interval"][0] + (self.stepsize * steps)
-                        self.distribution["Feature"][list(self.distribution["Feature"].keys())[0]]["mean"] = eval(self.distribution["Function"])
+                        self.distribution["Feature"][list(self.distribution["Feature"].keys())[0]]["mean"] = eval(
+                            self.distribution["Function"])
                         self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
                         value = self.rngFeature.generateNumber(start_time=self.start_time)
 
+                    if self.random_walk == True:
+                        self.featureValue += value
+                    else:
+                        self.featureValue = value
 
-                        if self.random_walk == True:
-                            self.featureValue += value
-                        else:
-                            self.featureValue = value
+                    # check no_negative
+                    if self.no_negative == True:
+                        if self.featureValue < 0:
+                            self.featureValue = 0
 
-                        # check no_negative
-                        if self.no_negative == True:
-                            if self.featureValue < 0:
-                                self.featureValue = 0
+                    self.featureHistory.append(self.featureValue)
 
-                        self.featureHistory.append(self.featureValue)
+                    # send data to QuestDB
+                    # TODO: make it work with floats
+                    self.featureValue = int(self.featureValue)
+                    # try:
+                    if G.db:
+                        G.sender.row(
+                            self.name,
+                            columns={"time": self.env.now, "value": self.featureValue}
+                        )
+                        G.sender.flush()
+                    # except:
+                    #     print("Quest-DB error: TimeSeries")
 
-                        # send data to QuestDB
-                        try:
-                            if G.db:
-                                G.sender.row(
-                                    self.name,
-                                    columns={"time": self.env.now, "value": self.featureValue}
-                                )
-                                G.sender.flush()
-                        except:
-                            print("Quest-DB error: non-dependent TS")
+                    # check contribution
+                    if self.contribute != None:
+                        for c in self.contribute:
+                            if c.expectedSignals["contribution"]:
+                                self.sendSignal(receiver=c, signal=c.contribution)
 
-                        # check contribution
-                        if self.contribute != None:
-                            for c in self.contribute:
-                                if c.expectedSignals["contribution"]:
-                                    self.sendSignal(receiver=c, signal=c.contribution)
+                    # add Feature value and time to Entity
+                    self.victim.Res.users[0].set_feature(self.featureValue, self.env.now,
+                                                         (self.id, self.victim.id))
+                    self.outputTrace(self.victim.Res.users[0].name, self.victim.Res.users[0].id,
+                                     str(self.featureValue))
 
-                        # add Feature value and time to Entity
-                        self.victim.Res.users[0].set_feature(self.featureValue, self.env.now,
-                                                             (self.id, self.victim.id))
-                        self.outputTrace(self.victim.Res.users[0].name, self.victim.Res.users[0].id,
-                                         str(self.featureValue))
+
+
+
+
+                        # if self.random_walk == True:
+                        #     self.featureValue += value
+                        # else:
+                        #     self.featureValue = value
+                        #
+                        # # check no_negative
+                        # if self.no_negative == True:
+                        #     if self.featureValue < 0:
+                        #         self.featureValue = 0
+                        #
+                        # self.featureHistory.append(self.featureValue)
+                        #
+                        # # send data to QuestDB
+                        # try:
+                        #     if G.db:
+                        #         G.sender.row(
+                        #             self.name,
+                        #             columns={"time": self.env.now, "value": self.featureValue}
+                        #         )
+                        #         G.sender.flush()
+                        # except:
+                        #     print("Quest-DB error: non-dependent TS")
+                        #
+                        # # check contribution
+                        # if self.contribute != None:
+                        #     for c in self.contribute:
+                        #         if c.expectedSignals["contribution"]:
+                        #             self.sendSignal(receiver=c, signal=c.contribution)
+                        #
+                        # # add Feature value and time to Entity
+                        # self.victim.Res.users[0].set_feature(self.featureValue, self.env.now,
+                        #                                      (self.id, self.victim.id))
+                        # self.outputTrace(self.victim.Res.users[0].name, self.victim.Res.users[0].id,
+                        #                  str(self.featureValue))
 
 
 
