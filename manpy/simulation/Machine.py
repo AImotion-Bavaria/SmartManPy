@@ -61,7 +61,7 @@ class Machine(CoreObject):
         repairman="None",
         operatorPool="None",
         operationType="None",
-        setupTime=0,
+        setupTime=None,
         loadTime=None,
         preemption={},
         canDeliverOnInterruption=False,
@@ -76,9 +76,7 @@ class Machine(CoreObject):
 
         processingTime = self.getOperationTime(time=processingTime)
 
-        self.setupTime = setupTime
         setupTime = self.getOperationTime(time=setupTime)
-
 
         loadTime = self.getOperationTime(time=loadTime)
 
@@ -508,7 +506,6 @@ class Machine(CoreObject):
             if self.name == "Machine1":
                 print(self.env.now)
             self.totalOperationTime = self.totalSetupTime
-            yield self.env.timeout(self.setupTime)
         elif type == "Processing":
             if self.name == "Machine1":
                 print(self.env.now)
@@ -583,7 +580,6 @@ class Machine(CoreObject):
                 )
                 # if a failure occurs while processing the machine is interrupted.
                 if self.interruptionStart in receivedEvent:
-                    # print(f"{self.name} received interruptionStart")
                     transmitter, eventTime = self.interruptionStart.value
                     assert (
                         eventTime == self.env.now
@@ -607,7 +603,6 @@ class Machine(CoreObject):
                         ), "the interruptionEnd was received later than anticipated"
                         self.interruptionEnd = self.env.event()
 
-                        self.postInterruptionActions()  # execute interruption actions
                         # check if the machine is active and break
                         if self.checkIfActive():
                             if self.shouldYield(
@@ -621,7 +616,7 @@ class Machine(CoreObject):
                                     - self.timeWaitForOperatorStarted
                                 )
                             break
-
+                        self.postInterruptionActions()  # execute interruption actions
                         # ===========================================================
                         # # request a resource after the repair
                         # ===========================================================
@@ -839,6 +834,7 @@ class Machine(CoreObject):
                 self.timeLoadEnded = self.env.now
                 self.loadTimeCurrentEntity = self.timeLoadEnded - self.timeLoadStarted
                 self.totalLoadTime += self.loadTimeCurrentEntity
+
             # ===================================================================
             # ===================================================================
             # ===================================================================
@@ -863,7 +859,6 @@ class Machine(CoreObject):
                 not self.isProcessingInitialWIP
             ):  # if we are in the state of having initial wip no need to take an Entity
                 self.currentEntity = self.getEntity()
-
             else:
                 # find out if the initialWIP requires manual operations (manual/setup)
                 self.checkInitialOperationTypes()
@@ -1087,7 +1082,7 @@ class Machine(CoreObject):
         from .Globals import G
 
         activeObjectQueue = self.Res.users
-        self.activeEntity = activeObjectQueue[0]
+        activeEntity = activeObjectQueue[0]
         # set isProcessing to False
         self.isProcessing = False
         # the machine is currently performing no operation
@@ -1101,9 +1096,9 @@ class Machine(CoreObject):
         elif type == "Setup":
             self.totalSetupTime = self.totalOperationTime
             # if there are task_ids defined for each step
-            if self.activeEntity.schedule[-1].get("task_id", None):
+            if activeEntity.schedule[-1].get("task_id", None):
                 # if the setup is finished then record an exit time for the setup
-                self.activeEntity.schedule[-1]["exitTime"] = self.env.now
+                activeEntity.schedule[-1]["exitTime"] = self.env.now
         # reseting variables used by operation() process
         self.totalOperationTime = None
         self.timeLastOperationStarted = 0
@@ -1142,7 +1137,7 @@ class Machine(CoreObject):
                     # self.objectPropertyEnd = self.env.event()
 
 
-            self.entities.append(self.activeEntity)
+            self.entities.append(activeEntity)
 
             if self.control == True and self.condition() == True:
                 self.outputTrace(activeObjectQueue[0].name, activeObjectQueue[0].id, "Failed Process control")
@@ -1153,9 +1148,9 @@ class Machine(CoreObject):
                         columns={"time": self.env.now, "message": activeObjectQueue[0].id + " failed Process control"}
                     )
                     G.sender.flush()
-                self.activeEntity.features[-1] = "Fail"
-                self.removeEntity(self.activeEntity)
-                self.discards.append(self.activeEntity)
+                activeEntity.features[-1] = "Fail"
+                self.removeEntity(activeEntity)
+                self.discards.append(activeEntity)
                 # blocking starts
                 self.isBlocked = True
                 self.timeLastBlockageStarted = self.env.now
@@ -1189,7 +1184,7 @@ class Machine(CoreObject):
                             columns={"time": self.env.now, "message": activeObjectQueue[0].id + " succeeded Process control"}
                         )
                         G.sender.flush()
-                    self.activeEntity.features[-1] = "Success"
+                    activeEntity.features[-1] = "Success"
 
                 # blocking starts
                 self.isBlocked = True
