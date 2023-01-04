@@ -505,9 +505,13 @@ class Machine(CoreObject):
         ), "the operation type provided is not yet defined"
         # identify the method to get the operation time and initialise the totalOperationTime
         if type == "Setup":
+            if self.name == "Machine1":
+                print(self.env.now)
             self.totalOperationTime = self.totalSetupTime
             yield self.env.timeout(self.setupTime)
         elif type == "Processing":
+            if self.name == "Machine1":
+                print(self.env.now)
             self.totalOperationTime = self.totalWorkingTime
             # if there are task_ids defined for each step
             if self.currentEntity.schedule[-1].get("task_id", None):
@@ -1089,6 +1093,8 @@ class Machine(CoreObject):
         # the machine is currently performing no operation
         self.currentlyPerforming = None
         # add working time
+        if self.name == "Machine1":
+            print(self.env.now)
         self.totalOperationTime += self.env.now - self.timeLastOperationStarted
         if type == "Processing":
             self.totalWorkingTime = self.totalOperationTime
@@ -1131,9 +1137,9 @@ class Machine(CoreObject):
             for op in self.objectProperties:
                 if op.expectedSignals["victimEndsProcessing"]:
                     self.sendSignal(receiver=op, signal=op.victimEndsProcessing)
-                    self.expectedSignals["objectPropertyEnd"] = 1
-                    yield self.objectPropertyEnd
-                    self.objectPropertyEnd = self.env.event()
+                    # self.expectedSignals["objectPropertyEnd"] = 1
+                    # yield self.objectPropertyEnd
+                    # self.objectPropertyEnd = self.env.event()
 
 
             self.entities.append(self.activeEntity)
@@ -1260,6 +1266,8 @@ class Machine(CoreObject):
             self.sendSignal(receiver=op, signal=op.victimIsInterrupted)
 
         if self.isProcessing and not self.shouldPreempt:
+            if self.name == "Machine1":
+                print(self.env.now)
             self.totalOperationTime += self.env.now - self.timeLastOperationStarted
             if type == "Processing":
                 self.totalWorkingTime = self.totalOperationTime
