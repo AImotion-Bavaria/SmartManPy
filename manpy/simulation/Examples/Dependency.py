@@ -79,8 +79,6 @@ def main(test=0):
             Blockiert für:      {:.2f}
             Simulationszeit:    {}
             Laufzeit:           {:.2f}
-
-            Accuracy SGDClassifier: {:.2f}
             """.format(len(Kleben.discards), E1.numOfExits, Kleben.totalBlockageTime, maxSimTime, time.time() - start))
 
 if __name__ == "__main__":

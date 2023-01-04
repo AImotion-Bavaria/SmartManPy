@@ -503,12 +503,8 @@ class Machine(CoreObject):
         ), "the operation type provided is not yet defined"
         # identify the method to get the operation time and initialise the totalOperationTime
         if type == "Setup":
-            if self.name == "Machine1":
-                print(self.env.now)
             self.totalOperationTime = self.totalSetupTime
         elif type == "Processing":
-            if self.name == "Machine1":
-                print(self.env.now)
             self.totalOperationTime = self.totalWorkingTime
             # if there are task_ids defined for each step
             if self.currentEntity.schedule[-1].get("task_id", None):
@@ -897,7 +893,7 @@ class Machine(CoreObject):
             # ===================================================================
             # ===================================================================
             # if the distribution is Fixed and the mean is zero then yield not
-            if not (self.stpRng.mean == 0 and self.stpRng.distributionType == "Fixed"):
+            if not (eval(self.stpRng.mean) == 0 and self.stpRng.distributionType == "Fixed"):
                 yield self.env.process(self.operation(type="Setup"))
                 self.endOperationActions(type="Setup")
 
@@ -1082,23 +1078,21 @@ class Machine(CoreObject):
         from .Globals import G
 
         activeObjectQueue = self.Res.users
-        activeEntity = activeObjectQueue[0]
+        self.activeEntity = activeObjectQueue[0]
         # set isProcessing to False
         self.isProcessing = False
         # the machine is currently performing no operation
         self.currentlyPerforming = None
         # add working time
-        if self.name == "Machine1":
-            print(self.env.now)
         self.totalOperationTime += self.env.now - self.timeLastOperationStarted
         if type == "Processing":
             self.totalWorkingTime = self.totalOperationTime
         elif type == "Setup":
             self.totalSetupTime = self.totalOperationTime
             # if there are task_ids defined for each step
-            if activeEntity.schedule[-1].get("task_id", None):
+            if self.activeEntity.schedule[-1].get("task_id", None):
                 # if the setup is finished then record an exit time for the setup
-                activeEntity.schedule[-1]["exitTime"] = self.env.now
+                self.activeEntity.schedule[-1]["exitTime"] = self.env.now
         # reseting variables used by operation() process
         self.totalOperationTime = None
         self.timeLastOperationStarted = 0
@@ -1137,7 +1131,7 @@ class Machine(CoreObject):
                     # self.objectPropertyEnd = self.env.event()
 
 
-            self.entities.append(activeEntity)
+            self.entities.append(self.activeEntity)
 
             if self.control == True and self.condition() == True:
                 self.outputTrace(activeObjectQueue[0].name, activeObjectQueue[0].id, "Failed Process control")
@@ -1148,9 +1142,9 @@ class Machine(CoreObject):
                         columns={"time": self.env.now, "message": activeObjectQueue[0].id + " failed Process control"}
                     )
                     G.sender.flush()
-                activeEntity.features[-1] = "Fail"
-                self.removeEntity(activeEntity)
-                self.discards.append(activeEntity)
+                self.activeEntity.features[-1] = "Fail"
+                self.removeEntity(self.activeEntity)
+                self.discards.append(self.activeEntity)
                 # blocking starts
                 self.isBlocked = True
                 self.timeLastBlockageStarted = self.env.now
@@ -1184,7 +1178,7 @@ class Machine(CoreObject):
                             columns={"time": self.env.now, "message": activeObjectQueue[0].id + " succeeded Process control"}
                         )
                         G.sender.flush()
-                    activeEntity.features[-1] = "Success"
+                    self.activeEntity.features[-1] = "Success"
 
                 # blocking starts
                 self.isBlocked = True
@@ -1258,11 +1252,10 @@ class Machine(CoreObject):
                         self.sendSignal(receiver=oi, signal=oi.victimIsInterrupted)
 
         for op in self.objectProperties:
-            self.sendSignal(receiver=op, signal=op.victimIsInterrupted)
+            if op.expectedSignals["victimIsInterrupted"]:
+                self.sendSignal(receiver=op, signal=op.victimIsInterrupted)
 
         if self.isProcessing and not self.shouldPreempt:
-            if self.name == "Machine1":
-                print(self.env.now)
             self.totalOperationTime += self.env.now - self.timeLastOperationStarted
             if type == "Processing":
                 self.totalWorkingTime = self.totalOperationTime
@@ -1321,7 +1314,6 @@ class Machine(CoreObject):
     # actions to be carried out when the processing of an Entity ends
     # =======================================================================
     def postInterruptionActions(self):
-        # print(f"Post Interruption in {self.name}")
         for oi in self.objectInterruptions:
             if oi.type == "Failure":
                 if oi.deteriorationType == "working":

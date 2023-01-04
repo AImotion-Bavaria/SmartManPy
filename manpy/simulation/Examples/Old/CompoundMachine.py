@@ -1,5 +1,5 @@
 from manpy.simulation.imports import Machine, Exit, Queue, Globals, Part, ExcelHandler
-from manpy.simulation.imports import G
+from manpy.simulation.Globals import G
 from manpy.simulation.Globals import runSimulation
 
 # models the behaviour of the buffers in the compound machine

@@ -335,7 +335,7 @@ class SimulationExamples(TestCase):
         from manpy.simulation.Examples.Old.CompoundMachine import main
 
         result = main(test=1)
-        self.assertTrue(5.8 < result < 5.92)
+        self.assertTrue(5.8 < result < 5.92, "\nresult:".format(result))
 
     def testJobShop2ScenarioAnalysis(self):
         from manpy.simulation.Examples.Old.JobShop2ScenarioAnalysis import main
