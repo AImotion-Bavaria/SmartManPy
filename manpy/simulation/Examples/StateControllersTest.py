@@ -76,13 +76,13 @@ def demonstrate_RandomDefectStateController():
     mean_change_per_step = 0.02
 
     ok_controller = ContinuosNormalDistribution(wear_per_step=0.7,
-                                             break_point=None,
-                                             mean_change_per_step=mean_change_per_step,
-                                             initial_mean=2.0,
-                                             std=2.0,
-                                             defect_mean=7.0,
-                                             defect_std=3.0
-                                             )
+                                                break_point=None,
+                                                mean_change_per_step=mean_change_per_step,
+                                                initial_mean=2.0,
+                                                std=2.0,
+                                                defect_mean=7.0,
+                                                defect_std=3.0
+                                                )
 
     defect_controller = ContinuosNormalDistribution(wear_per_step=0.7,
                                                     mean_change_per_step=mean_change_per_step,
