@@ -1,5 +1,5 @@
-from manpy.simulation.imports import Machine, Exit, Queue, Globals, Part, ExcelHandler
-from manpy.simulation.Globals import G
+from manpy.simulation.imports import Machine, Exit, Queue, Globals, Part
+from manpy.simulation.Globals import G, ExcelPrinter
 from manpy.simulation.Globals import runSimulation
 
 # models the behaviour of the buffers in the compound machine
@@ -59,13 +59,13 @@ class InternalProcess(Machine):
 
 QB = Queue("QB", "QueueBefore", capacity=float("inf"))
 Q1 = InternalQueue("Q1", "Q1", capacity=1)
-M1 = InternalProcess("M1", "M1", processingTime={"Exp": {"mean": 1}})
+M1 = InternalProcess("M1", "M1", processingTime={"Fixed": {"mean": 0.6}})
 Q2 = InternalQueue("Q2", "Q2", capacity=1)
-M2 = InternalProcess("M2", "M2", processingTime={"Exp": {"mean": 1}})
+M2 = InternalProcess("M2", "M2", processingTime={"Fixed": {"mean": 1.8}})
 Q3 = InternalQueue("Q3", "Q3", capacity=1)
-M3 = InternalProcess("M3", "M3", processingTime={"Exp": {"mean": 1}})
+M3 = InternalProcess("M3", "M3", processingTime={"Fixed": {"mean": 2.5}})
 QA = Queue("QA", "QueueAfter", capacity=float("inf"))
-MA = Machine("MA", "MachineAfter", processingTime={"Exp": {"mean": 1}})
+MA = Machine("MA", "MachineAfter", processingTime={"Fixed": {"mean": 0.5}})
 E = Exit("E", "Exit")
 
 QB.defineRouting(successorList=[Q1, Q2, Q3])
@@ -99,7 +99,8 @@ def main(test=0):
     )
 
     # output the trace of the simulation
-    ExcelHandler.outputTrace("CompoundMachine")
+    df = G.get_simulation_results_dataframe().drop(columns=["entity_name", "station_name"])
+    ExcelPrinter(df, "CompoundMachine")
     if test:
         return G.maxSimTime
 
