@@ -114,8 +114,6 @@ class Feature(ObjectProperty):
                     self.distribution["Feature"][list(self.distribution["Feature"].keys())[0]]["mean"] = eval(self.dependent["Function"])
                     self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
 
-                if self.name == "Feature5":
-                    yay = 0
                 value = self.rngFeature.generateNumber(start_time=self.start_time)
                 # print("Value")
 

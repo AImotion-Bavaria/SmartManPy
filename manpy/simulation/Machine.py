@@ -944,6 +944,124 @@ class Machine(CoreObject):
             yield self.env.process(self.operation(type="Processing"))
             self.endOperationActions(type="Processing")
 
+            # wait for the Feature to commence
+            if self.objectProperties:
+                self.expectedSignals["objectPropertyEnd"] = 1
+                yield self.objectPropertyEnd
+                self.objectPropertyEnd = self.env.event()
+
+            # Control and end of processing
+            activeObjectQueue = self.Res.users
+            if self.control == True and self.condition() == True:
+                self.outputTrace(activeObjectQueue[0].name, activeObjectQueue[0].id, "Failed Process control")
+                # send data to QuestDB
+                if G.db:
+                    G.sender.row(
+                        self.name,
+                        columns={"time": self.env.now, "message": activeObjectQueue[0].id + " failed Process control"}
+                    )
+                    G.sender.flush()
+                self.activeEntity.features[-1] = "Fail"
+                self.removeEntity(self.activeEntity)
+                self.discards.append(self.activeEntity)
+
+                # blocking starts
+                self.isBlocked = True
+                self.timeLastBlockageStarted = self.env.now
+                from .Globals import G
+                # update the variables keeping track of Entity related attributes of the machine
+                self.timeLastEntityEnded = self.env.now
+
+                self.nameLastEntityEnded = (
+                    self.currentEntity.name
+                )  # this holds the name of the last entity that ended processing in Machine
+                self.completedJobs += 1  # Machine completed one more Job# it will be used
+                self.isProcessingInitialWIP = False
+                # if there is a failure that depends on the working time of the Machine
+
+                if self.isWorkingOnTheLast:
+                    # for the scheduled Object interruptions
+                    # XXX add the SkilledOperatorRouter to this list and perform the signalling only once
+                    for interruption in G.ObjectInterruptionList:
+                        # if the objectInterruption is waiting for a a signal
+                        if (
+                            interruption.victim == self
+                            and interruption.expectedSignals["endedLastProcessing"]
+                        ):
+                            self.sendSignal(receiver=self, signal=self.endedLastProcessing)
+                            interruption.waitingSignal = False
+                            self.isWorkingOnTheLast = False
+                    # set timeLastShiftEnded attribute so that if it is overtime working it is not counted as off-shift time
+                    if self.interruptedBy == "ShiftScheduler":
+                        self.timeLastShiftEnded = self.env.now
+            else:
+                if self.control == True:
+                    self.outputTrace(activeObjectQueue[0].name, activeObjectQueue[0].id, "Succeeded Process control")
+                    # send data to QuestDB
+                    if G.db:
+                        G.sender.row(
+                            self.name,
+                            columns={"time": self.env.now, "message": activeObjectQueue[0].id + " succeeded Process control"}
+                        )
+                        G.sender.flush()
+                    self.activeEntity.features[-1] = "Success"
+
+                # blocking starts
+                self.isBlocked = True
+                self.timeLastBlockageStarted = self.env.now
+                self.printTrace(self.getActiveObjectQueue()[0].name, processEnd=self.objName)
+                # output to trace that the processing in the Machine self.objName ended
+                try:
+                    self.outputTrace(
+                        activeObjectQueue[0].name,
+                        activeObjectQueue[0].id,
+                        "Finished processing on " + str(self.id),
+                    )
+                    # send Data to QuestDB
+                    if G.db:
+                        G.sender.row(
+                            self.name,
+                            columns={"time": self.env.now, "message": activeObjectQueue[0].id + " finished processing"}
+                        )
+                        G.sender.flush()
+                except IndexError:
+                    pass
+                from .Globals import G
+
+                if G.RouterList:
+                    # the just processed entity is added to the list of entities
+                    # pending for the next processing
+                    G.pendingEntities.append(activeObjectQueue[0])
+                # set the variable that flags an Entity is ready to be disposed
+                self.waitToDispose = True
+                # update the variables keeping track of Entity related attributes of the machine
+                self.timeLastEntityEnded = (
+                    self.env.now
+                )  # this holds the time that the last entity ended processing in Machine
+                self.nameLastEntityEnded = (
+                    self.currentEntity.name
+                )  # this holds the name of the last entity that ended processing in Machine
+                self.completedJobs += 1  # Machine completed one more Job# it will be used
+                self.isProcessingInitialWIP = False
+                # if there is a failure that depends on the working time of the Machine
+
+                # in case Machine just performed the last work before the scheduled maintenance signal the corresponding object
+                if self.isWorkingOnTheLast:
+                    # for the scheduled Object interruptions
+                    # XXX add the SkilledOperatorRouter to this list and perform the signalling only once
+                    for interruption in G.ObjectInterruptionList:
+                        # if the objectInterruption is waiting for a a signal
+                        if (
+                            interruption.victim == self
+                            and interruption.expectedSignals["endedLastProcessing"]
+                        ):
+                            self.sendSignal(receiver=self, signal=self.endedLastProcessing)
+                            interruption.waitingSignal = False
+                            self.isWorkingOnTheLast = False
+                    # set timeLastShiftEnded attribute so that if it is overtime working it is not counted as off-shift time
+                    if self.interruptedBy == "ShiftScheduler":
+                        self.timeLastShiftEnded = self.env.now
+
 
             # ===================================================================
             # ===================================================================
@@ -1126,115 +1244,8 @@ class Machine(CoreObject):
             for op in self.objectProperties:
                 if op.expectedSignals["victimEndsProcessing"]:
                     self.sendSignal(receiver=op, signal=op.victimEndsProcessing)
-                    # self.expectedSignals["objectPropertyEnd"] = 1
-                    # yield self.objectPropertyEnd
-                    # self.objectPropertyEnd = self.env.event()
-
 
             self.entities.append(self.activeEntity)
-
-            if self.control == True and self.condition() == True:
-                self.outputTrace(activeObjectQueue[0].name, activeObjectQueue[0].id, "Failed Process control")
-                # send data to QuestDB
-                if G.db:
-                    G.sender.row(
-                        self.name,
-                        columns={"time": self.env.now, "message": activeObjectQueue[0].id + " failed Process control"}
-                    )
-                    G.sender.flush()
-                self.activeEntity.features[-1] = "Fail"
-                self.removeEntity(self.activeEntity)
-                self.discards.append(self.activeEntity)
-                # blocking starts
-                self.isBlocked = True
-                self.timeLastBlockageStarted = self.env.now
-                from .Globals import G
-                # update the variables keeping track of Entity related attributes of the machine
-                self.timeLastEntityEnded = self.env.now
-
-
-                if self.isWorkingOnTheLast:
-                    # for the scheduled Object interruptions
-                    # XXX add the SkilledOperatorRouter to this list and perform the signalling only once
-                    for interruption in G.ObjectInterruptionList:
-                        # if the objectInterruption is waiting for a a signal
-                        if (
-                            interruption.victim == self
-                            and interruption.expectedSignals["endedLastProcessing"]
-                        ):
-                            self.sendSignal(receiver=self, signal=self.endedLastProcessing)
-                            interruption.waitingSignal = False
-                            self.isWorkingOnTheLast = False
-                    # set timeLastShiftEnded attribute so that if it is overtime working it is not counted as off-shift time
-                    if self.interruptedBy == "ShiftScheduler":
-                        self.timeLastShiftEnded = self.env.now
-            else:
-                if self.control == True:
-                    self.outputTrace(activeObjectQueue[0].name, activeObjectQueue[0].id, "Succeeded Process control")
-                    # send data to QuestDB
-                    if G.db:
-                        G.sender.row(
-                            self.name,
-                            columns={"time": self.env.now, "message": activeObjectQueue[0].id + " succeeded Process control"}
-                        )
-                        G.sender.flush()
-                    self.activeEntity.features[-1] = "Success"
-
-                # blocking starts
-                self.isBlocked = True
-                self.timeLastBlockageStarted = self.env.now
-                self.printTrace(self.getActiveObjectQueue()[0].name, processEnd=self.objName)
-                # output to trace that the processing in the Machine self.objName ended
-                try:
-                    self.outputTrace(
-                        activeObjectQueue[0].name,
-                        activeObjectQueue[0].id,
-                        "Finished processing on " + str(self.id),
-                    )
-                    # send Data to QuestDB
-                    if G.db:
-                        G.sender.row(
-                            self.name,
-                            columns={"time": self.env.now, "message": activeObjectQueue[0].id + " finished processing"}
-                        )
-                        G.sender.flush()
-                except IndexError:
-                    pass
-                from .Globals import G
-
-                if G.RouterList:
-                    # the just processed entity is added to the list of entities
-                    # pending for the next processing
-                    G.pendingEntities.append(activeObjectQueue[0])
-                # set the variable that flags an Entity is ready to be disposed
-                self.waitToDispose = True
-                # update the variables keeping track of Entity related attributes of the machine
-                self.timeLastEntityEnded = (
-                    self.env.now
-                )  # this holds the time that the last entity ended processing in Machine
-                self.nameLastEntityEnded = (
-                    self.currentEntity.name
-                )  # this holds the name of the last entity that ended processing in Machine
-                self.completedJobs += 1  # Machine completed one more Job# it will be used
-                self.isProcessingInitialWIP = False
-                # if there is a failure that depends on the working time of the Machine
-
-                # in case Machine just performed the last work before the scheduled maintenance signal the corresponding object
-                if self.isWorkingOnTheLast:
-                    # for the scheduled Object interruptions
-                    # XXX add the SkilledOperatorRouter to this list and perform the signalling only once
-                    for interruption in G.ObjectInterruptionList:
-                        # if the objectInterruption is waiting for a a signal
-                        if (
-                            interruption.victim == self
-                            and interruption.expectedSignals["endedLastProcessing"]
-                        ):
-                            self.sendSignal(receiver=self, signal=self.endedLastProcessing)
-                            interruption.waitingSignal = False
-                            self.isWorkingOnTheLast = False
-                    # set timeLastShiftEnded attribute so that if it is overtime working it is not counted as off-shift time
-                    if self.interruptedBy == "ShiftScheduler":
-                        self.timeLastShiftEnded = self.env.now
 
 
     # =======================================================================
