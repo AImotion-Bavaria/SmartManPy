@@ -394,3 +394,13 @@ class SimulationExamples(TestCase):
                              "\nFeatures have not been merged completeply")
         self.assertIn(None, result["FirstEntity"].features,
                       "\nFirst Entity should not contain all Features")
+
+    def testExampleTS(self):
+        from manpy.simulation.Examples.ExampleTS import main
+
+        result = main(test=1)
+
+        for t in range(3):
+            self.assertEqual(len(result.features[t]), 20,
+                             "\nDataPoints: {}".format(len(result.features[t])))
+            self.assertEqual(format(result.feature_times[t][2] - result.feature_times[t][1], ".2f"), format(result.feature_times[t][1] - result.feature_times[t][0], ".2f"))
