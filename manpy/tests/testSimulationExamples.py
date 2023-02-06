@@ -39,8 +39,10 @@ class SimulationExamples(TestCase):
     def tearDown(self):
         from manpy.simulation.Globals import G
 
-        for o in G.objectList:
-            del o
+        G.objectList = []
+        G.EntityList = []
+        G.FeatureList = []
+
         del G
 
     def testTwoServers(self):
@@ -335,7 +337,7 @@ class SimulationExamples(TestCase):
         from manpy.simulation.Examples.Old.CompoundMachine import main
 
         result = main(test=1)
-        self.assertTrue(5.8 < result < 5.92, "\nresult:".format(result))
+        self.assertTrue(5.8 < result < 5.92, "\nresult: {}".format(result))
 
     def testJobShop2ScenarioAnalysis(self):
         from manpy.simulation.Examples.Old.JobShop2ScenarioAnalysis import main

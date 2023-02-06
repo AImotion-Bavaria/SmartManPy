@@ -76,6 +76,8 @@ def main(test=0):
         result = {}
         result["Exits"] = E.entities
         result["FirstEntity"] = G.EntityList[0]
+        print(G.ftr_st)
+        print(len(G.FeatureList))
         return result
 
     df = getEntityData([E], discards=[Montage])

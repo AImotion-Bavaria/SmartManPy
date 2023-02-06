@@ -749,8 +749,6 @@ class CoreObject(ManPyObject):
             """XXX currentlyPerforming can be Setup or Processing """
             if self.currentlyPerforming:
                 if self.currentlyPerforming == "Setup":
-                    if activeObject.name == "Machine1":
-                        print("here")
                     activeObject.totalSetupTime += (
                         self.env.now - self.timeLastOperationStarted
                     )
@@ -798,8 +796,6 @@ class CoreObject(ManPyObject):
             self.totalOffShiftTime += now - self.timeLastShiftEnded
 
         # object was idle when it was not in any other state
-        if activeObject.name == "Machine1":
-            print("here")
         activeObject.totalWaitingTime = (
             MaxSimtime
             - activeObject.totalWorkingTime
