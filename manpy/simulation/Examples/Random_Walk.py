@@ -1,4 +1,4 @@
-from manpy.simulation.imports import Machine, Source, Exit, FeatureNew
+from manpy.simulation.imports import Machine, Source, Exit, Feature
 from manpy.simulation.Globals import runSimulation, G, ExcelPrinter
 
 # Objects
@@ -7,9 +7,7 @@ M1 = Machine("M1", "Machine1", processingTime={"Fixed": {"mean": 30}})
 E1 = Exit("E1", "Exit1")
 
 # ObjectInterruption
-Ftr1 = FeatureNew("Ftr1", "Feature1", random_walk=True, distribution={
-                            "Time": {"Fixed": {"mean": 1}},
-                            "Feature": {"Normal": {"mean": 0, "stdev": 5, "min": -10, "max": 10}}})
+Ftr1 = Feature("Ftr1", "Feature1", random_walk=True, distribution={"Feature": {"Normal": {"mean": 0, "stdev": 5, "min": -10, "max": 10}}})
 
 # Routing
 S.defineRouting([M1])

@@ -73,7 +73,7 @@ class Feature(ObjectProperty):
 
         while 1:
             self.expectedSignals["victimEndsProcessing"] = 1
-            self.expectedSignals["victimIsInterrupted"] = 1  # TODO maybe victimFailed?
+            self.expectedSignals["victimIsInterrupted"] = 1
 
             receivedEvent = yield self.env.any_of([
                self.victimIsInterrupted,
@@ -130,21 +130,17 @@ class Feature(ObjectProperty):
                 self.featureHistory.append(self.featureValue)
 
                 # send data to QuestDB
-                # from questdb.ingress import Sender
-                # with Sender(host='localhost', port=9009) as sender:
-                #     sender.row(
-                #         self.name,
-                #         columns={"time": self.env.now, "value": self.featureValue}
-                #     )
-                # G.sender.flush()
 
                 from manpy.simulation.Globals import G
+
                 try:
                     if G.db:
-                        G.buffer.row(
+                        self.featureValue = int(self.featureValue)
+                        G.sender.row(
                             self.name,
                             columns={"time": self.env.now, "value": self.featureValue}
                         )
+                        G.sender.flush()
                 except:
                     print("Quest-DB error: Feature")
 
@@ -168,6 +164,10 @@ class Feature(ObjectProperty):
                     self.outputTrace("--", "--", self.featureValue)
                 else:
                     self.outputTrace(self.victim.name, self.victim.id, str(self.featureValue))
+
+                if self.victim:
+                    if self.victim.expectedSignals["objectPropertyEnd"]:
+                        self.sendSignal(receiver=self.victim, signal=self.victim.objectPropertyEnd)
 
             else:
                 self.expectedSignals["victimEndsProcessing"] = 0

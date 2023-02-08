@@ -97,9 +97,12 @@ class Entity(ManPyObject):
         self.remainingProcessingTime = remainingProcessingTime
         self.remainingSetupTime = remainingSetupTime
         self.status = status
-        self.features = [None] * (len(G.ftr_st) + 1)
-        self.feature_times = [None] * len(G.ftr_st)
-
+        try:
+            self.features = [None] * (len(G.ftr_st) + 1)
+            self.feature_times = [None] * len(G.ftr_st)
+        except AttributeError:
+            self.features = []
+            self.feature_times = []
     # ===========================================================================
     # return the responsible operator for the current step, not implemented for entities
     # ===========================================================================
@@ -137,5 +140,5 @@ class Entity(ManPyObject):
         return []
 
     def set_feature(self, feature, time, indexing):
-        self.features[G.ftr_st.index(indexing)] = feature
-        self.feature_times[G.ftr_st.index(indexing)] = time
+        self.features[G.ftr_st.index(indexing)] = float(format(feature, ".2f"))
+        self.feature_times[G.ftr_st.index(indexing)] = float(format(time, ".2f"))

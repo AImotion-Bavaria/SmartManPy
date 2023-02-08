@@ -36,6 +36,15 @@ class SimulationExamples(TestCase):
     correct, you could commit, your new dumps will be used as new reference.
     """
 
+    def tearDown(self):
+        from manpy.simulation.Globals import G
+
+        G.objectList = []
+        G.EntityList = []
+        G.FeatureList = []
+
+        del G
+
     def testTwoServers(self):
         from manpy.simulation.Examples.Old.TwoServers import main
 
@@ -63,9 +72,9 @@ class SimulationExamples(TestCase):
 
         result = main(test=1)
         self.assertEqual(result["batches"], 89)
-        self.assertTrue(0.069 < result["waiting_ratio_M1"] < 0.07)
-        self.assertTrue(0.104 < result["waiting_ratio_M2"] < 0.105)
-        self.assertTrue(93.81 < result["waiting_ratio_M3"] < 93.82)
+        self.assertTrue(0.069 < result["waiting_ratio_M1"] < 0.07, "\nwaiting ratio: {}".format(result["waiting_ratio_M1"]))
+        self.assertTrue(0.104 < result["waiting_ratio_M2"] < 0.105, "\nwaiting ratio: {}".format(result["waiting_ratio_M2"]))
+        self.assertTrue(93.81 < result["waiting_ratio_M3"] < 93.82, "\nwaiting ratio: {}".format(result["waiting_ratio_M3"]))
 
     def testDecompositionOfBatches(self):
         from manpy.simulation.Examples.Old.DecompositionOfBatches import main
@@ -328,7 +337,7 @@ class SimulationExamples(TestCase):
         from manpy.simulation.Examples.Old.CompoundMachine import main
 
         result = main(test=1)
-        self.assertTrue(5.8 < result < 5.92)
+        self.assertEqual(result, 6.5, "\nresult: {}".format(result))
 
     def testJobShop2ScenarioAnalysis(self):
         from manpy.simulation.Examples.Old.JobShop2ScenarioAnalysis import main
@@ -340,7 +349,7 @@ class SimulationExamples(TestCase):
         from manpy.simulation.Examples.Old.BufferAllocation import main
 
         result = main(test=1)
-        self.assertTrue(80 < result["parts"] < 1000)
+        self.assertTrue(80 < result["parts"] < 1000, "\nParts: {}".format(result["parts"]))
 
     def testExampleLine(self):
         from manpy.simulation.Examples.ExampleLine import main
@@ -348,11 +357,11 @@ class SimulationExamples(TestCase):
         result = main(test=1)
 
         self.assertGreaterEqual(len(result["Entities"]), len(result["Discards"]) + result["Exits"],
-                                "Number of Entities should be higher than Discards+Exits\nEntities: {}\nDiscards: {}\nExits: {}".format(len(result["Entities"]), len(result["Discards"]), result["Exits"]))
+                                "\nNumber of Entities should be higher than Discards+Exits\nEntities: {}\nDiscards: {}\nExits: {}".format(len(result["Entities"]), len(result["Discards"]), result["Exits"]))
         for key in result:
             if key.__contains__("Ftr"):
                 self.assertGreaterEqual(len(result[key]), len(result["Discards"]) + result["Exits"],
-                                        "Number of Features should be higher than Discards+Exits\nFeatures: {}\nDiscards: {}\nExits: {}".format(len(result[key]), len(result["Discards"]), result["Exits"]))
+                                        "\nNumber of Features should be higher than Discards+Exits\nFeatures: {}\nDiscards: {}\nExits: {}".format(len(result[key]), len(result["Discards"]), result["Exits"]))
 
     def testRandomWalk(self):
         from manpy.simulation.Examples.Random_Walk import main
@@ -361,19 +370,19 @@ class SimulationExamples(TestCase):
 
         for idx in range(1, len(result["Ftr1"])):
             self.assertGreaterEqual(result["Ftr1"][idx] - result["Ftr1"][idx - 1], -10,
-                                    "RandomWalk should be higher than -10\nIt instead is: ".format(result["Ftr1"][idx]))
+                                    "\nRandomWalk should be higher than -10\nIt instead is: ".format(result["Ftr1"][idx]))
             self.assertLowerEqual(result["Ftr1"][idx] - result["Ftr1"][idx - 1], 10,
-                                    "RandomWalk should be lower than 10\nIt instead is: ".format(result["Ftr1"][idx]))
+                                    "\nRandomWalk should be lower than 10\nIt instead is: ".format(result["Ftr1"][idx]))
     def testDependency(self):
         from manpy.simulation.Examples.Dependency import main
 
         result = main(test=1)
 
         for idx in range(len(result["Spannung"])):
-            self.assertEqual(result["Strom"][idx], 1000*result["Spannung"][idx] + 1900,
-                             "Strom should be: {}\nIt instead is: {}".format(result["Strom"][idx], 1000*result["Spannung"][idx] + 1900))
-            self.assertEqual(result["Widerstand"][idx], (result["Spannung"][idx]/result["Strom"][idx]*1000000),
-                             "Widerstand should be: {}\nIt instead is: {}".format(result["Widerstand"][idx], (result["Spannung"][idx]/result["Strom"][idx]*1000000)))
+            self.assertEqual(1000*result["Spannung"][idx] + 1900, result["Strom"][idx],
+                             "\nStrom should be: {}\nIt instead is: {}".format(1000*result["Spannung"][idx] + 1900, result["Strom"][idx], idx,result["Spannung"][idx]))
+            self.assertEqual((result["Spannung"][idx]/result["Strom"][idx]*1000000), result["Widerstand"][idx],
+                             "\nWiderstand should be: {}\nIt instead is: {}".format((result["Spannung"][idx]/result["Strom"][idx]*1000000), result["Widerstand"][idx]))
 
     def testMerging(self):
         from manpy.simulation.Examples.Merging import main
@@ -382,6 +391,6 @@ class SimulationExamples(TestCase):
 
         for e in result["Exits"]:
             self.assertNotIn(None, e.features,
-                             "Features have not been merged completeply: {}".format(e.features))
+                             "\nFeatures have not been merged completeply")
         self.assertIn(None, result["FirstEntity"].features,
-                      "First Entity should not contain all Features: {}".format(result["FirstEntity"].features))
+                      "\nFirst Entity should not contain all Features")
