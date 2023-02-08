@@ -10,7 +10,7 @@ class Machine_control(Machine):
         means = [1.6, 3500, 450, 180, 400, 50, 190, 400]
         stdevs = [0.2, 200, 50, 30, 50, 5, 10, 50]
         for idx, feature in enumerate(activeEntity.features):
-            if feature != None: # TODO why necessary?
+            if feature != None:
                 min = means[idx] - 2 * stdevs[idx]
                 max = means[idx] + 2 * stdevs[idx]
                 if feature < min or feature > max:
@@ -46,7 +46,7 @@ Menge = Feature("Ftr7", "Feature7", victim=Kleben,
                distribution={"Feature": {"Normal": {"mean": 400, "stdev": 50}}})
 
 StecktFest = Failure("Flr0", "Failure0", victim=Kleben, entity=True,
-               distribution={"TTF": {"Fixed": {"mean": 0}}, "TTR": {"Normal": {"mean": 2,"stdev": 0.2, "min":0, "probability": 0.05}}})
+               distribution={"TTF": {"Fixed": {"mean": 0.5}}, "TTR": {"Normal": {"mean": 2,"stdev": 0.2, "min":0, "probability": 0.5}}})
 
 
 # Routing
@@ -59,7 +59,7 @@ E1.defineRouting([Kleben])
 
 def main(test=0):
     maxSimTime = 50
-    objectList = [S, Löten, Q, Kleben, E1, Spannung, Strom, Widerstand, Kraft, Einsinktiefe, Durchflussgeschwindigkeit, Temperatur, Menge]
+    objectList = [S, Löten, Q, Kleben, E1, Spannung, Strom, Widerstand, Kraft, Einsinktiefe, Durchflussgeschwindigkeit, Temperatur, Menge, StecktFest]
 
     runSimulation(objectList, maxSimTime)
 

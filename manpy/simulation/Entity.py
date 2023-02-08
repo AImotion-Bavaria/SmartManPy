@@ -140,5 +140,5 @@ class Entity(ManPyObject):
         return []
 
     def set_feature(self, feature, time, indexing):
-        self.features[G.ftr_st.index(indexing)] = float(format(feature, ".2f"))
-        self.feature_times[G.ftr_st.index(indexing)] = float(format(time, ".2f"))
+        self.features[G.ftr_st.index(indexing)] = feature
+        self.feature_times[G.ftr_st.index(indexing)] = time
