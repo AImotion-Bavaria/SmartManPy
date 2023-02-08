@@ -363,6 +363,9 @@ class SimulationExamples(TestCase):
                 self.assertGreaterEqual(len(result[key]), len(result["Discards"]) + result["Exits"],
                                         "\nNumber of Features should be higher than Discards+Exits\nFeatures: {}\nDiscards: {}\nExits: {}".format(len(result[key]), len(result["Discards"]), result["Exits"]))
 
+        self.assertGreaterEqual(result["Exits"] + len(result["Discards"]), 0,
+                                "Should have at least one finished Entity. Entity Failure could be the Problem.")
+
     def testRandomWalk(self):
         from manpy.simulation.Examples.Random_Walk import main
 

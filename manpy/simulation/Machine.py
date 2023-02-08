@@ -599,6 +599,7 @@ class Machine(CoreObject):
                         ), "the interruptionEnd was received later than anticipated"
                         self.interruptionEnd = self.env.event()
 
+                        self.postInterruptionActions()  # execute interruption actions
                         # check if the machine is active and break
                         if self.checkIfActive():
                             if self.shouldYield(
@@ -612,7 +613,6 @@ class Machine(CoreObject):
                                     - self.timeWaitForOperatorStarted
                                 )
                             break
-                        self.postInterruptionActions()  # execute interruption actions
                         # ===========================================================
                         # # request a resource after the repair
                         # ===========================================================
@@ -940,7 +940,6 @@ class Machine(CoreObject):
             # ===================================================================
             # ===================================================================
             # ===================================================================
-
             yield self.env.process(self.operation(type="Processing"))
             self.endOperationActions(type="Processing")
 

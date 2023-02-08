@@ -392,3 +392,4 @@ class Failure(ObjectInterruption):
                     self.reactivateVictim()  # since repairing is over, the Machine is reactivated
                     self.victim.Up = True
                     self.outputTrace(self.victim.name, self.victim.id,  "is up")
+
