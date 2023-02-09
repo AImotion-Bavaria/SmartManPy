@@ -86,6 +86,9 @@ class Timeseries(ObjectProperty):
             yield self.victimStartsProcessing
             self.victimStartsProcessing = self.env.event()
 
+
+            self.featureHistory = []
+            self.timeHistory = []
             steptime = self.victim.tinM / self.distribution["DataPoints"]
             remainingTimeTillFeature = steptime
             steps = 0
@@ -152,11 +155,18 @@ class Timeseries(ObjectProperty):
                         if self.featureValue < 0:
                             self.featureValue = 0
 
+
                     self.featureHistory.append(self.featureValue)
+                    self.timeHistory.append(self.env.now)
+
+                    # add TimeSeries value and time to Entity
+                    self.victim.Res.users[0].set_feature(self.featureHistory, self.timeHistory,
+                                                         (self.id, self.victim.id))
+                    self.outputTrace(self.victim.Res.users[0].name, self.victim.Res.users[0].id, str(self.featureValue))
 
                     # send data to QuestDB
                     # TODO: make it work with floats
-                    self.featureValue = int(self.featureValue)
+                    self.featureValue = self.featureValue
                     # try:
                     if G.db:
                         G.sender.row(
@@ -172,13 +182,6 @@ class Timeseries(ObjectProperty):
                         for c in self.contribute:
                             if c.expectedSignals["contribution"]:
                                 self.sendSignal(receiver=c, signal=c.contribution)
-
-                    # add Feature value and time to Entity
-                    self.victim.Res.users[0].set_feature(self.featureValue, self.env.now,
-                                                         (self.id, self.victim.id))
-                    self.outputTrace(self.victim.Res.users[0].name, self.victim.Res.users[0].id,
-                                     str(self.featureValue))
-
 
 
 
