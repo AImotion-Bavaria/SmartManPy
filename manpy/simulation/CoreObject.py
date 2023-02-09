@@ -90,6 +90,7 @@ class CoreObject(ManPyObject):
             "entityCreated": 0,
             "moveEnd": 0,
             "processOperatorUnavailable": 0,
+            "objectPropertyEnd" : 0
         }
         # flag notifying the the station can deliver entities that ended their processing while interrupted
         self.canDeliverOnInterruption = False
@@ -271,6 +272,7 @@ class CoreObject(ManPyObject):
             "entityCreated": 0,
             "moveEnd": 0,
             "processOperatorUnavailable": 0,
+            "objectPropertyEnd" : 0
         }
         # lists that keep the start/endShiftTimes of the victim
         self.endShiftTimes = []

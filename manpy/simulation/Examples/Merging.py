@@ -21,36 +21,37 @@ class Machine_control(Machine):
 Frame.capacity = 1
 S0 = Source("S0", "Source", interArrivalTime={"Fixed": {"mean": 0.4}}, entity="manpy.Part", capacity=1)
 S1 = Source("S1", "Source", interArrivalTime={"Fixed": {"mean": 0.4}}, entity="manpy.Frame", capacity=1)
+#Löten = Machine("M0", "Löten", processingTime={"Fixed": {"mean": 0.8}})
 Löten = Machine("M0", "Löten", processingTime={"Normal": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}})
-Kleben = Machine("M1", "Kleben", processingTime={"Fixed": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}})
+Kleben = Machine("M1", "Kleben", processingTime={"Fixed": {"mean": 0.8}})
 A = Assembly("A", "Assembly")
 Montage = Machine_control("M2", "Montage", processingTime={"Fixed": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}}, control=True)
 E = Exit("E", "Exit")
 
 # Löten
-Spannung = Feature("Ftr0", "Feature1", victim=Löten, entity=True,
-               distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 1.6, "stdev": 0.2}}})
-Strom = Feature("Ftr1", "Feature2", victim=Löten, entity=True,
-               distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 3500, "stdev": 200}}})
-Widerstand = Feature("Ftr2", "Feature3", victim=Löten, entity=True,
-               distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 450, "stdev": 50}}})
-Kraft = Feature("Ftr3", "Feature4", victim=Löten, entity=True,
-               distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 180, "stdev": 30}}})
-Einsinktiefe = Feature("Ftr4", "Feature5", victim=Löten, entity=True,
-               distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 400, "stdev": 50}}})
+Spannung = Feature("Ftr0", "Feature0", victim=Löten,
+               distribution={"Feature": {"Normal": {"mean": 1.6, "stdev": 0.2}}})
+Strom = Feature("Ftr1", "Feature1", victim=Löten,
+               distribution={"Feature": {"Normal": {"mean": 3500, "stdev": 200}}})
+Widerstand = Feature("Ftr2", "Feature2", victim=Löten,
+               distribution={"Feature": {"Normal": {"mean": 450, "stdev": 50}}})
+Kraft = Feature("Ftr3", "Feature3", victim=Löten,
+               distribution={"Feature": {"Normal": {"mean": 180, "stdev": 30}}})
+Einsinktiefe = Feature("Ftr4", "Feature4", victim=Löten,
+               distribution={"Feature": {"Normal": {"mean": 400, "stdev": 50}}})
 
 # Kleben
-Durchflussgeschwindigkeit = Feature("Ftr5", "Feature6", victim=Kleben, entity=True,
-               distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 50, "stdev": 5}}})
-Temperatur = Feature("Ftr6", "Feature7", victim=Kleben, entity=True,
-               distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 190, "stdev": 10}}})
-Menge = Feature("Ftr7", "Feature8", victim=Kleben, entity=True,
-               distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 400, "stdev": 50}}})
+Durchflussgeschwindigkeit = Feature("Ftr5", "Feature5", victim=Kleben,
+               distribution={"Feature": {"Normal": {"mean": 50, "stdev": 5}}})
+Temperatur = Feature("Ftr6", "Feature6", victim=Kleben,
+               distribution={"Feature": {"Normal": {"mean": 190, "stdev": 10}}})
+Menge = Feature("Ftr7", "Feature7", victim=Kleben,
+               distribution={"Feature": {"Normal": {"mean": 400, "stdev": 50}}})
 
 
 # Montage
-Druck = Feature("Ftr8", "Feature9", victim=Montage, entity=True,
-               distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 200000, "stdev": 10000}}})
+Druck = Feature("Ftr8", "Feature8", victim=Montage,
+               distribution={"Feature": {"Normal": {"mean": 200000, "stdev": 10000}}})
 
 StecktFest = Failure("Flr0","Failure0", victim=Montage, entity=True,
                distribution={"TTF": {"Fixed": {"mean": 0}}, "TTR": {"Normal": {"mean": 2,"stdev": 0.2, "min":0, "probability": 0.05}}})
@@ -69,16 +70,21 @@ def main(test=0):
     maxSimTime = 200
     objectList = [S0, S1, Löten, Kleben, A, Montage, E, Spannung, Strom, Widerstand, Kraft, Einsinktiefe, Durchflussgeschwindigkeit, Temperatur, Menge, Druck]
 
-    runSimulation(objectList, maxSimTime, trace=True)
+    runSimulation(objectList, maxSimTime)
 
     if test:
         result = {}
         result["Exits"] = E.entities
         result["FirstEntity"] = G.EntityList[0]
+        print(G.ftr_st)
+        print(len(G.FeatureList))
         return result
 
     df = getEntityData([E], discards=[Montage])
     df.to_csv("Merging.csv", index=False, encoding="utf8")
+
+    df = getEntityData([Montage], time=True)
+    df.to_csv("Merging_Test.csv", index=False, encoding="utf8")
 
     print("""
             Ausschuss:          {}

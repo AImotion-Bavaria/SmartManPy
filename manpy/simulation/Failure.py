@@ -56,7 +56,8 @@ class Failure(ObjectInterruption):
         self.rngTTR = RandomNumberGenerator(
             self, distribution.get("TTR", {"Fixed": {"mean": 1}})
         )
-        self.name = "F" + str(index) # TODO self.name = name here?
+        if self.name == "":
+            self.name = "F" + str(index)
         self.repairman = repairman  # the resource that may be needed to fix the failure
         # if now resource is needed this will be "None"
         self.type = "Failure"
@@ -117,6 +118,14 @@ class Failure(ObjectInterruption):
                     self.victim.Up = False
                     self.victim.timeLastFailure = self.env.now
                     self.outputTrace(self.victim.name, self.victim.id, "is down")
+                    # send Data to QuestDB
+                    if G.db:
+                        G.sender.row(
+                            self.name,
+                            columns={"time": self.env.now,
+                                     "message": self.victim.id + " is down"}
+                        )
+                        G.sender.flush()
                     # update the failure time
                     failTime = self.env.now
                     if (
@@ -139,6 +148,14 @@ class Failure(ObjectInterruption):
                             self.reactivateVictim()  # since repairing is over, the Machine is reactivated
                             self.victim.Up = True
                             self.outputTrace(self.victim.name, self.victim.id, "is up")
+                            # send Data to QuestDB
+                            if G.db:
+                                G.sender.row(
+                                    self.name,
+                                    columns={"time": self.env.now,
+                                             "message": self.victim.id + " is up"}
+                                )
+                                G.sender.flush()
 
                             self.repairman.totalWorkingTime += (
                                 self.env.now - timeOperationStarted
@@ -175,6 +192,14 @@ class Failure(ObjectInterruption):
                     self.reactivateVictim()  # since repairing is over, the Machine is reactivated
                     self.victim.Up = True
                     self.outputTrace(self.victim.name, self.victim.id, "is up")
+                    # send Data to QuestDB
+                    if G.db:
+                        G.sender.row(
+                            self.name,
+                            columns={"time": self.env.now,
+                                     "message": self.victim.id + " is up"}
+                        )
+                        G.sender.flush()
 
         else:
             while 1:
@@ -297,6 +322,15 @@ class Failure(ObjectInterruption):
                     self.victim.timeLastFailure = self.env.now
 
                     self.outputTrace(self.victim.name, self.victim.id, "is down")
+                    # send Data to QuestDB
+                    from .Globals import G
+                    if G.db:
+                        G.sender.row(
+                            self.name,
+                            columns={"time": self.env.now,
+                                     "message": self.victim.id + " is down"}
+                        )
+                        G.sender.flush()
 
                     # update the failure time
                     failTime = self.env.now
@@ -319,6 +353,14 @@ class Failure(ObjectInterruption):
                             self.reactivateVictim()  # since repairing is over, the Machine is reactivated
                             self.victim.Up = True
                             self.outputTrace(self.victim.name, self.victim.id, "is up")
+                            # send Data to QuestDB
+                            if G.db:
+                                G.sender.row(
+                                    self.name,
+                                    columns={"time": self.env.now,
+                                             "message": self.victim.id + " is up"}
+                                )
+                                G.sender.flush()
 
                             self.repairman.totalWorkingTime += (
                                 self.env.now - timeOperationStarted
@@ -350,3 +392,4 @@ class Failure(ObjectInterruption):
                     self.reactivateVictim()  # since repairing is over, the Machine is reactivated
                     self.victim.Up = True
                     self.outputTrace(self.victim.name, self.victim.id,  "is up")
+

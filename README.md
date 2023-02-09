@@ -1,6 +1,9 @@
-=====
-Extended-ManPy
-=====
+
+# Extended-ManPy
+
+
+[![Tests](https://github.com/AImotion-Bavaria/ManPyExperiments/actions/workflows/run_tests.yml/badge.svg)](https://github.com/AImotion-Bavaria/ManPyExperiments/actions/workflows/run_tests.yml)
+
 This repository extends the Python 3 port of ManPy by Data Revenue GmbH (https://github.com/datarevenue-berlin/manpy)
 
 We did the following modifications/additions:
@@ -9,9 +12,8 @@ We did the following modifications/additions:
 * Added Machine features
 * Added conditions to failures
 
-=====
-Workflow 
-=====
+# Workflow 
+
 
 1. Before you add a feature, create a new issue with a short explanation of the new feature.
 2. Create a feature branch for the issue with an appropriate name.

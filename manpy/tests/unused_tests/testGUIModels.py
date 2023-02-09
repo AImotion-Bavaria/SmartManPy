@@ -46,7 +46,7 @@ class SimulationTopology(TestCase):
   """
 
     def setUp(self):
-        self.dump_folder_path = os.path.join(project_path, "manpy", "tests", "dump")
+        self.dump_folder_path = os.path.join(project_path, "manpy", "tests", "../dump")
 
     def checkGUIModel(self, filename=None):
         file_path = os.path.join(
@@ -70,7 +70,7 @@ class SimulationTopology(TestCase):
             result_data["result"]["result_list"][0], indent=True, sort_keys=True
         )
         dump_path = os.path.join(self.dump_folder_path, "%s.result" % filename)
-        if bool(os.environ.get("dump", False)):
+        if bool(os.environ.get("../dump", False)):
             dump_file = open(dump_path, "w")
             dump_file.write(stable_result)
             dump_file.close()

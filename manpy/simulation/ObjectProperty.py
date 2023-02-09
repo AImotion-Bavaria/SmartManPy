@@ -27,14 +27,13 @@ class ObjectProperty(ManPyObject):
         name="",
         victim=None,
         distribution={},
-        entity=True,
         distribution_state_controller=None,
         reset_distributions=True,
         no_negative=False,
         contribute=None,
         start_time=0,
         end_time=0,
-        start_value=0,
+        start_value=None,
         random_walk=False,
         dependent=None,
         **kw
@@ -64,8 +63,6 @@ class ObjectProperty(ManPyObject):
         self.id = id
         self.name = name
 
-        self.entity = entity
-
         self.distribution_state_controller = distribution_state_controller
         self.reset_distributions = reset_distributions
 
@@ -82,8 +79,11 @@ class ObjectProperty(ManPyObject):
         self.no_negative = no_negative
         self.contribute = contribute
         self.start_time = start_time
-        self.featureHistory = [start_value]
-        self.featureValue = self.featureHistory[-1]
+        if start_value:
+            self.featureHistory = [start_value]
+            self.featureValue = self.featureHistory[-1]
+        else:
+            self.featureHistory = []
         self.end_time = end_time
         self.random_walk = random_walk
         self.dependent = dependent
