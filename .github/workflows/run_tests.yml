@@ -23,4 +23,4 @@ jobs:
           conda info
           conda list
       - name: run-tests
-        run: python -m unittest manpy/tests/testSimulationExamples.py
+        run: python -m unittest manpy/tests/testSimulationExamples.py manpy/tests/testRandomNumberGenerator.py
