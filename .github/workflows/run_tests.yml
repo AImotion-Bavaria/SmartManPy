@@ -23,4 +23,4 @@ jobs:
           conda info
           conda list
       - name: run-tests
-        run: python -m unittest manpy/tests/*
+        run: python -m unittest discover manpy/tests
