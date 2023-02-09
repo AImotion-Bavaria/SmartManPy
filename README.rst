@@ -1,6 +1,9 @@
 =====
 Extended-ManPy
 =====
+
+[![Tests](https://github.com/AImotion-Bavaria/ManPyExperiments/actions/workflows/run_tests.yml/badge.svg)](https://github.com/AImotion-Bavaria/ManPyExperiments/actions/workflows/run_tests.yml)
+
 This repository extends the Python 3 port of ManPy by Data Revenue GmbH (https://github.com/datarevenue-berlin/manpy)
 
 We did the following modifications/additions:
