@@ -2,17 +2,6 @@ name: Tests (Self-hosted)
 
 on: push
 jobs:
-  activate-conda:
-    name: Conda Setup
-    runs-on: "self-hosted"
-    defaults:
-      run:
-        shell: bash -el {0}
-    steps:
-    - uses: actions/checkout@v2
-    - name: run-tests
-      run: |
-        conda init bash
   run-tests:
     name: Tests
     runs-on: "self-hosted"
@@ -21,6 +10,9 @@ jobs:
         shell: bash -el {0}
     steps:
     - uses: actions/checkout@v2
+    - name: init-conda
+      run: |
+        conda init bash
     - name: run-tests
       run: |
         conda activate ManPy
