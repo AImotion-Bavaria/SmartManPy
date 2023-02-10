@@ -1,0 +1,18 @@
+name: Tests (Self-hosted)
+
+on: push
+jobs:
+  activate-conda:
+    name: Ex3 Linux
+    runs-on: "self-hosted"
+    defaults:
+      run:
+        shell: bash -el {0}
+    steps:
+    - uses: actions/checkout@v2
+    - name: run-tests
+      run: |
+        conda activate ManPy
+        conda info
+        conda list
+        python -m unittest discover manpy/tests
