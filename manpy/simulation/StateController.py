@@ -211,6 +211,7 @@ class RandomDefectStateController(StateController):
 
 
 if __name__ == '__main__':
+    print("Test for GitHub Runner")
     states = ["A", "B", "C"]
     boundaries = {(0, 150): 0, (150, 300): 1, (300, None): 2}
 
