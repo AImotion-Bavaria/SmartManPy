@@ -7,12 +7,9 @@ jobs:
     runs-on: "self-hosted"
     defaults:
       run:
-        shell: bash -el {0}
+        shell: bash -l {0}
     steps:
     - uses: actions/checkout@v2
-    - name: init-conda
-      run: |
-        conda init bash
     - name: run-tests
       run: |
         conda activate ManPy
