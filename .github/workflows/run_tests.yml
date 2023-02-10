@@ -8,7 +8,7 @@ on:
 jobs:
   activate-conda:
     name: Ex3 Linux
-    runs-on: "ubuntu-latest"
+    runs-on: "self-hosted"
     defaults:
       run:
         shell: bash -el {0}
