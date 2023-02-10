@@ -2,17 +2,21 @@ name: Tests (Self-hosted)
 
 on: push
 jobs:
-  run-tests:
-    name: Tests
+  activate-conda:
+    name: acitvate-conda
     runs-on: "self-hosted"
     defaults:
       run:
-        shell: bash -l {0}
+        shell: bash -el {0}
     steps:
-    - uses: actions/checkout@v2
-    - name: run-tests
-      run: |
-        conda activate ManPy
-        conda info
-        conda list
-        python -m unittest discover manpy/tests
+      - uses: actions/checkout@v2
+      - uses: conda-incubator/setup-miniconda@v2
+        with:
+          activate-environment: anaconda-client-env
+          environment-file: linux_env.yml
+          auto-activate-base: false
+      - run: |
+          conda info
+          conda list
+      - name: run-tests
+        run: python -m unittest discover manpy/tests
