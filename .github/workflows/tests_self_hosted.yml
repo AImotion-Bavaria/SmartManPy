@@ -1,14 +1,10 @@
-name: Tests
+name: Tests (Self-hosted)
 
-on:
-  push:
-    paths:
-      - 'manpy/**'
-
+on: push
 jobs:
-  activate-conda:
-    name: Ex3 Linux
-    runs-on: "ubuntu-latest"
+  run-unittests:
+    name: unittests
+    runs-on: "self-hosted"
     defaults:
       run:
         shell: bash -el {0}
@@ -16,6 +12,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: conda-incubator/setup-miniconda@v2
         with:
+          miniconda-version: "latest"
           activate-environment: anaconda-client-env
           environment-file: linux_env.yml
           auto-activate-base: false
