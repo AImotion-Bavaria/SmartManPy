@@ -7,6 +7,9 @@ class StateController:
     """
 
     def get_initial_state(self):
+        """
+        :return: Initial state and label: (state, label (bool))
+        """
         raise NotImplementedError("Subclass must define 'get_initial_state' method.")
 
     def get_and_update(self):
@@ -32,9 +35,10 @@ class SimpleStateController(StateController):
     :param states (list): A list containing the actual states
     :param boundaries (dict): A dict defining the boundaries for each state. Must contain pairs of (interval, state_index).
            Intervals are defined as a tuple: (lower, upper). The lower bound is included, upper bound is not included.
+           0 must be included.
            Example: states = [state0, state1, state2]
            boundaries = {(0, 150): 0, (150, 300): 1, (300, None): 2}
-    :param wear_per_step: A number that defines how much wear is added per step.
+    :param wear_per_step: A number that defines how much wear is added per step. The account starts at 0.
     :param reset_amount: When the account value reaches this amount, the StateController gets reset.
     """
     def __init__(self,
@@ -59,7 +63,7 @@ class SimpleStateController(StateController):
         self.reset_amount = reset_amount
 
     def get_initial_state(self):
-        return self.states[self.initial_state_index]
+        return self.states[self.initial_state_index], self.labels[self.initial_state_index]
 
     def get_and_update(self):
         output = self.states[self.current_state_index]
@@ -145,9 +149,10 @@ class ContinuosNormalDistribution(StateController):
         self.defect_std = defect_std
 
     def get_initial_state(self):
-        return self.__get_distribution(self.initial_mean, self.std)
+        return self.__get_distribution(self.initial_mean, self.std), False
 
     def get_and_update(self):
+        # parameters are incremented before return
         if self.break_point is not None and self.account >= self.break_point:
             mean = self.defect_mean
             std = self.defect_std
@@ -211,7 +216,6 @@ class RandomDefectStateController(StateController):
 
 
 if __name__ == '__main__':
-    print("Test for GitHub Runner")
     states = ["A", "B", "C"]
     boundaries = {(0, 150): 0, (150, 300): 1, (300, None): 2}
 
