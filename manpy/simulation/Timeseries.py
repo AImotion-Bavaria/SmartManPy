@@ -68,7 +68,7 @@ class Timeseries(ObjectProperty):
                 if key != "Function":
                     self.distribution["DataPoints"] = self.dependent.get(key).distribution["DataPoints"]
         else:
-            self.stepsize = (self.distribution["Interval"][1] - self.distribution["Interval"][0]) / self.distribution["DataPoints"]
+            self.stepsize = (self.distribution["Interval"][1] - self.distribution["Interval"][0]) / (self.distribution["DataPoints"] - 1)
         self.victimIsInterrupted = self.env.event()
         self.victimStartsProcessing = self.env.event()
         self.victimEndsProcessing = self.env.event()

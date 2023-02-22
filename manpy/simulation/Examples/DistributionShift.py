@@ -1,4 +1,4 @@
-from manpy.simulation.imports import Machine, Source, Exit, Failure, FeatureNew, Queue, SimpleStateController, Repairman
+from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue, SimpleStateController, Repairman
 from manpy.simulation.Globals import runSimulation, getEntityData, G, ExcelPrinter
 
 import time
@@ -49,25 +49,25 @@ feature_cycle_time = 0.9
 
 # ObjectInterruption
 # Löten
-Spannung = FeatureNew("Ftr0", "Feature1", victim=Löten, entity=True,
+Spannung = Feature("Ftr0", "Feature1", victim=Löten, entity=True,
                distribution={"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 1.6, "stdev": 0.2}}})
-Strom = FeatureNew("Ftr1", "Feature2", victim=Löten, entity=True,
+Strom = Feature("Ftr1", "Feature2", victim=Löten, entity=True,
                distribution={"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 3500, "stdev": 200}}})
-Widerstand = FeatureNew("Ftr2", "Feature3", victim=Löten, entity=True,
+Widerstand = Feature("Ftr2", "Feature3", victim=Löten, entity=True,
                distribution={"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 450, "stdev": 50}}})
-Kraft = FeatureNew("Ftr3", "Feature4", victim=Löten, entity=True,
+Kraft = Feature("Ftr3", "Feature4", victim=Löten, entity=True,
                distribution={"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 180, "stdev": 30}}})
-Einsinktiefe = FeatureNew("Ftr4", "Feature5", victim=Löten, entity=True,
+Einsinktiefe = Feature("Ftr4", "Feature5", victim=Löten, entity=True,
                distribution={"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 400, "stdev": 50}}})
 
 #Kleben
-Durchflussgeschwindigkeit = FeatureNew("Ftr5", "Feature6", victim=Kleben,
+Durchflussgeschwindigkeit = Feature("Ftr5", "Feature6", victim=Kleben,
                                     entity=True,
                distribution={"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 50, "stdev": 5}}})
-Temperatur = FeatureNew("Ftr6", "Feature7", victim=Kleben,
+Temperatur = Feature("Ftr6", "Feature7", victim=Kleben,
                      entity=True,
                distribution={"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 190, "stdev": 10}}})
-Menge = FeatureNew("Ftr7", "Feature8", victim=Kleben,
+Menge = Feature("Ftr7", "Feature8", victim=Kleben,
                 entity=True,
                distribution={"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 400, "stdev": 50}}})
 
@@ -83,12 +83,10 @@ dists = [{"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal":
 boundaries = {(0, 25): 0, (25, None): 1}
 distribution_controller = SimpleStateController(states=dists, boundaries=boundaries, amount_per_step=1.0, reset_amount=None)
 
-Test = FeatureNew("Ftr8", "Feature9", victim=Kleben,
+Test = Feature("Ftr8", "Feature9", victim=Kleben,
                distribution_state_controller=distribution_controller,
                # distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 100, "stdev":2}}},
                deteriorationType="constant", contribute=[StecktFest], reset_distributions=True,
-               entity=True
-
                )
 
 
@@ -107,7 +105,7 @@ def main():
 
     runSimulation(objectList, maxSimTime)
 
-    df = getEntityData([E1], discards=[Kleben], time=True)
+    df = getEntityData([E1], [Kleben], time=True)
     df.to_csv("DistributionShift.csv", index=False, encoding="utf8")
 
     print("""

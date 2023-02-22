@@ -1,17 +1,24 @@
-from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue
-from manpy.simulation.Globals import runSimulation, getEntityData, G, ExcelPrinter
+from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue, Timeseries
+from manpy.simulation.Globals import runSimulation, getEntityData
 import time
-
 start = time.time()
 
-class Machine_control(Machine):
+# produces 16 265Watt Solar Panels/hour. 60 Solar Cells for one Panel
+
+class Solar_Cell_Tester(Machine):
     def condition(self):
+        activeEntity = self.Res.users[0]
+        features = [None, None, 3.5, 6.2, 2.3, 0.48, 3.367]
+        for idx, feature in enumerate(features):
+            if feature is not None:
+                if activeEntity.features[idx] < 0.95*feature or activeEntity.features[idx] > 1.05*feature:
+                    return True
         return False
 
 
 # Objects
-S = Source("S1", "Source", interArrivalTime={"Fixed": {"mean": 0}}, entity="manpy.Part", capacity=1)
-Solar_Cell_Tester = Machine("M0", "Solar_Cell_Tester")
+Solar_Cells = Source("S1", "Source", interArrivalTime={"Fixed": {"mean": 0}}, entity="manpy.Part", capacity=100)
+Solar_Cell_Tester = Solar_Cell_Tester("M0", "Solar_Cell_Tester")
 Q0 = Queue("Q0", "Queue0")
 Laser_Cutter1 = Machine("M1", "Laser_Cutter1")
 Laser_Cutter2 = Machine("M2", "Laser_Cutter2")
@@ -59,7 +66,37 @@ E = Exit("E", "Exit")
 
 
 # ObjectProperty
+
 # SolarCellTester
+IV_Curve = Timeseries("Ts0", "IV_Curve", victim=Solar_Cell_Tester, no_negative=True,
+                      distribution={"Function": {"3.5 - 0.05x": (0, 0.4), "-410.354x^3 + 512.626x^2 - 213.533x + 33.1356": (0.4, 0.8)}, "DataPoints": 100})
+Power_Curve = Timeseries("Ts1", "Power_Curve", victim=Solar_Cell_Tester, no_negative=True,
+                      distribution={"Function": {"4.8913x": (0, 0.46), "-118.304x^2 + 113.705x - 25.0214": (0.46, 0.8)}, "DataPoints": 100})
+Isc = Feature("Ftr0", "Isc", victim=Solar_Cell_Tester,          # short-circuit current
+               dependent={"Function": "IV_Curve[0]", "IV_Curve": IV_Curve},
+               distribution={})
+Voc = Feature("Ftr1", "Voc", victim=Solar_Cell_Tester,          # open circuit voltage
+               distribution={"Fixed": 6.2})
+Pmax = Feature("Ftr2", "Pmax", victim=Solar_Cell_Tester,        # Peak Power
+               dependent={"Function": "max(Power_Curve)]", "Power_Curve": Power_Curve},
+               distribution={})
+Vm = Feature("Ftr3", "Vm", victim=Solar_Cell_Tester,            # Maximum Power Point Voltage
+               distribution={})
+Im = Feature("Ftr4", "Im", victim=Solar_Cell_Tester,            # Maximum Power Point Current
+               distribution={})
+FF = Feature("Ftr5", "FF", victim=Solar_Cell_Tester,            # Fill Factor
+               dependent={"Function": "(Vm * Im)/(Isc * Voc)", "Vm": Vm, "Im": Im, "Isc": Isc, "Voc": Voc},
+               distribution={})
+EFF = Feature("Ftr6", "EFF", victim=Solar_Cell_Tester,          # Efficiency
+              dependent={"Function": "(Isc * Voc * FF)/1000", "Isc": Isc, "Voc": Voc, "FF": FF},
+              distribution={})
+Temp = Feature("Ftr7", "Temp", victim=Solar_Cell_Tester,        # Temperature
+              distribution={"Feature": {"Normal": {"mean": 25, "stdev": 0}}})
+Rs = Feature("Ftr8", "Rs", victim=Solar_Cell_Tester,            # Series Resistance
+              distribution={})
+Rsh = Feature("Ftr9", "Rsh", victim=Solar_Cell_Tester,          # Shunt Resistance
+              distribution={})
+
 
 # EL_VI_Test1
 
@@ -71,8 +108,8 @@ E = Exit("E", "Exit")
 
 
 # Routing
-S.defineRouting([Solar_Cell_Tester])
-Solar_Cell_Tester.defineRouting([S], [Q0])
+Solar_Cells.defineRouting([Solar_Cell_Tester])
+Solar_Cell_Tester.defineRouting([Solar_Cells], [Q0])
 Q0.defineRouting([Solar_Cell_Tester], [Laser_Cutter1, Laser_Cutter2])
 Laser_Cutter1.defineRouting([Q0], [Q1])
 Laser_Cutter2.defineRouting([Q0], [Q1])
@@ -120,7 +157,7 @@ EL_VI_Test3.defineRouting([Q18], [E])
 
 def main(test=0):
     maxSimTime = 50
-    objectList = [S, Q0, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10, Q11, Q12, Q13, Q14, Q15, Q16, Q17, Q18,
+    objectList = [Solar_Cells, Q0, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10, Q11, Q12, Q13, Q14, Q15, Q16, Q17, Q18,
                   Solar_Cell_Tester, Laser_Cutter1, Laser_Cutter2, Tabbing_and_String1, Tabbing_and_String2,
                   Tabbing_and_String3, EVA_Cutting, Bus_Bar_Cutting, Glass_Loader, LayingUp,
                   EL_VI_Test1, EL_VI_Test2, Laminating, Trimming, Inspection, Glueing_Framing, Fix_Junction, Soldering,
