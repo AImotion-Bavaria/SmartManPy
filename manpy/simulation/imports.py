@@ -61,6 +61,7 @@ from manpy.simulation.RoutingQueue import RoutingQueue
 from manpy.simulation.StateController import SimpleStateController
 from manpy.simulation.Feature import Feature
 from manpy.simulation.Timeseries import Timeseries
+from manpy.simulation.Database import ManPyDatabase
 
 # Entities
 from manpy.simulation.Job import Job
