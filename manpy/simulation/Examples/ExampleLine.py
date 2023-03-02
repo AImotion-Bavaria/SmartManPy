@@ -1,4 +1,5 @@
 from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue
+from manpy.simulation.Database import ManPyQuestDBDatabase
 from manpy.simulation.Globals import runSimulation, getEntityData, G, ExcelPrinter
 import time
 
@@ -60,8 +61,8 @@ E1.defineRouting([Kleben])
 def main(test=0):
     maxSimTime = 50
     objectList = [S, Löten, Q, Kleben, E1, Spannung, Strom, Widerstand, Kraft, Einsinktiefe, Durchflussgeschwindigkeit, Temperatur, Menge, StecktFest]
-
-    runSimulation(objectList, maxSimTime)
+    db = ManPyQuestDBDatabase()
+    runSimulation(objectList, maxSimTime, db=None)
 
     # return Results for test
     if test:
