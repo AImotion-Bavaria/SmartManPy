@@ -42,6 +42,7 @@ class Timeseries(ObjectProperty):
         start_value=0,
         random_walk=False,
         dependent=None,
+        step_time=None,
         **kw
     ):
         ObjectProperty.__init__(self, id,
@@ -56,8 +57,10 @@ class Timeseries(ObjectProperty):
                                 end_time=end_time,
                                 start_value=start_value,
                                 random_walk=random_walk,
-                                dependent=dependent
+                                dependent=dependent,
+                                steptime=step_time
                                 )
+        self.step_time = step_time
 
 
     def initialize(self):
@@ -67,8 +70,21 @@ class Timeseries(ObjectProperty):
             for key in list(self.dependent.keys()):
                 if key != "Function":
                     self.distribution["DataPoints"] = self.dependent.get(key).distribution["DataPoints"]
+            self.step_time = self.dependent.get(key).step_time
         else:
-            self.stepsize = (self.distribution["Interval"][1] - self.distribution["Interval"][0]) / (self.distribution["DataPoints"] - 1)
+            # put all intervals into a sorted list
+            self.intervals = []
+            for i in self.distribution["Function"].keys():
+                self.intervals.append(i)
+            self.intervals.sort()
+
+            # check if intervals overlap
+            for i in range(len(self.intervals) - 1):
+                if self.intervals[i][1] > self.intervals[i+1][0]:
+                    raise Exception("Intervals {} and {} from {} overlap".format(self.intervals[i], self.intervals[i+1], self.name))
+
+            self.stepsize = (self.intervals[-1][1] - self.intervals[0][0]) / (self.distribution["DataPoints"] - 1)
+
         self.victimIsInterrupted = self.env.event()
         self.victimStartsProcessing = self.env.event()
         self.victimEndsProcessing = self.env.event()
@@ -86,12 +102,15 @@ class Timeseries(ObjectProperty):
             yield self.victimStartsProcessing
             self.victimStartsProcessing = self.env.event()
 
-
             self.featureHistory = []
             self.timeHistory = []
-            steptime = self.victim.tinM / self.distribution["DataPoints"]
-            remainingTimeTillFeature = steptime
+            if self.step_time == None:
+                step_time = self.victim.tinM / self.distribution["DataPoints"]
+            else:
+                step_time = self.step_time
+            remainingTimeTillFeature = step_time
             steps = 0
+            interval = 0
 
             while machineIsRunning:
                 timeRestartedCounting = self.env.now
@@ -139,9 +158,13 @@ class Timeseries(ObjectProperty):
                         value = self.rngFeature.generateNumber(start_time=self.start_time)
 
                     else:
-                        x = self.distribution["Interval"][0] + (self.stepsize * steps)
+                        x = self.intervals[0][0] + (self.stepsize * steps)
+                        for idx, i in enumerate(self.intervals):
+                            if i[0] <= x <= i[1]:
+                                interval = idx
+                                break
                         self.distribution["Feature"][list(self.distribution["Feature"].keys())[0]]["mean"] = eval(
-                            self.distribution["Function"])
+                            self.distribution["Function"][self.intervals[interval]])
                         self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
                         value = self.rngFeature.generateNumber(start_time=self.start_time)
 
@@ -223,7 +246,7 @@ class Timeseries(ObjectProperty):
 
 
 
-                    remainingTimeTillFeature = steptime
+                    remainingTimeTillFeature = step_time
                     steps += 1
 
                     # check if it was the last step

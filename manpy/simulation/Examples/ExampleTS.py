@@ -14,8 +14,8 @@ E1 = Exit("E1", "Exit1")
 
 # ObjectProperty
 # Löten
-Spannung = Timeseries("Ftr0", "Feature0", victim=Löten, no_negative=True,
-               distribution={"Function" : "-1.6*x**2+1.6", "Interval" : (-1, 1), "DataPoints" : 20, "Feature": {"Normal": {"stdev": 0.02}}})
+Spannung = Timeseries("Ftr0", "Feature0", victim=Löten, no_negative=True, step_time=0.03,
+                      distribution={"Function" : {(-1, 0) : "-1.6*x**2+1.6", (0, 1) : "-1.6*x**2+2"}, "DataPoints" : 20, "Feature": {"Normal": {"stdev": 0.02}}})
 Strom = Timeseries("Ftr1", "Feature1", victim=Löten,
                dependent={"Function" : "1000*V + 1900", "V" : Spannung},
                distribution={"Feature": {"Normal": {"stdev": 20}}})
