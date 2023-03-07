@@ -64,27 +64,25 @@ Widerstand = Feature("Ftr2", "Feature2", victim=Löten, entity=True, dependent={
 Kraft = Feature("Ftr3", "Feature3", victim=Löten,
                distribution={"Feature": {"Normal": {"mean": 180, "stdev": 30}}})
 # random defect controller
-s4_1 = ContinuosNormalDistribution(wear_per_step=1,
-                                           break_point=None,
-                                           mean_change_per_step=0.0,
-                                           initial_mean=400,
-                                           std=50,
-                                           defect_mean=10,
-                                           defect_std=5
-                                           )
+s4_1 = ContinuosNormalDistribution(
+                                    mean_change_per_step=0.0,
+                                    initial_mean=400,
+                                    std=50,
+                                    )
 
-s4_2 = ContinuosNormalDistribution(wear_per_step=1,
-                                    break_point=None,
+s4_2 = ContinuosNormalDistribution(
                                     mean_change_per_step=0.0,
                                     initial_mean=300,
                                     std=50,
-                                    defect_mean=110,
-                                    defect_std=50
                                    )
-
+s4_3 = ContinuosNormalDistribution(
+                                    mean_change_per_step=0.0,
+                                    initial_mean=500,
+                                    std=50
+                                   )
 Einsinktiefe_StateController = RandomDefectStateController(failure_probability=0.03,
-                                   ok_controller=s4_1,
-                                   defect_controller=s4_2)
+                                                           ok_controller=s4_1,
+                                                           defect_controllers=[s4_2, s4_3])
 Einsinktiefe = Feature("Ftr4", "Feature4", victim=Löten,
                distribution_state_controller=Einsinktiefe_StateController)
 
@@ -98,27 +96,27 @@ Temperatur = Feature("Ftr6", "Feature6", victim=Kleben, random_walk=True, start_
                distribution={"Feature": {"Normal": {"mean": 0, "stdev": 0.3}}})
 
 # random defect controller
-s7_1 = ContinuosNormalDistribution(wear_per_step=1,
-                                           break_point=None,
+s7_1 = ContinuosNormalDistribution(
                                            mean_change_per_step=0.0,
                                            initial_mean=400,
                                            std=50,
-                                           defect_mean=10,
-                                           defect_std=5
                                            )
 
-s7_2 = ContinuosNormalDistribution(wear_per_step=1,
-                                    break_point=None,
+s7_2 = ContinuosNormalDistribution(
                                     mean_change_per_step=0.0,
                                     initial_mean=500,
                                     std=50,
-                                    defect_mean=110,
-                                    defect_std=50
                                     )
+
+s7_3 = ContinuosNormalDistribution(
+                                    mean_change_per_step=0.0,
+                                    initial_mean=300,
+                                    std=50,
+                                   )
 # TODO implement state controller that allows two different random defect distributions (too much/too few)
 Menge_StateController = RandomDefectStateController(failure_probability=0.03,
-                                   ok_controller=s7_1,
-                                   defect_controller=s7_2)
+                                                    ok_controller=s7_1,
+                                                    defect_controllers=[s7_2, s7_3])
 Menge = Feature("Ftr7", "Feature7", victim=Kleben, distribution_state_controller=Menge_StateController)
 
 # evtl verwandt mit menge?

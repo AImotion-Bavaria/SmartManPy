@@ -1,5 +1,5 @@
 import numpy as np
-
+import random
 
 class StateController:
     """
@@ -112,16 +112,16 @@ class SimpleStateController(StateController):
 
         return res[0]
 
-# TODO defect_mean/defect_std not necessary when break_point=None
+
 class ContinuosNormalDistribution(StateController):
     def __init__(self,
-                 wear_per_step,
-                 break_point,
                  mean_change_per_step,
                  initial_mean,
                  std,
-                 defect_mean,
-                 defect_std
+                 wear_per_step=0,
+                 break_point=None,
+                 defect_mean=None,
+                 defect_std=None
                  ):
         """
         Normal Distribution that changes its mean value with each step. Optionally, a defect can occur after a defined
@@ -134,9 +134,6 @@ class ContinuosNormalDistribution(StateController):
         :param defect_mean: Mean value in the defect state
         :param defect_std: STD in the defect state
         """
-
-        self.wear_per_step = wear_per_step
-        self.break_point = break_point
         self.mean_change_per_step = mean_change_per_step
 
         self.initial_mean = initial_mean
@@ -145,6 +142,9 @@ class ContinuosNormalDistribution(StateController):
         self.account = 0
 
         self.current_mean = self.initial_mean
+
+        self.wear_per_step = wear_per_step
+        self.break_point = break_point
         self.defect_mean = defect_mean
         self.defect_std = defect_std
 
@@ -176,12 +176,12 @@ class ContinuosNormalDistribution(StateController):
 
 # TODO kurtosis
 
-
+# TODO generalize further, not only for continuosnormaldistribution
 class RandomDefectStateController(StateController):
     def __init__(self,
                  failure_probability,
                  ok_controller: ContinuosNormalDistribution,
-                 defect_controller: ContinuosNormalDistribution
+                 defect_controllers: list
                  ):
         """
         Orchestrates two ContinuosNormalDistributionControllers. Using a Bernoulli-Distribution, it chooses either the
@@ -189,11 +189,13 @@ class RandomDefectStateController(StateController):
 
         :param failure_probability: Probability of failure for the Bernoulli-Distribution.
         :param ok_controller:
-        :param defect_controller:
+        :param defect_controllers: list of ContinuosNormalDistributions. If a random failure occurs, one of them is
+                                    drawn with uniform distribution. Example: in case of defect, a value can be either
+                                    too high or too low
         """
         self.failure_probability = failure_probability
         self.ok_controller = ok_controller
-        self.defect_controller = defect_controller
+        self.defect_controllers = defect_controllers
 
     def get_initial_state(self):
         return self.ok_controller.get_initial_state()
@@ -202,7 +204,8 @@ class RandomDefectStateController(StateController):
         defect = int(np.random.binomial(1, self.failure_probability))
 
         if defect == 1:
-            dist, _ = self.defect_controller.get_and_update()
+            defect_controller = random.choice(self.defect_controllers)
+            dist, _ = defect_controller.get_and_update()
             label = True
         else:
             dist, _ = self.ok_controller.get_and_update()
@@ -212,7 +215,8 @@ class RandomDefectStateController(StateController):
 
     def reset(self):
         self.ok_controller.reset()
-        self.defect_controller.reset()
+        for c in self.defect_controllers:
+            c.reset()
 
 
 if __name__ == '__main__':
