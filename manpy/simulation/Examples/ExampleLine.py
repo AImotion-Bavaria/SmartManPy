@@ -59,7 +59,7 @@ E1.defineRouting([Kleben])
 
 
 def main(test=0):
-    maxSimTime = 50
+    maxSimTime = 5000
     objectList = [S, Löten, Q, Kleben, E1, Spannung, Strom, Widerstand, Kraft, Einsinktiefe, Durchflussgeschwindigkeit, Temperatur, Menge, StecktFest]
     db = ManPyQuestDBDatabase()
     runSimulation(objectList, maxSimTime, db=None)

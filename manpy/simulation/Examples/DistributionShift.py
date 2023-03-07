@@ -1,4 +1,4 @@
-from manpy.simulation.imports import Machine, Source, Exit, Failure, FeatureNew, Queue, SimpleStateController, Repairman
+from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue, SimpleStateController, Repairman
 from manpy.simulation.Globals import runSimulation, getEntityData, G, ExcelPrinter
 
 import time
@@ -27,16 +27,16 @@ class Machine_control2(Machine):
         if any(activeEntity.labels):
             return True
 
+
 class Failure_conditional(Failure):
     def condition(self):
         value_1 = Test.get_feature_value()
-        if value_1 > 10:
+        if value_1 is not None and value_1 > 10:
             print("Failure!")
             Test.start_time = G.env.now
             return True
         else:
             return False
-
 
 # Objects
 R = Repairman("R1", "Sascha")
@@ -54,30 +54,30 @@ E1 = Exit("E1", "Exit1")
 ##### CONFIG #####
 # TODO Feature Time seems to have huge impact on the event system
 # TODO Setting Feature Cycle to values  =!= 1 triggers postInterruption ??????? wtf
-feature_cycle_time = 0.9
+feature_cycle_time = 1.0
 ##################
 
 # ObjectInterruption
 # Löten
-Spannung = FeatureNew("Ftr0", "Feature1", victim=Löten, entity=True,
+Spannung = Feature("Ftr0", "Feature1", victim=Löten, entity=True,
                distribution={"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 1.6, "stdev": 0.2}}})
-Strom = FeatureNew("Ftr1", "Feature2", victim=Löten, entity=True,
+Strom = Feature("Ftr1", "Feature2", victim=Löten, entity=True,
                distribution={"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 3500, "stdev": 200}}})
-Widerstand = FeatureNew("Ftr2", "Feature3", victim=Löten, entity=True,
+Widerstand = Feature("Ftr2", "Feature3", victim=Löten, entity=True,
                distribution={"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 450, "stdev": 50}}})
-Kraft = FeatureNew("Ftr3", "Feature4", victim=Löten, entity=True,
+Kraft = Feature("Ftr3", "Feature4", victim=Löten, entity=True,
                distribution={"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 180, "stdev": 30}}})
-Einsinktiefe = FeatureNew("Ftr4", "Feature5", victim=Löten, entity=True,
+Einsinktiefe = Feature("Ftr4", "Feature5", victim=Löten, entity=True,
                distribution={"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 400, "stdev": 50}}})
 
 #Kleben
-Durchflussgeschwindigkeit = FeatureNew("Ftr5", "Feature6", victim=Kleben,
+Durchflussgeschwindigkeit = Feature("Ftr5", "Feature6", victim=Kleben,
                                     entity=True,
                distribution={"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 50, "stdev": 5}}})
-Temperatur = FeatureNew("Ftr6", "Feature7", victim=Kleben,
+Temperatur = Feature("Ftr6", "Feature7", victim=Kleben,
                      entity=True,
                distribution={"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 190, "stdev": 10}}})
-Menge = FeatureNew("Ftr7", "Feature8", victim=Kleben,
+Menge = Feature("Ftr7", "Feature8", victim=Kleben,
                 entity=True,
                distribution={"Time": {"Fixed": {"mean": feature_cycle_time}}, "Feature": {"Normal": {"mean": 400, "stdev": 50}}})
 
@@ -95,7 +95,7 @@ boundaries = {(0, 25): 0, (25, None): 1}
 distribution_controller = SimpleStateController(states=dists, boundaries=boundaries, wear_per_step=1.0,
                                                 labels=labels, reset_amount=None)
 
-Test = FeatureNew("Ftr8", "Feature9", victim=Kleben,
+Test = Feature("Ftr8", "Feature9", victim=Kleben,
                distribution_state_controller=distribution_controller,
                # distribution={"Time": {"Fixed": {"mean": 1}}, "Feature": {"Normal": {"mean": 100, "stdev":2}}},
                deteriorationType="constant", contribute=[StecktFest], reset_distributions=True,

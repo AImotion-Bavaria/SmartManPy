@@ -65,6 +65,7 @@ class Feature(ObjectProperty):
         self.victimIsInterrupted = self.env.event()
         self.victimResumesProcessing = self.env.event()
         self.victimEndsProcessing = self.env.event()
+        self.victimFailed = self.env.event()
 
     def run(self):
         """Every Object has to have a run method. Simpy is mainly used in this function
@@ -74,15 +75,20 @@ class Feature(ObjectProperty):
         while 1:
             self.expectedSignals["victimEndsProcessing"] = 1
             self.expectedSignals["victimIsInterrupted"] = 1
+            self.expectedSignals["victimFailed"] = 1
 
             receivedEvent = yield self.env.any_of([
                self.victimIsInterrupted,
-               self.victimEndsProcessing
+               self.victimEndsProcessing,
+               self.victimFailed
             ])
 
-            if self.victimIsInterrupted in receivedEvent:
-                self.victimIsInterrupted = self.env.event()
-                # print(f"{self.name}: victimIsInterrupted")
+            # TODO cleanup!
+            # if self.victimIsInterrupted in receivedEvent:
+            if self.victimFailed in receivedEvent:
+                # self.victimIsInterrupted = self.env.event()
+                self.victimFailed = self.env.event()
+                print(f"{self.name}: victimIsInterrupted")
                 # wait for victim to start processing again
                 self.expectedSignals["victimResumesProcessing"] = 1
 
@@ -91,7 +97,7 @@ class Feature(ObjectProperty):
 
                 yield self.victimResumesProcessing
 
-                # print(f"{self.name} Resuming")
+                print(f"{self.name} Resuming")
                 self.victimResumesProcessing = self.env.event()
             elif self.victimEndsProcessing in receivedEvent:
                 self.label = None
@@ -119,7 +125,10 @@ class Feature(ObjectProperty):
                 # print("Value")
 
                 if self.random_walk == True:
-                    self.featureValue += value
+                    if self.featureValue is None:
+                        self.featureValue = value
+                    else:
+                        self.featureValue += value
                 else:
                     self.featureValue = value
 

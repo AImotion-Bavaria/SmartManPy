@@ -112,7 +112,7 @@ class SimpleStateController(StateController):
 
         return res[0]
 
-
+# TODO defect_mean/defect_std not necessary when break_point=None
 class ContinuosNormalDistribution(StateController):
     def __init__(self,
                  wear_per_step,
