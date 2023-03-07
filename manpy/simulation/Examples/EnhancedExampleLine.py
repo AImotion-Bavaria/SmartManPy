@@ -5,6 +5,18 @@ import time
 
 start = time.time()
 
+class Machine_control(Machine):
+    def condition(self):
+        activeEntity = self.Res.users[0]
+        means = [1.6, 3500, 450, 180, 400, 50, 190, 400]
+        stdevs = [0.2, 200, 50, 30, 50, 5, 10, 50]
+        for idx, feature in enumerate(activeEntity.features):
+            if feature != None:
+                min = means[idx] - 2 * stdevs[idx]
+                max = means[idx] + 2 * stdevs[idx]
+                if feature < min or feature > max:
+                    return True
+
 class Machine_control2(Machine):
     """
     Another approach for quality control: label is determined by features. if >= 1 feature has label "defect", the
@@ -12,6 +24,7 @@ class Machine_control2(Machine):
     """
     def condition(self):
         activeEntity = self.Res.users[0]
+
         if any(activeEntity.labels):
             return True
 
@@ -132,7 +145,7 @@ def main(test=0):
 
     # df = G.get_simulation_results_dataframe()
     # ExcelPrinter(df, "EnahncedExampleLine")
-    df = getEntityData()
+    df = getEntityData([E1], discards=[Kleben])
     df.to_csv("EnhancedExampleLine.csv", index=False, encoding="utf8")
 
     print("""
