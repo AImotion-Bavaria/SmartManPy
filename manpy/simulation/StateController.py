@@ -176,20 +176,20 @@ class ContinuosNormalDistribution(StateController):
 
 # TODO kurtosis
 
-# TODO generalize further, not only for continuosnormaldistribution
+
 class RandomDefectStateController(StateController):
     def __init__(self,
                  failure_probability,
-                 ok_controller: ContinuosNormalDistribution,
+                 ok_controller: StateController,
                  defect_controllers: list
                  ):
         """
-        Orchestrates two ContinuosNormalDistributionControllers. Using a Bernoulli-Distribution, it chooses either the
+        Orchestrates multiple StateControllers. Using a Bernoulli-Distribution, it chooses either the
         ok or the defect distribution.
 
         :param failure_probability: Probability of failure for the Bernoulli-Distribution.
         :param ok_controller:
-        :param defect_controllers: list of ContinuosNormalDistributions. If a random failure occurs, one of them is
+        :param defect_controllers: list of StateControllers. If a random failure occurs, one of them is
                                     drawn with uniform distribution. Example: in case of defect, a value can be either
                                     too high or too low
         """

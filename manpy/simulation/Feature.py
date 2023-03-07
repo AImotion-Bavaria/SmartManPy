@@ -2,6 +2,7 @@
 from .ObjectProperty import ObjectProperty
 from .RandomNumberGenerator import RandomNumberGenerator
 from manpy.simulation.Globals import G
+import numpy as np
 
 
 class Feature(ObjectProperty):
@@ -41,6 +42,7 @@ class Feature(ObjectProperty):
         start_value=0,
         random_walk=False,
         dependent=None,
+        dependent_noise_std=None,
         **kw
     ):
         ObjectProperty.__init__(self, id,
@@ -55,7 +57,8 @@ class Feature(ObjectProperty):
                                 end_time=end_time,
                                 start_value=start_value,
                                 random_walk=random_walk,
-                                dependent=dependent
+                                dependent=dependent,
+                                dependent_noise_std=dependent_noise_std
                                 )
 
 
@@ -123,6 +126,9 @@ class Feature(ObjectProperty):
 
                 value = self.rngFeature.generateNumber(start_time=self.start_time)
                 # print("Value")
+
+                if self.dependent and self.dependent_noise_std:
+                    value += np.random.normal(0.0, self.dependent_noise_std)
 
                 if self.random_walk == True:
                     if self.featureValue is None:
