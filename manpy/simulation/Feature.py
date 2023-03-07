@@ -88,7 +88,7 @@ class Feature(ObjectProperty):
             if self.victimFailed in receivedEvent:
                 # self.victimIsInterrupted = self.env.event()
                 self.victimFailed = self.env.event()
-                print(f"{self.name}: victimIsInterrupted")
+                # print(f"{self.name}: victimIsInterrupted")
                 # wait for victim to start processing again
                 self.expectedSignals["victimResumesProcessing"] = 1
 
@@ -97,7 +97,7 @@ class Feature(ObjectProperty):
 
                 yield self.victimResumesProcessing
 
-                print(f"{self.name} Resuming")
+                # print(f"{self.name} Resuming")
                 self.victimResumesProcessing = self.env.event()
             elif self.victimEndsProcessing in receivedEvent:
                 self.label = None

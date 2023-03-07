@@ -170,7 +170,7 @@ class ContinuosNormalDistribution(StateController):
         return {"Feature": {"Normal": {"mean": mean, "stdev": std}}}
 
     def reset(self):
-        print(">>> Reset SimpleStateController <<<")
+        # print(">>> Reset SimpleStateController <<<")
         self.current_mean = self.initial_mean
         self.account = 0
 
