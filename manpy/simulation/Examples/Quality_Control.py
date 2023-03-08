@@ -1,5 +1,5 @@
 from manpy.simulation.imports import Machine, Source, Exit, Feature
-from manpy.simulation.Globals import runSimulation, G, ExcelPrinter
+from manpy.simulation.Globals import runSimulation, G, getEntityData
 
 class Machine_control(Machine):
     def condition(self):
@@ -13,7 +13,7 @@ M1 = Machine_control("M1", "Machine1", processingTime={"Normal": {"mean": 0.2, "
 E1 = Exit("E1", "Exit1")
 
 # ObjectInterruption
-Ftr1 = Feature("Ftr1", "Feature1", victim=M1, entity=True,
+Ftr1 = Feature("Ftr1", "Feature1", victim=M1,
                distribution={"Time": {"Fixed": {"mean": 0.5}}, "Feature": {"Normal": {"mean": 5, "stdev": 2, "min": 1, "max": 9}}})
 
 # Routing
@@ -28,8 +28,8 @@ def main(test=0):
     # runSim with trace
     runSimulation([S, M1, E1, Ftr1], maxSimTime, trace=True)
 
-    df = G.get_simulation_results_dataframe().drop(columns=["entity_name", "station_name"])
-    ExcelPrinter(df, "Quality_Control")
+    df = getEntityData([E1], [M1])
+    df.to_csv("Quality_Control.csv", index=False, encoding="utf8")
 
     print("""
             Ausschuss: {}

@@ -6,7 +6,7 @@ S = Source("S1", "Source", interArrivalTime={"Fixed": {"mean": 10}}, entity="man
 M1 = Machine("M1", "Machine1", processingTime={"Fixed": {"mean": 30}})
 E1 = Exit("E1", "Exit1")
 
-# ObjectInterruption
+# ObjectProperty
 Ftr1 = Feature("Ftr1", "Feature1", random_walk=True, distribution={"Feature": {"Normal": {"mean": 0, "stdev": 5, "min": -10, "max": 10}}})
 
 # Routing

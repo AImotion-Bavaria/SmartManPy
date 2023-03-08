@@ -26,7 +26,6 @@ F1 = Failure_conditional(victim=M1, conditional=True,
 
 #F2 = Failure(victim=M2, distribution={"TTF": {"Normal": {"mean": 10, "stdev": 5, "min": 3, "max": 17}}, "TTR": {"Fixed": {"mean": 1}}}, repairman=R)
 Ftr1 = Feature("Ftr1", "Feature1", victim=M1, deteriorationType="working", contribute=[F1], no_zero=True,
-               entity=True,
                distribution={"Time": {"Fixed": {"mean": 10}},
                              "Feature": {"Normal": {"mean": "3*x", "stdev": "0.02*x+3", "min": "2.98*x-3", "max": "3.02*x+3"}}}
                )
@@ -40,8 +39,7 @@ distribution_controller = SimpleStateController(states=dists, boundaries=boundar
 # Time for both features = 10 -> Features 1 works as expected
 # Without both: Feature 1 + 9 expect victimStartProcessing in postInterruption
 
-Ftr2 = Feature("Ftr2", "Feature9", victim=M1, deteriorationType="working",
-               entity=True,
+Ftr2 = Feature("Ftr2", "Feature2", victim=M1, deteriorationType="working",
                start_time=60,
                contribute=[F1],
                # distribution={"Time": {"Fixed": {"mean": 10}},

@@ -60,6 +60,8 @@ class Feature(ObjectProperty):
                                 dependent=dependent,
                                 dependent_noise_std=dependent_noise_std
                                 )
+        self.featureValue = 0
+        self.featureHistory = []
 
 
     def initialize(self):
