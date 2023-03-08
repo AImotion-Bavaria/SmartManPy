@@ -420,12 +420,12 @@ class Failure(ObjectInterruption):
                     # send Data to QuestDB
                     from .Globals import G
                     if G.db:
-                        G.sender.row(
+                        G.db.insert(
                             self.name,
-                            columns={"time": self.env.now,
+                            {"time": self.env.now,
                                      "message": self.victim.id + " is down"}
                         )
-                        G.sender.flush()
+                        G.db.commit()
 
                     # update the failure time
                     failTime = self.env.now
@@ -450,12 +450,12 @@ class Failure(ObjectInterruption):
                             self.outputTrace(self.victim.name, self.victim.id, "is up")
                             # send Data to QuestDB
                             if G.db:
-                                G.sender.row(
+                                G.db.insert(
                                     self.name,
-                                    columns={"time": self.env.now,
+                                    {"time": self.env.now,
                                              "message": self.victim.id + " is up"}
                                 )
-                                G.sender.flush()
+                                G.db.commit()
 
                             self.repairman.totalWorkingTime += (
                                 self.env.now - timeOperationStarted

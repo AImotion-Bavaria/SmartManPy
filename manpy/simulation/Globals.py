@@ -25,13 +25,10 @@ Created on 8 Nov 2012
 carries some global variables
 """
 
-from random import Random
-
 import pandas as pd
 import simpy
 import xlwt
-import numpy
-from questdb.ingress import Sender, Buffer
+from manpy.simulation.Database import ManPyDatabase
 
 
 # ===========================================================================
@@ -519,7 +516,7 @@ def runSimulation(
     seed=1,
     env=None,
     data="No",
-    db = False
+    db: ManPyDatabase = None,
 ):
     G.numberOfReplications = numberOfReplications
     G.trace = trace
@@ -542,6 +539,7 @@ def runSimulation(
     from .ObjectResource import ObjectResource
     from .Entity import Entity
 
+
     for object in objectList:
         if issubclass(object.__class__, CoreObject):
             G.ObjList.append(object)
@@ -561,61 +559,63 @@ def runSimulation(
 
     # connect to QuestDB
     if G.db:
-        with Sender(host='localhost', port=9009) as G.sender:
-            # run the replications
-            for i in range(G.numberOfReplications):
-                G.env = env or simpy.Environment()
-                # this is where all the simulation object 'live'
+        G.db.establish_connection()
 
-                G.EntityList = []
-                for object in objectList:
-                    if issubclass(object.__class__, Entity):
-                        G.EntityList.append(object)
+        # run the replications
+        for i in range(G.numberOfReplications):
+            G.env = env or simpy.Environment()
+            # this is where all the simulation object 'live'
 
-                # initialize all the objects
-                for object in (
-                    G.ObjList + G.ObjectInterruptionList + G.ObjectResourceList + G.EntityList + G.ObjectPropertyList
-                ):
-                    object.initialize()
+            G.EntityList = []
+            for object in objectList:
+                if issubclass(object.__class__, Entity):
+                    G.EntityList.append(object)
 
-                # activate all the objects
-                for object in G.ObjectInterruptionList:
-                    G.env.process(object.run())
+            # initialize all the objects
+            for object in (
+                G.ObjList + G.ObjectInterruptionList + G.ObjectResourceList + G.EntityList + G.ObjectPropertyList
+            ):
+                object.initialize()
 
-                for object in G.ObjectPropertyList:
-                    G.env.process(object.run())
+            # activate all the objects
+            for object in G.ObjectInterruptionList:
+                G.env.process(object.run())
 
-                # activate all the objects
-                for object in G.ObjList:
-                    G.env.process(object.run())
+            for object in G.ObjectPropertyList:
+                G.env.process(object.run())
 
-                # set the WIP
-                setWIP(G.EntityList)
+            # activate all the objects
+            for object in G.ObjList:
+                G.env.process(object.run())
 
-                G.env.run(until=G.maxSimTime)  # run the simulation
+            # set the WIP
+            setWIP(G.EntityList)
 
-                # identify from the exits what is the time that the last entity has ended.
-                endList = []
-                from manpy.simulation.Exit import Exit
+            G.env.run(until=G.maxSimTime)  # run the simulation
 
-                for object in G.ObjList:
-                    if issubclass(object.__class__, Exit):
-                        endList.append(object.timeLastEntityLeft)
+            # identify from the exits what is the time that the last entity has ended.
+            endList = []
+            from manpy.simulation.Exit import Exit
 
-                # identify the time of the last event
-                if G.env.now == float("inf"):
-                    G.maxSimTime = float(max(endList))
-                # do not let G.maxSimTime=0 so that there will be no crash
-                if G.maxSimTime == 0:
-                    print("simulation ran for 0 time, something may have gone wrong")
-                    import sys
+            for object in G.ObjList:
+                if issubclass(object.__class__, Exit):
+                    endList.append(object.timeLastEntityLeft)
 
-                    sys.exit()
+            # identify the time of the last event
+            if G.env.now == float("inf"):
+                G.maxSimTime = float(max(endList))
+            # do not let G.maxSimTime=0 so that there will be no crash
+            if G.maxSimTime == 0:
+                print("simulation ran for 0 time, something may have gone wrong")
+                import sys
 
-                # carry on the post processing operations for every object in the topology
-                for object in G.ObjList + G.ObjectResourceList:
-                    object.postProcessing()
-            G.sender.flush()
+                sys.exit()
+
+            # carry on the post processing operations for every object in the topology
+            for object in G.ObjList + G.ObjectResourceList:
+                object.postProcessing()
+        G.db.commit()
+        G.db.close_connection()
     else:
         # run the replications
         for i in range(G.numberOfReplications):

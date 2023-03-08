@@ -2,8 +2,8 @@ name: Tests (Self-hosted)
 
 on: push
 jobs:
-  activate-conda:
-    name: acitvate-conda
+  run-unittests:
+    name: unittests
     runs-on: "self-hosted"
     defaults:
       run:

@@ -99,6 +99,7 @@ class Entity(ManPyObject):
         self.status = status
         try:
             self.features = [None] * (len(G.ftr_st) + 1)
+            self.labels = [None] * (len(G.ftr_st) + 1)
             self.feature_times = [None] * len(G.ftr_st)
         except AttributeError:
             self.features = []
@@ -139,6 +140,7 @@ class Entity(ManPyObject):
     def getRequiredParts(self):
         return []
 
-    def set_feature(self, feature, time, indexing):
+    def set_feature(self, feature, label, time, indexing):
         self.features[G.ftr_st.index(indexing)] = feature
+        self.labels[G.ftr_st.index(indexing)] = label
         self.feature_times[G.ftr_st.index(indexing)] = time

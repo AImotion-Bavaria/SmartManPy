@@ -30,7 +30,7 @@ Ftr1 = Feature("Ftr1", "Feature1", victim=M1, contribute=[F1], no_negative=True,
 dists = [{"Time": {"Fixed": {"mean": 10}}, "Feature": {"Normal": {"mean": 0.5, "stdev": 0.2, "min": 0.1, "max": 0.9}}},
          {"Time": {"Fixed": {"mean": 10}}, "Feature": {"Normal": {"mean": 0.5, "stdev": 0.2, "min": 0.1, "max": 0.9}}}]
 boundaries = {(0, 10): 0, (10, None): 1}
-distribution_controller = SimpleStateController(states=dists, boundaries=boundaries, amount_per_step=1.0, reset_amount=None)
+distribution_controller = SimpleStateController(states=dists, boundaries=boundaries, wear_per_step=1.0, reset_amount=None)
 
 Ftr2 = Feature("Ftr2", "Feature2", victim=M1,
                start_time=60,

@@ -96,12 +96,13 @@ class Feature(ObjectProperty):
                 # print(f"{self.name} Resuming")
                 self.victimResumesProcessing = self.env.event()
             elif self.victimEndsProcessing in receivedEvent:
+                self.label = None
                 self.victimEndsProcessing = self.env.event()
 
                 # print(f"{self.name} received victimEndsProcessing")
 
                 if self.distribution_state_controller:
-                    self.distribution = self.distribution_state_controller.get_and_update()
+                    self.distribution, self.label = self.distribution_state_controller.get_and_update()
                     # TODO is this necessary? does it make sense to change the time?
                     self.rngTime = RandomNumberGenerator(self, self.distribution.get("Time", {"Fixed": {"mean": 1}}))
                     self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
@@ -138,11 +139,8 @@ class Feature(ObjectProperty):
                 try:
                     if G.db:
                         self.featureValue = int(self.featureValue)
-                        G.sender.row(
-                            self.name,
-                            columns={"time": self.env.now, "value": self.featureValue}
-                        )
-                        G.sender.flush()
+                        G.db.insert(self.name, {"time": self.env.now, "value": self.featureValue})
+                        G.db.commit()
                 except:
                     print("Quest-DB error: Feature")
 
@@ -155,7 +153,7 @@ class Feature(ObjectProperty):
 
                 # add Feature value and time to Entity
                 try:
-                    self.victim.activeEntity.set_feature(self.featureValue, self.env.now, (self.id, self.victim.id))
+                    self.victim.activeEntity.set_feature(self.featureValue, self.label, self.env.now, (self.id, self.victim.id))
                     self.outputTrace(self.victim.activeEntity.name, self.victim.activeEntity.id, str(self.featureValue))
                 except IndexError:
                     print(self.victim.activeEntity)

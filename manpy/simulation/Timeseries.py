@@ -148,6 +148,7 @@ class Timeseries(ObjectProperty):
                         self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
                 else:
                     # generate the Feature
+                    self.label = None
                     if self.dependent:
                         for key in list(self.dependent.keys()):
                             if key != "Function":
@@ -183,7 +184,7 @@ class Timeseries(ObjectProperty):
                     self.timeHistory.append(self.env.now)
 
                     # add TimeSeries value and time to Entity
-                    self.victim.Res.users[0].set_feature(self.featureHistory, self.timeHistory,
+                    self.victim.Res.users[0].set_feature(self.featureHistory, self.label, self.timeHistory,
                                                          (self.id, self.victim.id))
                     self.outputTrace(self.victim.Res.users[0].name, self.victim.Res.users[0].id, str(self.featureValue))
 
@@ -192,11 +193,8 @@ class Timeseries(ObjectProperty):
                     self.featureValue = self.featureValue
                     # try:
                     if G.db:
-                        G.sender.row(
-                            self.name,
-                            columns={"time": self.env.now, "value": self.featureValue}
-                        )
-                        G.sender.flush()
+                        G.db.insert(self.name, {"time": self.env.now, "value": self.featureValue})
+                        G.db.commit()
                     # except:
                     #     print("Quest-DB error: TimeSeries")
 
