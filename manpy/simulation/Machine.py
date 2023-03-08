@@ -67,7 +67,7 @@ class Machine(CoreObject):
         canDeliverOnInterruption=False,
         technology=None,
         priority=0,
-        control=False,
+        control=None,
         **kw,
     ):
         self.type = "Machine"  # String that shows the type of object
@@ -180,8 +180,14 @@ class Machine(CoreObject):
         # attribute to prioritize against competing parallel machines
         self.priority = priority
         self.processed_entities = []
+        # set a default function for control if none is defined
+        if control == None:
+            def condition(self):
+                return None
+            self.control = condition
+        else:
+            self.control = control
 
-        self.control = control
         # list for Entities who fail control
         self.discards = []
         # list for finished Entities
@@ -244,10 +250,6 @@ class Machine(CoreObject):
         self.processOperatorUnavailable = self.env.event()
         # holds the Operator currently processing the Machine
         self.currentOperator = None
-
-    def condition(self):
-        #Overwrite this method to set a condition
-        return False
 
     @staticmethod
     def getOperationTime(time):
@@ -951,7 +953,7 @@ class Machine(CoreObject):
 
             # Control and end of processing
             activeObjectQueue = self.Res.users
-            if self.control == True and self.condition() == True:
+            if self.control(self) == True:
                 self.outputTrace(activeObjectQueue[0].name, activeObjectQueue[0].id, "Failed Process control")
                 # send data to QuestDB
                 if G.db:
@@ -994,7 +996,7 @@ class Machine(CoreObject):
                     if self.interruptedBy == "ShiftScheduler":
                         self.timeLastShiftEnded = self.env.now
             else:
-                if self.control == True:
+                if self.control(self) == False:
                     self.outputTrace(activeObjectQueue[0].name, activeObjectQueue[0].id, "Succeeded Process control")
                     # send data to QuestDB
                     if G.db:
