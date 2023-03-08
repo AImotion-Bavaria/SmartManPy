@@ -154,6 +154,7 @@ class ContinuosNormalDistribution(StateController):
     def get_and_update(self):
         # parameters are incremented before return
         if self.break_point is not None and self.account >= self.break_point:
+            print("Reached break point")
             mean = self.defect_mean
             std = self.defect_std
             label = True
@@ -170,7 +171,6 @@ class ContinuosNormalDistribution(StateController):
         return {"Feature": {"Normal": {"mean": mean, "stdev": std}}}
 
     def reset(self):
-        # print(">>> Reset SimpleStateController <<<")
         self.current_mean = self.initial_mean
         self.account = 0
 
@@ -208,8 +208,12 @@ class RandomDefectStateController(StateController):
             dist, _ = defect_controller.get_and_update()
             label = True
         else:
-            dist, _ = self.ok_controller.get_and_update()
-            label = False
+            dist, y = self.ok_controller.get_and_update()
+            # if the state controller returns <defect> (e.g. due to a reached break point) we need to keep this label!
+            if y:
+                label = True
+            else:
+                label = False
 
         return dist, label
 
