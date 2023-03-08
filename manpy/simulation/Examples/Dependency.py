@@ -5,24 +5,24 @@ import time
 
 start = time.time()
 
-class Machine_control(Machine):
-    def condition(self):
-        activeEntity = self.Res.users[0]
-        means = [1.6, 3500, 450, 180, 400, 50, 190, 400]
-        stdevs = [0.2, 200, 50, 30, 50, 5, 10, 50]
-        for idx, feature in enumerate(activeEntity.features):
-            if feature != None:
-                min = means[idx] - 2 * stdevs[idx]
-                max = means[idx] + 2 * stdevs[idx]
-                if feature < min or feature > max:
-                    return True
+def condition(self):
+    activeEntity = self.Res.users[0]
+    means = [1.6, 3500, 450, 180, 400, 50, 190, 400]
+    stdevs = [0.2, 200, 50, 30, 50, 5, 10, 50]
+    for idx, feature in enumerate(activeEntity.features):
+        if feature != None:
+            min = means[idx] - 2 * stdevs[idx]
+            max = means[idx] + 2 * stdevs[idx]
+            if feature < min or feature > max:
+                return True
+    return False
 
 
 # Objects
 S = Source("S1", "Source", interArrivalTime={"Fixed": {"mean": 0.4}}, entity="manpy.Part", capacity=1)
 Löten = Machine("M0", "Löten", processingTime={"Normal": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}})
 Q = Queue("Q", "Queue")
-Kleben = Machine_control("M1", "Kleben", processingTime={"Fixed": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}}, control=True)
+Kleben = Machine("M1", "Kleben", processingTime={"Fixed": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}}, control=condition)
 E1 = Exit("E1", "Exit1")
 
 # ObjectInterruption

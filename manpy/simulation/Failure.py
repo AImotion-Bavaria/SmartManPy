@@ -45,7 +45,7 @@ class Failure(ObjectInterruption):
         offshift=False,
         deteriorationType="constant",
         waitOnTie=False,
-        conditional=False,
+        conditional=None,
         entity=False,
         **kw
     ):

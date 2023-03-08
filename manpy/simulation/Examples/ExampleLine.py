@@ -45,7 +45,7 @@ Temperatur = Feature("Ftr6", "Feature6", victim=Kleben,
 Menge = Feature("Ftr7", "Feature7", victim=Kleben,
                distribution={"Feature": {"Normal": {"mean": 400, "stdev": 50}}})
 
-StecktFest = Failure("Flr0", "Failure0", victim=Kleben, conditional=True,
+StecktFest = Failure("Flr0", "Failure0", victim=Kleben,
                distribution={"TTF": {"Fixed": {"mean": 0.5}}, "TTR": {"Normal": {"mean": 2,"stdev": 0.2, "min":0, "probability": 0.5}}})
 
 
