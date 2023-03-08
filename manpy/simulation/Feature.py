@@ -57,6 +57,8 @@ class Feature(ObjectProperty):
                                 random_walk=random_walk,
                                 dependent=dependent
                                 )
+        self.featureValue = 0
+        self.featureHistory = []
 
 
     def initialize(self):

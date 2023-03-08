@@ -1,6 +1,7 @@
 from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue, Timeseries
 from manpy.simulation.Globals import runSimulation, getEntityData, G, ExcelPrinter
 import time
+import matplotlib.pyplot as plt
 
 start = time.time()
 
@@ -11,10 +12,10 @@ Q = Queue("Q", "Queue")
 Kleben = Machine("M1", "Kleben", processingTime={"Fixed": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}})
 E1 = Exit("E1", "Exit1")
 
-# ObjectInterruption
+# ObjectProperty
 # Löten
-Spannung = Timeseries("Ftr0", "Feature0", victim=Löten, no_negative=True,
-               distribution={"Function" : "-1.6*x**2+1.6", "Interval" : (-1, 1), "DataPoints" : 20, "Feature": {"Normal": {"stdev": 0.02}}})
+Spannung = Timeseries("Ftr0", "Feature0", victim=Löten, no_negative=True, step_time=0.03,
+                      distribution={"Function" : {(-1, 0) : "-1.6*x**2+1.6", (0, 1) : "-1.6*x**2+2"}, "DataPoints" : 20, "Feature": {"Normal": {"stdev": 0.02}}})
 Strom = Timeseries("Ftr1", "Feature1", victim=Löten,
                dependent={"Function" : "1000*V + 1900", "V" : Spannung},
                distribution={"Feature": {"Normal": {"stdev": 20}}})
@@ -49,13 +50,20 @@ def main(test=0):
     maxSimTime = 50
     objectList = [S, Löten, Q, Kleben, E1, Spannung, Strom, Widerstand, Kraft, Einsinktiefe, Durchflussgeschwindigkeit, Temperatur, Menge]
 
-    runSimulation(objectList, maxSimTime, trace=True, db=False)
+    runSimulation(objectList, maxSimTime, trace=True)
 
     if test:
         return E1.entities[0]
 
     df = G.get_simulation_results_dataframe()
     ExcelPrinter(df, "ExampleTS")
+
+    plt.plot(E1.entities[0].feature_times[0], E1.entities[0].features[0])
+    plt.show()
+    plt.plot(E1.entities[0].feature_times[1], E1.entities[0].features[1], c="orange")
+    plt.show()
+    plt.plot(E1.entities[0].feature_times[2], E1.entities[0].features[2], c="g")
+    plt.show()
 
     print("""
             Produziert:         {}
