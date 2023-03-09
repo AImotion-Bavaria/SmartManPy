@@ -121,7 +121,7 @@ class ContinuosNormalDistribution(StateController):
                  wear_per_step=0,
                  break_point=None,
                  defect_mean=None,
-                 defect_std=None
+                 defect_std=None,
                  ):
         """
         Normal Distribution that changes its mean value with each step. Optionally, a defect can occur after a defined
@@ -147,6 +147,7 @@ class ContinuosNormalDistribution(StateController):
         self.break_point = break_point
         self.defect_mean = defect_mean
         self.defect_std = defect_std
+
 
     def get_initial_state(self):
         return self.__get_distribution(self.initial_mean, self.std), False

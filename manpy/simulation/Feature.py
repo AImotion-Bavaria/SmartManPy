@@ -60,7 +60,9 @@ class Feature(ObjectProperty):
                                 dependent=dependent,
                                 dependent_noise_std=dependent_noise_std
                                 )
-        self.featureValue = 0
+
+        if self.random_walk:
+            self.featureValue = start_value
         self.featureHistory = []
 
 
@@ -133,10 +135,7 @@ class Feature(ObjectProperty):
                     value += np.random.normal(0.0, self.dependent_noise_std)
 
                 if self.random_walk == True:
-                    if self.featureValue is None:
-                        self.featureValue = value
-                    else:
-                        self.featureValue += value
+                    self.featureValue += value
                 else:
                     self.featureValue = value
 
