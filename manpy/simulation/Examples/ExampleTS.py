@@ -50,7 +50,7 @@ def main(test=0):
     maxSimTime = 50
     objectList = [S, Löten, Q, Kleben, E1, Spannung, Strom, Widerstand, Kraft, Einsinktiefe, Durchflussgeschwindigkeit, Temperatur, Menge]
 
-    runSimulation(objectList, maxSimTime, trace=True, db=False)
+    runSimulation(objectList, maxSimTime, trace=True)
 
     if test:
         return E1.entities[0]

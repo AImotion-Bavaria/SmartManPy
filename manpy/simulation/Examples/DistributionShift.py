@@ -5,38 +5,27 @@ import time
 
 start = time.time()
 
-class Machine_control(Machine):
-    def condition(self):
-        activeEntity = self.Res.users[0]
-        means = [1.6, 3500, 450, 180, 400, 50, 190, 400, 1]
-        stdevs = [0.2, 200, 50, 30, 50, 5, 10, 50, 2]
-        for idx, feature in enumerate(activeEntity.features):
-            if feature != None:
-                min = means[idx] - 2 * stdevs[idx]
-                max = means[idx] + 2 * stdevs[idx]
-                if feature < min or feature > max:
-                    return True
-
-class Machine_control2(Machine):
-    """
-    Another approach for quality control: label is determined by features. if >= 1 feature has label "defect", the
-    entity does not pass the quality inspection
-    """
-    def condition(self):
-        activeEntity = self.Res.users[0]
-        if any(activeEntity.labels):
-            return True
+def M_condition(self):
+    activeEntity = self.Res.users[0]
+    means = [1.6, 3500, 450, 180, 400, 50, 190, 400, 1]
+    stdevs = [0.2, 200, 50, 30, 50, 5, 10, 50, 2]
+    for idx, feature in enumerate(activeEntity.features):
+        if feature != None:
+            min = means[idx] - 2 * stdevs[idx]
+            max = means[idx] + 2 * stdevs[idx]
+            if feature < min or feature > max:
+                return True
+    return False
 
 
-class Failure_conditional(Failure):
-    def condition(self):
-        value_1 = Test.featureValue
-        if value_1 is not None and value_1 > 10:
-            print("Failure!")
-            Test.start_time = G.env.now
-            return True
-        else:
-            return False
+def F_condition(self):
+    value_1 = Test.featureValue
+    if value_1 > 10:
+        print("Failure!")
+        Test.start_time = G.env.now
+        return True
+    else:
+        return False
 
 
 # Objects
@@ -44,19 +33,14 @@ R = Repairman("R1", "Sascha")
 S = Source("S1", "Source", interArrivalTime={"Fixed": {"mean": 0.4}}, entity="manpy.Part", capacity=100)
 Löten = Machine("M0", "Löten", processingTime={"Normal": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}})
 Q = Queue("Q", "Queue")
-Kleben = Machine_control("M1", "Kleben",
+Kleben = Machine("M1", "Kleben",
                          processingTime={"Fixed": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}},
                          # processingTime={"Fixed": {"mean": 0.8}},
-                         control=True)
+                         control=M_condition)
 
 # Kleben = Machine("M1", "Kleben", processingTime={"Normal": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}})
 E1 = Exit("E1", "Exit1")
 
-##### CONFIG #####
-# TODO Feature Time seems to have huge impact on the event system
-# TODO Setting Feature Cycle to values  =!= 1 triggers postInterruption ??????? wtf
-feature_cycle_time = 1.0
-##################
 
 # ObjectInterruption
 # Löten
@@ -79,7 +63,7 @@ Temperatur = Feature("Ftr6", "Feature7", victim=Kleben,
 Menge = Feature("Ftr7", "Feature8", victim=Kleben,
                distribution={"Feature": {"Normal": {"mean": 400, "stdev": 50}}})
 
-StecktFest = Failure_conditional("Flr0", "Failure0", victim=Kleben, conditional=True,
+StecktFest = Failure("Flr0", "Failure0", victim=Kleben, conditional=F_condition,
             distribution={"TTF": {"Fixed": {"mean": 0}}, "TTR": {"Fixed": {"mean": 20}}}, waitOnTie=True)
 
 # StecktFest = Failure("Flr0", "Failure0", victim=Kleben, entity=True, deteriorationType="working",
@@ -88,14 +72,12 @@ StecktFest = Failure_conditional("Flr0", "Failure0", victim=Kleben, conditional=
 
 dists = [{"Feature": {"Normal": {"mean": 1, "stdev":2}}},
          {"Feature": {"Normal": {"mean": 100, "stdev":2}}}]
-labels = [False, True]
 boundaries = {(0, 25): 0, (25, None): 1}
-distribution_controller = SimpleStateController(states=dists, boundaries=boundaries, wear_per_step=1.0,
-                                                labels=labels, reset_amount=None)
+distribution_controller = SimpleStateController(states=dists, boundaries=boundaries, amount_per_step=1.0, reset_amount=None)
 
 Test = Feature("Ftr8", "Feature9", victim=Kleben,
                distribution_state_controller=distribution_controller,
-               deteriorationType="constant", contribute=[StecktFest], reset_distributions=True,
+               contribute=[StecktFest], reset_distributions=True,
                )
 
 

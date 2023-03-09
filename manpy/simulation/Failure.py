@@ -45,7 +45,7 @@ class Failure(ObjectInterruption):
         offshift=False,
         deteriorationType="constant",
         waitOnTie=False,
-        conditional=False,
+        conditional=None,
         entity=False,
         **kw
     ):
@@ -71,12 +71,19 @@ class Failure(ObjectInterruption):
         self.offshift = offshift
         # flag to show if the failure will wait on tie with other events before interrupting the victim
         self.waitOnTie = waitOnTie
-        # if a function should determine if a failure occurs or not
-        self.conditional = conditional
+        # set a default function for conditional if none is defined
+        if conditional == None:
+            def condition(self):
+                return None
+
+            self.conditional = condition
+        else:
+            self.conditional = conditional
+
         self.entity = entity
 
     def initialize(self):
-        if self.conditional == True:
+        if self.conditional(self) != None:
             self.entity = True
         if self.entity == True:
             self.deteriorationType="working"
@@ -85,15 +92,11 @@ class Failure(ObjectInterruption):
         self.victimEndsProcessing = self.env.event()
         self.contribution = self.env.event()
 
-    def condition(self):
-        #Overwrite this method to set a condition
-        return False
-
     # =======================================================================
     #    The run method for the failure which has to served by a repairman
     # =======================================================================
     def run(self):
-        if self.condition() != None and self.conditional:
+        if self.conditional(self) != None:
             from .Globals import G
             while 1:
                 failureNotTriggered = True
@@ -102,7 +105,7 @@ class Failure(ObjectInterruption):
                 self.contribution = self.env.event()
 
                 # wait for victim to start process
-                if self.condition() == True:
+                if self.conditional(self) == True:
                     # if the time that the victim is off-shift should not be counted
                     timeToFailure = self.rngTTF.generateNumber()
                     remainingTimeToFailure = timeToFailure
