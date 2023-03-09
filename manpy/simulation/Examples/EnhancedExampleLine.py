@@ -5,64 +5,52 @@ import time
 
 start = time.time()
 
-class Machine_control(Machine):
-    def condition(self):
-        activeEntity = self.Res.users[0]
-        means = [1.6, 3500, 450, 180, 400, 50, 190, 400]
-        stdevs = [0.2, 200, 50, 30, 50, 5, 10, 50]
-        for idx, feature in enumerate(activeEntity.features):
-            if feature != None:
-                min = means[idx] - 2 * stdevs[idx]
-                max = means[idx] + 2 * stdevs[idx]
-                if feature < min or feature > max:
-                    return True
-
-class Machine_control2(Machine):
+def quality_control(self):
     """
     Another approach for quality control: label is determined by features. if >= 1 feature has label "defect", the
     entity does not pass the quality inspection
     """
-    def condition(self):
-        num_stds = 3
-        activeEntity = self.Res.users[0]
+    num_stds = 3
+    activeEntity = self.Res.users[0]
 
-        if any(activeEntity.labels):
-            return True
-        else:
-            # TODO this needs to be done better!
-            means = [1.6, None, None, 180, None, 190, None, None]
-            stdevs = [0.2, None, None, 30, None, 10, None, None]
-            influence = [False, False, False, False, False, False, False, False, False]
-            for idx, feature in enumerate(activeEntity.features):
-                if feature != None and influence[idx]:
-                    min = means[idx] - num_stds * stdevs[idx]
-                    max = means[idx] + num_stds * stdevs[idx]
-                    if feature < min or feature > max:
-                        return True
+    if any(activeEntity.labels):
+        return True
+    else:
+        # TODO this needs to be done better!
+        means = [1.6, None, None, 180, None, 190, None, None]
+        stdevs = [0.2, None, None, 30, None, 10, None, None]
+        influence = [False, False, False, False, False, False, False, False, False]
+        for idx, feature in enumerate(activeEntity.features):
+            if feature != None and influence[idx]:
+                min = means[idx] - num_stds * stdevs[idx]
+                max = means[idx] + num_stds * stdevs[idx]
+                if feature < min or feature > max:
+                    return True
+        return False
 
 # todo this is still not ideal --> very few values are actually defect
-class Widerstand_FailureConditional(Failure):
+def resistance_failure_condition(self):
+    r = Widerstand.get_feature_value()
 
-    def condition(self):
-        r = Widerstand.get_feature_value()
-
-        if r is not None and r > 515:
-            print("Too much resistance!")
-            return True
-        else:
-            return False
+    if r is not None and r > 535:
+        print("Too much resistance!")
+        return True
+    else:
+        return False
 
 # TODO are the names in the csv correct?
+# TODO maybe find a better representation of an object's features? especially in get_entity_data we heavily rely
+# TODO on fixed column order etc
 # Objects
 S = Source("S1", "Source", interArrivalTime={"Fixed": {"mean": 0.4}}, entity="manpy.Part", capacity=1)
 Löten = Machine("M0", "Löten", processingTime={"Normal": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}})
 Q = Queue("Q", "Queue")
-Kleben = Machine_control2("M1", "Kleben", processingTime={"Fixed": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}}, control=True)
+Kleben = Machine("M1", "Kleben", processingTime={"Fixed": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}}, control=quality_control)
 E1 = Exit("E1", "Exit1")
 # ObjectInterruption
 # Löten
 
-WiderstandZuHoch = Widerstand_FailureConditional("Flr1", "RTooHigh", victim=Löten, conditional=True,
+WiderstandZuHoch = Failure("Flr1", "RTooHigh", victim=Löten, conditional=resistance_failure_condition,
             distribution={"TTF": {"Fixed": {"mean": 0}}, "TTR": {"Fixed": {"mean": 5}}}, waitOnTie=True)
 
 Spannung = Feature("Spannung", "Spannung", victim=Löten, entity=True,
