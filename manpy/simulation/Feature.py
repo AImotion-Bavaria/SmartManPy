@@ -38,7 +38,7 @@ class Feature(ObjectProperty):
         contribute=None,
         start_time=0,
         end_time=0,
-        start_value=0,
+        start_value=None,
         random_walk=False,
         dependent=None,
         **kw
@@ -57,8 +57,12 @@ class Feature(ObjectProperty):
                                 random_walk=random_walk,
                                 dependent=dependent
                                 )
-        self.featureValue = 0
-        self.featureHistory = []
+        if start_value != None:
+            self.featureValue = start_value
+            self.featureHistory = [start_value]
+        else:
+            self.featureValue = 0
+            self.featureHistory = []
 
 
     def initialize(self):

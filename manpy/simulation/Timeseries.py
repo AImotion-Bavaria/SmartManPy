@@ -2,6 +2,7 @@
 from .ObjectProperty import ObjectProperty
 from .RandomNumberGenerator import RandomNumberGenerator
 from manpy.simulation.Globals import G
+from scipy import interpolate
 import copy
 
 
@@ -111,6 +112,7 @@ class Timeseries(ObjectProperty):
             remainingTimeTillFeature = step_time
             steps = 0
             interval = 0
+            f = None
 
             while machineIsRunning:
                 timeRestartedCounting = self.env.now
@@ -164,11 +166,28 @@ class Timeseries(ObjectProperty):
                             if i[0] <= x <= i[1]:
                                 interval = idx
                                 break
-                        self.distribution["Feature"][list(self.distribution["Feature"].keys())[0]]["mean"] = eval(
-                            self.distribution["Function"][self.intervals[interval]])
+
+                        if type(self.distribution["Function"][self.intervals[interval]]) == list:
+                            # set f for interpolation
+                            if f == None:
+                                xs = self.distribution["Function"][self.intervals[interval]][0]
+                                ys = self.distribution["Function"][self.intervals[interval]][1]
+                                f = interpolate.UnivariateSpline(xs, ys)
+                            # calculate mean for interpolation
+                            try :
+                                if min(xs) <= x <= max(xs):
+                                    self.distribution["Feature"][list(self.distribution["Feature"].keys())[0]]["mean"] = f(x)
+                                else:
+                                    self.distribution["Feature"][list(self.distribution["Feature"].keys())[0]]["mean"] = 0
+                            except:
+                                print("Interpolation needs at least 4 values")
+                        else:
+                            self.distribution["Feature"][list(self.distribution["Feature"].keys())[0]]["mean"] = eval(self.distribution["Function"][self.intervals[interval]])
                         self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
                         value = self.rngFeature.generateNumber(start_time=self.start_time)
 
+                    if self.name == "IV_Curve" and value < 3.48:
+                        pass
                     if self.random_walk == True:
                         self.featureValue += value
                     else:
@@ -189,7 +208,6 @@ class Timeseries(ObjectProperty):
                     self.outputTrace(self.victim.Res.users[0].name, self.victim.Res.users[0].id, str(self.featureValue))
 
                     # send data to QuestDB
-                    # TODO: make it work with floats
                     self.featureValue = self.featureValue
                     # try:
                     if G.db:
@@ -203,45 +221,6 @@ class Timeseries(ObjectProperty):
                         for c in self.contribute:
                             if c.expectedSignals["contribution"]:
                                 self.sendSignal(receiver=c, signal=c.contribution)
-
-
-
-
-                        # if self.random_walk == True:
-                        #     self.featureValue += value
-                        # else:
-                        #     self.featureValue = value
-                        #
-                        # # check no_negative
-                        # if self.no_negative == True:
-                        #     if self.featureValue < 0:
-                        #         self.featureValue = 0
-                        #
-                        # self.featureHistory.append(self.featureValue)
-                        #
-                        # # send data to QuestDB
-                        # try:
-                        #     if G.db:
-                        #         G.sender.row(
-                        #             self.name,
-                        #             columns={"time": self.env.now, "value": self.featureValue}
-                        #         )
-                        #         G.sender.flush()
-                        # except:
-                        #     print("Quest-DB error: non-dependent TS")
-                        #
-                        # # check contribution
-                        # if self.contribute != None:
-                        #     for c in self.contribute:
-                        #         if c.expectedSignals["contribution"]:
-                        #             self.sendSignal(receiver=c, signal=c.contribution)
-                        #
-                        # # add Feature value and time to Entity
-                        # self.victim.Res.users[0].set_feature(self.featureValue, self.env.now,
-                        #                                      (self.id, self.victim.id))
-                        # self.outputTrace(self.victim.Res.users[0].name, self.victim.Res.users[0].id,
-                        #                  str(self.featureValue))
-
 
 
                     remainingTimeTillFeature = step_time
