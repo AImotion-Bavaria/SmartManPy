@@ -9,7 +9,7 @@ start = time.time()
 
 def condition(self):
     activeEntity = self.Res.users[0]
-    features = [None, None, 3.5, 0.62, 2.3, 0.48, 3.367]
+    features = [3.5, 0.62, 0.48, 3.367, 2.3]
     for idx, feature in enumerate(features):
         if feature is not None:
             if activeEntity.features[idx] < 0.95*feature or activeEntity.features[idx] > 1.05*feature:
@@ -32,22 +32,29 @@ E1 = Exit("E1", "Exit")
 #                       distribution={"Function": {(0, 0.4): "3.5 - 0.05*x", (0.4, 0.8): "-410.354*x**3 + 512.626*x**2 - 213.533*x + 33.1356"}, "DataPoints": 100})
 # Power_Curve = Timeseries("Ts1", "Power_Curve", victim=Solar_Cell_Tester, no_negative=True,
 #                       distribution={"Function": {(0, 0.46): "4.8913*x", (0.46, 0.8): "-118.304*x**2 + 113.705*x - 25.0214"}, "DataPoints": 100})
-Isc = Feature("Ftr0", "Isc", victim=Solar_Cell_Tester, start_value=3.5,         # short-circuit current
-               distribution={"Feature" : {"Fixed": {"mean": 3.5}}})
-Voc = Feature("Ftr1", "Voc", victim=Solar_Cell_Tester, start_value=0.62,         # open circuit voltage
-               distribution={"Feature" : {"Fixed": {"mean": 0.62}}})
-Vm = Feature("Ftr2", "Vm", victim=Solar_Cell_Tester, start_value=0.48,          # Maximum Power Point Voltage
-               distribution={"Feature" : {"Fixed": {"mean": 0.48}}})
-Im = Feature("Ftr3", "Im", victim=Solar_Cell_Tester, start_value=3.367,         # Maximum Power Point Current
-               distribution={"Feature" : {"Fixed": {"mean": 3.367}}})
-Pmax = Feature("Ftr4", "Pmax", victim=Solar_Cell_Tester, start_value=2.3,       # Peak Power
-               distribution={"Feature" : {"Fixed": {"mean": 2.3}}})
+Isc = Feature("Ftr0", "Isc", victim=Solar_Cell_Tester,                          # short-circuit current
+               distribution={"Feature": {"Normal": {"mean": 3.5, "stdev": 0.0875}}})
+Voc = Feature("Ftr1", "Voc", victim=Solar_Cell_Tester,                          # open circuit voltage
+               distribution={"Feature": {"Normal": {"mean": 0.62, "stdev": 0.0155}}})
+Vm = Feature("Ftr2", "Vm", victim=Solar_Cell_Tester,                            # Maximum Power Point Voltage
+               dependent={"Function": "Voc-0.14", "Voc": Voc},
+               distribution={"Feature": {"Normal": {"stdev": 0.009}}})
+Im = Feature("Ftr3", "Im", victim=Solar_Cell_Tester,                            # Maximum Power Point Current
+               dependent={"Function": "Isc-0.133", "Isc": Isc},
+               distribution={"Feature": {"Normal": {"stdev": 0.03325}}})
+Pmax = Feature("Ftr4", "Pmax", victim=Solar_Cell_Tester,                        # Peak Power
+               dependent={"Function": "2.3-(Isc-Im)", "Isc": Isc, "Im": Im})
 IV_Curve = Timeseries("Ts2", "IV_Curve", victim=Solar_Cell_Tester, no_negative=True,
-                      distribution={"Function": {(0, 0.4): "3.5 - 0.05*x",
-                                                 (0.4, 0.8): [[0.4, 0.41, Vm.featureValue, Voc.featureValue], [Isc.featureValue-0.02, Isc.featureValue-0.023, Im.featureValue, 0]]}, "DataPoints": 100})
+                      distribution={"Function": {(0, 0.4): "Isc - 0.05*x",
+                                                 (0.4, 0.8): [[0.4, 0.41, "Vm", "Voc"], ["Isc-0.02", "Isc-0.023", "Im", 0]]},
+                                    "Vm": Vm, "Voc": Voc, "Isc": Isc, "Im": Im,
+                                    "DataPoints": 100})
 Power_Curve = Timeseries("Ts3", "Power_Curve", victim=Solar_Cell_Tester, no_negative=True,
-                      distribution={"Function": {(0, 0.46): "4.8913*x",
-                                                 (0.46, 0.8): [[0.46, Vm.featureValue, Voc.featureValue-0.02, Voc.featureValue], [Pmax.featureValue-0.05, Pmax.featureValue, 0.61, 0]]}, "DataPoints": 100})
+                      distribution={"Function": {(0, 0.46): "((Pmax-0.05)/0.46)*x",
+                                                 (0.46, 0.8): [[0.46, "Vm", "Vm+0.02", "Voc"], ["Pmax-0.05", "Pmax", "Pmax-0.02", 0]]},
+                                    "Vm": Vm, "Voc": Voc, "Pmax": Pmax,
+                                    "DataPoints": 100})
+#
 # FF = Feature("Ftr5", "FF", victim=Solar_Cell_Tester,            # Fill Factor
 #                dependent={"Function": "(Vm * Im)/(Isc * Voc)", "Vm": Vm, "Im": Im, "Isc": Isc, "Voc": Voc},
 #                distribution={})
@@ -72,7 +79,7 @@ E1.defineRouting([Machine1])
 
 def main(test=0):
     maxSimTime = 10
-    objectList = [Solar_Cells, Solar_Cell_Tester, E1, Machine1, Q, Isc, Voc, Pmax, Vm, Im, IV_Curve, Power_Curve]
+    objectList = [Solar_Cells, Solar_Cell_Tester, E1, Machine1, Q, Isc, Voc, Vm, Im, Pmax, IV_Curve, Power_Curve]
 
     runSimulation(objectList, maxSimTime, trace=False)
 
@@ -81,17 +88,21 @@ def main(test=0):
     # df = getEntityData([E])
     # df.to_csv("SolarPanelLine.csv", index=False, encoding="utf8")
 
-    print(type(E1.entities[0].features[5]))
-    for idx, i in enumerate(E1.entities[0].features[5]):
-        print(E1.entities[1].feature_times[5][idx], ": ", i)
-    plt.plot([0], [E1.entities[0].features[0]], "o")
-    plt.plot([E1.entities[0].features[1]], [0], "o")
-    plt.plot([E1.entities[0].features[2]], [0], "o")
-    plt.plot([0], [E1.entities[0].features[3]], "o")
-    plt.plot([E1.entities[0].features[2]], [E1.entities[0].features[3]], "o")
-    plt.plot(E1.entities[0].feature_times[5], E1.entities[0].features[5], c="red")
-    plt.plot(E1.entities[0].feature_times[6], E1.entities[0].features[6], c="green")
+    print("Isc: ", [E1.entities[0].features[0]], "\n",
+          "Voc: ", [E1.entities[0].features[1]], "\n",
+          "MPP: ", [E1.entities[0].features[2]], [E1.entities[0].features[3]], "\n",
+          "Pmax: ", [E1.entities[0].features[4]], "\n",
+          )
+
+    plt.plot([0], [E1.entities[0].features[0]], "o", c="orange", label="Isc")
+    plt.plot([E1.entities[0].features[1]], [0], "o", c="blue", label="Voc")
+    plt.plot([E1.entities[0].features[2]], [E1.entities[0].features[3]], "^", c="purple", label="MPP")
+    plt.plot([E1.entities[0].features[2]], [E1.entities[0].features[4]], "^", c="purple")
+    plt.plot(E1.entities[0].feature_times[5], E1.entities[0].features[5], c="red", label="IV")
+    plt.plot(E1.entities[0].feature_times[6], E1.entities[0].features[6], c="green", label="PV")
+    plt.legend()
     plt.show()
+
 
     # print("""
     #         Ausschuss:          {}

@@ -72,12 +72,37 @@ class Feature(ObjectProperty):
         self.victimResumesProcessing = self.env.event()
         self.victimEndsProcessing = self.env.event()
 
+    def generate_feature(self):
+        if self.dependent:
+            if self.name == "Pmax":
+                pass
+            for key in list(self.dependent.keys()):
+                if key != "Function":
+                    locals()[key] = self.dependent.get(key).featureValue
+                    locals()[key + '_history'] = self.dependent.get(key).featureHistory
+
+            self.distribution["Feature"][list(self.distribution["Feature"].keys())[0]]["mean"] = eval(
+                self.dependent["Function"])
+            self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
+
+        value = self.rngFeature.generateNumber(start_time=self.start_time)
+        if self.random_walk == True:
+            self.featureValue += value
+        else:
+            self.featureValue = value
+
+        # check no_negative
+        if self.no_negative == True:
+            if self.featureValue < 0:
+                self.featureValue = 0
+
     def run(self):
         """Every Object has to have a run method. Simpy is mainly used in this function
         :return: None
         """
 
         while 1:
+            self.generate_feature()
             self.expectedSignals["victimEndsProcessing"] = 1
             self.expectedSignals["victimIsInterrupted"] = 1
 
@@ -107,39 +132,14 @@ class Feature(ObjectProperty):
 
                 if self.distribution_state_controller:
                     self.distribution, self.label = self.distribution_state_controller.get_and_update()
-                    # TODO is this necessary? does it make sense to change the time?
-                    self.rngTime = RandomNumberGenerator(self, self.distribution.get("Time", {"Fixed": {"mean": 1}}))
                     self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
+                    self.generate_feature()
 
-                # generate the Feature
-                if self.dependent:
-                    for key in list(self.dependent.keys()):
-                        if key != "Function":
-                            locals()[key] = self.dependent.get(key).featureValue
-                            locals()[key+'_history'] = self.dependent.get(key).featureHistory
-
-                    self.distribution["Feature"][list(self.distribution["Feature"].keys())[0]]["mean"] = eval(self.dependent["Function"])
-                    self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
-
-                value = self.rngFeature.generateNumber(start_time=self.start_time)
-                # print("Value")
-
-                if self.random_walk == True:
-                    self.featureValue += value
-                else:
-                    self.featureValue = value
-
-                # check no_negative
-                if self.no_negative == True:
-                    if self.featureValue < 0:
-                        self.featureValue = 0
-
+                # add featureValue to History
                 self.featureHistory.append(self.featureValue)
 
-                # send data to QuestDB
-
+                # send data to DataBase
                 from manpy.simulation.Globals import G
-
                 try:
                     if G.db:
                         self.featureValue = int(self.featureValue)

@@ -161,6 +161,10 @@ class Timeseries(ObjectProperty):
                         value = self.rngFeature.generateNumber(start_time=self.start_time)
 
                     else:
+                        for key in list(self.distribution.keys()):
+                            if key not in ["Function", "DataPoints", "Feature"]:
+                                locals()[key] = self.distribution.get(key).featureValue
+
                         x = self.intervals[0][0] + (self.stepsize * steps)
                         for idx, i in enumerate(self.intervals):
                             if i[0] <= x <= i[1]:
@@ -170,8 +174,13 @@ class Timeseries(ObjectProperty):
                         if type(self.distribution["Function"][self.intervals[interval]]) == list:
                             # set f for interpolation
                             if f == None:
-                                xs = self.distribution["Function"][self.intervals[interval]][0]
-                                ys = self.distribution["Function"][self.intervals[interval]][1]
+                                data = self.distribution["Function"][self.intervals[interval]]
+                                for i, axes in enumerate(data):
+                                    for j, coord in enumerate(axes):
+                                        if type(coord) == str:
+                                            data[i][j] = eval(coord)
+                                xs = data[0]
+                                ys = data[1]
                                 f = interpolate.UnivariateSpline(xs, ys)
                             # calculate mean for interpolation
                             try :
@@ -186,8 +195,6 @@ class Timeseries(ObjectProperty):
                         self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
                         value = self.rngFeature.generateNumber(start_time=self.start_time)
 
-                    if self.name == "IV_Curve" and value < 3.48:
-                        pass
                     if self.random_walk == True:
                         self.featureValue += value
                     else:
@@ -200,9 +207,10 @@ class Timeseries(ObjectProperty):
 
 
                     self.featureHistory.append(self.featureValue)
-                    self.timeHistory.append(self.env.now)
+                    self.timeHistory.append(x)
 
                     # add TimeSeries value and time to Entity
+                    ent = self.victim.Res.users[0]
                     self.victim.Res.users[0].set_feature(self.featureHistory, self.label, self.timeHistory,
                                                          (self.id, self.victim.id))
                     self.outputTrace(self.victim.Res.users[0].name, self.victim.Res.users[0].id, str(self.featureValue))
