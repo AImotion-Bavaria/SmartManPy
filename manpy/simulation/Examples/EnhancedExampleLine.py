@@ -58,6 +58,7 @@ Spannung = Feature("Spannung", "Spannung", victim=Löten, entity=True,
                                                                          std=0.1, wear_per_step=1, break_point=1000,
                                                                          defect_mean=2.0, defect_std=0.1))
 Strom = Feature("Strom", "Strom", victim=Löten, entity=True, dependent={"Function" : "1000*x + 1900", "x" : Spannung}, dependent_noise_std=30)
+# TODO remove dependent_noise_std --> possible using a normal rng for  the feature value
 Widerstand = Feature("Widerstand", "Widerstand", victim=Löten, entity=True, dependent={"Function" : "(V/I)*1000000", "V" : Spannung, "I" : Strom}, dependent_noise_std=5, contribute=[WiderstandZuHoch])
 
 Kraft = Feature("Kraft", "Kraft", victim=Löten,
@@ -136,8 +137,8 @@ E1.defineRouting([Kleben])
 
 
 def main(test=0):
-    # TODO why are there so many discards when sim time is large (e.g. 20 000)????
-    maxSimTime = 10000
+    # TODO investigate why there were so many discards with sim time > 10 000 -> now it looks normal
+    maxSimTime = 20000
     objectList = [S, Löten, Q, Kleben, E1, Spannung, Strom, Widerstand, Kraft, Einsinktiefe, Durchflussgeschwindigkeit, Temperatur, Menge, StecktFest, WiderstandZuHoch]
     db = ManPyQuestDBDatabase()
 
