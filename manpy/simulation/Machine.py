@@ -192,6 +192,8 @@ class Machine(CoreObject):
         self.discards = []
         # list for finished Entities
         self.entities = []
+        # if currently operating
+        self.operationNotFinished = False
 
     # =======================================================================
     # initialize the machine
@@ -530,7 +532,7 @@ class Machine(CoreObject):
             # variables used to flag any interruptions and the end of the processing
             self.interruption = False
             # local variable that is used to check whether the operation is concluded
-            operationNotFinished = True
+            self.operationNotFinished = True
             # if there is a failure that depends on the working time of the Machine
             # send it the victimStartsProcess signal
             for oi in self.objectInterruptions:
@@ -545,7 +547,7 @@ class Machine(CoreObject):
 
             # this loop is repeated until the processing time is expired with no failure
             # check when the processingEndedFlag switched to false
-            while operationNotFinished:
+            while self.operationNotFinished:
                 self.expectedSignals["interruptionStart"] = 1
                 self.expectedSignals["preemptQueue"] = 1
                 self.expectedSignals["processOperatorUnavailable"] = 1
@@ -685,7 +687,7 @@ class Machine(CoreObject):
                 else:
                     if self.processOperatorUnavailable.triggered:
                         self.processOperatorUnavailable = self.env.event()
-                    operationNotFinished = False
+                    self.operationNotFinished = False
 
     # =======================================================================
     # the main process of the machine

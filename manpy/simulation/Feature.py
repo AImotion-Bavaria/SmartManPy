@@ -74,8 +74,6 @@ class Feature(ObjectProperty):
 
     def generate_feature(self):
         if self.dependent:
-            if self.name == "Pmax":
-                pass
             for key in list(self.dependent.keys()):
                 if key != "Function":
                     locals()[key] = self.dependent.get(key).featureValue
@@ -103,6 +101,8 @@ class Feature(ObjectProperty):
 
         while 1:
             self.generate_feature()
+            if self.name == "Pmax":
+                pass
             self.expectedSignals["victimEndsProcessing"] = 1
             self.expectedSignals["victimIsInterrupted"] = 1
 

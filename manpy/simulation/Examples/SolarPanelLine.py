@@ -35,10 +35,10 @@ E1 = Exit("E1", "Exit")
 Isc = Feature("Ftr0", "Isc", victim=Solar_Cell_Tester,                          # short-circuit current
                distribution={"Feature": {"Normal": {"mean": 3.5, "stdev": 0.0875}}})
 Voc = Feature("Ftr1", "Voc", victim=Solar_Cell_Tester,                          # open circuit voltage
-               distribution={"Feature": {"Normal": {"mean": 0.62, "stdev": 0.0155}}})
+               distribution={"Feature": {"Normal": {"mean": 0.62, "stdev": 0.00155}}})
 Vm = Feature("Ftr2", "Vm", victim=Solar_Cell_Tester,                            # Maximum Power Point Voltage
                dependent={"Function": "Voc-0.14", "Voc": Voc},
-               distribution={"Feature": {"Normal": {"stdev": 0.009}}})
+               distribution={"Feature": {"Normal": {"stdev": 0.004}}})
 Im = Feature("Ftr3", "Im", victim=Solar_Cell_Tester,                            # Maximum Power Point Current
                dependent={"Function": "Isc-0.133", "Isc": Isc},
                distribution={"Feature": {"Normal": {"stdev": 0.03325}}})
@@ -88,20 +88,24 @@ def main(test=0):
     # df = getEntityData([E])
     # df.to_csv("SolarPanelLine.csv", index=False, encoding="utf8")
 
-    print("Isc: ", [E1.entities[0].features[0]], "\n",
-          "Voc: ", [E1.entities[0].features[1]], "\n",
-          "MPP: ", [E1.entities[0].features[2]], [E1.entities[0].features[3]], "\n",
-          "Pmax: ", [E1.entities[0].features[4]], "\n",
-          )
 
-    plt.plot([0], [E1.entities[0].features[0]], "o", c="orange", label="Isc")
-    plt.plot([E1.entities[0].features[1]], [0], "o", c="blue", label="Voc")
-    plt.plot([E1.entities[0].features[2]], [E1.entities[0].features[3]], "^", c="purple", label="MPP")
-    plt.plot([E1.entities[0].features[2]], [E1.entities[0].features[4]], "^", c="purple")
-    plt.plot(E1.entities[0].feature_times[5], E1.entities[0].features[5], c="red", label="IV")
-    plt.plot(E1.entities[0].feature_times[6], E1.entities[0].features[6], c="green", label="PV")
-    plt.legend()
-    plt.show()
+
+
+    for i in E1.entities:
+        print(" Isc: ", [i.features[0]], "\n",
+              "Voc: ", [i.features[1]], "\n",
+              "MPP: ", [i.features[2]], [i.features[3]], "\n",
+              "Pmax: ", [i.features[4]], "\n",
+              )
+
+        plt.plot([0], [i.features[0]], "o", c="orange", label="Isc")
+        plt.plot([i.features[1]], [0], "o", c="blue", label="Voc")
+        plt.plot([i.features[2]], [i.features[3]], "^", c="purple", label="MPP")
+        plt.plot([i.features[2]], [i.features[4]], "^", c="purple")
+        plt.plot(i.feature_times[5], i.features[5], c="red", label="IV")
+        plt.plot(i.feature_times[6], i.features[6], c="green", label="PV")
+        plt.legend()
+        plt.show()
 
 
     # print("""

@@ -98,10 +98,11 @@ class Timeseries(ObjectProperty):
         while 1:
             machineIsRunning = True
 
-            # wait for victim to start process
-            self.expectedSignals["victimStartsProcessing"] = 1
-            yield self.victimStartsProcessing
-            self.victimStartsProcessing = self.env.event()
+            # wait for victim to start process if it is not already processing
+            if self.victim.operationNotFinished == False:
+                self.expectedSignals["victimStartsProcessing"] = 1
+                yield self.victimStartsProcessing
+                self.victimStartsProcessing = self.env.event()
 
             self.featureHistory = []
             self.timeHistory = []
