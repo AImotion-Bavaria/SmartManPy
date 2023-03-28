@@ -36,7 +36,6 @@ class ObjectProperty(ManPyObject):
         start_value=None,
         random_walk=False,
         dependent=None,
-        dependent_noise_std=None,
         **kw
     ):
         ManPyObject.__init__(self, id, name)
@@ -89,7 +88,6 @@ class ObjectProperty(ManPyObject):
         self.end_time = end_time
         self.random_walk = random_walk
         self.dependent = dependent
-        self.dependent_noise_std = dependent_noise_std
         self.type = "Feature"
 
         G.FeatureList.append(self)

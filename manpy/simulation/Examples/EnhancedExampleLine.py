@@ -57,9 +57,9 @@ Spannung = Feature("Spannung", "Spannung", victim=Löten, entity=True,
                distribution_state_controller=ContinuosNormalDistribution(mean_change_per_step=0.0001, initial_mean=1.6,
                                                                          std=0.1, wear_per_step=1, break_point=1000,
                                                                          defect_mean=2.0, defect_std=0.1))
-Strom = Feature("Strom", "Strom", victim=Löten, entity=True, dependent={"Function" : "1000*x + 1900", "x" : Spannung}, dependent_noise_std=30)
+Strom = Feature("Strom", "Strom", victim=Löten, entity=True, dependent={"Function" : "1000*x + 1900", "x" : Spannung}, distribution={"Normal": {"stdev": 5}})
 # TODO remove dependent_noise_std --> possible using a normal rng for  the feature value
-Widerstand = Feature("Widerstand", "Widerstand", victim=Löten, entity=True, dependent={"Function" : "(V/I)*1000000", "V" : Spannung, "I" : Strom}, dependent_noise_std=5, contribute=[WiderstandZuHoch])
+Widerstand = Feature("Widerstand", "Widerstand", victim=Löten, entity=True, dependent={"Function" : "(V/I)*1000000", "V" : Spannung, "I" : Strom}, distribution={"Normal": {"stdev": 5}}, contribute=[WiderstandZuHoch])
 
 Kraft = Feature("Kraft", "Kraft", victim=Löten,
                distribution={"Feature": {"Normal": {"mean": 180, "stdev": 30}}})
