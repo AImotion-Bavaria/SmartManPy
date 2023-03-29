@@ -1,5 +1,5 @@
 from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue
-from manpy.simulation.Database import ManPyQuestDBDatabase
+from manpy.simulation.Database import ManPyQuestDBDatabase, ManPyKafkaConnection
 from manpy.simulation.Globals import runSimulation, getEntityData, G, ExcelPrinter
 import time
 
@@ -61,8 +61,12 @@ E1.defineRouting([Kleben])
 def main(test=0):
     maxSimTime = 50
     objectList = [S, Löten, Q, Kleben, E1, Spannung, Strom, Widerstand, Kraft, Einsinktiefe, Durchflussgeschwindigkeit, Temperatur, Menge, StecktFest]
-    db = ManPyQuestDBDatabase()
-    runSimulation(objectList, maxSimTime, db=None)
+    quest_db = ManPyQuestDBDatabase()
+    from confluent_kafka import Producer
+    p = Producer({'bootstrap.servers': '10.88.48.19:9092'})
+    kafka_db = ManPyKafkaConnection(p, ['Feature0', 'Feature1', 'Feature2', 'Feature3', 'Feature4', 'Feature5', 'Feature6',
+                                  'Feature7', 'Failure0', 'Source', 'Loeten', 'Kleben', 'Queue', 'Exit1'], '10.88.48.19')
+    runSimulation(objectList, maxSimTime, db=[quest_db, kafka_db])
 
     # return Results for test
     if test:

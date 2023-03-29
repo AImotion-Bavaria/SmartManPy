@@ -123,6 +123,8 @@ class G:
 
     totalPulpTime = 0  # temporary to track how much time PuLP needs to run
 
+    db = None
+
     @staticmethod
     def get_simulation_results_dataframe() -> pd.DataFrame:
         """
@@ -179,6 +181,49 @@ class G:
         entity_hist["station_id"] = entity_hist.station.apply(lambda x: x.id)
 
         return entity_hist
+
+    @staticmethod
+    def db_establish_connection():
+        if isinstance(G.db, list):
+            for d in G.db:
+                d.establish_connection()
+        elif isinstance(G.db, ManPyDatabase):
+            G.db.establish_connection()
+        else:
+            raise TypeError("Database must implement abstract methods of ManPyDatabase!")
+
+    @staticmethod
+    def db_insert(table_name, column_value_dict):
+        try:
+            if isinstance(G.db, list):
+                for d in G.db:
+                    d.insert(table_name, column_value_dict)
+            elif isinstance(G.db, ManPyDatabase):
+                G.db.insert(table_name, column_value_dict)
+            else:
+                raise TypeError("Database must implement abstract methods of ManPyDatabase!")
+        except:
+            print(f"Error while inserting to {table_name}")
+
+    @staticmethod
+    def db_commit():
+        if isinstance(G.db, list):
+            for d in G.db:
+                d.commit()
+        elif isinstance(G.db, ManPyDatabase):
+            G.db.commit()
+        else:
+            raise TypeError("Database must implement abstract methods of ManPyDatabase!")
+
+    @staticmethod
+    def db_close_connection():
+        if isinstance(G.db, list):
+            for d in G.db:
+                d.close_connection()
+        elif isinstance(G.db, ManPyDatabase):
+            G.db.close_connection()
+        else:
+            raise TypeError("Database must implement abstract methods of ManPyDatabase!")
 
 
 # =======================================================================
@@ -516,7 +561,7 @@ def runSimulation(
     seed=1,
     env=None,
     data="No",
-    db: ManPyDatabase = None,
+    db=None,
 ):
     G.numberOfReplications = numberOfReplications
     G.trace = trace
@@ -529,7 +574,7 @@ def runSimulation(
     G.ObjectInterruptionList = []
     G.ObjectResourceList = []
     G.trace_list = []
-    G.ftr_st = []   # list of (feature, corresponding station)
+    G.ftr_st = []  # list of (feature, corresponding station)
     G.db = db
     G.objectList = objectList
 
@@ -538,7 +583,6 @@ def runSimulation(
     from .ObjectProperty import ObjectProperty
     from .ObjectResource import ObjectResource
     from .Entity import Entity
-
 
     for object in objectList:
         if issubclass(object.__class__, CoreObject):
@@ -557,9 +601,9 @@ def runSimulation(
         else:
             G.ftr_st.append((f.id, f.victim.id))
 
-    # connect to QuestDB
+    # connect to DB
     if G.db:
-        G.db.establish_connection()
+        G.db_establish_connection()
 
         # run the replications
         for i in range(G.numberOfReplications):
@@ -614,8 +658,8 @@ def runSimulation(
             # carry on the post processing operations for every object in the topology
             for object in G.ObjList + G.ObjectResourceList:
                 object.postProcessing()
-        G.db.commit()
-        G.db.close_connection()
+        G.db_commit()
+        G.db_close_connection()
     else:
         # run the replications
         for i in range(G.numberOfReplications):
@@ -670,6 +714,7 @@ def runSimulation(
             # carry on the post processing operations for every object in the topology
             for object in G.ObjList + G.ObjectResourceList:
                 object.postProcessing()
+
 
 def ExcelPrinter(df, filename):
     number_sheets = df.shape[0] // 65535 + 1
@@ -681,9 +726,10 @@ def ExcelPrinter(df, filename):
     else:
         df.to_excel("{}.xls".format(filename))
 
+
 def getEntityData(objectList=[], discards=[], time=False) -> pd.DataFrame:
-    columns = []        # name of columns
-    df_list = []        # list for the DataFrame
+    columns = []  # name of columns
+    df_list = []  # list for the DataFrame
 
     # set columns
     for ftr in G.ftr_st:
@@ -695,7 +741,7 @@ def getEntityData(objectList=[], discards=[], time=False) -> pd.DataFrame:
     # set df_list
     # TODO we need to match feature values and names
     for entity in G.EntityList:
-        check = False # if this is True, the Entity gets added to the Dataframe
+        check = False  # if this is True, the Entity gets added to the Dataframe
 
         # check objectList for the current Entity
         for o in objectList:
@@ -723,4 +769,4 @@ def getEntityData(objectList=[], discards=[], time=False) -> pd.DataFrame:
         if len(l) == len(columns):
             df_list.append(l)
 
-    return pd.DataFrame(df_list, columns = columns)
+    return pd.DataFrame(df_list, columns=columns)

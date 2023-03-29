@@ -139,8 +139,8 @@ class Feature(ObjectProperty):
                 try:
                     if G.db:
                         self.featureValue = int(self.featureValue)
-                        G.db.insert(self.name, {"time": self.env.now, "value": self.featureValue})
-                        G.db.commit()
+                        G.db_insert(self.name, {"time": self.env.now, "value": self.featureValue})
+                        G.db_commit()
                 except:
                     print("Quest-DB error: Feature")
 
