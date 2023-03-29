@@ -105,4 +105,4 @@ dependencies:
     - pyqt5-sip==12.11.0
     - questdb==1.1.0
     - zope-dottedname==5.0
-    - confluent-kafka=2.0.2
+    - confluent-kafka==2.0.2
