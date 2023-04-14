@@ -101,8 +101,6 @@ class Feature(ObjectProperty):
 
         while 1:
             self.generate_feature()
-            if self.name == "Pmax":
-                pass
             self.expectedSignals["victimEndsProcessing"] = 1
             self.expectedSignals["victimIsInterrupted"] = 1
 

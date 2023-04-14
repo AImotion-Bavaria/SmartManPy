@@ -169,13 +169,13 @@ class Timeseries(ObjectProperty):
                         x = self.intervals[0][0] + (self.stepsize * steps)
                         for idx, i in enumerate(self.intervals):
                             if i[0] <= x <= i[1]:
-                                interval = idx
+                                interval = self.intervals[idx]
                                 break
 
-                        if type(self.distribution["Function"][self.intervals[interval]]) == list:
+                        if type(self.distribution["Function"][interval]) == list:
                             # set f for interpolation
                             if f == None:
-                                data = self.distribution["Function"][self.intervals[interval]]
+                                data = copy.deepcopy(self.distribution["Function"][interval])
                                 for i, axes in enumerate(data):
                                     for j, coord in enumerate(axes):
                                         if type(coord) == str:
@@ -192,7 +192,7 @@ class Timeseries(ObjectProperty):
                             except:
                                 print("Interpolation needs at least 4 values")
                         else:
-                            self.distribution["Feature"][list(self.distribution["Feature"].keys())[0]]["mean"] = eval(self.distribution["Function"][self.intervals[interval]])
+                            self.distribution["Feature"][list(self.distribution["Feature"].keys())[0]]["mean"] = eval(self.distribution["Function"][interval])
                         self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
                         value = self.rngFeature.generateNumber(start_time=self.start_time)
 
