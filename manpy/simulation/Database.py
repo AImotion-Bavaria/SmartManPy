@@ -65,6 +65,7 @@ class ManPyKafkaConnection(ManPyDatabase):
 
     def __create_topics(self, names, bootstrap_server_address):
         admin_client = AdminClient({'bootstrap.servers': bootstrap_server_address})
+        # Todo make parameters
         topics_to_create = [NewTopic(n, 1, 1) for n in names]
         admin_client.create_topics(topics_to_create)
 
@@ -78,6 +79,7 @@ class ManPyKafkaConnection(ManPyDatabase):
         :param column_value_dict: dict containing column-value pairs for the insertion. Example: {"col1": "Test"}
         :return: None
         """
+        # todo idempotence
         encoded_data = json.JSONEncoder().encode(column_value_dict)
         self.producer.poll(0)
         self.producer.produce(table_name, encoded_data.encode("utf-8"), callback=self.__on_delivery)
