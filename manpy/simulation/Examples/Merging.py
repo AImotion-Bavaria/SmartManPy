@@ -1,5 +1,5 @@
 from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Assembly, Frame
-from manpy.simulation.Globals import runSimulation, getEntityData, ExcelPrinter, G
+from manpy.simulation.Globals import runSimulation, getFeatureData, ExcelPrinter, G
 import time
 
 start = time.time()
@@ -79,10 +79,10 @@ def main(test=0):
         print(len(G.FeatureList))
         return result
 
-    df = getEntityData([E], discards=[Montage])
+    df = getFeatureData([E], discards=[Montage])
     df.to_csv("Merging.csv", index=False, encoding="utf8")
 
-    df = getEntityData([Montage], time=True)
+    df = getFeatureData([Montage], time=True)
     df.to_csv("Merging_Test.csv", index=False, encoding="utf8")
 
     print("""

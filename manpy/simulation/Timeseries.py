@@ -61,6 +61,7 @@ class Timeseries(ObjectProperty):
                                 dependent=dependent,
                                 steptime=step_time
                                 )
+        G.TimeSeriesList.append(self)
         self.step_time = step_time
 
 
@@ -145,9 +146,6 @@ class Timeseries(ObjectProperty):
 
                     if self.distribution_state_controller:
                         self.distribution = self.distribution_state_controller.get_and_update()
-                        # TODO is this necessary? does it make sense to change the time?
-                        self.rngTime = RandomNumberGenerator(self,
-                                                             self.distribution.get("Time", {"Fixed": {"mean": 1}}))
                         self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
                 else:
                     # generate the Feature
@@ -212,12 +210,11 @@ class Timeseries(ObjectProperty):
 
                     # add TimeSeries value and time to Entity
                     ent = self.victim.Res.users[0]
-                    self.victim.Res.users[0].set_feature(self.featureHistory, self.label, self.timeHistory,
+                    self.victim.Res.users[0].set_timeseries(self.featureHistory, self.label, self.timeHistory,
                                                          (self.id, self.victim.id))
                     self.outputTrace(self.victim.Res.users[0].name, self.victim.Res.users[0].id, str(self.featureValue))
 
                     # send data to QuestDB
-                    self.featureValue = self.featureValue
                     # try:
                     if G.db:
                         G.db.insert(self.name, {"time": self.env.now, "value": self.featureValue})

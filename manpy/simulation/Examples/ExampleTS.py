@@ -1,5 +1,5 @@
 from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue, Timeseries
-from manpy.simulation.Globals import runSimulation, getEntityData, G, ExcelPrinter
+from manpy.simulation.Globals import runSimulation, getFeatureData, G, ExcelPrinter
 import time
 import matplotlib.pyplot as plt
 

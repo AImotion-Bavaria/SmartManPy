@@ -1,6 +1,6 @@
 from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue
 from manpy.simulation.Database import ManPyQuestDBDatabase
-from manpy.simulation.Globals import runSimulation, getEntityData, G, ExcelPrinter
+from manpy.simulation.Globals import runSimulation, getFeatureData, G, ExcelPrinter
 import time
 
 start = time.time()
@@ -78,7 +78,7 @@ def main(test=0):
 
     # df = G.get_simulation_results_dataframe()
     # ExcelPrinter(df, "ExampleLine")
-    df = getEntityData([E1], [Kleben])
+    df = getFeatureData([E1], [Kleben])
     df.to_csv("ExampleLine.csv", index=False, encoding="utf8")
 
     print("""

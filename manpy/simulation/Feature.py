@@ -57,6 +57,8 @@ class Feature(ObjectProperty):
                                 random_walk=random_walk,
                                 dependent=dependent
                                 )
+        G.FeatureList.append(self)
+
         if start_value != None:
             self.featureValue = start_value
             self.featureHistory = [start_value]

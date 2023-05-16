@@ -506,6 +506,11 @@ class Machine(CoreObject):
             ["Processing", "Setup"]
         ), "the operation type provided is not yet defined"
         # identify the method to get the operation time and initialise the totalOperationTime
+
+        activeObjectQueue = self.Res.users
+        if len(activeObjectQueue) > 0:
+            self.activeEntity = activeObjectQueue[0]
+
         if type == "Setup":
             self.totalOperationTime = self.totalSetupTime
         elif type == "Processing":
@@ -964,9 +969,10 @@ class Machine(CoreObject):
                         {"time": self.env.now, "message": activeObjectQueue[0].id + " failed Process control"}
                     )
                     G.db.commit()
-                self.activeEntity.features[-1] = "Fail"
-                self.removeEntity(self.activeEntity)
-                self.discards.append(self.activeEntity)
+                if len(activeObjectQueue) > 0:
+                    self.activeEntity.features[-1] = "Fail"
+                    self.removeEntity(self.activeEntity)
+                    self.discards.append(self.activeEntity)
 
                 # blocking starts
                 self.isBlocked = True
@@ -1007,12 +1013,16 @@ class Machine(CoreObject):
                             {"time": self.env.now, "message": activeObjectQueue[0].id + " succeeded Process control"}
                         )
                         G.db.commit()
-                    self.activeEntity.features[-1] = "Success"
+                    if len(activeObjectQueue) > 0:
+                        self.activeEntity.features[-1] = "Success"
 
                 # blocking starts
                 self.isBlocked = True
                 self.timeLastBlockageStarted = self.env.now
-                self.printTrace(self.getActiveObjectQueue()[0].name, processEnd=self.objName)
+                if len(activeObjectQueue) > 0:
+                    self.printTrace(self.getActiveObjectQueue()[0].name, processEnd=self.objName)
+                else:
+                    self.printTrace(None, processEnd=self.objName)
                 # output to trace that the processing in the Machine self.objName ended
                 try:
                     self.outputTrace(
@@ -1199,7 +1209,8 @@ class Machine(CoreObject):
         from .Globals import G
 
         activeObjectQueue = self.Res.users
-        self.activeEntity = activeObjectQueue[0]
+        if len(activeObjectQueue) > 0:
+            self.activeEntity = activeObjectQueue[0]
         # set isProcessing to False
         self.isProcessing = False
         # the machine is currently performing no operation
@@ -1211,9 +1222,10 @@ class Machine(CoreObject):
         elif type == "Setup":
             self.totalSetupTime = self.totalOperationTime
             # if there are task_ids defined for each step
-            if self.activeEntity.schedule[-1].get("task_id", None):
-                # if the setup is finished then record an exit time for the setup
-                self.activeEntity.schedule[-1]["exitTime"] = self.env.now
+            if len(activeObjectQueue) > 0:
+                if self.activeEntity.schedule[-1].get("task_id", None):
+                    # if the setup is finished then record an exit time for the setup
+                    self.activeEntity.schedule[-1]["exitTime"] = self.env.now
         # reseting variables used by operation() process
         self.totalOperationTime = None
         self.timeLastOperationStarted = 0
@@ -1248,7 +1260,8 @@ class Machine(CoreObject):
                 if op.expectedSignals["victimEndsProcessing"]:
                     self.sendSignal(receiver=op, signal=op.victimEndsProcessing)
 
-            self.entities.append(self.activeEntity)
+            if self.activeEntity not in self.discards:
+                self.entities.append(self.activeEntity)
 
 
     # =======================================================================

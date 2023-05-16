@@ -1,5 +1,5 @@
 from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue
-from manpy.simulation.Globals import runSimulation, getEntityData
+from manpy.simulation.Globals import runSimulation, getFeatureData
 #from manpy.simulation.Examples.MLExperiment import SGD_clf
 import time
 
@@ -70,7 +70,7 @@ def main(test=0):
         return result
 
     print(E1)
-    df = getEntityData([E1], [Kleben])
+    df = getFeatureData([E1], [Kleben])
     df.to_csv("Dependency.csv", index=False, encoding="utf8")
     #accuracy = SGD_clf(df)
 
