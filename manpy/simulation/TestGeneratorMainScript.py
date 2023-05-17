@@ -25,17 +25,16 @@ Created on 4 Dec 2013
 test script to test the generator
 """
 
-from SimPy.Simulation import now, activate, simulate, infinity, initialize
+from SimPy.Simulation import activate, simulate, infinity, initialize
 from .EventGenerator import EventGenerator
-from .Machine import Machine
-from .Source import Source
-from .Exit import Exit
+from manpy.simulation.core.Machine import Machine
+from manpy.simulation.core.Source import Source
+from manpy.simulation.core.Exit import Exit
 from .Part import Part
-from .Queue import Queue
-from .Globals import G
+from manpy.simulation.core.Queue import Queue
+from manpy.simulation.core.Globals import G
 from . import ExcelHandler
-from . import Globals
-
+from .core import Globals
 
 G.trace = "Yes"
 

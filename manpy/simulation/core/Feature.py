@@ -1,7 +1,6 @@
 
-from .ObjectProperty import ObjectProperty
-from .RandomNumberGenerator import RandomNumberGenerator
-from manpy.simulation.Globals import G
+from manpy.simulation.core.ObjectProperty import ObjectProperty
+from manpy.simulation.RandomNumberGenerator import RandomNumberGenerator
 
 
 class Feature(ObjectProperty):
@@ -134,7 +133,7 @@ class Feature(ObjectProperty):
 
                 # send data to QuestDB
 
-                from manpy.simulation.Globals import G
+                from manpy.simulation.core.Globals import G
 
                 try:
                     if G.db:

@@ -1,5 +1,5 @@
-from manpy.simulation.imports import Repairman, Machine, Source, Exit, Failure, Queue, Feature, SimpleStateController
-from manpy.simulation.Globals import runSimulation, G, ExcelPrinter
+from manpy.simulation.imports import Machine, Source, Exit, Failure, Queue, Feature, SimpleStateController
+from manpy.simulation.core.Globals import runSimulation, G, ExcelPrinter
 
 
 def condition(self):

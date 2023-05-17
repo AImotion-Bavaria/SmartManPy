@@ -22,12 +22,12 @@ Created on 28 Aug 2014
 @author: Ioannis
 """
 """
-Inherits from ConditionalBuffer. It is the buffer before the MouldAssembly. 
+Inherits from ConditionalBuffer. It is the buffer before the MouldAssembly.
 Only if all the mould (order) components are present, will it be able to dispose them
 """
 
 from .ConditionalBuffer import ConditionalBuffer
-import simpy
+
 
 # ===========================================================================
 # Error in the setting up of the WIP
@@ -75,14 +75,13 @@ class MouldAssemblyBuffer(ConditionalBuffer):
     def getEntity(self):
         """
         it checks if the activeQ has received all the entities
-            of the same parentOrder needed to assemble the mould and set 
+            of the same parentOrder needed to assemble the mould and set
             the corresponding componentsReadyForAssembly flag of the parentOrder.
         We suppose that only one MouldAssembly buffer is present in the topology
             and thus there is no need to check if entities of the same parentOrder
             are present in other MouldAssemblyBuffers
         """
         # execute default behaviour
-        from .Globals import G
 
         activeObject = self.getActiveObject()
         activeObjectQueue = activeObject.getActiveObjectQueue()
@@ -109,7 +108,7 @@ class MouldAssemblyBuffer(ConditionalBuffer):
     # =======================================================================
     def haveToDispose(self, callerObject=None):
         """
-        checks if the Buffer can dispose an entity. 
+        checks if the Buffer can dispose an entity.
         Returns True only to the potential receiver
         Returns True when all the mould components/parts reside either
         in the internal buffer activeQ or in the callerObject's activeQ

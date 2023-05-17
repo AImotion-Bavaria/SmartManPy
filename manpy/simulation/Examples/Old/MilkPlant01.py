@@ -1,6 +1,6 @@
 from manpy.simulation.applications.MilkPlant.imports import *
 from manpy.simulation.imports import ExcelHandler, ExitJobShop
-from manpy.simulation.Globals import runSimulation
+from manpy.simulation.core.Globals import runSimulation
 
 
 T1 = MilkTank("T1", "T1", capacity=640)

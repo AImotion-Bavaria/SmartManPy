@@ -1,5 +1,5 @@
 from manpy.simulation.imports import Machine, Source, Exit, Feature
-from manpy.simulation.Globals import runSimulation, G, getEntityData
+from manpy.simulation.core.Globals import runSimulation, getEntityData
 
 def condition(self):
     activeEntity = self.Res.users[0]

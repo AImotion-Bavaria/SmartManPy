@@ -1,5 +1,5 @@
 from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue, SimpleStateController, Repairman
-from manpy.simulation.Globals import runSimulation, getEntityData, G, ExcelPrinter
+from manpy.simulation.core.Globals import runSimulation, getEntityData, G
 
 import time
 

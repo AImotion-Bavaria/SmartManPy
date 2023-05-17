@@ -37,7 +37,7 @@ class SimulationExamples(TestCase):
     """
 
     def tearDown(self):
-        from manpy.simulation.Globals import G
+        from manpy.simulation.core.Globals import G
 
         G.objectList = []
         G.EntityList = []

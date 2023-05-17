@@ -12,9 +12,8 @@ Abstract class for all kinds of object properties that are generated in somehow 
 """
 
 # from SimPy.Simulation import Process, Resource, reactivate, now
-import simpy
-from .ManPyObject import ManPyObject
-from .RandomNumberGenerator import RandomNumberGenerator
+from manpy.simulation.ManPyObject import ManPyObject
+from manpy.simulation.RandomNumberGenerator import RandomNumberGenerator
 import pandas as pd
 
 # ===============================================================================
@@ -42,7 +41,7 @@ class ObjectProperty(ManPyObject):
         self.victim = victim
         # variable used to hand in control to the objectInterruption
         self.call = False
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         # G.ObjectInterruptionList.append(self)
         # append the interruption to the list that victim (if any) holds
@@ -92,7 +91,7 @@ class ObjectProperty(ManPyObject):
         G.FeatureList.append(self)
 
     def initialize(self):
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         self.env = G.env
         self.call = False
@@ -150,7 +149,7 @@ class ObjectProperty(ManPyObject):
     # ===========================================================================
     # print message in the console. Format is (Simulation Time | Entity or Frame Name | message)
     def printTrace(self, entityName, message):
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         if G.console == "Yes":  # output only if the user has selected to
             print((self.env.now, entityName, message))
@@ -168,7 +167,7 @@ class ObjectProperty(ManPyObject):
 
         :return: None
         """
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         if G.trace:
             G.trace_list.append([G.env.now, entity_name, entity_id, self.id, self.name, message])

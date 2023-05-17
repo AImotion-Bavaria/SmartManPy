@@ -27,10 +27,8 @@ models the breaks that CoreObjects or ObjectResources can have
 """
 
 # from SimPy.Simulation import now, Process, hold, request, release
-import simpy
-import math
 from .RandomNumberGenerator import RandomNumberGenerator
-from .ObjectInterruption import ObjectInterruption
+from manpy.simulation.core.ObjectInterruption import ObjectInterruption
 
 
 class Break(ObjectInterruption):
@@ -66,8 +64,8 @@ class Break(ObjectInterruption):
     #    The run method for the break which has to served by a repairman
     # =======================================================================
     def run(self):
-        from .CoreObject import CoreObject
-        from .ObjectResource import ObjectResource
+        from manpy.simulation.core.CoreObject import CoreObject
+        from manpy.simulation.core.ObjectResource import ObjectResource
 
         while 1:
             # if the victim is off-shift wait for the victim to become on-shift

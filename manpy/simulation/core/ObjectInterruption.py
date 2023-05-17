@@ -27,8 +27,7 @@ Class that acts as an abstract. It should have no instances. All object interrup
 """
 
 # from SimPy.Simulation import Process, Resource, reactivate, now
-import simpy
-from .ManPyObject import ManPyObject
+from manpy.simulation.ManPyObject import ManPyObject
 
 # ===============================================================================
 # The ObjectInterruption process
@@ -39,7 +38,6 @@ class ObjectInterruption(ManPyObject):
         self.victim = victim
         # variable used to hand in control to the objectInterruption
         self.call = False
-        from .Globals import G
 
         # G.ObjectInterruptionList.append(self)
         # append the interruption to the list that victim (if any) holds
@@ -63,7 +61,7 @@ class ObjectInterruption(ManPyObject):
         }
 
     def initialize(self):
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         self.env = G.env
         self.call = False
@@ -164,7 +162,7 @@ class ObjectInterruption(ManPyObject):
     # ===========================================================================
     # print message in the console. Format is (Simulation Time | Entity or Frame Name | message)
     def printTrace(self, entityName, message):
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         if G.console == "Yes":  # output only if the user has selected to
             print((self.env.now, entityName, message))

@@ -27,9 +27,7 @@ models deterministic scheduled breaks (e.g. lunch break)
 designed to work only with ObjectResource as victim
 """
 
-import simpy
-from .RandomNumberGenerator import RandomNumberGenerator
-from .ObjectInterruption import ObjectInterruption
+from manpy.simulation.core.ObjectInterruption import ObjectInterruption
 from copy import deepcopy
 
 # ===========================================================================
@@ -113,7 +111,7 @@ class ScheduledBreak(ObjectInterruption):
                             receiver=station, signal=station.processOperatorUnavailable
                         )
                     # if SkilledRouter waits for the station to finish, send this signal to this router
-                    from .Globals import G
+                    from manpy.simulation.core.Globals import G
                     from manpy.simulation.SkilledOperatorRouter import SkilledRouter
 
                     if (

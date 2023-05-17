@@ -27,9 +27,7 @@ models an operator that operates a machine
 """
 
 # from SimPy.Simulation import Resource, now
-import simpy
-import xlwt
-from .ObjectResource import ObjectResource
+from manpy.simulation.core.ObjectResource import ObjectResource
 
 # ===========================================================================
 #                 the resource that operates the machines
@@ -118,7 +116,7 @@ class Operator(ObjectResource):
                         self.coreObjectIds.append(station)
         # flag to show if the resource is available at the start of simulation
         self.available = available
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         G.OperatorsList.append(self)
         # flag to show if the operator will output his schedule in the results
@@ -179,7 +177,7 @@ class Operator(ObjectResource):
     # sort candidate stations
     # ===========================================================================
     def sortStations(self):
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         router = G.RouterList[0]
         candidateMachines = self.candidateStations
@@ -302,7 +300,7 @@ class Operator(ObjectResource):
             )
         # if the schedulingRule is to sort Entities based on the length of the following Queue
         elif criterion == "WINQ":
-            from .Globals import G
+            from manpy.simulation.core.Globals import G
 
             for entity in activeObjectQ:
                 if len(entity.remainingRoute) > 1:
@@ -322,7 +320,7 @@ class Operator(ObjectResource):
     # =======================================================================
     def postProcessing(self, MaxSimtime=None):
         if MaxSimtime == None:
-            from .Globals import G
+            from manpy.simulation.core.Globals import G
 
             MaxSimtime = G.maxSimTime
 
@@ -366,7 +364,7 @@ class Operator(ObjectResource):
     #                    outputs results to JSON File
     # =======================================================================
     def outputResultsJSON(self):
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         json = {
             "_class": "manpy.%s" % self.__class__.__name__,
@@ -412,7 +410,7 @@ class Operator(ObjectResource):
                     "station"
                 ]  # XXX should also hold a list with all the machines G.MachineList?
                 # find the column corresponding to the machine
-                from .Globals import G
+                from manpy.simulation.core.Globals import G
 
                 # XXX each machine should have at least 3 columns, 2 for the jobs and one for operators
                 if station in G.MachineList:

@@ -20,7 +20,7 @@
 from manpy.simulation.RandomNumberGenerator import RandomNumberGenerator
 from unittest import TestCase
 
-from manpy.simulation.Source import Source
+from manpy.simulation.core.Source import Source
 
 obj = Source(id="dummy_obj", name="Dummy obj to instanciate RNG")
 

@@ -1,5 +1,5 @@
-from manpy.simulation.imports import Machine, Source, Exit, Part, Queue, Failure
-from manpy.simulation.Globals import runSimulation
+from manpy.simulation.imports import Machine, Source, Exit, Queue, Failure
+from manpy.simulation.core.Globals import runSimulation
 
 # the custom queue
 class SelectiveQueue(Queue):

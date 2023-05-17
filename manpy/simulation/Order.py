@@ -25,7 +25,7 @@ Created on 06 Jan 2013
 Order is an Entity that can have its design, get broken to sub-components
 """
 
-from .Globals import G
+from manpy.simulation.core.Globals import G
 from .Job import Job
 
 # =======================================================================
@@ -110,7 +110,7 @@ class Order(Job):
     # returns only the components that are present in the system
     # ===========================================================================
     def findActiveComponents(self):
-        from .Globals import findObjectById
+        from manpy.simulation.core.Globals import findObjectById
 
         for componentDict in self.componentsList:
             componentId = componentDict.get("id", 0)

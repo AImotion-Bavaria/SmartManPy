@@ -1,7 +1,7 @@
 import owlready2 as owl
 import os
 from manpy.simulation.imports import Machine, Source, Exit, Feature
-from manpy.simulation.Globals import runSimulation, G
+from manpy.simulation.core.Globals import runSimulation, G
 
 # Change path to wherever file is
 os.chdir(os.path.dirname(__file__))

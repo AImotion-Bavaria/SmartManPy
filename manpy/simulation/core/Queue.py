@@ -27,7 +27,7 @@ Models a FIFO queue where entities can wait in order to get into a server
 
 
 import simpy
-from .CoreObject import CoreObject
+from manpy.simulation.core.CoreObject import CoreObject
 
 # ===========================================================================
 #                            the Queue object
@@ -92,7 +92,7 @@ class Queue(CoreObject):
             ), "the level cannot be bigger than the capacity of the queue"
         self.level = level
         self.level_history = []
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         G.QueueList.append(self)
 
@@ -380,7 +380,7 @@ class Queue(CoreObject):
             )
         # if the schedulingRule is to sort Entities based on the length of the following Queue
         elif criterion == "WINQ":
-            from .Globals import G
+            from manpy.simulation.core.Globals import G
 
             for entity in activeObjectQ:
                 if len(entity.remainingRoute) > 1:
@@ -396,7 +396,7 @@ class Queue(CoreObject):
             assert False, "Unknown scheduling criterion %r" % (criterion,)
 
     def outputResultsJSON(self):
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         json = {
             "_class": "manpy.%s" % self.__class__.__name__,

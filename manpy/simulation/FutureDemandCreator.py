@@ -26,10 +26,8 @@ module that creates the future demand and appends it to buffers
 """
 
 import xlrd
-import json
-import urllib.request, urllib.parse, urllib.error
 
-from .Globals import G
+from manpy.simulation.core.Globals import G
 from .JobMA import JobMA
 
 

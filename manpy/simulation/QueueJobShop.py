@@ -25,8 +25,7 @@ Created on 1 oct 2012
 extends the Queue object so that it can act as a jobshop station. Preceding station is read from the Entity
 """
 
-import simpy
-from .Queue import Queue
+from manpy.simulation.core.Queue import Queue
 
 # ===========================================================================
 # the QueueJobShop object
@@ -37,7 +36,7 @@ class QueueJobShop(Queue):
     # set all the objects in previous and next
     # =======================================================================
     def initialize(self):
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         self.previous = G.ObjList
         self.next = []
@@ -124,7 +123,7 @@ class QueueJobShop(Queue):
     def updateNext(self, entity=None):
         activeEntity = entity
         # read the possible receivers - update the next list
-        from . import Globals
+        from manpy.simulation.core import Globals
 
         nextObjectIds = activeEntity.remainingRoute[1].get("stationIdsList", [])
         nextObjects = []
@@ -179,7 +178,7 @@ class QueueJobShop(Queue):
     def sortEntitiesForReceiver(self, receiver=None):
         # TODO: if the receiver is already assigned an operator then the giver should sort for that manager
         activeObject = self.getActiveObject()
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         for operator in G.OperatorsList:
             if operator.isAssignedTo() == receiver:

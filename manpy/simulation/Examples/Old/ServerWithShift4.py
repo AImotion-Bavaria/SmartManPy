@@ -1,5 +1,5 @@
-from manpy.simulation.imports import Machine, Source, Exit, Part, ShiftScheduler
-from manpy.simulation.Globals import runSimulation
+from manpy.simulation.imports import Machine, Source, Exit, ShiftScheduler
+from manpy.simulation.core.Globals import runSimulation
 
 # define the objects of the model
 S = Source(

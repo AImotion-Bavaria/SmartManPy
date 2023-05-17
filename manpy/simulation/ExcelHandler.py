@@ -19,17 +19,17 @@
 """
 Created on 4 Nov 2013
 
-@author: George 
+@author: George
 """
 """
 auxiliary script to handle excel related methods
 """
 
 
-from .Globals import G
+from manpy.simulation.core.Globals import G
 
 import xlwt
-import xlrd
+
 
 # outputs the trace of the simulation run
 def outputTrace(fileName="Trace"):

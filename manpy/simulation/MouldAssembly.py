@@ -63,7 +63,7 @@ TODOs: check the case when a mould is already in the WIP by the beginning of the
 """
 from .MachineJobShop import MachineJobShop
 import simpy
-from .Globals import G
+from manpy.simulation.core.Globals import G
 from .RandomNumberGenerator import RandomNumberGenerator
 
 # =======================================================================
@@ -83,7 +83,7 @@ class MouldAssembly(MachineJobShop):
     # parses inputs if they are given in a dictionary
     # =======================================================================
     def parseInputs(self, **kw):
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         G.MouldAssemblyList.append(self)
 
@@ -218,7 +218,7 @@ class MouldAssembly(MachineJobShop):
                 # check if there is a need for manual processing
                 self.checkForManualOperation(type="Setup", entity=self.mouldToBeCreated)
                 # set the created mould as WIP
-                from . import Globals
+                from .core import Globals
 
                 Globals.setWIP([self.mouldToBeCreated])
                 # read the activeObjectQueue again as it has been updated by the setWIP()

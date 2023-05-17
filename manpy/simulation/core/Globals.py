@@ -28,7 +28,7 @@ carries some global variables
 import pandas as pd
 import simpy
 import xlwt
-from manpy.simulation.Database import ManPyDatabase
+from manpy.simulation.core.Database import ManPyDatabase
 
 
 # ===========================================================================
@@ -212,10 +212,15 @@ def getClassFromName(dotted_name):
     parts = dotted_name.split(".")
     # this is added for backwards compatibility
     if dotted_name.startswith("manpy"):
-        class_name = dotted_name.split(".")[-1]
-        new_dotted_name = "manpy.simulation.%s.%s" % (class_name, class_name)
-        # logger.info(("Old style name %s used, using %s instead" % (dotted_name, new_dotted_name)))
-        dotted_name = new_dotted_name
+        if 'core' in dotted_name:
+            class_name = dotted_name.split(".")[-1]
+            new_dotted_name = "manpy.simulation.core.%s.%s" % (class_name, class_name)
+            dotted_name = new_dotted_name
+        else:
+            class_name = dotted_name.split(".")[-1]
+            new_dotted_name = "manpy.simulation.%s.%s" % (class_name, class_name)
+            # logger.info(("Old style name %s used, using %s instead" % (dotted_name, new_dotted_name)))
+            dotted_name = new_dotted_name
     return resolve(dotted_name)
 
 
@@ -395,7 +400,7 @@ def setWIP(entityList):
 
 
 def countIntervalThroughput(**kw):
-    from .Exit import Exit
+    from manpy.simulation.core.Exit import Exit
 
     currentExited = 0
     for obj in G.ObjList:
@@ -533,11 +538,11 @@ def runSimulation(
     G.db = db
     G.objectList = objectList
 
-    from .CoreObject import CoreObject
+    from manpy.simulation.core.CoreObject import CoreObject
     from .ObjectInterruption import ObjectInterruption
     from .ObjectProperty import ObjectProperty
     from .ObjectResource import ObjectResource
-    from .Entity import Entity
+    from manpy.simulation.core.Entity import Entity
 
 
     for object in objectList:
@@ -595,7 +600,7 @@ def runSimulation(
 
             # identify from the exits what is the time that the last entity has ended.
             endList = []
-            from manpy.simulation.Exit import Exit
+            from manpy.simulation.core.Exit import Exit
 
             for object in G.ObjList:
                 if issubclass(object.__class__, Exit):
@@ -651,7 +656,7 @@ def runSimulation(
 
             # identify from the exits what is the time that the last entity has ended.
             endList = []
-            from manpy.simulation.Exit import Exit
+            from manpy.simulation.core.Exit import Exit
 
             for object in G.ObjList:
                 if issubclass(object.__class__, Exit):

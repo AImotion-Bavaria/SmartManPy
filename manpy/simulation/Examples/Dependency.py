@@ -1,5 +1,5 @@
 from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue
-from manpy.simulation.Globals import runSimulation, getEntityData
+from manpy.simulation.core.Globals import runSimulation, getEntityData
 #from manpy.simulation.Examples.MLExperiment import SGD_clf
 import time
 

@@ -26,9 +26,8 @@ Class that acts as an abstract. It should have no instances. All the Entities sh
 """
 
 # from SimPy.Simulation import now
-import simpy
-from .ManPyObject import ManPyObject
-from manpy.simulation.Globals import G
+from manpy.simulation.ManPyObject import ManPyObject
+from manpy.simulation.core.Globals import G
 
 # ===========================================================================
 # The entity object

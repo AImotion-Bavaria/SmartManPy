@@ -1,6 +1,6 @@
 from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue
-from manpy.simulation.Database import ManPyQuestDBDatabase
-from manpy.simulation.Globals import runSimulation, getEntityData, G, ExcelPrinter
+from manpy.simulation.core.Database import ManPyQuestDBDatabase
+from manpy.simulation.core.Globals import runSimulation, getEntityData, G
 import time
 
 start = time.time()

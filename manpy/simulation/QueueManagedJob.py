@@ -26,7 +26,6 @@ inherits from QueueJobShop. The difference is that it reads the operator from th
 checks if he is available before it disposed it
 """
 # from SimPy.Simulation import now
-import simpy
 from .QueueJobShop import QueueJobShop
 
 # ===========================================================================
@@ -115,7 +114,7 @@ class QueueManagedJob(QueueJobShop):
                         != receiver
                     ):
                         try:
-                            from .Globals import G
+                            from manpy.simulation.core.Globals import G
 
                             if (
                                 not G.RouterList[0].invoked

@@ -2,12 +2,11 @@ from manpy.simulation.imports import (
     Machine,
     Source,
     Exit,
-    Part,
     Repairman,
     Queue,
     Failure,
 )
-from manpy.simulation.Globals import runSimulation
+from manpy.simulation.core.Globals import runSimulation
 
 # define the objects of the model
 R = Repairman("R1", "Bob")

@@ -22,14 +22,13 @@ Created on 8 Nov 2012
 @author: Ioannis
 """
 """
-Core object that inherits from Queue. It takes SubBatches, 
+Core object that inherits from Queue. It takes SubBatches,
 only if all its contents are from the same Batch
 """
 
-from .Queue import Queue
+from manpy.simulation.core.Queue import Queue
 
 # from SimPy.Simulation import now
-import simpy
 
 # ===========================================================================
 #                        the LineClearance object

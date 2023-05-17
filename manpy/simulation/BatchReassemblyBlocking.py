@@ -35,7 +35,7 @@ class BatchReassemblyBlocking(BatchReassembly):
     # =======================================================================
     def removeEntity(self, entity=None):
         activeEntity = BatchReassembly.removeEntity(self, entity)
-        from .Queue import Queue
+        from manpy.simulation.core.Queue import Queue
 
         station = self
         # loop through the previous stations until a Queue is reached
@@ -60,8 +60,6 @@ class BatchReassemblyBlocking(BatchReassembly):
     def addBlockage(self):
         # find the previous station
         station = self.previous[0]
-        from .Globals import G
-        from .ShiftScheduler import ShiftScheduler
 
         if self.timeLastBlockageStarted:
             # calculate how much time the previous station was offShift

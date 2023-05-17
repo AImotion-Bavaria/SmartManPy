@@ -1,6 +1,5 @@
-import sys
 from unittest import TestCase
-import manpy.simulation.StateController as sc
+import manpy.simulation.core.StateController as sc
 
 
 class TestStateControllers(TestCase):

@@ -27,11 +27,9 @@ models the failures that servers can have
 """
 
 # from SimPy.Simulation import now, Process, hold, request, release
-import simpy
-import math
-from .RandomNumberGenerator import RandomNumberGenerator
-from .ObjectInterruption import ObjectInterruption
-import pandas as pd
+from manpy.simulation.RandomNumberGenerator import RandomNumberGenerator
+from manpy.simulation.core.ObjectInterruption import ObjectInterruption
+
 
 class Failure(ObjectInterruption):
     def __init__(

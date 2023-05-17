@@ -27,8 +27,7 @@ models a generator that runs a method at specified intervals
 """
 
 # from SimPy.Simulation import now, hold, Process
-import simpy
-from .ObjectInterruption import ObjectInterruption
+from manpy.simulation.core.ObjectInterruption import ObjectInterruption
 
 
 class EventGenerator(ObjectInterruption):
@@ -67,12 +66,12 @@ class EventGenerator(ObjectInterruption):
             import ast
 
             self.argumentDict = ast.literal_eval(self.argumentDict)
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         G.EventGeneratorList.append(self)
         self.method = method
         if isinstance(method, str):
-            from . import Globals
+            from manpy.simulation.core import Globals
 
             self.method = Globals.getMethodFromName(method)
 

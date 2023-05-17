@@ -25,11 +25,10 @@ Created on 19 Feb 2013
 """
 Models an Interruption that schedules the operation of the machines by different managers
 """
-import simpy
 
 from .OperatorRouter import Router
 from .opAss_LPmethod import opAss_LP
-from . import Globals
+
 
 # ===========================================================================
 #               Class that handles the Operator Behavior
@@ -111,7 +110,7 @@ class SkilledRouter(Router):
                     break
             self.printTrace("", "=-" * 15)
 
-            from .Globals import G
+            from manpy.simulation.core.Globals import G
 
             if self.allocation:
                 # ===================================================================
@@ -374,7 +373,7 @@ class SkilledRouter(Router):
                 # XXX assign the operators to operatorPools
                 # pendingStations/ available stations not yet given operator
                 self.pendingStations = []
-                from .Globals import findObjectById
+                from manpy.simulation.core.Globals import findObjectById
 
                 # apply the solution
 
@@ -534,7 +533,7 @@ class SkilledRouter(Router):
         self.waitEndProcess = False
 
     def checkIfAllocationShouldBeCalled(self):
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         # loop through the operators and the machines.
         # If for one the shift ended or started right now allocation is needed
@@ -568,7 +567,7 @@ class SkilledRouter(Router):
 
     def outputResultsJSON(self):
         if self.outputSolutions:
-            from .Globals import G
+            from manpy.simulation.core.Globals import G
 
             json = {
                 "_class": "manpy.%s" % self.__class__.__name__,

@@ -26,9 +26,7 @@ Created on 6 Feb 2013
 models a part entity that flows through the system
 """
 
-
-from .Globals import G
-from .Entity import Entity
+from manpy.simulation.core.Entity import Entity
 
 # The part object
 class Part(Entity):

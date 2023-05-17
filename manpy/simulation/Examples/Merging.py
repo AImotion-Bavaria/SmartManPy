@@ -1,5 +1,5 @@
 from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Assembly, Frame
-from manpy.simulation.Globals import runSimulation, getEntityData, ExcelPrinter, G
+from manpy.simulation.core.Globals import runSimulation, getEntityData, G
 import time
 
 start = time.time()

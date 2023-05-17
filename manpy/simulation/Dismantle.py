@@ -30,9 +30,8 @@ it gathers frames that have parts loaded, unloads the parts and sends the frame 
 # from SimPy.Simulation import Process, Resource
 # from SimPy.Simulation import waitevent, now, hold, infinity
 import simpy
-import xlwt
 from .RandomNumberGenerator import RandomNumberGenerator
-from .CoreObject import CoreObject
+from manpy.simulation.core.CoreObject import CoreObject
 
 # ===============================================================================
 # the Dismantle object
@@ -69,7 +68,6 @@ class Dismantle(CoreObject):
         # then the giverObjects have to be blocked for the time
         # that the machine is being loaded
         CoreObject.__init__(self, id, name)
-        from .Globals import G
 
         if not processingTime:
             processingTime = {"Fixed": {"mean": 0}}
@@ -343,7 +341,7 @@ class Dismantle(CoreObject):
     #       Format is (Simulation Time | Entity or Frame Name | message)
     # ===========================================================================
     def outputTrace(self, name, message):
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         if G.trace == "Yes":  # output only if the user has selected to
             # handle the 3 columns
@@ -363,7 +361,7 @@ class Dismantle(CoreObject):
     # outputs results to JSON File
     # ===========================================================================
     def outputResultsJSON(self):
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         json = {"_class": self.class_name, "id": self.id, "results": {}}
         json["results"]["working_ratio"] = self.Working

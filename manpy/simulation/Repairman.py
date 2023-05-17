@@ -27,7 +27,6 @@ models a repairman that can fix a machine when it gets failures
 """
 
 # from SimPy.Simulation import Resource, now
-import simpy
 from .Operator import Operator
 
 # ===========================================================================
@@ -37,6 +36,6 @@ class Repairman(Operator):
     def __init__(self, id, name, capacity=1, **kw):
         Operator.__init__(self, id=id, name=name, capacity=capacity)
         self.type = "Repairman"
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         G.RepairmanList.append(self)

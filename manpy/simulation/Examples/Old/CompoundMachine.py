@@ -1,6 +1,6 @@
-from manpy.simulation.imports import Machine, Exit, Queue, Globals, Part
-from manpy.simulation.Globals import G, ExcelPrinter
-from manpy.simulation.Globals import runSimulation
+from manpy.simulation.imports import Machine, Exit, Queue, Part
+from manpy.simulation.core.Globals import G, ExcelPrinter
+from manpy.simulation.core.Globals import runSimulation
 
 # models the behaviour of the buffers in the compound machine
 class InternalQueue(Queue):

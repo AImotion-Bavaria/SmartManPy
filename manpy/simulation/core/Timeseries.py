@@ -1,8 +1,7 @@
 
-from .ObjectProperty import ObjectProperty
-from .RandomNumberGenerator import RandomNumberGenerator
-from manpy.simulation.Globals import G
-import copy
+from manpy.simulation.core.ObjectProperty import ObjectProperty
+from manpy.simulation.RandomNumberGenerator import RandomNumberGenerator
+from manpy.simulation.core.Globals import G
 
 
 class Timeseries(ObjectProperty):

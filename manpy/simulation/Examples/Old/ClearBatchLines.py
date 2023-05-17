@@ -1,17 +1,14 @@
 from manpy.simulation.imports import (
     Machine,
-    Source,
     Exit,
-    Batch,
     BatchDecomposition,
     BatchSource,
     BatchReassembly,
     Queue,
     LineClearance,
     ExcelHandler,
-    ExcelHandler,
 )
-from manpy.simulation.Globals import runSimulation
+from manpy.simulation.core.Globals import runSimulation
 
 # define the objects of the model
 S = BatchSource(

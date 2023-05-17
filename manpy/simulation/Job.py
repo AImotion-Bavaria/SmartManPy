@@ -26,8 +26,8 @@ Job is an Entity that implements the logic of a job shop. Job carries attributes
 in the system and also in the processing times at each station
 """
 
-from .Globals import G
-from .Entity import Entity
+from manpy.simulation.core.Globals import G
+from manpy.simulation.core.Entity import Entity
 
 # =======================================================================
 # The job object
@@ -105,7 +105,7 @@ class Job(Entity):  # inherits from the Entity class
     # outputs results to JSON File
     # =======================================================================
     def outputResultsJSON(self):
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         if (
             G.numberOfReplications == 1
@@ -214,11 +214,11 @@ class Job(Entity):  # inherits from the Entity class
             objectIds = self.route[0].get("stationIdsList", [])
             try:
                 if len(objectIds) == 1:
-                    from .Globals import findObjectById
+                    from manpy.simulation.core.Globals import findObjectById
 
                     self.currentStation = findObjectById(objectIds[0])
                 else:
-                    from .Globals import SetWipTypeError
+                    from manpy.simulation.core.Globals import SetWipTypeError
 
                     raise SetWipTypeError(
                         "The starting station of the the entity is not defined uniquely"
@@ -288,7 +288,7 @@ class Job(Entity):  # inherits from the Entity class
             requiredPartsIDs = self.remainingRoute[0].get("requiredParts", [])
             # if there are requested parts
             if requiredPartsIDs:
-                from .Globals import findObjectById
+                from manpy.simulation.core.Globals import findObjectById
 
                 for partID in requiredPartsIDs:
                     # find the objects with the corresponding IDs
@@ -315,7 +315,7 @@ class Job(Entity):  # inherits from the Entity class
         currentStation = self.currentStation  # the current station of the part
         curStepSeq = 0  # the sequence of the current process in the parts route
         # if the part is being currently processed in a Station
-        from .Machine import Machine
+        from manpy.simulation.core.Machine import Machine
 
         if issubclass(currentStation.__class__, Machine):
             for routeStep in self.route:
@@ -350,7 +350,7 @@ class Job(Entity):  # inherits from the Entity class
 
         """
         currentStation = self.currentStation
-        from .Machine import Machine
+        from manpy.simulation.core.Machine import Machine
 
         if issubclass(currentStation.__class__, Machine):
             for routeStep in self.route:
@@ -361,7 +361,7 @@ class Job(Entity):  # inherits from the Entity class
                     break
         else:
             responsibleID = self.remainingRoute[0].get("operator", None)
-        from .Globals import findObjectById
+        from manpy.simulation.core.Globals import findObjectById
 
         responsible = findObjectById(responsibleID)
         return responsible
@@ -370,7 +370,7 @@ class Job(Entity):  # inherits from the Entity class
     # method that finds a receiver for a candidate entity
     # ===========================================================================
     def findCandidateReceiver(self):
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         router = G.RouterList[0]
         # initiate the local list variable available receivers

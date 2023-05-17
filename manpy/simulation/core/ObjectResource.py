@@ -26,7 +26,7 @@ Class that acts as an abstract. It should have no instances. All the Resources s
 """
 # from SimPy.Simulation import Resource
 import simpy
-from .ManPyObject import ManPyObject
+from manpy.simulation.ManPyObject import ManPyObject
 
 # ===========================================================================
 #                    the resource that repairs the machines
@@ -41,12 +41,12 @@ class ObjectResource(ManPyObject):
         self.alias = None
         # list with the coreObjects IDs that the resource services
         self.coreObjectIds = []
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         G.ObjectResourceList.append(self)
 
     def initialize(self):
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         # flag that shows if the resource is on shift
         self.onShift = True

@@ -21,7 +21,7 @@ Created on 8 Nov 2012
 
 @author: George
 """
-from .Entity import Entity
+from manpy.simulation.core.Entity import Entity
 
 """
 models the source object that generates the entities
@@ -29,10 +29,10 @@ models the source object that generates the entities
 
 # from SimPy.Simulation import now, Process, Resource, infinity, hold, SimEvent, activate, waitevent
 import simpy
-from .RandomNumberGenerator import RandomNumberGenerator
-from .CoreObject import CoreObject
-from .Globals import G
-from . import Globals
+from manpy.simulation.RandomNumberGenerator import RandomNumberGenerator
+from manpy.simulation.core.CoreObject import CoreObject
+from manpy.simulation.core.Globals import G
+from manpy.simulation.core import Globals
 
 
 class EntityGenerator(object):
@@ -134,7 +134,7 @@ class Source(CoreObject):
         # list of creations that are scheduled. pattern is [timeOfCreation, EntityCounter]
         self.scheduledEntities = []
 
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         G.SourceList.append(self)
 
@@ -206,7 +206,7 @@ class Source(CoreObject):
     # add newly created entity to pendingEntities
     # ===========================================================================
     def appendEntity(self, entity):
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         assert entity, "cannot append None entity"
 
@@ -224,7 +224,7 @@ class Source(CoreObject):
     #                          creates an Entity
     # ============================================================================
     def createEntity(self):
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         self.printTrace(self.id, create="")
         return self.item(

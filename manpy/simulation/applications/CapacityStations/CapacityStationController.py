@@ -26,10 +26,9 @@ Created on 6 June 2013
 event generator that controls the capacity station objects
 """
 
-import simpy
 from manpy.simulation.EventGenerator import EventGenerator
 from manpy.simulation.applications.CapacityStations.CapacityEntity import CapacityEntity
-from manpy.simulation.Globals import G
+from manpy.simulation.core.Globals import G
 
 
 class CapacityStationController(EventGenerator):
@@ -258,14 +257,14 @@ class CapacityStationController(EventGenerator):
                 )
                 entityToCreate.currentStation = buffer
                 entityToCreate.initialize()
-                import manpy.simulation.Globals as Globals
+                import manpy.simulation.core.Globals as Globals
 
                 Globals.setWIP([entityToCreate])  # set the new components as wip
             # reset the currently obtained entities list to empty
             exit.currentlyObtainedEntities = []
 
     def calculateWhatIsToBeProcessed(self):
-        import manpy.simulation.Globals as Globals
+        import manpy.simulation.core.Globals as Globals
 
         # calculate what space is available
         availableSpace = self.assemblySpace - self.calculateConsumedSpace()
@@ -601,7 +600,7 @@ class CapacityStationController(EventGenerator):
             )
             entityToStay.initialize()
             entityToStay.currentStation = buffer
-            import manpy.simulation.Globals as Globals
+            import manpy.simulation.core.Globals as Globals
 
             Globals.setWIP(
                 [entityToMove, entityToStay]
@@ -658,7 +657,7 @@ class CapacityStationController(EventGenerator):
                 )
                 entityToCreate.currentStation = buffer
                 entityToCreate.initialize()
-                import manpy.simulation.Globals as Globals
+                import manpy.simulation.core.Globals as Globals
 
                 Globals.setWIP([entityToCreate])  # set the new components as wip
 

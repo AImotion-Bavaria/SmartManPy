@@ -25,7 +25,7 @@ Created on 22 Oct 2013
 SubBatch is an Entity that contains a number of units and is derived from a parent Batch
 """
 
-from .Entity import Entity
+from manpy.simulation.core.Entity import Entity
 
 # The batch object
 class SubBatch(Entity):
@@ -60,7 +60,7 @@ class SubBatch(Entity):
             # check if the parent batch is already created. If not, then create it
             batch = None
             from .Batch import Batch
-            from .Globals import G
+            from manpy.simulation.core.Globals import G
 
             for b in G.EntityList:
                 if b.id == parentBatchId:
@@ -74,7 +74,7 @@ class SubBatch(Entity):
                 G.EntityList.append(batch)
             self.parentBatch = batch
         self.batchId = self.parentBatch.id
-        from . import Globals
+        from manpy.simulation.core import Globals
 
         self.receiver = Globals.findObjectById(receiver)
         self.parentBatch.subBatchList.append(self)

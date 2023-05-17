@@ -27,9 +27,7 @@ models an one time scheduled maintenance. It happens and stops at fixed times an
 """
 
 # from SimPy.Simulation import now, Process, hold, request, release, infinity
-import simpy
-from .RandomNumberGenerator import RandomNumberGenerator
-from .ObjectInterruption import ObjectInterruption
+from manpy.simulation.core.ObjectInterruption import ObjectInterruption
 
 # ===========================================================================
 # the scheduled maintenance class

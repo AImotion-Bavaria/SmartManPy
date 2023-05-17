@@ -28,7 +28,6 @@ Models an Interruption that schedules the operation of the machines by different
 # from SimPy.Globals import sim
 # from SimPy.Simulation import Simulation
 # from SimPy.Simulation import Process, Resource, SimEvent
-import simpy
 
 from .OperatorRouter import Router
 
@@ -209,7 +208,7 @@ class RouterManaged(Router):
     # signal stations that wait for load operators
     # ===========================================================================
     def signalOperatedStations(self):
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         for operator in self.candidateOperators:
             station = operator.isAssignedTo()
@@ -264,7 +263,7 @@ class RouterManaged(Router):
     # find the stations that can be signalled by the router
     # ===========================================================================
     def findPendingObjects(self):
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         for entity in G.pendingEntities:
             if entity.currentStation in G.MachineList:
@@ -297,7 +296,7 @@ class RouterManaged(Router):
     # finding the entities that require manager now
     # ===========================================================================
     def findPendingEntities(self):
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         self.pending = []  # list of entities that are pending
         for machine in self.pendingMachines:
@@ -363,7 +362,6 @@ class RouterManaged(Router):
     #     and by which machines
     # =======================================================================
     def sortCandidateEntities(self):
-        from .Globals import G
 
         # TODO: the operator here actually chooses entity. This may pose a problem as two entities may be equivalent
         #       and as the operators chooses the sorting of the queue (if they do reside in the same queue is not taken into account)

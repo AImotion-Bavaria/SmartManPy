@@ -24,7 +24,7 @@ Created on 12 Jul 2012
 """
 Class that acts as an abstract. It should have no instances. All the core-objects should inherit from it
 """
-from manpy.simulation.Globals import G
+from manpy.simulation.core.Globals import G
 from manpy.simulation.ManPyObject import ManPyObject
 
 
@@ -926,7 +926,7 @@ class CoreObject(ManPyObject):
             activeEntity = self.getActiveObjectQueue()[0]
             if activeEntity.remainingProcessingTime:
                 remainingProcessingTime = activeEntity.remainingProcessingTime
-                from .RandomNumberGenerator import RandomNumberGenerator
+                from ..RandomNumberGenerator import RandomNumberGenerator
 
                 initialWIPrng = RandomNumberGenerator(self, remainingProcessingTime)
                 return initialWIPrng.generateNumber()

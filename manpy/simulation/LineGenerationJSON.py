@@ -29,7 +29,6 @@ main script. Reads data from JSON, generates and runs the simulation and prints 
 # ===========================================================================
 #                                    IMPORTS
 # ===========================================================================
-from warnings import warn
 import logging
 
 logger = logging.getLogger("manpy.platform")
@@ -40,20 +39,16 @@ import numpy
 
 numpy.seterr(all="raise")
 import simpy
-from manpy.simulation.Globals import G
+from manpy.simulation.core.Globals import G
 from manpy.simulation.Order import Order
-from manpy.simulation.OrderDesign import OrderDesign
-from manpy.simulation.Mould import Mould
 import manpy.simulation.PrintRoute as PrintRoute
 import manpy.simulation.ExcelHandler as ExcelHandler
 import time
 import json
 from random import Random
 import sys
-import os.path
-import manpy.simulation.Globals as Globals
-import ast
-import cProfile
+import manpy.simulation.core.Globals as Globals
+
 
 # ===========================================================================
 #                       reads general simulation inputs
@@ -182,7 +177,7 @@ def createObjectResourcesAndCoreObjects():
         resourceClass = element.pop("_class")  # get the class type of the element
 
         objectType = Globals.getClassFromName(resourceClass)
-        from manpy.simulation.ObjectResource import (
+        from manpy.simulation.core.ObjectResource import (
             ObjectResource,
         )  # operator pools to be created later since they use operators
 
@@ -268,7 +263,7 @@ def createObjectResourcesAndCoreObjects():
         objClass = element.pop("_class")
         objectType = Globals.getClassFromName(objClass)
 
-        from manpy.simulation.CoreObject import CoreObject
+        from manpy.simulation.core.CoreObject import CoreObject
 
         if issubclass(objectType, CoreObject):
             # remove data that has to do with wip or object interruption. CoreObjects do not need it
@@ -339,7 +334,7 @@ def createObjectInterruptions():
         objClass = element.get(
             "_class", "not found"
         )  # get the class type of the element
-        from manpy.simulation.ObjectInterruption import ObjectInterruption
+        from manpy.simulation.core.ObjectInterruption import ObjectInterruption
 
         objClass = element.pop("_class")
         objectType = Globals.getClassFromName(objClass)
@@ -358,7 +353,7 @@ def createObjectInterruptions():
     # define ObjectInterruption echelon inside node
     # define interruptions' distribution better
     from manpy.simulation.ScheduledMaintenance import ScheduledMaintenance
-    from manpy.simulation.Failure import Failure
+    from manpy.simulation.core.Failure import Failure
     from manpy.simulation.PeriodicMaintenance import PeriodicMaintenance
     from manpy.simulation.ShiftScheduler import ShiftScheduler
     from manpy.simulation.ScheduledBreak import ScheduledBreak
@@ -550,7 +545,7 @@ def createWIP():
                 productionOrderType = Globals.getClassFromName(productionOrderClass)
                 inputDict = dict(prodOrder)
                 inputDict.pop("_class")
-                from manpy.simulation.Entity import Entity
+                from manpy.simulation.core.Entity import Entity
 
                 if issubclass(productionOrderType, Entity):
                     entity = productionOrderType(**inputDict)
@@ -627,7 +622,7 @@ def createWIP():
             entityType = Globals.getClassFromName(entityClass)
             inputDict = dict(entity)
             inputDict.pop("_class")
-            from manpy.simulation.Entity import Entity
+            from manpy.simulation.core.Entity import Entity
 
             if issubclass(entityType, Entity) and (not entityClass == "manpy.Order"):
                 # if orders are provided separately (BOM) provide the parent order as argument
