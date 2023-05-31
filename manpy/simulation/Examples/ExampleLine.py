@@ -78,7 +78,7 @@ def main(test=0):
 
     # df = G.get_simulation_results_dataframe()
     # ExcelPrinter(df, "ExampleLine")
-    df = getFeatureData([E1], [Kleben])
+    df = getFeatureData([Kleben])
     df.to_csv("ExampleLine.csv", index=False, encoding="utf8")
 
     print("""

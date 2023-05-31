@@ -89,8 +89,6 @@ class ObjectProperty(ManPyObject):
         self.dependent = dependent
         self.type = "Feature"
 
-        G.ObjectPropertyList.append(self)
-
     def initialize(self):
         from .Globals import G
 

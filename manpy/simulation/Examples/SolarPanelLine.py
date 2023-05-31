@@ -2,6 +2,7 @@ from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Qu
 from manpy.simulation.Globals import runSimulation, getFeatureData, getTimeSeriesData, G, ExcelPrinter
 import time
 import matplotlib.pyplot as plt
+import pandas as pd
 
 start = time.time()
 
@@ -9,17 +10,18 @@ start = time.time()
 
 def condition(self):
     activeEntity = self.Res.users[0]
-    features = [3.5, 0.62, 0.48, 3.367, 2.3]
+    features = [3.5, 0.62, None, None, 2.3]
     for idx, feature in enumerate(features):
-        if activeEntity.features[idx] < 0.95*feature or activeEntity.features[idx] > 1.05*feature:
-            return True
+        if feature != None:
+            if activeEntity.features[idx] < 0.9*feature or activeEntity.features[idx] > 1.1*feature:
+                return True
     return False
 
 
 # Objects
 Solar_Cells = Source("S0", "Solar_Cells", interArrivalTime={"Fixed": {"mean": 2}}, entity="manpy.Part")
-# Solar_Cell_Tester = Machine("M0", "Solar_Cell_Tester", processingTime={"Fixed": {"mean": 3}}, control=condition)
-Solar_Cell_Tester = Machine("M0", "Solar_Cell_Tester", processingTime={"Fixed": {"mean": 3}})
+Solar_Cell_Tester = Machine("M0", "Solar_Cell_Tester", processingTime={"Fixed": {"mean": 3}}, control=condition)
+# Solar_Cell_Tester = Machine("M0", "Solar_Cell_Tester", processingTime={"Fixed": {"mean": 3}})
 Q0 = Queue("Q0", "Queue0")
 Solar_Cell_Scribing = Machine("M1", "Solar_Cell_Scribing", processingTime={"Fixed": {"mean": 3.75}})
 Frame.capacity = 60
@@ -39,7 +41,7 @@ E1 = Exit("E1", "Exit")
 # ObjectProperty
 # SolarCellTester
 Isc = Feature("Ftr0", "Isc", victim=Solar_Cell_Tester,                                      # short-circuit current
-               distribution={"Feature": {"Normal": {"mean": 3.5, "stdev": 0.0875}}})
+               distribution={"Feature": {"Normal": {"mean": 3.5, "stdev": 0.04375}}})
 Voc = Feature("Ftr1", "Voc", victim=Solar_Cell_Tester,                                      # open circuit voltage
                distribution={"Feature": {"Normal": {"mean": 0.62, "stdev": 0.00155}}})
 Vm = Feature("Ftr2", "Vm", victim=Solar_Cell_Tester,                                        # Maximum Power Point Voltage
@@ -47,9 +49,9 @@ Vm = Feature("Ftr2", "Vm", victim=Solar_Cell_Tester,                            
                distribution={"Feature": {"Normal": {"stdev": 0.004}}})
 Im = Feature("Ftr3", "Im", victim=Solar_Cell_Tester,                                        # Maximum Power Point Current
                dependent={"Function": "Isc-0.133", "Isc": Isc},
-               distribution={"Feature": {"Normal": {"stdev": 0.03325}}})
+               distribution={"Feature": {"Normal": {"stdev": 0.0135}}})
 Pmax = Feature("Ftr4", "Pmax", victim=Solar_Cell_Tester,                                    # Peak Power
-               dependent={"Function": "2.3-(Isc-Im)", "Isc": Isc, "Im": Im})
+               dependent={"Function": "2.3+(Isc+Im-6.867)", "Isc": Isc, "Im": Im})
 IV_Curve = Timeseries("Ts2", "IV_Curve", victim=Solar_Cell_Tester, no_negative=True,        # Current-Voltage Curve
                       distribution={"Function": {(0, 0.4): "Isc - 0.05*x",
                                                  (0.4, 0.8): [[0.4, 0.41, "Vm", "Voc"], ["Isc-0.02", "Isc-0.023", "Im", 0]]},
@@ -67,13 +69,13 @@ EFF = Feature("Ftr6", "EFF", victim=Solar_Cell_Tester,                          
 Temp = Feature("Ftr7", "Temp", victim=Solar_Cell_Tester,                                    # Temperature
               distribution={"Feature": {"Normal": {"mean": 25, "stdev": 1.5}}})
 
-Test = Feature("Ftr", "Test", victim=Solar_Cell_Scribing,
-              distribution={"Feature": {"Fixed": {"mean": 0}}})
+# Test = Feature("Ftr", "Test", victim=Solar_Cell_Scribing,
+#               distribution={"Feature": {"Fixed": {"mean": 0}}})
 
 
 # ObjectInterruption
 # Layup
-Visual_Fail = Failure("Flr0", "Visual_Fail", victim=Layup, entity=True, remove=True, distribution={"TTF": {"Fixed": {"mean": 0.8}}, "TTR": {"Normal": {"mean": 10, "stdev": 0.5, "min":0, "probability": 0.8}}})
+Visual_Fail = Failure("Flr0", "Visual_Fail", victim=Layup, entity=True, remove=True, distribution={"TTF": {"Fixed": {"mean": 0.8}}, "TTR": {"Normal": {"mean": 300, "stdev": 40, "min":0, "probability": 0.008}}})
 # EL_Tester
 Crack = Failure("Flr1", "Crack", victim=EL_Test, entity=True, distribution={"TTF": {"Fixed": {"mean": 0.9}}, "TTR": {"Fixed": {"mean": 0, "probability": 0.01}}})
 Black_spot = Failure("Flr2", "Black_spot", victim=EL_Test, entity=True, distribution={"TTF": {"Fixed": {"mean": 0.9}}, "TTR": {"Fixed": {"mean": 0, "probability": 0.01}}})
@@ -98,8 +100,8 @@ E1.defineRouting([EL_Test])
 
 
 def main(test=0):
-    maxSimTime = 1200
-    objectList = [Solar_Cells, Solar_Cell_Tester, Isc, Voc, Vm, Im, Pmax, IV_Curve, Power_Curve, FF, EFF, Temp, Q0, Solar_Cell_Scribing, Solar_Strings, Assembly0, Tabber_Stringer, Q1, Layup, Visual_Fail, Q2, EL_Test, E1, Test]
+    maxSimTime = 2000
+    objectList = [Solar_Cells, Solar_Cell_Tester, Isc, Voc, Vm, Im, Pmax, IV_Curve, Power_Curve, FF, EFF, Temp, Q0, Solar_Cell_Scribing, Solar_Strings, Assembly0, Tabber_Stringer, Q1, Layup, Visual_Fail, Q2, EL_Test, E1]
 
     runSimulation(objectList, maxSimTime, trace=False)
 
@@ -108,6 +110,9 @@ def main(test=0):
     sct.to_csv("Solar_Cell_Tester.csv", index=False, encoding="utf8")
     TS[0].to_csv("IV_Curve.csv", index=False, encoding="utf8")
     TS[1].to_csv("PV_Curve.csv", index=False, encoding="utf8")
+
+    with pd.option_context('display.max_columns', None):
+        print(sct.drop(["ID"], axis=1).describe())
 
 
     # for i in Solar_Cell_Tester.entities:

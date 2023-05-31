@@ -105,7 +105,6 @@ class G:
     MachineManagedJobList = []
     QueueManagedJobList = []
     ModelResourceList = []
-    ObjectPropertyList = []
     FeatureList = []
     TimeSeriesList = []
 
@@ -744,7 +743,7 @@ def getFeatureData(objectList=[], time=False) -> pd.DataFrame: #TODO: check time
     else:
         return result.drop("Result", axis=1)
 
-def getTimeSeriesData(objectList=[]) -> [pd.DataFrame]:
+def getTimeSeriesData(objectList=[]) -> [pd.DataFrame]: #TODO: guruantee no duplicates after Assembly
     results = []
     columns = ["ID", "Time", "Value"]
     for ts in G.ts_st:
