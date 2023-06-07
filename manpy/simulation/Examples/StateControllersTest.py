@@ -94,7 +94,7 @@ def demonstrate_RandomDefectStateController():
                                                     )
 
 
-    random_defect_controller = RandomDefectStateController(0.05, ok_controller=ok_controller, defect_controller=defect_controller)
+    random_defect_controller = RandomDefectStateController(0.05, ok_controller=ok_controller, defect_controllers=[defect_controller])
 
     features = generate_n_values_with_labels(random_defect_controller, 250, 100)
 

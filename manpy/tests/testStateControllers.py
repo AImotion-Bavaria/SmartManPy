@@ -113,7 +113,7 @@ class TestStateControllers(TestCase):
 
         r = sc.RandomDefectStateController(failure_probability=0.0,
                                            ok_controller=s1,
-                                           defect_controller=s2)
+                                           defect_controllers=[s2])
 
         for i in range(100):
             dist, label = r.get_and_update()
@@ -121,7 +121,7 @@ class TestStateControllers(TestCase):
 
         r = sc.RandomDefectStateController(failure_probability=1.0,
                                            ok_controller=s1,
-                                           defect_controller=s2)
+                                           defect_controllers=[s2])
 
         for i in range(100):
             dist, label = r.get_and_update()
