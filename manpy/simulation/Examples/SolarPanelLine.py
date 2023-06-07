@@ -1,4 +1,4 @@
-from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue, Timeseries, Assembly, Frame
+from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue, Timeseries, Assembly, Frame, ContinuosNormalDistribution, RandomDefectStateController
 from manpy.simulation.Globals import runSimulation, getFeatureData, getTimeSeriesData, G, ExcelPrinter
 import time
 import matplotlib.pyplot as plt
@@ -31,7 +31,11 @@ Tabber_Stringer = Machine("M2", "Tabber_Stringer", processingTime={"Fixed": {"me
 Q1 = Queue("Q1", "Queue1")
 Layup = Machine("M3", "Layup", processingTime={"Fixed": {"mean": 200}})
 Q2 = Queue("Q2", "Queue2")
-EL_Test = Machine("M1", "Solar_Cell_Scribing", processingTime={"Fixed": {"mean": 100}})
+EL_Test = Machine("M4", "Solar_Cell_Scribing", processingTime={"Fixed": {"mean": 100}})
+
+# TODO does the processing time make sense?
+Gluing = Machine("M5", "Gluing", processingTime={"Fixed": {"mean": 100}})
+Lamination = Machine("M6", "Lamination", processingTime={"Fixed": {"mean": 500}})
 E1 = Exit("E1", "Exit")
 #Frame.capacity = 1 TODO: Allow different Frame capacities
 # EVA_TPT = Source("S2", "EVA_TPT", interArrivalTime={"Fixed": {"mean": 100}}, entity="manpy.Frame")
@@ -73,6 +77,50 @@ Temp = Feature("Ftr7", "Temp", victim=Solar_Cell_Tester,                        
 #               distribution={"Feature": {"Fixed": {"mean": 0}}})
 
 
+# Welding (Tabber/Stringer)
+# similar to soldering from example line
+
+# Cutting
+# TODO since it's probably a laser
+
+# Gluing
+# similar to example line enhanced
+glue_temperature = Feature("glue_temp", "Glue_Temperature", victim=Gluing, random_walk=True, start_value=190,
+               distribution={"Feature": {"Normal": {"mean": 0, "stdev": 0.3}}})
+
+# random defect controller
+s7_1 = ContinuosNormalDistribution(
+                                   mean_change_per_step=0.0,
+                                   initial_mean=400,
+                                   std=50,
+                                   )
+
+s7_2 = ContinuosNormalDistribution(
+                                    mean_change_per_step=0.0,
+                                    initial_mean=500,
+                                    std=50,
+                                    )
+
+s7_3 = ContinuosNormalDistribution(
+                                    mean_change_per_step=0.0,
+                                    initial_mean=300,
+                                    std=50,
+                                   )
+
+Menge_StateController = RandomDefectStateController(failure_probability=0.02,
+                                                    ok_controller=s7_1,
+                                                    defect_controllers=[s7_2, s7_3])
+Menge = Feature("Menge", "Menge", victim=Kleben, distribution_state_controller=Menge_StateController)
+
+# evtl verwandt mit menge?
+Durchflussgeschwindigkeit = Feature("Durchfluss", "Durchflussg.", victim=Kleben,
+               dependent={"Function": "0.9*X", "X": Menge}, dependent_noise_std=10)
+
+# Lamination
+# Two timeseries: pressure and temperature, interpolation based on features
+
+
+
 # ObjectInterruption
 # Layup
 Visual_Fail = Failure("Flr0", "Visual_Fail", victim=Layup, entity=True, remove=True, distribution={"TTF": {"Fixed": {"mean": 0.8}}, "TTR": {"Normal": {"mean": 300, "stdev": 40, "min":0, "probability": 0.008}}})
@@ -101,7 +149,9 @@ E1.defineRouting([EL_Test])
 
 def main(test=0):
     maxSimTime = 2000
-    objectList = [Solar_Cells, Solar_Cell_Tester, Isc, Voc, Vm, Im, Pmax, IV_Curve, Power_Curve, FF, EFF, Temp, Q0, Solar_Cell_Scribing, Solar_Strings, Assembly0, Tabber_Stringer, Q1, Layup, Visual_Fail, Q2, EL_Test, E1]
+    objectList = [Solar_Cells, Solar_Cell_Tester, Isc, Voc, Vm, Im, Pmax, IV_Curve, Power_Curve, FF, EFF, Temp, Q0,
+                  Solar_Cell_Scribing, Solar_Strings, Assembly0, Tabber_Stringer, Q1, Layup, Visual_Fail, Q2, EL_Test,
+                  E1]
 
     runSimulation(objectList, maxSimTime, trace=False)
 
