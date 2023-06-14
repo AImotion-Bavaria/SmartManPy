@@ -99,7 +99,7 @@ class Source(CoreObject):
     # ===========================================================================
     # the __init__method of the Source class
     # ===========================================================================
-    def __init__(self, id, name, interArrivalTime=None, entity="manpy.Part", **kw):
+    def __init__(self, id, name, interArrivalTime=None, entity="manpy.Part", capacity=1, **kw):
 
         if not interArrivalTime:
             interArrivalTime = {"Fixed": {"mean": 1}}
@@ -125,6 +125,7 @@ class Source(CoreObject):
         # String that shows the type of object
         self.type = "Source"
         self.rng = RandomNumberGenerator(self, interArrivalTime)
+        self.capacity = capacity
 
         if isinstance(entity, str):
             self.item = Globals.getClassFromName(entity)
@@ -227,10 +228,17 @@ class Source(CoreObject):
         from .Globals import G
 
         self.printTrace(self.id, create="")
-        return self.item(
-            id=self.item.type + str(G.numberOfEntities),
-            name=self.item.type + str(self.numberOfArrivals),
-        )  # return the newly created Entity
+        if self.item.type == "Frame":
+            return self.item(
+                id=self.item.type + str(G.numberOfEntities),
+                name=self.item.type + str(self.numberOfArrivals),
+                capacity=self.capacity
+            )  # return the newly created Entity
+        else:
+            return self.item(
+                id=self.item.type + str(G.numberOfEntities),
+                name=self.item.type + str(self.numberOfArrivals),
+            )  # return the newly created Entity
 
     # ============================================================================
     #                    calculates the processing time

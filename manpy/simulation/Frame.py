@@ -33,11 +33,11 @@ from .Entity import Entity
 # The entity object
 class Frame(Entity):
     type = "Frame"
-    capacity = 4  # the number of parts that the frame can take
 
-    def __init__(self, id=None, name=None, **kw):
+    def __init__(self, id=None, name=None, capacity=1, **kw):
         Entity.__init__(self, id=id, name=name)
 
+        self.capacity = capacity
         self.Res = Resource(self.capacity)
         # dimension data
         self.width = 2.0
