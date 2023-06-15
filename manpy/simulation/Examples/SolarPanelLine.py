@@ -165,7 +165,7 @@ g = Feature("g", "L7", victim=Lamination,
 
 Lamination_Pressure_Curve = Timeseries("Ts_Lamination_Pressure", "Ts_Lamination_Pressure", victim=Lamination,
                                        no_negative=True, distribution={"Function": {(0, 20): "(2*x)+a",
-                                                                                    (20, 60): [[20, 30, 40, 60], ["40+a", "b", "c" "d"]],
+                                                                                    (20, 60): [[20, 30, 40, 60], ["40+a", "b", "c", "d"]],
                                                                                     (60, 100): [[60, 70, 80, 100], ["d", "e", "f", 0]]},
                                                                        "a": a, "b": b, "c": c, "d": d, "e": e, "f": f,
                                                                        "DataPoints": 100})
@@ -173,7 +173,6 @@ Lamination_Pressure_Curve = Timeseries("Ts_Lamination_Pressure", "Ts_Lamination_
 # third part interpolates exp-like curve
 # we need more features
 
-# TODO tutorial for Timeseries needed... :D
 
 # ObjectInterruption
 # Layup
@@ -208,8 +207,10 @@ E1.defineRouting([EL_Test])
 def main(test=0):
     maxSimTime = 50000
     objectList = [Solar_Cells, Solar_Cell_Tester, Isc, Voc, Vm, Im, Pmax, IV_Curve, Power_Curve, FF, EFF, Temp, Q0,
-                  Solar_Cell_Scribing, Solar_Strings, Assembly0, Tabber_Stringer, Q1, Layup, Visual_Fail, Q2, EL_Test,
-                  E1, Lamination, a, b, c, d, e, f, Lamination_Pressure_Curve, Q3]
+                  Solar_Cell_Scribing, Solar_Strings, Assembly0, Tabber_Stringer, Tab_Str_Resistance_Too_High,
+                  Tab_Str_Voltage, Tab_Str_Power, Tab_Str_Resistance, Tab_Str_Force, Gluing, glue_temperature, Amount,
+                  flow_rate,  Q1, Layup, Visual_Fail, Q2,
+                  EL_Test, E1, Lamination, a, b, c, d, e, f, Lamination_Pressure_Curve, Q3]
 
     runSimulation(objectList, maxSimTime, trace=False)
 
@@ -218,7 +219,7 @@ def main(test=0):
     sct.to_csv("Solar_Cell_Tester.csv", index=False, encoding="utf8")
     TS[0].to_csv("IV_Curve.csv", index=False, encoding="utf8")
     TS[1].to_csv("PV_Curve.csv", index=False, encoding="utf8")
-    lamination_ts = getTimeSeriesData([Lamination_Pressure_Curve])
+    lamination_ts = getTimeSeriesData([Lamination])
     print(lamination_ts)
     lamination_ts[0].to_csv("TS_Lamination_Pressure.csv", index=False, encoding="utf8")
 
