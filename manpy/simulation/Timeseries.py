@@ -100,7 +100,7 @@ class Timeseries(ObjectProperty):
             machineIsRunning = True
 
             # wait for victim to start process if it is not already processing
-            if self.victim.operationNotFinished == False:
+            if self.victim.operationNotFinished == True or self.env.now == 0:
                 self.expectedSignals["victimStartsProcessing"] = 1
                 yield self.victimStartsProcessing
                 self.victimStartsProcessing = self.env.event()
@@ -111,7 +111,7 @@ class Timeseries(ObjectProperty):
                 step_time = self.victim.tinM / self.distribution["DataPoints"]
             else:
                 step_time = self.step_time
-            remainingTimeTillFeature = step_time
+            remainingTimeTillFeature = 0
             steps = 0
             interval = 0
             f = None
@@ -206,7 +206,7 @@ class Timeseries(ObjectProperty):
 
 
                     self.featureHistory.append(self.featureValue)
-                    self.timeHistory.append(x)
+                    self.timeHistory.append(self.env.now)
 
                     # add TimeSeries value and time to Entity
                     ent = self.victim.Res.users[0]
