@@ -206,7 +206,7 @@ class Timeseries(ObjectProperty):
 
 
                     self.featureHistory.append(self.featureValue)
-                    self.timeHistory.append(self.env.now)
+                    self.timeHistory.append(x)
 
                     # add TimeSeries value and time to Entity
                     ent = self.victim.Res.users[0]
