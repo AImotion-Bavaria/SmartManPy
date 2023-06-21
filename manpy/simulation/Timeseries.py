@@ -113,7 +113,8 @@ class Timeseries(ObjectProperty):
                 step_time = self.step_time
             remainingTimeTillFeature = 0
             steps = 0
-            interval = 0
+            interval = None
+            last_interval = None
             f = None
 
             while machineIsRunning:
@@ -160,19 +161,28 @@ class Timeseries(ObjectProperty):
                         value = self.rngFeature.generateNumber(start_time=self.start_time)
 
                     else:
+                        # set other features as variables that are used in this timeseries
                         for key in list(self.distribution.keys()):
                             if key not in ["Function", "DataPoints", "Feature"]:
                                 locals()[key] = self.distribution.get(key).featureValue
 
+                        # set the interval that is currently being used
                         x = self.intervals[0][0] + (self.stepsize * steps)
                         for idx, i in enumerate(self.intervals):
                             if i[0] <= x <= i[1]:
                                 interval = self.intervals[idx]
                                 break
 
+                        # check if the interval changed
+                        if last_interval != interval:
+                            f = None
+
+                        # interpolate or not
                         if type(self.distribution["Function"][interval]) == list:
                             # set f for interpolation
                             if f == None:
+                                if interval == (60, 100):
+                                    pass
                                 data = copy.deepcopy(self.distribution["Function"][interval])
                                 for i, axes in enumerate(data):
                                     for j, coord in enumerate(axes):
@@ -194,6 +204,7 @@ class Timeseries(ObjectProperty):
                         self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
                         value = self.rngFeature.generateNumber(start_time=self.start_time)
 
+                    # check random walk
                     if self.random_walk == True:
                         self.featureValue += value
                     else:
@@ -231,6 +242,7 @@ class Timeseries(ObjectProperty):
 
                     remainingTimeTillFeature = step_time
                     steps += 1
+                    last_interval = interval
 
                     # check if it was the last step
                     if steps == self.distribution["DataPoints"]:
