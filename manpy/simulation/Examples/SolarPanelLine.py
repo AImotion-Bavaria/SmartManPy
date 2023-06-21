@@ -148,26 +148,26 @@ flow_rate = Feature("Flow_Rate", "Flow_Rate", victim=Gluing,
 
 # upper interval bound is process time -> how long does the process take, e.g. 200 seconds. Not necessarily the
 # same timne unit like in manpy
-a = Feature("a", "L1", victim=Lamination,
-                        distribution={"Feature": {"Normal": {"mean": 1, "stdev": 2}}})
-b = Feature("b", "L2", victim=Lamination,
-                        distribution={"Feature": {"Normal": {"mean": 60, "stdev": 2}}})
-c = Feature("c", "L3", victim=Lamination,
-                        distribution={"Feature": {"Normal": {"mean": 80, "stdev": 2}}})
-d = Feature("d", "L4", victim=Lamination,
-                        distribution={"Feature": {"Normal": {"mean": 85, "stdev": 2}}})
-e = Feature("e", "L5", victim=Lamination,
-                        distribution={"Feature": {"Normal": {"mean": 20, "stdev": 2}}})
-f = Feature("f", "L6", victim=Lamination,
-                        distribution={"Feature": {"Normal": {"mean": 5, "stdev": 2}}})
-g = Feature("g", "L7", victim=Lamination,
-                        distribution={"Feature": {"Normal": {"mean": 0, "stdev": 2}}})
+x1 = Feature("a", "L1", victim=Lamination,
+             distribution={"Feature": {"Normal": {"mean": 1, "stdev": 2}}})
+x2 = Feature("b", "L2", victim=Lamination,
+             distribution={"Feature": {"Normal": {"mean": 60, "stdev": 2}}})
+x3 = Feature("c", "L3", victim=Lamination,
+             distribution={"Feature": {"Normal": {"mean": 80, "stdev": 2}}})
+x4 = Feature("d", "L4", victim=Lamination,
+             distribution={"Feature": {"Normal": {"mean": 85, "stdev": 2}}})
+x5 = Feature("e", "L5", victim=Lamination,
+             distribution={"Feature": {"Normal": {"mean": 20, "stdev": 2}}})
+x6 = Feature("f", "L6", victim=Lamination,
+             distribution={"Feature": {"Normal": {"mean": 5, "stdev": 2}}})
+x7 = Feature("g", "L7", victim=Lamination,
+             distribution={"Feature": {"Normal": {"mean": 0, "stdev": 2}}})
 
 Lamination_Pressure_Curve = Timeseries("Ts_Lamination_Pressure", "Ts_Lamination_Pressure", victim=Lamination,
-                                       no_negative=True, distribution={"Function": {(0, 20): "(2*x)+a",
-                                                                                    (20, 60): [[20, 30, 40, 60], ["40+a", "b", "c", "d"]],
-                                                                                    (60, 100): [[60, 70, 80, 100], ["d", "e", "f", 0]]},
-                                                                       "a": a, "b": b, "c": c, "d": d, "e": e, "f": f,
+                                       no_negative=True, distribution={"Function": {(0, 20): "(2*x)+x1",
+                                                                                    (20, 60): [[20, 30, 40, 60], ["40+x1", "x2", "x3", "x4"]],
+                                                                                    (60, 100): [[60, 70, 80, 100], ["x4", "x5", "x6", 0]]},
+                                                                       "x1": x1, "x2": x2, "x3": x3, "x4": x4, "x5": x5, "x6": x6,
                                                                        "DataPoints": 100})
 # first port is a linear function, second part interpolates log-like curve
 # third part interpolates exp-like curve
@@ -209,8 +209,8 @@ def main(test=0):
     objectList = [Solar_Cells, Solar_Cell_Tester, Isc, Voc, Vm, Im, Pmax, IV_Curve, Power_Curve, FF, EFF, Temp, Q0,
                   Solar_Cell_Scribing, Solar_Strings, Assembly0, Tabber_Stringer, Tab_Str_Resistance_Too_High,
                   Tab_Str_Voltage, Tab_Str_Power, Tab_Str_Resistance, Tab_Str_Force, Gluing, glue_temperature, Amount,
-                  flow_rate,  Q1, Layup, Visual_Fail, Q2,
-                  EL_Test, E1, Lamination, a, b, c, d, e, f, Lamination_Pressure_Curve, Q3]
+                  flow_rate, Q1, Layup, Visual_Fail, Q2,
+                  EL_Test, E1, Lamination, x1, x2, x3, x4, x5, x6, Lamination_Pressure_Curve, Q3]
 
     runSimulation(objectList, maxSimTime, trace=False)
 
