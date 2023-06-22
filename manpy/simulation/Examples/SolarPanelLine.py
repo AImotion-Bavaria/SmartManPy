@@ -149,31 +149,41 @@ flow_rate = Feature("Flow_Rate", "Flow_Rate", victim=Gluing,
 # upper interval bound is process time -> how long does the process take, e.g. 200 seconds. Not necessarily the
 # same timne unit like in manpy
 L_a = Feature("Ftr_La", "L1", victim=Lamination,
-                        distribution={"Feature": {"Normal": {"mean": 1, "stdev": 2}}})
+                        distribution={"Feature": {"Normal": {"mean": 5, "stdev": 1}}})
 L_b = Feature("Ftr_Lb", "L2", victim=Lamination,
-              distribution={"Feature": {"Normal": {"mean": 60, "stdev": 2}}})
+              distribution={"Feature": {"Normal": {"mean": 60, "stdev": 1}}})
 L_c = Feature("Ftr_Lc", "L3", victim=Lamination,
-              distribution={"Feature": {"Normal": {"mean": 80, "stdev": 2}}})
+              distribution={"Feature": {"Normal": {"mean": 80, "stdev": 1}}})
 L_d = Feature("Ftr_Ld", "L4", victim=Lamination,
-              distribution={"Feature": {"Normal": {"mean": 85, "stdev": 2}}})
+              distribution={"Feature": {"Normal": {"mean": 85, "stdev": 1}}})
 L_e = Feature("Ftr_Le", "L5", victim=Lamination,
-              distribution={"Feature": {"Normal": {"mean": 20, "stdev": 2}}})
+              distribution={"Feature": {"Normal": {"mean": 40, "stdev": 1}}})
 L_f = Feature("Ftr_Lf", "L6", victim=Lamination,
-              distribution={"Feature": {"Normal": {"mean": 5, "stdev": 2}}})
+              distribution={"Feature": {"Normal": {"mean": 25, "stdev": 1}}})
 L_g = Feature("Ftr_Lg", "L7", victim=Lamination,
-              distribution={"Feature": {"Normal": {"mean": 0, "stdev": 2}}})
+              distribution={"Feature": {"Normal": {"mean": 15, "stdev": 1}}})
 
-Lamination_Pressure_Curve = Timeseries("Ts_Lamination_Pressure", "Ts_Lamination_Pressure", victim=Lamination,
-                                       no_negative=True, distribution={"Function": {(0, 20): "x+La",
-                                                                                    (20, 60): [[20, 30, 40, 60], ["20+La", "Lb", "L_c", "Ld"]],
-                                                                                    (60, 100): [[61, 70, 80, 100], ["Ld", "Le", "Lf", "0.1"]]},
-                                                                       "La": L_a, "Lb": L_b, "L_c": L_c, "Ld": L_d, "Le": L_e, "Lf": L_f,
-                                                                       "DataPoints": 100})
+# TODO better names for intermediate variables
+Lamination_Temperature_Curve = Timeseries("Ts_Lamination_Temp", "Ts_Lamination_Temp", victim=Lamination,
+                                          no_negative=True, distribution={"Function": {(0, 20): "x+La",
+                                                                                    (20, 55): [[20, 30, 40, 50, 55], ["20+La", "Lb", "L_c", "L_c+3", "Ld"]],
+                                                                                    (55, 80): "Ld",
+                                                                                    (80, 120): [[80, 90, 100, 110, 120], ["Ld", "Le", "Lf", "Lg", "Lg"]]},
+                                                                       "La": L_a, "Lb": L_b, "L_c": L_c, "Ld": L_d, "Le": L_e, "Lf": L_f, "Lg": L_g,
+                                                                       "DataPoints": 120})
 # first port is a linear function, second part interpolates log-like curve
 # third part interpolates exp-like curve
 # we need more features
-
-
+Lamination_Peak_Pressure = Feature("Ftr_Press", "Pr1", victim=Lamination,
+              distribution={"Feature": {"Normal": {"mean": 80, "stdev": 1}}})
+Lamination_Pressure_Curve = Timeseries("Ts_Lamination_Pressure", "Ts_Lamination_Pressure", victim=Lamination,
+                                          no_negative=True, distribution={"Function": {(0, 20): "0.0",
+                                                                                    (20, 40): [[20, 25, 30, 35, 40], ["0.0", "0.25*Mp", "0.5*Mp", "0.75*Mp", "Mp"]],
+                                                                                    (40, 80): "Mp",
+                                                                                    (80, 100): [[80, 85, 90, 95, 100], ["Mp", "0.75*Mp", "0.5*Mp", "0.25*Mp", "0.0"]],
+                                                                                    (100, 120): "0.0"},
+                                                                       "Mp": Lamination_Peak_Pressure,
+                                                                       "DataPoints": 120})
 # ObjectInterruption
 # Layup
 Visual_Fail = Failure("Flr0", "Visual_Fail", victim=Layup, entity=True, remove=True, distribution={"TTF": {"Fixed": {"mean": 0.8}}, "TTR": {"Normal": {"mean": 300, "stdev": 40, "min":0, "probability": 0.008}}})
@@ -205,12 +215,13 @@ E1.defineRouting([EL_Test])
 
 
 def main(test=0):
-    maxSimTime = 15000
+    maxSimTime = 10000
     objectList = [Solar_Cells, Solar_Cell_Tester, Isc, Voc, Vm, Im, Pmax, IV_Curve, Power_Curve, FF, EFF, Temp, Q0,
                   Solar_Cell_Scribing, Solar_Strings, Assembly0, Tabber_Stringer, Tab_Str_Resistance_Too_High,
                   Tab_Str_Voltage, Tab_Str_Power, Tab_Str_Resistance, Tab_Str_Force, Gluing, glue_temperature, Amount,
                   flow_rate, Q1, Layup, Visual_Fail, Q2,
-                  EL_Test, E1, Lamination, L_a, L_b, L_c, L_d, L_e, L_f, Lamination_Pressure_Curve, Q3]
+                  EL_Test, E1, Lamination, L_a, L_b, L_c, L_d, L_e, L_f, L_g, Lamination_Temperature_Curve,
+                  Lamination_Peak_Pressure, Lamination_Pressure_Curve, Q3]
 
     runSimulation(objectList, maxSimTime, trace=False)
 
@@ -242,6 +253,7 @@ def main(test=0):
         # plt.plot(i.timeseries_times[1], i.timeseries[1], c="green", label="PV")
         # plt.legend()
         plt.plot(i.timeseries[-1])
+        plt.plot(i.timeseries[-2])
         plt.show()
 
 
