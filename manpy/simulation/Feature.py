@@ -6,19 +6,16 @@ from manpy.simulation.Globals import G
 
 class Feature(ObjectProperty):
     """
-    The Feature ObjectInterruption generates Features for a Machine
+    The Feature ObjectProperty generates Features for a Machine and stores them in Entities
     :param id: The id of the Feature
     :param name: The name of the Feature
     :param victim: The machine to which the feature belongs
-    :param deteriorationType: The way the time until the next Feature is counted, working counts only during the operation of the victim, constant is constant
-    :param distribution: The statistical distribution of the time and value of the Feature
+    :param distribution: The statistical distribution of the value of the Feature
     :param distribution_state_controller: StateController that can contain different distributions.
     :param reset_distributions: Active with deteriorationType working; Resets distribution_state_controller when the
            victim is interrupted (=repaired)
-    :param repairman: The resource that may be needed to fix the failure
     :param no_negative: If this value is true, returns 0 for values below 0 of the feature value
     :param contribute: Needs Failures in a list as an input to contribute the Feature value to conditions
-    :param entity: If this value is true, saves the Feature value inside the current Entity
     :param start_time: The starting time for the feature
     :param end_time: The end time for the feature
     :param start_value: The starting value of the Feature

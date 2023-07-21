@@ -404,6 +404,6 @@ class SimulationExamples(TestCase):
         result = main(test=1)
 
         for t in range(3):
-            self.assertEqual(len(result.features[t]), 20,
-                             "\nDataPoints: {}".format(len(result.features[t])))
-            self.assertEqual(format(result.feature_times[t][2] - result.feature_times[t][1], ".2f"), format(result.feature_times[t][1] - result.feature_times[t][0], ".2f"))
+            self.assertEqual(len(result.timeseries[t]), 20,
+                             "\nDataPoints: {}".format(len(result.timeseries[t])))
+            self.assertEqual(format(result.timeseries_times[t][2] - result.timeseries_times[t][1], ".2f"), format(result.timeseries_times[t][1] - result.timeseries_times[t][0], ".2f"))

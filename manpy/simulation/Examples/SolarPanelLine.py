@@ -33,7 +33,6 @@ Layup = Machine("M3", "Layup", processingTime={"Fixed": {"mean": 200}})
 Q2 = Queue("Q2", "Queue2")
 EL_Test = Machine("M1", "Solar_Cell_Scribing", processingTime={"Fixed": {"mean": 100}})
 E1 = Exit("E1", "Exit")
-#Frame.capacity = 1 TODO: Allow different Frame capacities
 # EVA_TPT = Source("S2", "EVA_TPT", interArrivalTime={"Fixed": {"mean": 100}}, entity="manpy.Frame")
 # EVA_TPT_Cutter = Machine("M4", "EVA_TPT_Cutter", processingTime={"Fixed": {"mean": 150}})
 
@@ -111,8 +110,8 @@ def main(test=0):
     TS[0].to_csv("IV_Curve.csv", index=False, encoding="utf8")
     TS[1].to_csv("PV_Curve.csv", index=False, encoding="utf8")
 
-    with pd.option_context('display.max_columns', None):
-        print(sct.drop(["ID"], axis=1).describe())
+    # with pd.option_context('display.max_columns', None):
+    #     print(sct.drop(["ID"], axis=1).describe())
 
 
     # for i in Solar_Cell_Tester.entities:
