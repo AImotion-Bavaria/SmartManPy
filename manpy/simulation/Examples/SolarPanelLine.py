@@ -7,6 +7,9 @@ import pandas as pd
 start = time.time()
 
 # produces 16 265Watt Solar Panels/hour. 60 Solar Cells for one Panel, 225sec per Panel
+# Details:
+# https://www.solarmakingmachine.com/10-30MW-Full-Automatic-Solar-Panel-Assembly-Line/
+
 
 def condition(self):
     activeEntity = self.Res.users[0]
@@ -110,6 +113,7 @@ Tab_Str_Force = Feature("Tab_Str_Force", "Tab_Str_Force", victim=Tabber_Stringer
                         distribution={"Feature": {"Normal": {"mean": 180, "stdev": 30}}})
 # Cutting
 # TODO since it's probably a laser
+# --> Similar to pick & place: just a failure
 
 # Gluing
 glue_temperature = Feature("glue_temp", "Glue_Temperature", victim=Gluing, random_walk=True, start_value=190,
@@ -139,7 +143,10 @@ Amount_StateController = RandomDefectStateController(failure_probability=0.02,
 Amount = Feature("Menge", "Menge", victim=Gluing, distribution_state_controller=Amount_StateController)
 
 flow_rate = Feature("Flow_Rate", "Flow_Rate", victim=Gluing,
-                    dependent={"Function": "0.9*X", "X": Amount}, dependent_noise_std=10)
+                    dependent={"Function": "0.9*X", "X": Amount},
+                    distribution={"Feature": {"Normal": {"stdev": 0.0135}}})
+
+# TODO State Controllers
 
 # Lamination
 # Two timeseries: pressure and temperature, interpolation based on features
@@ -171,9 +178,7 @@ Lamination_Temperature_Curve = Timeseries("Ts_Lamination_Temp", "Ts_Lamination_T
                                                                                     (80, 120): [[80, 90, 100, 110, 120], ["Ld", "Le", "Lf", "Lg", "Lg"]]},
                                                                        "La": L_a, "Lb": L_b, "L_c": L_c, "Ld": L_d, "Le": L_e, "Lf": L_f, "Lg": L_g,
                                                                        "DataPoints": 120})
-# first port is a linear function, second part interpolates log-like curve
-# third part interpolates exp-like curve
-# we need more features
+
 Lamination_Peak_Pressure = Feature("Ftr_Press", "Pr1", victim=Lamination,
               distribution={"Feature": {"Normal": {"mean": 80, "stdev": 1}}})
 Lamination_Pressure_Curve = Timeseries("Ts_Lamination_Pressure", "Ts_Lamination_Pressure", victim=Lamination,
@@ -187,6 +192,7 @@ Lamination_Pressure_Curve = Timeseries("Ts_Lamination_Pressure", "Ts_Lamination_
 # ObjectInterruption
 # Layup
 Visual_Fail = Failure("Flr0", "Visual_Fail", victim=Layup, entity=True, remove=True, distribution={"TTF": {"Fixed": {"mean": 0.8}}, "TTR": {"Normal": {"mean": 300, "stdev": 40, "min":0, "probability": 0.008}}})
+
 # EL_Tester
 Crack = Failure("Flr1", "Crack", victim=EL_Test, entity=True, distribution={"TTF": {"Fixed": {"mean": 0.9}}, "TTR": {"Fixed": {"mean": 0, "probability": 0.01}}})
 Black_spot = Failure("Flr2", "Black_spot", victim=EL_Test, entity=True, distribution={"TTF": {"Fixed": {"mean": 0.9}}, "TTR": {"Fixed": {"mean": 0, "probability": 0.01}}})
@@ -194,6 +200,7 @@ Mixed_Wafers = Failure("Flr3", "Mixed_Wafers", victim=EL_Test, entity=True, dist
 Process_Defect = Failure("Flr4", "Process_Defect", victim=EL_Test, entity=True, distribution={"TTF": {"Fixed": {"mean": 0.9}}, "TTR": {"Fixed": {"mean": 0, "probability": 0.01}}})
 Cold_Soder_Joint = Failure("Flr5", "Cold_Soder_Joint", victim=EL_Test, entity=True, distribution={"TTF": {"Fixed": {"mean": 0.9}}, "TTR": {"Fixed": {"mean": 0, "probability": 0.01}}})
 
+# TODO IV Test?
 
 # Routing
 Solar_Cells.defineRouting([Solar_Cell_Tester])
