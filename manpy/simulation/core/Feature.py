@@ -1,4 +1,4 @@
-
+from manpy.simulation.core.Globals import G
 from manpy.simulation.core.ObjectProperty import ObjectProperty
 from manpy.simulation.RandomNumberGenerator import RandomNumberGenerator
 
