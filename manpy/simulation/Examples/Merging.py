@@ -18,7 +18,7 @@ def condition(self):
 
 # Objects
 Frame.capacity = 1
-S0 = Source("S0", "Source", interArrivalTime={"Fixed": {"mean": 0.4}}, entity="manpy.Part", capacity=1)
+S0 = Source("S0", "Source", interArrivalTime={"Fixed": {"mean": 0.4}}, entity="manpy.Part")
 S1 = Source("S1", "Source", interArrivalTime={"Fixed": {"mean": 0.4}}, entity="manpy.Frame", capacity=1)
 #Löten = Machine("M0", "Löten", processingTime={"Fixed": {"mean": 0.8}})
 Löten = Machine("M0", "Löten", processingTime={"Normal": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}})

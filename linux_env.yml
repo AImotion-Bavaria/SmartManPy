@@ -85,6 +85,7 @@ dependencies:
   - qt-webengine=5.15.9
   - qtwebkit=5.212
   - readline=8.2
+  - scipy=1.10.1
   - setuptools=65.5.0
   - simpy=4.0.1
   - sip=6.6.2
