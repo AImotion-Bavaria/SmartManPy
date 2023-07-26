@@ -14,13 +14,13 @@ def opAss_LP(
     Tool={},
 ):
 
-    from pulp import LpProblem, LpMaximize, LpVariable, LpBinary, lpSum, LpStatus
+    from pulp import LpProblem, LpMaximize, LpVariable, lpSum, LpStatus
     import pulp
     import copy
     import glob
     import os
     import time
-    from .Globals import G
+    from manpy.simulation.core.Globals import G
 
     startPulp = time.time()
     machines = list(machineList.keys())

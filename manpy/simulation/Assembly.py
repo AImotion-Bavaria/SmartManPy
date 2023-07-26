@@ -29,11 +29,10 @@ it gathers frames and parts which are loaded to the frames
 # from SimPy.Simulation import Process, Resource
 # from SimPy.Simulation import waitevent, now, hold
 import simpy
-import xlwt
 from .RandomNumberGenerator import RandomNumberGenerator
-from .CoreObject import CoreObject
-from . import Globals
-from .Entity import Entity
+from manpy.simulation.core.CoreObject import CoreObject
+from .core import Globals
+from manpy.simulation.core.Entity import Entity
 
 # ===============================================================================
 # the Assembly object
@@ -75,7 +74,7 @@ class Assembly(CoreObject):
         # when the entities have to be loaded to operatedMachines
         # then the giverObjects have to be blocked for the time
         # that the machine is being loaded
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         if isinstance(entity, str):
             self.item = Globals.getClassFromName(entity)
@@ -114,7 +113,7 @@ class Assembly(CoreObject):
         # when the entities have to be loaded to operatedMachines
         # then the giverObjects have to be blocked for the time
         # that the machine is being loaded
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         G.AssemblyList.append(self)
 
@@ -183,7 +182,7 @@ class Assembly(CoreObject):
     def run(self):
         activeObjectQueue = self.getActiveObjectQueue()
         while 1:
-            from .Globals import G
+            from manpy.simulation.core.Globals import G
 
             # Create new Entity
             entity = self.createEntity()
@@ -493,7 +492,7 @@ class Assembly(CoreObject):
     # outputs results to JSON File
     # ===========================================================================
     def outputResultsJSON(self):
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         json = {"_class": self.class_name, "id": self.id, "results": {}}
         json["results"]["working_ratio"] = self.Working
@@ -503,7 +502,7 @@ class Assembly(CoreObject):
         G.outputJSON["elementList"].append(json)
 
     def createEntity(self):
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         self.printTrace(self.id, create="")
         return self.item(

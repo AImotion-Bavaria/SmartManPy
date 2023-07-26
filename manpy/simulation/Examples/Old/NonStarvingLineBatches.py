@@ -1,5 +1,5 @@
-from manpy.simulation.imports import BatchScrapMachine, NonStarvingEntry, Exit, Part
-from manpy.simulation.Globals import runSimulation
+from manpy.simulation.imports import BatchScrapMachine, NonStarvingEntry, Exit
+from manpy.simulation.core.Globals import runSimulation
 
 # define the objects of the model
 NS = NonStarvingEntry(

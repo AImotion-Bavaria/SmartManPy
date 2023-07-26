@@ -35,8 +35,8 @@ class BatchDecompositionBlocking(BatchDecomposition):
     # =======================================================================
     def canAcceptAndIsRequested(self, callerObject=None):
         station = self
-        from .Queue import Queue
-        from .Exit import Exit
+        from manpy.simulation.core.Queue import Queue
+        from manpy.simulation.core.Exit import Exit
 
         # loop to next stations until a Queue or Exit is reached
         while 1:

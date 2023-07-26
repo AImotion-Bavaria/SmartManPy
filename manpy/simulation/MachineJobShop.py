@@ -25,8 +25,7 @@ Created on 1 oct 2012
 extends the machine object so that it can act as a jobshop station. It reads the processing time and the successive station from the Entity
 """
 
-import simpy
-from .Machine import Machine
+from manpy.simulation.core.Machine import Machine
 from .RandomNumberGenerator import RandomNumberGenerator
 
 # ===========================================================================
@@ -37,7 +36,7 @@ class MachineJobShop(Machine):
     # set all the objects in previous and next
     # =======================================================================
     def initialize(self):
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         self.previous = G.ObjList
         self.next = []
@@ -87,7 +86,7 @@ class MachineJobShop(Machine):
         activeObject = self.getActiveObject()
         activeEntity = entity
         # read the possible receivers - update the next list
-        from . import Globals
+        from .core import Globals
 
         # XXX: in the case of MouldAssembler there is no next defined in the route of the entities that are received
         # the position activeEntity.remainingRoute[1] is out of bound. the next should be updated by the remaining route of the entity to be assembled

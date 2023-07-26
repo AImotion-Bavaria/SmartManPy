@@ -65,7 +65,7 @@ from .MachineManagedJob import MachineManagedJob
 
 # from SimPy.Simulation import Resource, reactivate, now
 import simpy
-from .Globals import G
+from manpy.simulation.core.Globals import G
 
 # =======================================================================
 # Error in the assembling of the mould
@@ -210,7 +210,7 @@ class MouldAssemblyManaged(MachineManagedJob):
                 # create the mould
                 self.createMould(self.mouldToBeCreated)
                 # set the created mould as WIP
-                from . import Globals
+                from .core import Globals
 
                 Globals.setWIP([self.mouldToBeCreated])
                 # read the activeObjectQueue again as it has been updated by the setWIP()

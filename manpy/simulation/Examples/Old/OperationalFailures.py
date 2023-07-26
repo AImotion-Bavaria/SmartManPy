@@ -3,13 +3,9 @@ from manpy.simulation.imports import (
     Queue,
     NonStarvingEntry,
     Exit,
-    Part,
     EventGenerator,
-    ExcelHandler,
-    Part,
 )
-from manpy.simulation.Globals import runSimulation, G
-import random
+from manpy.simulation.core.Globals import runSimulation, G
 from random import Random
 
 Rnd = Random(2)
@@ -280,12 +276,6 @@ print(("AVGWIP=", AVGWIP))
 
 # ExcelHandler.outputTrace('OperationalFailures')
 print(("running time=", time.time() - start))
-
-from rpy2 import robjects
-from rpy2.robjects.vectors import IntVector, FloatVector, StrVector
-from rpy2.robjects.packages import importr
-from rpy2.rinterface import NA_Real
-
 
 # # to plot B123 if we want
 # base = importr("base")

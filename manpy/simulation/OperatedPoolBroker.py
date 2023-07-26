@@ -27,8 +27,7 @@ Models an Interruption that handles the operating of a Station by an ObjectResou
 """
 
 # from SimPy.Simulation import Process, Resource, SimEvent
-import simpy
-from .ObjectInterruption import ObjectInterruption
+from manpy.simulation.core.ObjectInterruption import ObjectInterruption
 
 # from SimPy.Simulation import waituntil, now, hold, request, release, waitevent
 
@@ -72,7 +71,7 @@ class Broker(ObjectInterruption):
     # TODO: have to signal Router that broker is asking operator, and wait till the Router decides
     # =======================================================================
     def run(self):
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         while 1:
             # TODO: add new broker event - brokerIsCalled

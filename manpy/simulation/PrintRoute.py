@@ -1,11 +1,4 @@
-from . import Globals
-import xlwt
-from .Globals import G
-
-from . import OrderComponent
-from . import Mould
-from . import Order
-from . import OrderDesign
+from manpy.simulation.core.Globals import G
 
 JOB_SHOP_TECHNOLOGY_SEQ = ["CAD", "CAM", "MILL", "EDM", "ASSM", "MA", "INJM", "IM"]
 ORDER_COMPONENT_TYPE_SET = set(["OrderComponent", "Design", "Mould"])
@@ -33,15 +26,15 @@ def getEventsList(objectsList=[]):
 
 
 def outputRoute():
-    """            
-        prints the routes of the Jobs through the model as a table 
-        the horizontal axis represents the different stations of the model 
+    """
+        prints the routes of the Jobs through the model as a table
+        the horizontal axis represents the different stations of the model
         the vertical axis represents the time axis (events as points in time)
         each job will move through the stations for a specific time
         e.g.
-    
+
     time\machines            M1        M2        M3        M4        M5
-                
+
     t1                       J1
     t2                       J1                            J2
     t3                       J1                 J3         J2
@@ -49,10 +42,10 @@ def outputRoute():
     t5                                J2        J3                   J4
     t6                                J2        J3         J1        J4
     t7                                J2                   J1
-    
+
         TODO: create multiple columns for each machine as one machine can receive more than one jobs at the same time (assembly)
         or can get an entity when an entity is removed from it (the cell of this machine for the specific time is occupied by the last
-        job accessing it) 
+        job accessing it)
     """
 
     # xx for each station allocate 2 rows and a 3rd one for operators

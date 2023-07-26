@@ -18,7 +18,7 @@
 # ===========================================================================
 
 import simpy
-from .CoreObject import CoreObject
+from manpy.simulation.core.CoreObject import CoreObject
 
 """
 Created on 23 May 2013
@@ -51,7 +51,7 @@ class Conveyor(CoreObject):
         # when the entities have to be loaded to operatedMachines
         # then the giverObjects have to be blocked for the time
         # that the machine is being loaded
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         G.ConveyerList.append(self)
 
@@ -464,7 +464,7 @@ class Conveyor(CoreObject):
     # ===========================================================================
     def postProcessing(self, MaxSimtime=None):
         if MaxSimtime == None:
-            from .Globals import G
+            from manpy.simulation.core.Globals import G
 
             MaxSimtime = G.maxSimTime
         self.moveEntities()  # move the entities to count the working time
@@ -486,7 +486,7 @@ class Conveyor(CoreObject):
     # outputs results to JSON File
     # ===========================================================================
     def outputResultsJSON(self):
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         json = {"_class": self.class_name, "id": self.id, "results": {}}
         json["results"]["working_ratio"] = self.Working
@@ -505,7 +505,7 @@ class ConveyerMover(object):
     # ===========================================================================
     def __init__(self, conveyor):
         #         Process.__init__(self)
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         self.env = G.env
         self.conveyor = conveyor  # the conveyor that owns the mover

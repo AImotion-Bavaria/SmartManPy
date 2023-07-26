@@ -5,9 +5,8 @@ Created on 21 Aug 2013
 """
 
 import math
-import numpy
 import random
-from .Globals import G
+from manpy.simulation.core.Globals import G
 
 
 class Allocation:

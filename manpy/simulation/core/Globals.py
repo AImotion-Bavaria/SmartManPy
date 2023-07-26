@@ -28,7 +28,7 @@ carries some global variables
 import pandas as pd
 import simpy
 import xlwt
-from manpy.simulation.Database import ManPyDatabase
+from manpy.simulation.core.Database import ManPyDatabase
 
 
 # ===========================================================================
@@ -106,6 +106,7 @@ class G:
     QueueManagedJobList = []
     ModelResourceList = []
     FeatureList = []
+    TimeSeriesList = []
 
     JobList = []
     WipList = []
@@ -212,10 +213,15 @@ def getClassFromName(dotted_name):
     parts = dotted_name.split(".")
     # this is added for backwards compatibility
     if dotted_name.startswith("manpy"):
-        class_name = dotted_name.split(".")[-1]
-        new_dotted_name = "manpy.simulation.%s.%s" % (class_name, class_name)
-        # logger.info(("Old style name %s used, using %s instead" % (dotted_name, new_dotted_name)))
-        dotted_name = new_dotted_name
+        if 'core' in dotted_name:
+            class_name = dotted_name.split(".")[-1]
+            new_dotted_name = "manpy.simulation.core.%s.%s" % (class_name, class_name)
+            dotted_name = new_dotted_name
+        else:
+            class_name = dotted_name.split(".")[-1]
+            new_dotted_name = "manpy.simulation.%s.%s" % (class_name, class_name)
+            # logger.info(("Old style name %s used, using %s instead" % (dotted_name, new_dotted_name)))
+            dotted_name = new_dotted_name
     return resolve(dotted_name)
 
 
@@ -530,14 +536,15 @@ def runSimulation(
     G.ObjectResourceList = []
     G.trace_list = []
     G.ftr_st = []   # list of (feature, corresponding station)
+    G.ts_st = []   # list of (timeseries, corresponding station)
     G.db = db
     G.objectList = objectList
 
-    from .CoreObject import CoreObject
+    from manpy.simulation.core.CoreObject import CoreObject
     from .ObjectInterruption import ObjectInterruption
     from .ObjectProperty import ObjectProperty
     from .ObjectResource import ObjectResource
-    from .Entity import Entity
+    from manpy.simulation.core.Entity import Entity
 
 
     for object in objectList:
@@ -556,6 +563,12 @@ def runSimulation(
             G.ftr_st.append((f.id, None))
         else:
             G.ftr_st.append((f.id, f.victim.id))
+    # set ts_st
+    for ts in G.TimeSeriesList:
+        if ts.victim == None:
+            G.ts_st.append((ts.id, None))
+        else:
+            G.ts_st.append((ts.id, ts.victim.id))
 
     # connect to QuestDB
     if G.db:
@@ -595,7 +608,7 @@ def runSimulation(
 
             # identify from the exits what is the time that the last entity has ended.
             endList = []
-            from manpy.simulation.Exit import Exit
+            from manpy.simulation.core.Exit import Exit
 
             for object in G.ObjList:
                 if issubclass(object.__class__, Exit):
@@ -651,7 +664,7 @@ def runSimulation(
 
             # identify from the exits what is the time that the last entity has ended.
             endList = []
-            from manpy.simulation.Exit import Exit
+            from manpy.simulation.core.Exit import Exit
 
             for object in G.ObjList:
                 if issubclass(object.__class__, Exit):
@@ -681,46 +694,74 @@ def ExcelPrinter(df, filename):
     else:
         df.to_excel("{}.xls".format(filename))
 
-def getEntityData(objectList=[], discards=[], time=False) -> pd.DataFrame:
-    columns = []        # name of columns
+# TODO: Entity ID in DataFrame
+def getFeatureData(objectList=[], time=False) -> pd.DataFrame: #TODO: check time
+    columns = ["ID"]        # name of columns
     df_list = []        # list for the DataFrame
+    feature_list = []   # list of included features
 
     # set columns
     for ftr in G.ftr_st:
-        columns.append("{}_{}_v".format(ftr[1], ftr[0]))
-        if time:
-            columns.append("{}_{}_t".format(ftr[1], ftr[0]))
+        for o in objectList:
+            if ftr[1] == o.id:
+                if time:
+                    columns.append("{}_{}_v".format(ftr[1], ftr[0]))
+                    columns.append("{}_{}_t".format(ftr[1], ftr[0]))
+                else:
+                    columns.append("{}_{}".format(ftr[1], ftr[0]))
+                feature_list.append(G.ftr_st.index(ftr))
     columns.append("Result")
 
     # set df_list
-    # TODO we need to match feature values and names
-    for entity in G.EntityList:
-        check = False # if this is True, the Entity gets added to the Dataframe
+    unique = []
+    for o in objectList:
+        entities = o.entities + o.discards
+        for entity in entities:
+            if entity not in unique:
+                # check which features
+                features = []
+                times = []
+                for f in feature_list:
+                    features.append(entity.features[f])
+                    times.append(entity.feature_times[f])
+                features.append(entity.features[-1])
 
-        # check objectList for the current Entity
-        for o in objectList:
-            if entity in o.entities:
-                check = True
-                break
-        # check every Machine discard for the current Entity
-        for m in discards:
-            if entity in m.discards:
-                check = True
-                break
-        if check == False:
-            continue
-
-        if time:
-            l = [None] * (len(G.ftr_st) * 2 + 1)
-            for i in range(len(l)):
-                if i % 2 == 0:
-                    l[i] = entity.features[i // 2]
+                if time:
+                    l = [None] * (len(G.ftr_st) * 2 + 1)
+                    for i in range(len(l)):
+                        if i % 2 == 0:
+                            l[i] = features[i // 2]
+                        else:
+                            l[i] = times[i // 2]
+                    l = [int(entity.id[4:])] + l
                 else:
-                    l[i] = entity.feature_times[i // 2]
-        else:
-            l = entity.features
+                    l = [int(entity.id[4:])] + features
 
-        if len(l) == len(columns):
-            df_list.append(l)
+                if len(l) == len(columns):
+                    df_list.append(l)
+                unique.append(entity)
 
-    return pd.DataFrame(df_list, columns = columns)
+    # return result
+    result = pd.DataFrame(df_list, columns=columns).sort_values("ID")
+    if "Success" in result["Result"].unique() or "Fail" in result["Result"].unique():
+        return result
+    else:
+        return result.drop("Result", axis=1)
+
+def getTimeSeriesData(objectList=[]) -> [pd.DataFrame]: #TODO: guruantee no duplicates after Assembly
+    results = []
+    columns = ["ID", "Time", "Value"]
+    for ts in G.ts_st:
+        id = []
+        time = []
+        value = []
+        for o in objectList:
+            if ts[1] == o.id:
+                entities = o.entities + o.discards
+                for entity in entities:
+                    id += [int(entity.id[4:])] * (len(entity.timeseries[G.ts_st.index(ts)]))
+                    time += entity.timeseries_times[G.ts_st.index(ts)]
+                    value += entity.timeseries[G.ts_st.index(ts)]
+        results.append(pd.DataFrame(list(zip(id, time, value)), columns=columns))
+
+    return results

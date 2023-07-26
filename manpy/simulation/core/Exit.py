@@ -27,8 +27,7 @@ models the exit of the model
 
 # from SimPy.Simulation import now, Process, Resource, infinity, waituntil, waitevent
 import simpy
-import xlwt
-from .CoreObject import CoreObject
+from manpy.simulation.core.CoreObject import CoreObject
 
 # ===========================================================================
 #                            The exit object

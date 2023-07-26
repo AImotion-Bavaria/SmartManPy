@@ -26,8 +26,7 @@ Created on 6 June 2013
 the buffer of the capacity station. Only change from queue that it can be blocked.
 """
 
-import simpy
-from manpy.simulation.Queue import Queue
+from manpy.simulation.core.Queue import Queue
 
 # ===========================================================================
 #                            the Queue object
@@ -53,7 +52,7 @@ class CapacityStationBuffer(Queue):
         self.requireFullProject = (
             requireFullProject  # flag that shows if here the whole project is assembled
         )
-        from manpy.simulation.Globals import G
+        from manpy.simulation.core.Globals import G
 
         if hasattr(G, "CapacityStationBufferList"):
             G.CapacityStationBufferList.append(self)
@@ -66,7 +65,7 @@ class CapacityStationBuffer(Queue):
 
     def initialize(self):
         Queue.initialize(self)
-        import manpy.simulation.Globals as Globals
+        import manpy.simulation.core.Globals as Globals
 
         # identify the notRequiredOperations
         # input gives only stationId, buffer and exit should be identified

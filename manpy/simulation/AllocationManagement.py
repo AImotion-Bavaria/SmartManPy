@@ -9,12 +9,9 @@ Basic implementation: runs the allocation routine for the future demand first
 Equivalent to M2 in MATLAB functions
 """
 
-import xlwt
-import xlrd
 from .AllocationRoutine import AllocationRoutine
-from .CoreObject import CoreObject
-from .Globals import G
-from .ObjectInterruption import ObjectInterruption
+from manpy.simulation.core.Globals import G
+from manpy.simulation.core.ObjectInterruption import ObjectInterruption
 from .FutureDemandCreator import FutureDemandCreator
 
 
@@ -30,7 +27,7 @@ class AllocationManagement(ObjectInterruption):
         ObjectInterruption.initialize(self)
         self.readData()
         self.FDC = FutureDemandCreator()
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         G.AllocationManagementList.append(self)
 

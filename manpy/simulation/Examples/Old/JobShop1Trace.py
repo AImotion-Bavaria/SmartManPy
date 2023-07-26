@@ -5,7 +5,7 @@ from manpy.simulation.imports import (
     Job,
     ExcelHandler,
 )
-from manpy.simulation.Globals import runSimulation
+from manpy.simulation.core.Globals import runSimulation
 
 # define the objects of the model
 Q1 = QueueJobShop("Q1", "Queue1", capacity=float("inf"))

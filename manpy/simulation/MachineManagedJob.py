@@ -27,9 +27,7 @@ checks if he is available before it takes it
 """
 
 # from SimPy.Simulation import Process, Resource, activate, now
-import simpy
 
-from .OperatedPoolBroker import Broker
 from .OperatorPool import OperatorPool
 from .OperatorRouterManaged import RouterManaged
 from .MachineJobShop import MachineJobShop
@@ -56,7 +54,7 @@ class MachineManagedJob(MachineJobShop):
         id = self.id + "_OP"
         name = self.objName + "_operatorPool"
         self.operatorPool = OperatorPool(id, name, operatorsList=[])
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         G.OperatorPoolsList.append(self.operatorPool)
 
@@ -65,7 +63,7 @@ class MachineManagedJob(MachineJobShop):
     # ===========================================================================
     def createRouter(self):
         # create a Router
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         if not G.RouterList:
             self.router = RouterManaged()

@@ -110,7 +110,7 @@ class RandomNumberGenerator(object):
 
 
     def generateNumber(self, start_time=0, end_time=0):
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         x = G.env.now - start_time
         if x < 0:

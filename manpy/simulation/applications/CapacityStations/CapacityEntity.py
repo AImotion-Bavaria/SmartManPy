@@ -26,7 +26,7 @@ Created on 5 June 2013
 entity that requires specific capacity from a station
 """
 
-from manpy.simulation.Entity import Entity
+from manpy.simulation.core.Entity import Entity
 
 # ===========================================================================
 # The CapacityEntity object
@@ -63,7 +63,7 @@ class CapacityEntity(Entity):
         self.capacityProject = None  # the project that the capacity Entity is part of. It is defined in initialize
         self.requiredCapacity = requiredCapacity  # the capacity that the capacity entity requires from the following station
         self.shouldMove = False
-        from manpy.simulation.Globals import G
+        from manpy.simulation.core.Globals import G
 
         if hasattr(G, "CapacityEntityList"):
             G.CapacityEntityList.append(self)
@@ -74,7 +74,7 @@ class CapacityEntity(Entity):
     def initialize(self):
         Entity.initialize(self)
         self.shouldMove = False
-        from manpy.simulation.Globals import G
+        from manpy.simulation.core.Globals import G
 
         # find the project that the capacity entity is part of
         for project in G.CapacityProjectList:

@@ -22,10 +22,10 @@ Created on 17 Jan 2014
 @author: Ioannis
 """
 """
-Mould is an Entity that assembled out of OrderComponents and has a parent Order 
+Mould is an Entity that assembled out of OrderComponents and has a parent Order
 """
 
-from .Globals import G
+from manpy.simulation.core.Globals import G
 from .Job import Job
 
 # ===========================================================================

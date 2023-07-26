@@ -29,16 +29,16 @@ auxiliary script to help the import of ManPy modules
 import simpy
 
 # generic
-from manpy.simulation.CoreObject import CoreObject
-from manpy.simulation.Entity import Entity
-from manpy.simulation.ObjectInterruption import ObjectInterruption
-from manpy.simulation.ObjectResource import ObjectResource
+from manpy.simulation.core.CoreObject import CoreObject
+from manpy.simulation.core.Entity import Entity
+from manpy.simulation.core.ObjectInterruption import ObjectInterruption
+from manpy.simulation.core.ObjectResource import ObjectResource
 
 # CoreObjects
-from manpy.simulation.Machine import Machine
-from manpy.simulation.Queue import Queue
-from manpy.simulation.Source import Source
-from manpy.simulation.Exit import Exit
+from manpy.simulation.core.Machine import Machine
+from manpy.simulation.core.Queue import Queue
+from manpy.simulation.core.Source import Source
+from manpy.simulation.core.Exit import Exit
 from manpy.simulation.Assembly import Assembly
 from manpy.simulation.Dismantle import Dismantle
 from manpy.simulation.Conveyor import Conveyor
@@ -58,13 +58,13 @@ from manpy.simulation.MouldAssemblyBufferManaged import MouldAssemblyBufferManag
 from manpy.simulation.OrderDecomposition import OrderDecomposition
 from manpy.simulation.NonStarvingEntry import NonStarvingEntry
 from manpy.simulation.RoutingQueue import RoutingQueue
-from manpy.simulation.Feature import Feature
-from manpy.simulation.StateController import SimpleStateController, ContinuosNormalDistribution, \
+from manpy.simulation.core.Feature import Feature
+from manpy.simulation.core.StateController import SimpleStateController, ContinuosNormalDistribution, \
     RandomDefectStateController
-from manpy.simulation.StateController import SimpleStateController
-from manpy.simulation.Feature import Feature
-from manpy.simulation.Timeseries import Timeseries
-from manpy.simulation.Database import ManPyDatabase
+from manpy.simulation.core.StateController import SimpleStateController
+from manpy.simulation.core.Feature import Feature
+from manpy.simulation.core.Timeseries import Timeseries
+from manpy.simulation.core.Database import ManPyDatabase
 
 # Entities
 from manpy.simulation.Job import Job
@@ -84,17 +84,17 @@ from manpy.simulation.Operator import Operator
 # from manpy.simulation.OperatorPreemptive import OperatorPreemptive
 
 # ObjectInterruption
-from manpy.simulation.Failure import Failure
+from manpy.simulation.core.Failure import Failure
 from manpy.simulation.EventGenerator import EventGenerator
 from manpy.simulation.ScheduledMaintenance import ScheduledMaintenance
 from manpy.simulation.ShiftScheduler import ShiftScheduler
 from manpy.simulation.PeriodicMaintenance import PeriodicMaintenance
 
 # Auxiliary
-from manpy.simulation.Globals import G
+from manpy.simulation.core.Globals import G
 from manpy.simulation.RandomNumberGenerator import RandomNumberGenerator
 from . import ExcelHandler
-from . import Globals
+from manpy.simulation.core import Globals
 
 # CapacityStation
 from manpy.simulation.applications.CapacityStations.CapacityEntity import CapacityEntity

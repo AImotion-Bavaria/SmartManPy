@@ -1,5 +1,5 @@
 from manpy.simulation.imports import Machine, Queue, Exit, Part, ExcelHandler
-from manpy.simulation.Globals import runSimulation, G
+from manpy.simulation.core.Globals import runSimulation, G
 
 # define the objects of the model
 Q = Queue("Q1", "Queue", capacity=1)

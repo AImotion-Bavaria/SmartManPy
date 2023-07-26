@@ -1,5 +1,5 @@
-from manpy.simulation.imports import Machine, NonStarvingEntry, Exit, Part
-from manpy.simulation.Globals import runSimulation
+from manpy.simulation.imports import Machine, NonStarvingEntry, Exit
+from manpy.simulation.core.Globals import runSimulation
 
 # define the objects of the model
 NS = NonStarvingEntry("NS1", "Entry", entityData={"_class": "manpy.Part"})

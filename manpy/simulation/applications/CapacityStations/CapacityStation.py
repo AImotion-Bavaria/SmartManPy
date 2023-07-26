@@ -26,9 +26,8 @@ Created on 5 June 2013
 a station that can process a specified capacity in every time period
 """
 
-from manpy.simulation.Queue import Queue
+from manpy.simulation.core.Queue import Queue
 
-import simpy
 
 # ===========================================================================
 #                            the CapacityStation object
@@ -72,7 +71,7 @@ class CapacityStation(Queue):
         # then read it from some other of the sharing stations
         if not self.intervalCapacity and self.sharedResources:
             for stationId in self.sharedResources.get("stationIds", []):
-                import manpy.simulation.Globals as Globals
+                import manpy.simulation.core.Globals as Globals
 
                 station = Globals.findObjectById(stationId)
                 if station.intervalCapacity:
@@ -85,7 +84,7 @@ class CapacityStation(Queue):
         self.isLocked = True
         self.utilisationDict = []  # a list of dicts for the utilization results
         self.detailedWorkPlan = []  # a list of dicts to keep detailed data
-        from manpy.simulation.Globals import G
+        from manpy.simulation.core.Globals import G
 
         if hasattr(G, "CapacityStationList"):
             G.CapacityStationList.append(self)
@@ -102,7 +101,7 @@ class CapacityStation(Queue):
     # outputs results to JSON File
     # =======================================================================
     def outputResultsJSON(self):
-        from manpy.simulation.Globals import G
+        from manpy.simulation.core.Globals import G
 
         json = {
             "_class": "manpy.%s" % self.__class__.__name__,

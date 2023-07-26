@@ -26,9 +26,7 @@ Models a queue where entities can wait in order to be routed to the same server 
 if the level is reached Router object is signalled
 """
 
-
-import simpy
-from .Queue import Queue
+from manpy.simulation.core.Queue import Queue
 
 # ===========================================================================
 #                            the Queue object

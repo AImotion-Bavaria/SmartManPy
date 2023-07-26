@@ -1,5 +1,5 @@
 from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue, SimpleStateController, Repairman
-from manpy.simulation.Globals import runSimulation, getEntityData, G, ExcelPrinter
+from manpy.simulation.core.Globals import runSimulation, getFeatureData, G
 
 import time
 
@@ -96,7 +96,7 @@ def main():
 
     runSimulation(objectList, maxSimTime)
 
-    df = getEntityData([E1], [Kleben], time=True)[["M1_Ftr8_v", "Result"]]
+    df = getFeatureData([E1], [Kleben], time=True)[["M1_Ftr8_v", "Result"]]
     df.to_csv("DistributionShift.csv", index=False, encoding="utf8")
 
     print("""

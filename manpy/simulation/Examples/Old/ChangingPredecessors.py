@@ -6,7 +6,7 @@ from manpy.simulation.imports import (
     EventGenerator,
     ExcelHandler,
 )
-from manpy.simulation.Globals import runSimulation, G
+from manpy.simulation.core.Globals import runSimulation, G
 
 
 # method that is to be invoked by the generator.

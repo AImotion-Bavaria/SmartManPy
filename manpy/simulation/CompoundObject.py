@@ -47,19 +47,16 @@ e.g. if the sequence given is -queue - machine then a queue must be placed in fr
 """
 
 from SimPy.Simulation import (
-    Process,
     Resource,
     now,
     activate,
-    passivate,
     waituntil,
-    hold,
 )
-from .CoreObject import CoreObject
+from manpy.simulation.core.CoreObject import CoreObject
 
 # from SimpleOperatedMachine2 import OperatedMachine
 from OperatedMachine import OperatedMachine
-from .Queue import Queue
+from manpy.simulation.core.Queue import Queue
 from .Operator import Operator
 
 

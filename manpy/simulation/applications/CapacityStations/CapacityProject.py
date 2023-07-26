@@ -26,7 +26,7 @@ Created on 5 June 2013
 a project that requires specific capacity from each station
 """
 
-from manpy.simulation.Entity import Entity
+from manpy.simulation.core.Entity import Entity
 
 # ===========================================================================
 # The CapacityEntityProject object
@@ -51,7 +51,7 @@ class CapacityProject(Entity):
         self.earliestStartDict = earliestStartDict
         # the assembly space the project requires
         self.assemblySpaceRequirement = assemblySpaceRequirement
-        from manpy.simulation.Globals import G
+        from manpy.simulation.core.Globals import G
 
         if hasattr(G, "CapacityProjectList"):
             G.CapacityProjectList.append(self)
@@ -71,7 +71,7 @@ class CapacityProject(Entity):
     # outputs results to JSON File
     # =======================================================================
     def outputResultsJSON(self):
-        from manpy.simulation.Globals import G
+        from manpy.simulation.core.Globals import G
 
         json = {
             "_class": "manpy.%s" % (self.__class__.__name__),

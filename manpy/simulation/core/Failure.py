@@ -27,11 +27,9 @@ models the failures that servers can have
 """
 
 # from SimPy.Simulation import now, Process, hold, request, release
-import simpy
-import math
-from .RandomNumberGenerator import RandomNumberGenerator
-from .ObjectInterruption import ObjectInterruption
-import pandas as pd
+from manpy.simulation.RandomNumberGenerator import RandomNumberGenerator
+from manpy.simulation.core.ObjectInterruption import ObjectInterruption
+
 
 class Failure(ObjectInterruption):
     def __init__(
@@ -47,14 +45,15 @@ class Failure(ObjectInterruption):
         waitOnTie=False,
         conditional=None,
         entity=False,
+        remove=False,
         **kw
     ):
-        ObjectInterruption.__init__(self, id, name, victim=victim)
+        ObjectInterruption.__init__(self, id, name, victim=victim, remove=remove)
         self.rngTTF = RandomNumberGenerator(
-            self, distribution.get("TTF", {"Fixed": {"mean": 100}})
+            self, distribution.get("TTF", {"Fixed": {"mean": 0}})
         )
         self.rngTTR = RandomNumberGenerator(
-            self, distribution.get("TTR", {"Fixed": {"mean": 1}})
+            self, distribution.get("TTR", {"Fixed": {"mean": 0}})
         )
         if self.name == "":
             self.name = "F" + str(index)
@@ -83,11 +82,11 @@ class Failure(ObjectInterruption):
         self.entity = entity
 
     def initialize(self):
+        ObjectInterruption.initialize(self)
         if self.conditional(self) != None:
             self.entity = True
         if self.entity == True:
             self.deteriorationType="working"
-        ObjectInterruption.initialize(self)
         self.victimStartsProcessing = self.env.event()
         self.victimEndsProcessing = self.env.event()
         self.contribution = self.env.event()
@@ -227,12 +226,12 @@ class Failure(ObjectInterruption):
                         # send Data to QuestDB
                         from .Globals import G
                         if G.db:
-                            G.sender.row(
+                            G.db_insert(
                                 self.name,
-                                columns={"time": self.env.now,
+                                {"time": self.env.now,
                                          "message": self.victim.id + " is down"}
                             )
-                            G.sender.flush()
+                            G.db_commit()
 
                         # update the failure time
                         failTime = self.env.now
@@ -257,12 +256,12 @@ class Failure(ObjectInterruption):
                                 self.outputTrace(self.victim.name, self.victim.id, "is up")
                                 # send Data to QuestDB
                                 if G.db:
-                                    G.sender.row(
+                                    G.db_insert(
                                         self.name,
-                                        columns={"time": self.env.now,
+                                        {"time": self.env.now,
                                                  "message": self.victim.id + " is up"}
                                     )
-                                    G.sender.flush()
+                                    G.db_commit()
 
                                 self.repairman.totalWorkingTime += (
                                     self.env.now - timeOperationStarted
@@ -420,12 +419,12 @@ class Failure(ObjectInterruption):
                     # send Data to QuestDB
                     from .Globals import G
                     if G.db:
-                        G.db.insert(
+                        G.db_insert(
                             self.name,
                             {"time": self.env.now,
                                      "message": self.victim.id + " is down"}
                         )
-                        G.db.commit()
+                        G.db_commit()
 
                     # update the failure time
                     failTime = self.env.now
@@ -450,12 +449,12 @@ class Failure(ObjectInterruption):
                             self.outputTrace(self.victim.name, self.victim.id, "is up")
                             # send Data to QuestDB
                             if G.db:
-                                G.db.insert(
+                                G.db_insert(
                                     self.name,
                                     {"time": self.env.now,
                                              "message": self.victim.id + " is up"}
                                 )
-                                G.db.commit()
+                                G.db_commit()
 
                             self.repairman.totalWorkingTime += (
                                 self.env.now - timeOperationStarted

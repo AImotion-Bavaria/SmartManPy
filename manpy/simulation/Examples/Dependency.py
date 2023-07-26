@@ -1,5 +1,5 @@
 from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue
-from manpy.simulation.Globals import runSimulation, getEntityData
+from manpy.simulation.core.Globals import runSimulation, getFeatureData
 #from manpy.simulation.Examples.MLExperiment import SGD_clf
 import time
 
@@ -19,7 +19,7 @@ def condition(self):
 
 
 # Objects
-S = Source("S1", "Source", interArrivalTime={"Fixed": {"mean": 0.4}}, entity="manpy.Part")
+S = Source("S1", "Source", interArrivalTime={"Fixed": {"mean": 0.4}}, entity="manpy.Part", capacity=1)
 Löten = Machine("M0", "Löten", processingTime={"Normal": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}})
 Q = Queue("Q", "Queue")
 Kleben = Machine("M1", "Kleben", processingTime={"Fixed": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}}, control=condition)
@@ -70,7 +70,7 @@ def main(test=0):
         return result
 
     print(E1)
-    df = getEntityData([E1], [Kleben])
+    df = getFeatureData([E1], [Kleben])
     df.to_csv("Dependency.csv", index=False, encoding="utf8")
     #accuracy = SGD_clf(df)
 

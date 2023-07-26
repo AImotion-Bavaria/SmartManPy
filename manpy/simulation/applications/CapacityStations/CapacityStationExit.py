@@ -26,9 +26,8 @@ Created on 6 June 2013
 the exit of the capacity station. Only change from buffer that it can be blocked.
 """
 
-from manpy.simulation.Exit import Exit
+from manpy.simulation.core.Exit import Exit
 
-import simpy
 
 # ===========================================================================
 #                            the CapacityStationExit object
@@ -46,7 +45,7 @@ class CapacityStationExit(Exit):
         )
         # means it is the end of the system.
         self.nextCapacityStationBuffer = None  # the next buffer. If it is None it
-        from manpy.simulation.Globals import G
+        from manpy.simulation.core.Globals import G
 
         if hasattr(G, "CapacityStationExitList"):
             G.CapacityStationExitList.append(self)
@@ -62,7 +61,7 @@ class CapacityStationExit(Exit):
         self.currentlyObtainedEntities = []
         # find the next buffer
         if self.nextCapacityStationBufferId:
-            from manpy.simulation.Globals import G
+            from manpy.simulation.core.Globals import G
 
             # find the project that the capacity entity is part of
             for capacityStationBuffer in G.CapacityStationBufferList:

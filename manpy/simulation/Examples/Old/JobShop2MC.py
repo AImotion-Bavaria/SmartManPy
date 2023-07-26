@@ -1,5 +1,5 @@
 from manpy.simulation.imports import MachineJobShop, QueueJobShop, ExitJobShop, Job
-from manpy.simulation.Globals import runSimulation
+from manpy.simulation.core.Globals import runSimulation
 
 # define the objects of the model
 Q1 = QueueJobShop(

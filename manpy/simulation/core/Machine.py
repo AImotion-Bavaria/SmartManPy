@@ -30,18 +30,17 @@ Models a machine that can also have failures
 import simpy
 import numpy as np
 
-from .Failure import Failure
-from .CoreObject import CoreObject
+from manpy.simulation.core.CoreObject import CoreObject
 
-from .OperatorRouter import Router
-from .SkilledOperatorRouter import SkilledRouter
+from manpy.simulation.OperatorRouter import Router
+from manpy.simulation.SkilledOperatorRouter import SkilledRouter
 
-from .OperatedPoolBroker import Broker
-from .OperatorPool import OperatorPool
+from manpy.simulation.OperatedPoolBroker import Broker
+from manpy.simulation.OperatorPool import OperatorPool
 
-from .RandomNumberGenerator import RandomNumberGenerator
+from manpy.simulation.RandomNumberGenerator import RandomNumberGenerator
 
-from .Globals import G
+from manpy.simulation.core.Globals import G
 
 # ===========================================================================
 # the Machine object
@@ -72,7 +71,7 @@ class Machine(CoreObject):
     ):
         self.type = "Machine"  # String that shows the type of object
         CoreObject.__init__(self, id, name)
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         processingTime = self.getOperationTime(time=processingTime)
 
@@ -192,6 +191,8 @@ class Machine(CoreObject):
         self.discards = []
         # list for finished Entities
         self.entities = []
+        # if currently operating
+        self.operationNotFinished = False
 
     # =======================================================================
     # initialize the machine
@@ -273,7 +274,7 @@ class Machine(CoreObject):
              the list of operators provided
             if the  list is empty create operator pool with empty list
         """
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         # XXX operatorPool is not None ?
         # if a list of operators is provided as argument
@@ -315,7 +316,7 @@ class Machine(CoreObject):
     def createRouter(self):
         # initiate the Broker and the router
         if self.operatorPool != "None":
-            from .Globals import G
+            from manpy.simulation.core.Globals import G
 
             # if there is no router
             if not G.RouterList:
@@ -438,19 +439,19 @@ class Machine(CoreObject):
                     methodsNotRequired.append(tup)
             # methods that should return TRUE
             required = True
-            from .Globals import getMethodFromName
+            from manpy.simulation.core.Globals import getMethodFromName
 
             if methodsRequired:
                 for methodTup in methodsRequired:
                     method, func = methodTup
-                    objMethod = getMethodFromName("manpy.Machine." + method)
+                    objMethod = getMethodFromName("manpy.core.Machine." + method)
                     required = required and (objMethod(self))
             # methods that should return FALSE
             notRequired = True
             if methodsNotRequired:
                 for methodTup in methodsNotRequired:
                     method, func = methodTup
-                    objMethod = getMethodFromName("manpy.Machine." + method)
+                    objMethod = getMethodFromName("manpy.core.Machine." + method)
                     notRequired = notRequired and (objMethod(self))
             else:
                 notRequired = False
@@ -504,6 +505,11 @@ class Machine(CoreObject):
             ["Processing", "Setup"]
         ), "the operation type provided is not yet defined"
         # identify the method to get the operation time and initialise the totalOperationTime
+
+        activeObjectQueue = self.Res.users
+        if len(activeObjectQueue) > 0:
+            self.activeEntity = activeObjectQueue[0]
+
         if type == "Setup":
             self.totalOperationTime = self.totalSetupTime
         elif type == "Processing":
@@ -530,7 +536,7 @@ class Machine(CoreObject):
             # variables used to flag any interruptions and the end of the processing
             self.interruption = False
             # local variable that is used to check whether the operation is concluded
-            operationNotFinished = True
+            self.operationNotFinished = True
             # if there is a failure that depends on the working time of the Machine
             # send it the victimStartsProcess signal
             for oi in self.objectInterruptions:
@@ -545,7 +551,7 @@ class Machine(CoreObject):
 
             # this loop is repeated until the processing time is expired with no failure
             # check when the processingEndedFlag switched to false
-            while operationNotFinished:
+            while self.operationNotFinished:
                 self.expectedSignals["interruptionStart"] = 1
                 self.expectedSignals["preemptQueue"] = 1
                 self.expectedSignals["processOperatorUnavailable"] = 1
@@ -645,7 +651,7 @@ class Machine(CoreObject):
                         self.env.now - self.currentOperator.timeLastOperationStarted
                     )
                     yield self.env.process(self.release())
-                    from manpy.simulation.Globals import G
+                    from manpy.simulation.core.Globals import G
 
                     # append the entity that was stopped to the pending ones
                     if G.RouterList:
@@ -685,14 +691,14 @@ class Machine(CoreObject):
                 else:
                     if self.processOperatorUnavailable.triggered:
                         self.processOperatorUnavailable = self.env.event()
-                    operationNotFinished = False
+                    self.operationNotFinished = False
 
     # =======================================================================
     # the main process of the machine
     # =======================================================================
     def run(self):
         # request for allocation if needed
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         self.initialAllocationRequest()
         # execute all through simulation time
@@ -962,14 +968,15 @@ class Machine(CoreObject):
                         {"time": self.env.now, "message": activeObjectQueue[0].id + " failed Process control"}
                     )
                     G.db.commit()
-                self.activeEntity.features[-1] = "Fail"
-                self.removeEntity(self.activeEntity)
-                self.discards.append(self.activeEntity)
+                if len(activeObjectQueue) > 0:
+                    self.activeEntity.features[-1] = "Fail"
+                    self.removeEntity(self.activeEntity)
+                    self.discards.append(self.activeEntity)
 
                 # blocking starts
                 self.isBlocked = True
                 self.timeLastBlockageStarted = self.env.now
-                from .Globals import G
+                from manpy.simulation.core.Globals import G
                 # update the variables keeping track of Entity related attributes of the machine
                 self.timeLastEntityEnded = self.env.now
 
@@ -1005,12 +1012,16 @@ class Machine(CoreObject):
                             {"time": self.env.now, "message": activeObjectQueue[0].id + " succeeded Process control"}
                         )
                         G.db.commit()
-                    self.activeEntity.features[-1] = "Success"
+                    if len(activeObjectQueue) > 0:
+                        self.activeEntity.features[-1] = "Success"
 
                 # blocking starts
                 self.isBlocked = True
                 self.timeLastBlockageStarted = self.env.now
-                self.printTrace(self.getActiveObjectQueue()[0].name, processEnd=self.objName)
+                if len(activeObjectQueue) > 0:
+                    self.printTrace(self.getActiveObjectQueue()[0].name, processEnd=self.objName)
+                else:
+                    self.printTrace(None, processEnd=self.objName)
                 # output to trace that the processing in the Machine self.objName ended
                 try:
                     self.outputTrace(
@@ -1027,7 +1038,7 @@ class Machine(CoreObject):
                         G.db.commit()
                 except IndexError:
                     pass
-                from .Globals import G
+                from manpy.simulation.core.Globals import G
 
                 if G.RouterList:
                     # the just processed entity is added to the list of entities
@@ -1194,10 +1205,11 @@ class Machine(CoreObject):
     # actions to be performed after an operation (setup or processing)
     # ===========================================================================
     def endOperationActions(self, type):
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         activeObjectQueue = self.Res.users
-        self.activeEntity = activeObjectQueue[0]
+        if len(activeObjectQueue) > 0:
+            self.activeEntity = activeObjectQueue[0]
         # set isProcessing to False
         self.isProcessing = False
         # the machine is currently performing no operation
@@ -1209,9 +1221,10 @@ class Machine(CoreObject):
         elif type == "Setup":
             self.totalSetupTime = self.totalOperationTime
             # if there are task_ids defined for each step
-            if self.activeEntity.schedule[-1].get("task_id", None):
-                # if the setup is finished then record an exit time for the setup
-                self.activeEntity.schedule[-1]["exitTime"] = self.env.now
+            if len(activeObjectQueue) > 0:
+                if self.activeEntity.schedule[-1].get("task_id", None):
+                    # if the setup is finished then record an exit time for the setup
+                    self.activeEntity.schedule[-1]["exitTime"] = self.env.now
         # reseting variables used by operation() process
         self.totalOperationTime = None
         self.timeLastOperationStarted = 0
@@ -1246,7 +1259,8 @@ class Machine(CoreObject):
                 if op.expectedSignals["victimEndsProcessing"]:
                     self.sendSignal(receiver=op, signal=op.victimEndsProcessing)
 
-            self.entities.append(self.activeEntity)
+            if self.activeEntity not in self.discards:
+                self.entities.append(self.activeEntity)
 
 
     # =======================================================================
@@ -1503,7 +1517,7 @@ class Machine(CoreObject):
         if self.currentOperator:
             self.currentOperator.schedule[-1]["entity"] = activeEntity
         # after the machine receives an entity, it must be removed from the pendingEntities list
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         if G.RouterList:
             if activeEntity in G.pendingEntities:
@@ -1560,7 +1574,7 @@ class Machine(CoreObject):
         )
         activeEntity = entity
 
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         router = G.RouterList[0]
         # if the entity is in a machines who's broker waits for operator then
@@ -1582,7 +1596,7 @@ class Machine(CoreObject):
     #                   prepare the machine to be released
     # =======================================================================
     def releaseOperator(self):
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
         # this checks if the operator is working on the last element.
         # If yes the time that he was set off-shift should be updated
         operator = self.currentOperator
@@ -1628,7 +1642,7 @@ class Machine(CoreObject):
                 )
                 G.db.commit()
             # if the Router is expecting for signal send it
-            from .Globals import G
+            from manpy.simulation.core.Globals import G
             from .SkilledOperatorRouter import SkilledRouter
 
             self.toBeOperated = False
@@ -1650,7 +1664,7 @@ class Machine(CoreObject):
     # outputs results to JSON File
     # =======================================================================
     def outputResultsJSON(self):
-        from .Globals import G
+        from manpy.simulation.core.Globals import G
 
         json = {
             "_class": "manpy.%s" % self.__class__.__name__,

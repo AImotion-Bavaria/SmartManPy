@@ -1,5 +1,5 @@
 from manpy.simulation.imports import Source, Queue, Machine, Exit
-from manpy.simulation.Globals import runSimulation
+from manpy.simulation.core.Globals import runSimulation
 
 # define the objects of the model
 S = Source(

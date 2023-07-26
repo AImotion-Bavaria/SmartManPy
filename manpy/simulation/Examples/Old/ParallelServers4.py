@@ -2,13 +2,11 @@ from manpy.simulation.imports import (
     Machine,
     Source,
     Exit,
-    Part,
     Queue,
-    Globals,
     Failure,
     G,
 )
-from manpy.simulation.Globals import runSimulation
+from manpy.simulation.core.Globals import runSimulation
 
 # the custom queue
 class SelectiveQueue(Queue):

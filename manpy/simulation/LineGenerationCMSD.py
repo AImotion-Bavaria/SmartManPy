@@ -25,38 +25,24 @@ Created on 27 May 2013
 main script. Reads data from the CMSD xml files that Panos creates,
 generates and runs the simulation and prints the results to excel
 """
-from warnings import warn
 import logging
 
 logger = logging.getLogger("manpy.platform")
 
 
-from SimPy.Simulation import activate, initialize, simulate, now, infinity
-from .Globals import G
-from .Source import Source
-from .Machine import Machine
-from .Exit import Exit
-from .Queue import Queue
-from QueueLIFO import QueueLIFO
+from SimPy.Simulation import activate, initialize, simulate
+from manpy.simulation.core.Globals import G
+from manpy.simulation.core.Source import Source
+from manpy.simulation.core.Machine import Machine
+from manpy.simulation.core.Exit import Exit
+from manpy.simulation.core.Queue import Queue
 from .Repairman import Repairman
-from .Part import Part
-from .Frame import Frame
-from .Assembly import Assembly
-from .Dismantle import Dismantle
-from .Conveyor import Conveyor
-from .Job import Job
-from .MachineJobShop import MachineJobShop
-from .QueueJobShop import QueueJobShop
-from .ExitJobShop import ExitJobShop
 import xlwt
-import xlrd
 import time
 from random import Random
 import sys
-import os.path
 
 from xml.dom.minidom import parseString
-from xml.dom.minidom import parse
 
 
 # reads general simulation inputs

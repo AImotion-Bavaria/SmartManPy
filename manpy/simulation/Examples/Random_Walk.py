@@ -1,5 +1,5 @@
 from manpy.simulation.imports import Machine, Source, Exit, Feature
-from manpy.simulation.Globals import runSimulation, G, ExcelPrinter
+from manpy.simulation.core.Globals import runSimulation, G, ExcelPrinter
 
 # Objects
 S = Source("S1", "Source", interArrivalTime={"Fixed": {"mean": 10}}, entity="manpy.Part", capacity=100)

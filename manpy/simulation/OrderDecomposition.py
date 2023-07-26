@@ -30,13 +30,9 @@ dummy object: infinite capacity no processing time
 # from SimPy.Simulation import waituntil, now, hold, infinity, waitevent
 import simpy
 
-from .Globals import G
-from .CoreObject import CoreObject
-from .RandomNumberGenerator import RandomNumberGenerator
-from .Entity import Entity
+from manpy.simulation.core.Globals import G
+from manpy.simulation.core.CoreObject import CoreObject
 
-from .Order import Order
-from .OrderDesign import OrderDesign
 from .OrderComponent import OrderComponent
 
 # ===========================================================================
@@ -148,7 +144,7 @@ class OrderDecomposition(CoreObject):
             return False
 
         activeEntity = activeObjectQueue[0]
-        from . import Globals
+        from .core import Globals
 
         # update the next list of the object
         nextObjectIds = activeEntity.remainingRoute[0].get("stationIdsList", [])
@@ -222,7 +218,7 @@ class OrderDecomposition(CoreObject):
                                 reqComponent.auxiliaryList.append(auxComponent)
         # if there is an order for decomposition
         if self.orderToBeDecomposed:
-            from . import Globals
+            from .core import Globals
 
             Globals.setWIP(self.newlyCreatedComponents)  # set the new components as wip
             # TODO: consider signalling the receivers if any WIP is set now

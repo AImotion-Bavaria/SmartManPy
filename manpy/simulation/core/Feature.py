@@ -1,24 +1,20 @@
-
-from .ObjectProperty import ObjectProperty
-from .RandomNumberGenerator import RandomNumberGenerator
-from manpy.simulation.Globals import G
+from manpy.simulation.core.Globals import G
+from manpy.simulation.core.ObjectProperty import ObjectProperty
+from manpy.simulation.RandomNumberGenerator import RandomNumberGenerator
 
 
 class Feature(ObjectProperty):
     """
-    The Feature ObjectInterruption generates Features for a Machine
+    The Feature ObjectProperty generates Features for a Machine and stores them in Entities
     :param id: The id of the Feature
     :param name: The name of the Feature
     :param victim: The machine to which the feature belongs
-    :param deteriorationType: The way the time until the next Feature is counted, working counts only during the operation of the victim, constant is constant
-    :param distribution: The statistical distribution of the time and value of the Feature
+    :param distribution: The statistical distribution of the value of the Feature
     :param distribution_state_controller: StateController that can contain different distributions.
     :param reset_distributions: Active with deteriorationType working; Resets distribution_state_controller when the
            victim is interrupted (=repaired)
-    :param repairman: The resource that may be needed to fix the failure
     :param no_negative: If this value is true, returns 0 for values below 0 of the feature value
     :param contribute: Needs Failures in a list as an input to contribute the Feature value to conditions
-    :param entity: If this value is true, saves the Feature value inside the current Entity
     :param start_time: The starting time for the feature
     :param end_time: The end time for the feature
     :param start_value: The starting value of the Feature
@@ -38,7 +34,7 @@ class Feature(ObjectProperty):
         contribute=None,
         start_time=0,
         end_time=0,
-        start_value=0,
+        start_value=None,
         random_walk=False,
         dependent=None,
         **kw
@@ -57,8 +53,14 @@ class Feature(ObjectProperty):
                                 random_walk=random_walk,
                                 dependent=dependent
                                 )
-        self.featureValue = 0
-        self.featureHistory = []
+        G.FeatureList.append(self)
+
+        if start_value != None:
+            self.featureValue = start_value
+            self.featureHistory = [start_value]
+        else:
+            self.featureValue = 0
+            self.featureHistory = []
 
 
     def initialize(self):
@@ -68,12 +70,35 @@ class Feature(ObjectProperty):
         self.victimResumesProcessing = self.env.event()
         self.victimEndsProcessing = self.env.event()
 
+    def generate_feature(self):
+        if self.dependent:
+            for key in list(self.dependent.keys()):
+                if key != "Function":
+                    locals()[key] = self.dependent.get(key).featureValue
+                    locals()[key + '_history'] = self.dependent.get(key).featureHistory
+
+            self.distribution["Feature"][list(self.distribution["Feature"].keys())[0]]["mean"] = eval(
+                self.dependent["Function"])
+            self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
+
+        value = self.rngFeature.generateNumber(start_time=self.start_time)
+        if self.random_walk == True:
+            self.featureValue += value
+        else:
+            self.featureValue = value
+
+        # check no_negative
+        if self.no_negative == True:
+            if self.featureValue < 0:
+                self.featureValue = 0
+
     def run(self):
         """Every Object has to have a run method. Simpy is mainly used in this function
         :return: None
         """
 
         while 1:
+            self.generate_feature()
             self.expectedSignals["victimEndsProcessing"] = 1
             self.expectedSignals["victimIsInterrupted"] = 1
 
@@ -103,44 +128,21 @@ class Feature(ObjectProperty):
 
                 if self.distribution_state_controller:
                     self.distribution, self.label = self.distribution_state_controller.get_and_update()
-                    # TODO is this necessary? does it make sense to change the time?
-                    self.rngTime = RandomNumberGenerator(self, self.distribution.get("Time", {"Fixed": {"mean": 1}}))
                     self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
+                    self.generate_feature()
 
-                # generate the Feature
-                if self.dependent:
-                    for key in list(self.dependent.keys()):
-                        if key != "Function":
-                            locals()[key] = self.dependent.get(key).featureValue
-                            locals()[key+'_history'] = self.dependent.get(key).featureHistory
-
-                    self.distribution["Feature"][list(self.distribution["Feature"].keys())[0]]["mean"] = eval(self.dependent["Function"])
-                    self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
-
-                value = self.rngFeature.generateNumber(start_time=self.start_time)
-                # print("Value")
-
-                if self.random_walk == True:
-                    self.featureValue += value
-                else:
-                    self.featureValue = value
-
-                # check no_negative
-                if self.no_negative == True:
-                    if self.featureValue < 0:
-                        self.featureValue = 0
-
+                # add featureValue to History
                 self.featureHistory.append(self.featureValue)
 
                 # send data to QuestDB
 
-                from manpy.simulation.Globals import G
+                from manpy.simulation.core.Globals import G
 
                 try:
                     if G.db:
                         self.featureValue = int(self.featureValue)
-                        G.db.insert(self.name, {"time": self.env.now, "value": self.featureValue})
-                        G.db.commit()
+                        G.db_insert(self.name, {"time": self.env.now, "value": self.featureValue})
+                        G.db_commit()
                 except:
                     print("Quest-DB error: Feature")
 

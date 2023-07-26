@@ -1,5 +1,5 @@
 from manpy.simulation.imports import Machine, Queue, Exit, Part, EventGenerator
-from manpy.simulation.Globals import runSimulation, setWIP, G
+from manpy.simulation.core.Globals import runSimulation, setWIP, G
 
 # method to check if the buffer is starving and refill it
 def balanceQueue(buffer, refillLevel=1):
