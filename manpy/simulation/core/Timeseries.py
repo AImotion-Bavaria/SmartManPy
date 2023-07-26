@@ -162,8 +162,6 @@ class Timeseries(ObjectProperty):
                     if type(self.distribution["Function"][interval]) == list:
                         # set f for interpolation
                         if f == None:
-                            if interval == (60, 100):
-                                pass
                             data = copy.deepcopy(self.distribution["Function"][interval])
                             for i, axes in enumerate(data):
                                 for j, coord in enumerate(axes):
