@@ -2,28 +2,27 @@
 from manpy.simulation.core.ObjectProperty import ObjectProperty
 from manpy.simulation.RandomNumberGenerator import RandomNumberGenerator
 from manpy.simulation.core.Globals import G
+from scipy import interpolate
+import copy
 
 
 class Timeseries(ObjectProperty):
     """
-    The Feature ObjectInterruption generates Features for a Machine
+    The TimeSeries ObjectProperty generates TimeSeries for a Machine and stores them in Entities
     :param id: The id of the Feature
     :param name: The name of the Feature
     :param victim: The machine to which the feature belongs
-    :param deteriorationType: The way the time until the next Feature is counted, working counts only during the operation of the victim, constant is constant
-    :param distribution: The statistical distribution of the time and value of the Feature
+    :param distribution: The statistical distribution of the value of the Datapoints
     :param distribution_state_controller: StateController that can contain different distributions.
     :param reset_distributions: Active with deteriorationType working; Resets distribution_state_controller when the
            victim is interrupted (=repaired)
-    :param repairman: The resource that may be needed to fix the failure
     :param no_negative: If this value is true, returns 0 for values below 0 of the feature value
-    :param contribute: Needs Failures in a list as an input to contribute the Feature value to conditions
-    :param entity: If this value is true, saves the Feature value inside the current Entity
-    :param start_time: The starting time for the feature
-    :param end_time: The end time for the feature
-    :param start_value: The starting value of the Feature
-    :param random_walk: If this is True, the Feature will continuously take the previous feature_value into account
-    :param dependent: A dictionary containing a Function and the corresponding variables, to determine dependencies between features
+    :param contribute: Needs Failures in a list as an input to contribute the TimeSeries value to conditions
+    :param start_time: The starting time for the TimeSeries
+    :param end_time: The end time for the TimeSeries
+    :param start_value: The starting value of the TimeSeries
+    :param random_walk: If this is True, the TimeSeries will continuously take the previous Datapoint value into account
+    :param step_time: The time between each Datapoint for a TimeSeries
     :param kw: The keyword arguments are mainly used for classification and calculation
     """
     def __init__(
@@ -40,7 +39,6 @@ class Timeseries(ObjectProperty):
         end_time=0,
         start_value=0,
         random_walk=False,
-        dependent=None,
         step_time=None,
         **kw
     ):
@@ -56,33 +54,28 @@ class Timeseries(ObjectProperty):
                                 end_time=end_time,
                                 start_value=start_value,
                                 random_walk=random_walk,
-                                dependent=dependent,
                                 steptime=step_time
                                 )
+        G.TimeSeriesList.append(self)
         self.step_time = step_time
 
 
     def initialize(self):
         ObjectProperty.initialize(self)
 
-        if self.dependent:
-            for key in list(self.dependent.keys()):
-                if key != "Function":
-                    self.distribution["DataPoints"] = self.dependent.get(key).distribution["DataPoints"]
-            self.step_time = self.dependent.get(key).step_time
-        else:
-            # put all intervals into a sorted list
-            self.intervals = []
-            for i in self.distribution["Function"].keys():
-                self.intervals.append(i)
-            self.intervals.sort()
 
-            # check if intervals overlap
-            for i in range(len(self.intervals) - 1):
-                if self.intervals[i][1] > self.intervals[i+1][0]:
-                    raise Exception("Intervals {} and {} from {} overlap".format(self.intervals[i], self.intervals[i+1], self.name))
+        # put all intervals into a sorted list
+        self.intervals = []
+        for i in self.distribution["Function"].keys():
+            self.intervals.append(i)
+        self.intervals.sort()
 
-            self.stepsize = (self.intervals[-1][1] - self.intervals[0][0]) / (self.distribution["DataPoints"] - 1)
+        # check if intervals overlap
+        for i in range(len(self.intervals) - 1):
+            if self.intervals[i][1] > self.intervals[i+1][0]:
+                raise Exception("Intervals {} and {} from {} overlap".format(self.intervals[i], self.intervals[i+1], self.name))
+
+        self.stepsize = (self.intervals[-1][1] - self.intervals[0][0]) / (self.distribution["DataPoints"] - 1)
 
         self.victimIsInterrupted = self.env.event()
         self.victimStartsProcessing = self.env.event()
@@ -96,10 +89,11 @@ class Timeseries(ObjectProperty):
         while 1:
             machineIsRunning = True
 
-            # wait for victim to start process
-            self.expectedSignals["victimStartsProcessing"] = 1
-            yield self.victimStartsProcessing
-            self.victimStartsProcessing = self.env.event()
+            # wait for victim to start process if it is not already processing
+            if self.victim.operationNotFinished == True or self.env.now == 0:
+                self.expectedSignals["victimStartsProcessing"] = 1
+                yield self.victimStartsProcessing
+                self.victimStartsProcessing = self.env.event()
 
             self.featureHistory = []
             self.timeHistory = []
@@ -107,9 +101,10 @@ class Timeseries(ObjectProperty):
                 step_time = self.victim.tinM / self.distribution["DataPoints"]
             else:
                 step_time = self.step_time
-            remainingTimeTillFeature = step_time
+            remainingTimeTillFeature = 0
             steps = 0
             interval = 0
+            f = None
 
             while machineIsRunning:
                 timeRestartedCounting = self.env.now
@@ -141,32 +136,44 @@ class Timeseries(ObjectProperty):
 
                     if self.distribution_state_controller:
                         self.distribution = self.distribution_state_controller.get_and_update()
-                        # TODO is this necessary? does it make sense to change the time?
-                        self.rngTime = RandomNumberGenerator(self,
-                                                             self.distribution.get("Time", {"Fixed": {"mean": 1}}))
                         self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
                 else:
                     # generate the Feature
                     self.label = None
-                    if self.dependent:
-                        for key in list(self.dependent.keys()):
-                            if key != "Function":
-                                locals()[key] = self.dependent.get(key).featureValue
-                                locals()[key + '_history'] = self.dependent.get(key).featureHistory
-                        self.distribution["Feature"][list(self.distribution["Feature"].keys())[0]]["mean"] = eval(self.dependent["Function"])
-                        self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
-                        value = self.rngFeature.generateNumber(start_time=self.start_time)
 
+                    for key in list(self.distribution.keys()):
+                        if key not in ["Function", "DataPoints", "Feature"]:
+                            locals()[key] = self.distribution.get(key).featureValue
+
+                    x = self.intervals[0][0] + (self.stepsize * steps)
+                    for idx, i in enumerate(self.intervals):
+                        if i[0] <= x <= i[1]:
+                            interval = self.intervals[idx]
+                            break
+
+                    if type(self.distribution["Function"][interval]) == list:
+                        # set f for interpolation
+                        if f == None:
+                            data = copy.deepcopy(self.distribution["Function"][interval])
+                            for i, axes in enumerate(data):
+                                for j, coord in enumerate(axes):
+                                    if type(coord) == str:
+                                        data[i][j] = eval(coord)
+                            xs = data[0]
+                            ys = data[1]
+                            f = interpolate.UnivariateSpline(xs, ys)
+                        # calculate mean for interpolation
+                        try :
+                            if min(xs) <= x <= max(xs):
+                                self.distribution["Feature"][list(self.distribution["Feature"].keys())[0]]["mean"] = f(x)
+                            else:
+                                self.distribution["Feature"][list(self.distribution["Feature"].keys())[0]]["mean"] = 0
+                        except:
+                            print("Interpolation needs at least 4 values")
                     else:
-                        x = self.intervals[0][0] + (self.stepsize * steps)
-                        for idx, i in enumerate(self.intervals):
-                            if i[0] <= x <= i[1]:
-                                interval = idx
-                                break
-                        self.distribution["Feature"][list(self.distribution["Feature"].keys())[0]]["mean"] = eval(
-                            self.distribution["Function"][self.intervals[interval]])
-                        self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
-                        value = self.rngFeature.generateNumber(start_time=self.start_time)
+                        self.distribution["Feature"][list(self.distribution["Feature"].keys())[0]]["mean"] = eval(self.distribution["Function"][interval])
+                    self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
+                    value = self.rngFeature.generateNumber(start_time=self.start_time)
 
                     if self.random_walk == True:
                         self.featureValue += value
@@ -180,16 +187,15 @@ class Timeseries(ObjectProperty):
 
 
                     self.featureHistory.append(self.featureValue)
-                    self.timeHistory.append(self.env.now)
+                    self.timeHistory.append(x)
 
                     # add TimeSeries value and time to Entity
-                    self.victim.Res.users[0].set_feature(self.featureHistory, self.label, self.timeHistory,
+                    ent = self.victim.Res.users[0]
+                    self.victim.Res.users[0].set_timeseries(self.featureHistory, self.label, self.timeHistory,
                                                          (self.id, self.victim.id))
                     self.outputTrace(self.victim.Res.users[0].name, self.victim.Res.users[0].id, str(self.featureValue))
 
                     # send data to QuestDB
-                    # TODO: make it work with floats
-                    self.featureValue = self.featureValue
                     # try:
                     if G.db:
                         G.db.insert(self.name, {"time": self.env.now, "value": self.featureValue})

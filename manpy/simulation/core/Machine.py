@@ -191,6 +191,8 @@ class Machine(CoreObject):
         self.discards = []
         # list for finished Entities
         self.entities = []
+        # if currently operating
+        self.operationNotFinished = False
 
     # =======================================================================
     # initialize the machine
@@ -503,6 +505,11 @@ class Machine(CoreObject):
             ["Processing", "Setup"]
         ), "the operation type provided is not yet defined"
         # identify the method to get the operation time and initialise the totalOperationTime
+
+        activeObjectQueue = self.Res.users
+        if len(activeObjectQueue) > 0:
+            self.activeEntity = activeObjectQueue[0]
+
         if type == "Setup":
             self.totalOperationTime = self.totalSetupTime
         elif type == "Processing":
@@ -529,7 +536,7 @@ class Machine(CoreObject):
             # variables used to flag any interruptions and the end of the processing
             self.interruption = False
             # local variable that is used to check whether the operation is concluded
-            operationNotFinished = True
+            self.operationNotFinished = True
             # if there is a failure that depends on the working time of the Machine
             # send it the victimStartsProcess signal
             for oi in self.objectInterruptions:
@@ -544,7 +551,7 @@ class Machine(CoreObject):
 
             # this loop is repeated until the processing time is expired with no failure
             # check when the processingEndedFlag switched to false
-            while operationNotFinished:
+            while self.operationNotFinished:
                 self.expectedSignals["interruptionStart"] = 1
                 self.expectedSignals["preemptQueue"] = 1
                 self.expectedSignals["processOperatorUnavailable"] = 1
@@ -684,7 +691,7 @@ class Machine(CoreObject):
                 else:
                     if self.processOperatorUnavailable.triggered:
                         self.processOperatorUnavailable = self.env.event()
-                    operationNotFinished = False
+                    self.operationNotFinished = False
 
     # =======================================================================
     # the main process of the machine
@@ -961,9 +968,10 @@ class Machine(CoreObject):
                         {"time": self.env.now, "message": activeObjectQueue[0].id + " failed Process control"}
                     )
                     G.db.commit()
-                self.activeEntity.features[-1] = "Fail"
-                self.removeEntity(self.activeEntity)
-                self.discards.append(self.activeEntity)
+                if len(activeObjectQueue) > 0:
+                    self.activeEntity.features[-1] = "Fail"
+                    self.removeEntity(self.activeEntity)
+                    self.discards.append(self.activeEntity)
 
                 # blocking starts
                 self.isBlocked = True
@@ -1004,12 +1012,16 @@ class Machine(CoreObject):
                             {"time": self.env.now, "message": activeObjectQueue[0].id + " succeeded Process control"}
                         )
                         G.db.commit()
-                    self.activeEntity.features[-1] = "Success"
+                    if len(activeObjectQueue) > 0:
+                        self.activeEntity.features[-1] = "Success"
 
                 # blocking starts
                 self.isBlocked = True
                 self.timeLastBlockageStarted = self.env.now
-                self.printTrace(self.getActiveObjectQueue()[0].name, processEnd=self.objName)
+                if len(activeObjectQueue) > 0:
+                    self.printTrace(self.getActiveObjectQueue()[0].name, processEnd=self.objName)
+                else:
+                    self.printTrace(None, processEnd=self.objName)
                 # output to trace that the processing in the Machine self.objName ended
                 try:
                     self.outputTrace(
@@ -1196,7 +1208,8 @@ class Machine(CoreObject):
         from manpy.simulation.core.Globals import G
 
         activeObjectQueue = self.Res.users
-        self.activeEntity = activeObjectQueue[0]
+        if len(activeObjectQueue) > 0:
+            self.activeEntity = activeObjectQueue[0]
         # set isProcessing to False
         self.isProcessing = False
         # the machine is currently performing no operation
@@ -1208,9 +1221,10 @@ class Machine(CoreObject):
         elif type == "Setup":
             self.totalSetupTime = self.totalOperationTime
             # if there are task_ids defined for each step
-            if self.activeEntity.schedule[-1].get("task_id", None):
-                # if the setup is finished then record an exit time for the setup
-                self.activeEntity.schedule[-1]["exitTime"] = self.env.now
+            if len(activeObjectQueue) > 0:
+                if self.activeEntity.schedule[-1].get("task_id", None):
+                    # if the setup is finished then record an exit time for the setup
+                    self.activeEntity.schedule[-1]["exitTime"] = self.env.now
         # reseting variables used by operation() process
         self.totalOperationTime = None
         self.timeLastOperationStarted = 0
@@ -1245,7 +1259,8 @@ class Machine(CoreObject):
                 if op.expectedSignals["victimEndsProcessing"]:
                     self.sendSignal(receiver=op, signal=op.victimEndsProcessing)
 
-            self.entities.append(self.activeEntity)
+            if self.activeEntity not in self.discards:
+                self.entities.append(self.activeEntity)
 
 
     # =======================================================================

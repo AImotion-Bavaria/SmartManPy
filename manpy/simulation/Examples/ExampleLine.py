@@ -1,6 +1,6 @@
 from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue
 from manpy.simulation.core.Database import ManPyQuestDBDatabase
-from manpy.simulation.core.Globals import runSimulation, getEntityData, G
+from manpy.simulation.core.Globals import runSimulation, getFeatureData, G
 import time
 
 start = time.time()
@@ -19,7 +19,7 @@ def condition(self):
 
 
 # Objects
-S = Source("S1", "Source", interArrivalTime={"Fixed": {"mean": 0.4}}, entity="manpy.Part")
+S = Source("S1", "Source", interArrivalTime={"Fixed": {"mean": 0.4}}, entity="manpy.Part", capacity=1)
 Löten = Machine("M0", "Löten", processingTime={"Normal": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}})
 Q = Queue("Q", "Queue")
 Kleben = Machine("M1", "Kleben", processingTime={"Fixed": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}}, control=condition)
@@ -78,7 +78,7 @@ def main(test=0):
 
     # df = G.get_simulation_results_dataframe()
     # ExcelPrinter(df, "ExampleLine")
-    df = getEntityData([E1], [Kleben])
+    df = getFeatureData([Kleben])
     df.to_csv("ExampleLine.csv", index=False, encoding="utf8")
 
     print("""

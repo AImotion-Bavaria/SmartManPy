@@ -1,5 +1,5 @@
 from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Assembly, Frame
-from manpy.simulation.core.Globals import runSimulation, getEntityData, G
+from manpy.simulation.core.Globals import runSimulation, getFeatureData, G
 import time
 
 start = time.time()
@@ -18,7 +18,7 @@ def condition(self):
 
 # Objects
 Frame.capacity = 1
-S0 = Source("S0", "Source", interArrivalTime={"Fixed": {"mean": 0.4}}, entity="manpy.Part")
+S0 = Source("S0", "Source", interArrivalTime={"Fixed": {"mean": 0.4}}, entity="manpy.Part", capacity=1)
 S1 = Source("S1", "Source", interArrivalTime={"Fixed": {"mean": 0.4}}, entity="manpy.Frame", capacity=1)
 #Löten = Machine("M0", "Löten", processingTime={"Fixed": {"mean": 0.8}})
 Löten = Machine("M0", "Löten", processingTime={"Normal": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}})
@@ -79,10 +79,10 @@ def main(test=0):
         print(len(G.FeatureList))
         return result
 
-    df = getEntityData([E], discards=[Montage])
+    df = getFeatureData([E], discards=[Montage])
     df.to_csv("Merging.csv", index=False, encoding="utf8")
 
-    df = getEntityData([Montage], time=True)
+    df = getFeatureData([Montage], time=True)
     df.to_csv("Merging_Test.csv", index=False, encoding="utf8")
 
     print("""

@@ -1,5 +1,5 @@
 from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue, Timeseries
-from manpy.simulation.core.Globals import runSimulation, G, ExcelPrinter
+from manpy.simulation.core.Globals import runSimulation, G, ExcelPrinter, getFeatureData
 import time
 import matplotlib.pyplot as plt
 
@@ -17,10 +17,9 @@ E1 = Exit("E1", "Exit1")
 Spannung = Timeseries("Ftr0", "Feature0", victim=Löten, no_negative=True, step_time=0.03,
                       distribution={"Function" : {(-1, 0) : "-1.6*x**2+1.6", (0, 1) : "-1.6*x**2+2"}, "DataPoints" : 20, "Feature": {"Normal": {"stdev": 0.02}}})
 Strom = Timeseries("Ftr1", "Feature1", victim=Löten,
-               dependent={"Function" : "1000*V + 1900", "V" : Spannung},
-               distribution={"Feature": {"Normal": {"stdev": 20}}})
+               distribution={"Function" : {(-1, 1) : "1000*V + 1900"}, "V" : Spannung, "DataPoints" : 20, "Feature": {"Normal": {"stdev": 20}}})
 Widerstand = Timeseries("Ftr2", "Feature2", victim=Löten,
-               dependent={"Function" : "(V/I)*1000000", "V" : Spannung, "I" : Strom})
+               distribution={"Function" : {(-1, 1) : "(V/I)*1000000"}, "V" : Spannung, "I" : Strom, "DataPoints" : 20})
 Kraft = Feature("Ftr3", "Feature3", victim=Löten,
                distribution={"Feature": {"Normal": {"mean": 180, "stdev": 30}}})
 Einsinktiefe = Feature("Ftr4", "Feature4", victim=Löten,
@@ -55,14 +54,14 @@ def main(test=0):
     if test:
         return E1.entities[0]
 
-    df = G.get_simulation_results_dataframe()
-    ExcelPrinter(df, "ExampleTS")
+    # df = G.get_simulation_results_dataframe()
+    # ExcelPrinter(df, "ExampleTS")
 
-    plt.plot(E1.entities[0].feature_times[0], E1.entities[0].features[0])
+    plt.plot(E1.entities[0].timeseries_times[0], E1.entities[0].timeseries[0])
     plt.show()
-    plt.plot(E1.entities[0].feature_times[1], E1.entities[0].features[1], c="orange")
+    plt.plot(E1.entities[0].timeseries_times[1], E1.entities[0].timeseries[1], c="orange")
     plt.show()
-    plt.plot(E1.entities[0].feature_times[2], E1.entities[0].features[2], c="g")
+    plt.plot(E1.entities[0].timeseries_times[2], E1.entities[0].timeseries[2], c="g")
     plt.show()
 
     print("""

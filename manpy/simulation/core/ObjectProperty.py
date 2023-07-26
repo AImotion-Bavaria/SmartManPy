@@ -88,8 +88,6 @@ class ObjectProperty(ManPyObject):
         self.dependent = dependent
         self.type = "Feature"
 
-        G.FeatureList.append(self)
-
     def initialize(self):
         from manpy.simulation.core.Globals import G
 

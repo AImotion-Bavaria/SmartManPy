@@ -1,5 +1,5 @@
 from manpy.simulation.imports import Machine, Source, Exit, Feature
-from manpy.simulation.core.Globals import runSimulation, getEntityData
+from manpy.simulation.core.Globals import runSimulation, getFeatureData
 
 def condition(self):
     activeEntity = self.Res.users[0]
@@ -29,7 +29,7 @@ def main(test=0):
     # runSim with trace
     runSimulation([S, M1, E1, Ftr1], maxSimTime, trace=True)
 
-    df = getEntityData([E1], [M1])
+    df = getFeatureData([E1], [M1])
     df.to_csv("Quality_Control.csv", index=False, encoding="utf8")
 
     print("""

@@ -45,14 +45,15 @@ class Failure(ObjectInterruption):
         waitOnTie=False,
         conditional=None,
         entity=False,
+        remove=False,
         **kw
     ):
-        ObjectInterruption.__init__(self, id, name, victim=victim)
+        ObjectInterruption.__init__(self, id, name, victim=victim, remove=remove)
         self.rngTTF = RandomNumberGenerator(
-            self, distribution.get("TTF", {"Fixed": {"mean": 100}})
+            self, distribution.get("TTF", {"Fixed": {"mean": 0}})
         )
         self.rngTTR = RandomNumberGenerator(
-            self, distribution.get("TTR", {"Fixed": {"mean": 1}})
+            self, distribution.get("TTR", {"Fixed": {"mean": 0}})
         )
         if self.name == "":
             self.name = "F" + str(index)
@@ -81,11 +82,11 @@ class Failure(ObjectInterruption):
         self.entity = entity
 
     def initialize(self):
+        ObjectInterruption.initialize(self)
         if self.conditional(self) != None:
             self.entity = True
         if self.entity == True:
             self.deteriorationType="working"
-        ObjectInterruption.initialize(self)
         self.victimStartsProcessing = self.env.event()
         self.victimEndsProcessing = self.env.event()
         self.contribution = self.env.event()

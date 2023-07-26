@@ -96,13 +96,14 @@ class Entity(ManPyObject):
         self.remainingProcessingTime = remainingProcessingTime
         self.remainingSetupTime = remainingSetupTime
         self.status = status
-        try:
-            self.features = [None] * (len(G.ftr_st) + 1)
-            self.labels = [None] * (len(G.ftr_st) + 1)
-            self.feature_times = [None] * len(G.ftr_st)
-        except AttributeError:
-            self.features = []
-            self.feature_times = []
+
+        # set lists for features and timeseries
+        self.labels = [None] * (len(G.ftr_st) + 1)
+        self.features = [None] * (len(G.ftr_st) + 1)
+        self.feature_times = [None] * len(G.ftr_st)
+        self.timeseries = [None] * len(G.ts_st)
+        self.timeseries_times = [None] * len(G.ts_st)
+
     # ===========================================================================
     # return the responsible operator for the current step, not implemented for entities
     # ===========================================================================
@@ -140,6 +141,11 @@ class Entity(ManPyObject):
         return []
 
     def set_feature(self, feature, label, time, indexing):
-        self.features[G.ftr_st.index(indexing)] = feature
         self.labels[G.ftr_st.index(indexing)] = label
+        self.features[G.ftr_st.index(indexing)] = feature
         self.feature_times[G.ftr_st.index(indexing)] = time
+
+    def set_timeseries(self, timeseries, label, time, indexing):
+        self.labels[G.ts_st.index(indexing)] = label
+        self.timeseries[G.ts_st.index(indexing)] = timeseries
+        self.timeseries_times[G.ts_st.index(indexing)] = time
