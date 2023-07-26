@@ -401,7 +401,7 @@ def setWIP(entityList):
 
 
 def countIntervalThroughput(**kw):
-    from manpy.simulation.core.Exit import Exit
+    from .Exit import Exit
 
     currentExited = 0
     for obj in G.ObjList:

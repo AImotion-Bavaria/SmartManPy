@@ -207,8 +207,8 @@ class Timeseries(ObjectProperty):
                     # send data to QuestDB
                     # try:
                     if G.db:
-                        G.db.insert(self.name, {"time": self.env.now, "value": self.featureValue})
-                        G.db.commit()
+                        G.db_insert(self.name, {"time": self.env.now, "value": self.featureValue})
+                        G.db_commit()
                     # except:
                     #     print("Quest-DB error: TimeSeries")
 
