@@ -66,7 +66,7 @@ class ObjectProperty(ManPyObject):
         self.reset_distributions = reset_distributions
 
         if self.distribution_state_controller:
-            self.distribution = self.distribution_state_controller.get_initial_state()
+            self.distribution, _ = self.distribution_state_controller.get_initial_state()
         else:
             self.distribution = distribution
 
@@ -78,6 +78,7 @@ class ObjectProperty(ManPyObject):
         self.no_negative = no_negative
         self.contribute = contribute
         self.start_time = start_time
+        self.featureValue = None
         if start_value:
             self.featureHistory = [start_value]
             self.featureValue = self.featureHistory[-1]

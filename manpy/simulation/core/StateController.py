@@ -1,5 +1,5 @@
 import numpy as np
-
+import random
 
 class StateController:
     """
@@ -115,13 +115,13 @@ class SimpleStateController(StateController):
 
 class ContinuosNormalDistribution(StateController):
     def __init__(self,
-                 wear_per_step,
-                 break_point,
                  mean_change_per_step,
                  initial_mean,
                  std,
-                 defect_mean,
-                 defect_std
+                 wear_per_step=0,
+                 break_point=None,
+                 defect_mean=None,
+                 defect_std=None,
                  ):
         """
         Normal Distribution that changes its mean value with each step. Optionally, a defect can occur after a defined
@@ -134,9 +134,6 @@ class ContinuosNormalDistribution(StateController):
         :param defect_mean: Mean value in the defect state
         :param defect_std: STD in the defect state
         """
-
-        self.wear_per_step = wear_per_step
-        self.break_point = break_point
         self.mean_change_per_step = mean_change_per_step
 
         self.initial_mean = initial_mean
@@ -145,8 +142,12 @@ class ContinuosNormalDistribution(StateController):
         self.account = 0
 
         self.current_mean = self.initial_mean
+
+        self.wear_per_step = wear_per_step
+        self.break_point = break_point
         self.defect_mean = defect_mean
         self.defect_std = defect_std
+
 
     def get_initial_state(self):
         return self.__get_distribution(self.initial_mean, self.std), False
@@ -154,6 +155,7 @@ class ContinuosNormalDistribution(StateController):
     def get_and_update(self):
         # parameters are incremented before return
         if self.break_point is not None and self.account >= self.break_point:
+            print("Reached break point")
             mean = self.defect_mean
             std = self.defect_std
             label = True
@@ -170,7 +172,6 @@ class ContinuosNormalDistribution(StateController):
         return {"Feature": {"Normal": {"mean": mean, "stdev": std}}}
 
     def reset(self):
-        print(">>> Reset SimpleStateController <<<")
         self.current_mean = self.initial_mean
         self.account = 0
 
@@ -180,20 +181,22 @@ class ContinuosNormalDistribution(StateController):
 class RandomDefectStateController(StateController):
     def __init__(self,
                  failure_probability,
-                 ok_controller: ContinuosNormalDistribution,
-                 defect_controller: ContinuosNormalDistribution
+                 ok_controller: StateController,
+                 defect_controllers: list
                  ):
         """
-        Orchestrates two ContinuosNormalDistributionControllers. Using a Bernoulli-Distribution, it chooses either the
+        Orchestrates multiple StateControllers. Using a Bernoulli-Distribution, it chooses either the
         ok or the defect distribution.
 
         :param failure_probability: Probability of failure for the Bernoulli-Distribution.
         :param ok_controller:
-        :param defect_controller:
+        :param defect_controllers: list of StateControllers. If a random failure occurs, one of them is
+                                    drawn with uniform distribution. Example: in case of defect, a value can be either
+                                    too high or too low
         """
         self.failure_probability = failure_probability
         self.ok_controller = ok_controller
-        self.defect_controller = defect_controller
+        self.defect_controllers = defect_controllers
 
     def get_initial_state(self):
         return self.ok_controller.get_initial_state()
@@ -202,17 +205,23 @@ class RandomDefectStateController(StateController):
         defect = int(np.random.binomial(1, self.failure_probability))
 
         if defect == 1:
-            dist, _ = self.defect_controller.get_and_update()
+            defect_controller = random.choice(self.defect_controllers)
+            dist, _ = defect_controller.get_and_update()
             label = True
         else:
-            dist, _ = self.ok_controller.get_and_update()
-            label = False
+            dist, y = self.ok_controller.get_and_update()
+            # if the state controller returns <defect> (e.g. due to a reached break point) we need to keep this label!
+            if y:
+                label = True
+            else:
+                label = False
 
         return dist, label
 
     def reset(self):
         self.ok_controller.reset()
-        self.defect_controller.reset()
+        for c in self.defect_controllers:
+            c.reset()
 
 
 if __name__ == '__main__':
