@@ -136,7 +136,6 @@ class Feature(ObjectProperty):
 
                 # send data to QuestDB
                 from manpy.simulation.core.Globals import G
-
                 try:
                     if G.db:
                         G.db.insert(self.name, {"time": float(self.env.now), "value": float(self.featureValue)})
