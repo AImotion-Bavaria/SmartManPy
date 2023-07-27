@@ -965,7 +965,7 @@ class Machine(CoreObject):
                 if G.db:
                     G.db.insert(
                         self.name,
-                        {"time": self.env.now, "message": activeObjectQueue[0].id + " failed Process control"}
+                        {"time": float(self.env.now), "message": activeObjectQueue[0].id + " failed Process control"}
                     )
                     G.db.commit()
                 if len(activeObjectQueue) > 0:
@@ -1009,7 +1009,7 @@ class Machine(CoreObject):
                     if G.db:
                         G.db.insert(
                             self.name,
-                            {"time": self.env.now, "message": activeObjectQueue[0].id + " succeeded Process control"}
+                            {"time": float(self.env.now), "message": activeObjectQueue[0].id + " succeeded Process control"}
                         )
                         G.db.commit()
                     if len(activeObjectQueue) > 0:
@@ -1033,7 +1033,7 @@ class Machine(CoreObject):
                     if G.db:
                         G.db.insert(
                             self.name,
-                            {"time": self.env.now, "message": activeObjectQueue[0].id + " finished processing"}
+                            {"time": float(self.env.now), "message": activeObjectQueue[0].id + " finished processing"}
                         )
                         G.db.commit()
                 except IndexError:
@@ -1241,7 +1241,7 @@ class Machine(CoreObject):
             if G.db:
                 G.db.insert(
                     self.name,
-                    {"time": self.env.now, "message": operator.id + " ended a process in " + self.objName}
+                    {"time": float(self.env.now), "message": operator.id + " ended a process in " + self.objName}
                 )
                 G.db.commit()
 
@@ -1305,7 +1305,7 @@ class Machine(CoreObject):
             if G.db:
                 G.db.insert(
                     self.name,
-                    {"time": self.env.now, "message": "Interrupted"}
+                    {"time": float(self.env.now), "message": "Interrupted"}
                 )
                 G.db.commit()
             # recalculate the processing time left tinM
@@ -1376,7 +1376,7 @@ class Machine(CoreObject):
                 if G.db:
                     G.db.insert(
                         self.name,
-                        {"time": self.env.now, "message": activeObjectQueue[0].id + " passivated in " + self.objName + " for " + str(self.env.now - self.breakTime)}
+                        {"time": float(self.env.now), "message": activeObjectQueue[0].id + " passivated in " + self.objName + " for " + str(self.env.now - self.breakTime)}
                     )
                     G.db.commit()
         # when a machine returns from failure while trying to deliver an entity
@@ -1624,7 +1624,7 @@ class Machine(CoreObject):
             if G.db:
                 G.db.insert(
                     self.name,
-                    {"time": self.env.now,
+                    {"time": float(self.env.now),
                              "message": operator.id + " left " + str(self.id)}
                 )
                 G.db.commit()
@@ -1637,7 +1637,7 @@ class Machine(CoreObject):
             if G.db:
                 G.db.insert(
                     self.name,
-                    {"time": self.env.now,
+                    {"time": float(self.env.now),
                              "message": operator.id + " left " + str(self.id)}
                 )
                 G.db.commit()

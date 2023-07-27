@@ -135,14 +135,12 @@ class Feature(ObjectProperty):
                 self.featureHistory.append(self.featureValue)
 
                 # send data to QuestDB
-
                 from manpy.simulation.core.Globals import G
 
                 try:
                     if G.db:
-                        self.featureValue = int(self.featureValue)
-                        G.db_insert(self.name, {"time": self.env.now, "value": self.featureValue})
-                        G.db_commit()
+                        G.db.insert(self.name, {"time": float(self.env.now), "value": float(self.featureValue)})
+                        G.db.commit()
                 except:
                     print("Quest-DB error: Feature")
 

@@ -198,19 +198,21 @@ class Timeseries(ObjectProperty):
                     self.featureHistory.append(self.featureValue)
                     self.timeHistory.append(x)
 
+                    # send data to QuestDB
+                    from manpy.simulation.core.Globals import G
+
+                    try:
+                        if G.db:
+                            G.db.insert(self.name, {"time": float(self.env.now), "value": float(self.featureValue)})
+                            G.db.commit()
+                    except:
+                        print("Quest-DB error: TimeSeries")
+
                     # add TimeSeries value and time to Entity
                     ent = self.victim.Res.users[0]
-                    self.victim.Res.users[0].set_timeseries(self.featureHistory, self.label, self.timeHistory,
+                    ent.set_timeseries(self.featureHistory, self.label, self.timeHistory,
                                                          (self.id, self.victim.id))
-                    self.outputTrace(self.victim.Res.users[0].name, self.victim.Res.users[0].id, str(self.featureValue))
-
-                    # send data to QuestDB
-                    # try:
-                    if G.db:
-                        G.db_insert(self.name, {"time": self.env.now, "value": self.featureValue})
-                        G.db_commit()
-                    # except:
-                    #     print("Quest-DB error: TimeSeries")
+                    self.outputTrace(ent.name, ent.id, str(self.featureValue))
 
                     # check contribution
                     if self.contribute != None:
