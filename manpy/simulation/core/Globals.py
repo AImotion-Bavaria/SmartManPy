@@ -694,8 +694,14 @@ def ExcelPrinter(df, filename):
     else:
         df.to_excel("{}.xls".format(filename))
 
-# TODO: Entity ID in DataFrame
-def getFeatureData(objectList=[], time=False) -> pd.DataFrame: #TODO: check time
+def getFeatureData(objectList=[], time=False) -> pd.DataFrame:
+    """
+    getFeatureData returns feature data of specific machines as dataframes
+    :param objectList: a list of machines that will be included in the dataframe
+    :param time: boolean, should timestamps be included or not
+    :return: dataframe
+    """
+
     columns = ["ID"]        # name of columns
     df_list = []        # list for the DataFrame
     feature_list = []   # list of included features
@@ -727,7 +733,7 @@ def getFeatureData(objectList=[], time=False) -> pd.DataFrame: #TODO: check time
                 features.append(entity.features[-1])
 
                 if time:
-                    l = [None] * (len(G.ftr_st) * 2 + 1)
+                    l = [None] * (len(columns) - 1)
                     for i in range(len(l)):
                         if i % 2 == 0:
                             l[i] = features[i // 2]
@@ -749,6 +755,12 @@ def getFeatureData(objectList=[], time=False) -> pd.DataFrame: #TODO: check time
         return result.drop("Result", axis=1)
 
 def getTimeSeriesData(objectList=[]) -> [pd.DataFrame]: #TODO: guruantee no duplicates after Assembly
+    """
+    getTimeSeriesData returns timeseries data of specific machines. Each timeseries gets it's own dataframe
+    :param objectList: a list of machines that will have their corresponding timeseries included in the return
+    :return: list of dataframes
+    """
+
     results = []
     columns = ["ID", "Time", "Value"]
     for ts in G.ts_st:

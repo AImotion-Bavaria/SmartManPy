@@ -1,5 +1,5 @@
 from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue, Timeseries
-from manpy.simulation.core.Globals import runSimulation, G, ExcelPrinter, getFeatureData
+from manpy.simulation.core.Globals import runSimulation, G, getFeatureData
 import time
 import matplotlib.pyplot as plt
 
@@ -54,8 +54,7 @@ def main(test=0):
     if test:
         return E1.entities[0]
 
-    # df = G.get_simulation_results_dataframe()
-    # ExcelPrinter(df, "ExampleTS")
+    # df = getFeatureData([Löten, Kleben], time=True)
 
     plt.plot(E1.entities[0].timeseries_times[0], E1.entities[0].timeseries[0])
     plt.show()
