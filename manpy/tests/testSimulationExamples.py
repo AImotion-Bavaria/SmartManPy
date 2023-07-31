@@ -374,7 +374,7 @@ class SimulationExamples(TestCase):
         for idx in range(1, len(result["Ftr1"])):
             self.assertGreaterEqual(result["Ftr1"][idx] - result["Ftr1"][idx - 1], -10,
                                     "\nRandomWalk should be higher than -10\nIt instead is: ".format(result["Ftr1"][idx]))
-            self.assertLowerEqual(result["Ftr1"][idx] - result["Ftr1"][idx - 1], 10,
+            self.assertLessEqual(result["Ftr1"][idx] - result["Ftr1"][idx - 1], 10,
                                     "\nRandomWalk should be lower than 10\nIt instead is: ".format(result["Ftr1"][idx]))
     def testDependency(self):
         from manpy.simulation.Examples.Dependency import main
