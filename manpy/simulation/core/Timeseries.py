@@ -155,7 +155,7 @@ class Timeseries(ObjectProperty):
 
                 # if nothing interrupted, the datapoint can be generated
                 else:
-                    # self.label = None
+                    self.label = None
 
                     # set other features as variables that are used in this timeseries
                     for key in list(self.distribution.keys()):

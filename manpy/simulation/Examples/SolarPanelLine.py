@@ -33,11 +33,9 @@ def resistance_failure_condition(self):
 # Objects
 Solar_Cells = Source("S0", "Solar_Cells", interArrivalTime={"Fixed": {"mean": 2}}, entity="manpy.Part")
 Solar_Cell_Tester = Machine("M0", "Solar_Cell_Tester", processingTime={"Fixed": {"mean": 3}}, control=condition)
-# Solar_Cell_Tester = Machine("M0", "Solar_Cell_Tester", processingTime={"Fixed": {"mean": 3}})
 Q0 = Queue("Q0", "Queue0")
 Solar_Cell_Scribing = Machine("M1", "Solar_Cell_Scribing", processingTime={"Fixed": {"mean": 3.75}})
-Frame.capacity = 60
-Solar_Strings = Source("S1", "Solar_Strings", interArrivalTime={"Fixed": {"mean": 100}}, entity="manpy.Frame")
+Solar_Strings = Source("S1", "Solar_Strings", interArrivalTime={"Fixed": {"mean": 100}}, entity="manpy.Frame", capacity=60)
 Assembly0 = Assembly("A0", "Assembly0")
 Tabber_Stringer = Machine("M2", "Tabber_Stringer", processingTime={"Fixed": {"mean": 150}})
 Q1 = Queue("Q1", "Queue1")
@@ -229,7 +227,7 @@ def main(test=0):
                   EL_Test, E1, Lamination, L_a, L_b, L_c, L_d, L_e, L_f, L_g, Lamination_Temperature_Curve,
                   Lamination_Peak_Pressure, Lamination_Pressure_Curve, Q3]
 
-    runSimulation(objectList, maxSimTime, trace=False)
+    runSimulation(objectList, maxSimTime)
 
     sct = getFeatureData([Solar_Cell_Tester, Layup])
     TS = getTimeSeriesData([Solar_Cell_Tester])

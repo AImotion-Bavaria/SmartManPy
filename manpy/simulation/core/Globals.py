@@ -754,26 +754,22 @@ def getFeatureData(objectList=[], time=False) -> pd.DataFrame:
     else:
         return result.drop("Result", axis=1)
 
-def getTimeSeriesData(objectList=[]) -> [pd.DataFrame]: #TODO: guruantee no duplicates after Assembly
+def getTimeSeriesData(ts) -> pd.DataFrame:
     """
-    getTimeSeriesData returns timeseries data of specific machines. Each timeseries gets it's own dataframe
-    :param objectList: a list of machines that will have their corresponding timeseries included in the return
-    :return: list of dataframes
+    getTimeSeriesData returns timeseries data
+    :param ts: the timeseries you want the data of
+    :return: dataframe with entity-ID|time|value as columns
     """
 
-    results = []
     columns = ["ID", "Time", "Value"]
-    for ts in G.ts_st:
-        id = []
-        time = []
-        value = []
-        for o in objectList:
-            if ts[1] == o.id:
-                entities = o.entities + o.discards
-                for entity in entities:
-                    id += [int(entity.id[4:])] * (len(entity.timeseries[G.ts_st.index(ts)]))
-                    time += entity.timeseries_times[G.ts_st.index(ts)]
-                    value += entity.timeseries[G.ts_st.index(ts)]
-        results.append(pd.DataFrame(list(zip(id, time, value)), columns=columns))
+    id = []
+    time = []
+    value = []
+    entities = ts.victim.entities + ts.victim.discards
+    for entity in entities:
+        id += [int(entity.id[4:])] * (len(entity.timeseries[G.TimeSeriesList.index(ts)]))
+        time += entity.timeseries_times[G.TimeSeriesList.index(ts)]
+        value += entity.timeseries[G.TimeSeriesList.index(ts)]
 
-    return results
+    return pd.DataFrame(list(zip(id, time, value)), columns=columns)
+

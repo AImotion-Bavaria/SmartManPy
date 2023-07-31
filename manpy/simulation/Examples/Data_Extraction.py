@@ -1,6 +1,5 @@
 from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue, Timeseries
-from manpy.simulation.core.Globals import runSimulation
-import matplotlib.pyplot as plt
+from manpy.simulation.core.Globals import runSimulation, getTimeSeriesData, getFeatureData
 
 
 # Objects
@@ -11,12 +10,6 @@ Gluing = Machine("M1", "Gluing", processingTime={"Fixed": {"mean": 0.8, "stdev":
 E1 = Exit("E1", "Exit1")
 
 # ObjectProperty
-
-# In TimeSeries distribution, one or multiple functions with different intervals are used,
-# to generate a certain amount of data points across the entire range from the lowest to the highest point in any interval
-# The step_time can be manually set or dynamically calculated based on the entity's processing time
-# Functions in TimeSeries distribution can utilize assigned variables, similar to how dependent variables work for Features
-
 # Soldering
 Voltage = Timeseries("TS0", "Voltage", victim=Soldering, no_negative=True, step_time=0.03,
                      distribution={"Function" : {(-1, 0) : "-1.6*x**2+1.6", (0, 1) : "-1.6*x**2+2"}, "DataPoints" : 20, "Feature": {"Normal": {"stdev": 0.02}}})
@@ -41,7 +34,6 @@ Mass = Feature("Ftr4", "Mass", victim=Gluing,
 Stuck = Failure("Flr0", "Failure0", victim=Gluing, entity=True,
                 distribution={"TTF": {"Fixed": {"mean": 0}}, "TTR": {"Normal": {"mean": 2,"stdev": 0.2, "min":0, "probability": 0.05}}})
 
-
 # Routing
 S.defineRouting([Soldering])
 Soldering.defineRouting([S], [Q])
@@ -51,21 +43,36 @@ E1.defineRouting([Gluing])
 
 
 def main(test=0):
-    maxSimTime = 50
+    maxSimTime = 5
     objectList = [S, Soldering, Q, Gluing, E1, Voltage, Current, Resistance, Pressure, Insertion_depth, Flow_rate, Temperature, Mass]
-    runSimulation(objectList, maxSimTime)
 
-    # show dependency of TimeSeries
-    plt.plot(E1.entities[0].timeseries_times[0], E1.entities[0].timeseries[0])
-    plt.show()
-    plt.plot(E1.entities[0].timeseries_times[1], E1.entities[0].timeseries[1], c="orange")
-    plt.show()
-    plt.plot(E1.entities[0].timeseries_times[2], E1.entities[0].timeseries[2], c="g")
-    plt.show()
 
-    #for unittest
-    if test:
-        return E1.entities[0]
+    # To utilize a database, you have two options:
+    # 1. Import a pre-existing `DataBase` class from `DataBase.py`
+    # 2. Easily set up your own database using the `ManPyDatabase` interface
+    from manpy.simulation.core.Database import ManPyQuestDBDatabase
+    db = ManPyQuestDBDatabase()
+    runSimulation(objectList, maxSimTime, db=db)
+
+
+    # To retrieve feature data from the simulation, utilize the getFeatureData function
+    # The function accepts a list of machines and produces a DataFrame with all of their occurring features
+    solder = getFeatureData([Soldering])
+    print(solder.to_string(index=False), "\n")
+
+    # With 'time=True', timestamps of the feature values are included in the DataFrame
+    solder_time = getFeatureData([Soldering], time=True)
+    print(solder_time.to_string(index=False), "\n")
+
+    # The function supports multiple machines
+    both = getFeatureData([Soldering, Gluing])
+    print(both.to_string(index=False), "\n")
+
+    # To retrieve timeseries data from the simulation, utilize the getTimeSeriesData function
+    # The function accepts a timeSeries and returns a DataFrame representing that timeseries
+    vol = getTimeSeriesData(Voltage)
+    print(vol)
+
 
 if __name__ == "__main__":
     main()

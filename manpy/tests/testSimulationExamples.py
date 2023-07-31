@@ -392,11 +392,8 @@ class SimulationExamples(TestCase):
 
         result = main(test=1)
 
-        for e in result["Exits"]:
-            self.assertNotIn(None, e.features,
-                             "\nFeatures have not been merged completeply")
-        self.assertIn(None, result["FirstEntity"].features,
-                      "\nFirst Entity should not contain all Features")
+        self.assertEqual(result["M1"]//20, result["E1"],
+                         "\nProduction of M1 does not match the output of the Assembly")
 
     def testExampleTS(self):
         from manpy.simulation.Examples.ExampleTS import main
