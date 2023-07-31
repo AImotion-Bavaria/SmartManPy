@@ -75,8 +75,10 @@ class Timeseries(ObjectProperty):
             if self.intervals[i][1] > self.intervals[i+1][0]:
                 raise Exception("Intervals {} and {} from {} overlap".format(self.intervals[i], self.intervals[i+1], self.name))
 
+        # set stepsize
         self.stepsize = (self.intervals[-1][1] - self.intervals[0][0]) / (self.distribution["DataPoints"] - 1)
 
+        # set events for a later date
         self.victimIsInterrupted = self.env.event()
         self.victimStartsProcessing = self.env.event()
         self.victimEndsProcessing = self.env.event()
@@ -95,12 +97,17 @@ class Timeseries(ObjectProperty):
                 yield self.victimStartsProcessing
                 self.victimStartsProcessing = self.env.event()
 
+            # set lists for value and time for current entity
             self.featureHistory = []
             self.timeHistory = []
+
+            # calculate step time if necessary
             if self.step_time == None:
                 step_time = self.victim.tinM / self.distribution["DataPoints"]
             else:
                 step_time = self.step_time
+
+            # set variables for the following loop
             remainingTimeTillFeature = 0
             steps = 0
             interval = None
@@ -108,17 +115,21 @@ class Timeseries(ObjectProperty):
             f = None
 
             while machineIsRunning:
+                # setup for signals
                 timeRestartedCounting = self.env.now
                 self.expectedSignals["victimEndsProcessing"] = 1
                 self.expectedSignals["victimIsInterrupted"] = 1
 
+                # waiting for a specific event
                 receivedEvent = yield self.env.any_of([
                     self.env.timeout(remainingTimeTillFeature),
                     self.victimIsInterrupted,
                     self.victimEndsProcessing
                 ])
 
+                # if victim(Machine) has been interrupted
                 if self.victimIsInterrupted in receivedEvent:
+                    # reset signal and recalculate remainingTimeTillFeature
                     self.victimIsInterrupted = self.env.event()
                     remainingTimeTillFeature = remainingTimeTillFeature - (self.env.now - timeRestartedCounting)
 
@@ -126,20 +137,24 @@ class Timeseries(ObjectProperty):
                     if self.distribution_state_controller and self.reset_distributions:
                         self.distribution_state_controller.reset()
 
-                    # wait for victim to start processing again
+                    # wait for victim to start processing again and reset signal afterwards
                     self.expectedSignals["victimResumesProcessing"] = 1
                     yield self.victimResumesProcessing
                     self.victimResumesProcessing = self.env.event()
 
+                # if victim finishes processing of current entity
                 elif self.victimEndsProcessing in receivedEvent:
+                    # reset signal and recalculate remainingTimeTillFeature
                     self.victimEndsProcessing = self.env.event()
                     remainingTimeTillFeature = remainingTimeTillFeature - (self.env.now - timeRestartedCounting)
 
+                    # state_controller
                     if self.distribution_state_controller:
                         self.distribution = self.distribution_state_controller.get_and_update()
                         self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
+
+                # if nothing interrupted, the datapoint can be generated
                 else:
-                    # generate the Feature
                     self.label = None
 
                     # set other features as variables that are used in this timeseries
@@ -180,6 +195,8 @@ class Timeseries(ObjectProperty):
                             print("Interpolation needs at least 4 values")
                     else:
                         self.distribution["Feature"][list(self.distribution["Feature"].keys())[0]]["mean"] = eval(self.distribution["Function"][interval])
+
+                    # generate datapoint
                     self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
                     value = self.rngFeature.generateNumber(start_time=self.start_time)
 
@@ -194,23 +211,24 @@ class Timeseries(ObjectProperty):
                         if self.featureValue < 0:
                             self.featureValue = 0
 
-
+                    # add datapoint and time to corresponding lists
                     self.featureHistory.append(self.featureValue)
                     self.timeHistory.append(x)
 
-                    # add TimeSeries value and time to Entity
-                    ent = self.victim.Res.users[0]
-                    self.victim.Res.users[0].set_timeseries(self.featureHistory, self.label, self.timeHistory,
-                                                         (self.id, self.victim.id))
-                    self.outputTrace(self.victim.Res.users[0].name, self.victim.Res.users[0].id, str(self.featureValue))
-
                     # send data to QuestDB
-                    # try:
-                    if G.db:
-                        G.db_insert(self.name, {"time": self.env.now, "value": self.featureValue})
-                        G.db_commit()
-                    # except:
-                    #     print("Quest-DB error: TimeSeries")
+                    from manpy.simulation.core.Globals import G
+                    try:
+                        if G.db:
+                            G.db.insert(self.name, {"time": float(self.env.now), "value": float(self.featureValue)})
+                            G.db.commit()
+                    except:
+                        print("Quest-DB error: TimeSeries")
+
+                    # add datapoint value and time to Entity
+                    ent = self.victim.Res.users[0]
+                    ent.set_timeseries(self.featureHistory, self.label, self.timeHistory,
+                                                         (self.id, self.victim.id))
+                    self.outputTrace(ent.name, ent.id, str(self.featureValue))
 
                     # check contribution
                     if self.contribute != None:
@@ -218,7 +236,7 @@ class Timeseries(ObjectProperty):
                             if c.expectedSignals["contribution"]:
                                 self.sendSignal(receiver=c, signal=c.contribution)
 
-
+                    # set parameters for next loop
                     remainingTimeTillFeature = step_time
                     steps += 1
                     last_interval = interval

@@ -374,7 +374,7 @@ class SimulationExamples(TestCase):
         for idx in range(1, len(result["Ftr1"])):
             self.assertGreaterEqual(result["Ftr1"][idx] - result["Ftr1"][idx - 1], -10,
                                     "\nRandomWalk should be higher than -10\nIt instead is: ".format(result["Ftr1"][idx]))
-            self.assertLowerEqual(result["Ftr1"][idx] - result["Ftr1"][idx - 1], 10,
+            self.assertLessEqual(result["Ftr1"][idx] - result["Ftr1"][idx - 1], 10,
                                     "\nRandomWalk should be lower than 10\nIt instead is: ".format(result["Ftr1"][idx]))
     def testDependency(self):
         from manpy.simulation.Examples.Dependency import main
@@ -392,11 +392,8 @@ class SimulationExamples(TestCase):
 
         result = main(test=1)
 
-        for e in result["Exits"]:
-            self.assertNotIn(None, e.features,
-                             "\nFeatures have not been merged completeply")
-        self.assertIn(None, result["FirstEntity"].features,
-                      "\nFirst Entity should not contain all Features")
+        self.assertEqual(result["M1"]//20, result["E1"],
+                         "\nProduction of M1 does not match the output of the Assembly")
 
     def testExampleTS(self):
         from manpy.simulation.Examples.ExampleTS import main

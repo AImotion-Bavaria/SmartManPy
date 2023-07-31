@@ -1,10 +1,7 @@
 from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue
-from manpy.simulation.core.Globals import runSimulation, getFeatureData
-#from manpy.simulation.Examples.MLExperiment import SGD_clf
-import time
+from manpy.simulation.core.Globals import runSimulation
 
-start = time.time()
-
+# condition for quality control
 def condition(self):
     activeEntity = self.Res.users[0]
     means = [1.6, 3500, 450, 180, 400, 50, 190, 400]
@@ -20,67 +17,77 @@ def condition(self):
 
 # Objects
 S = Source("S1", "Source", interArrivalTime={"Fixed": {"mean": 0.4}}, entity="manpy.Part", capacity=1)
-Löten = Machine("M0", "Löten", processingTime={"Normal": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}})
+Soldering = Machine("M0", "Löten", processingTime={"Normal": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}})
 Q = Queue("Q", "Queue")
-Kleben = Machine("M1", "Kleben", processingTime={"Fixed": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}}, control=condition)
+Gluing = Machine("M1", "Kleben", processingTime={"Fixed": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}}, control=condition)
 E1 = Exit("E1", "Exit1")
 
+
+# ObjectProperty
+
+# With the "dependent" parameter, you can create Features based on the values of other features
+# Dependent takes a function and populates variables with the last feature value of the corresponding Feature whenever a feature value is generated
+# It is also possible to choose a distribution on top of a dependency (see Temperature example)
+# Always use x1, x2, ... or similar variables to avoid complications
+
+# Soldering
+Voltage = Feature("Ftr0", "Feature0", victim=Soldering, distribution={"Feature": {"Normal": {"mean": 1.6, "stdev": 0.2}}})
+Current = Feature("Ftr1", "Feature1", victim=Soldering, dependent={"Function" : "1000*x1 + 1900", "x1" : Voltage})
+Resistance = Feature("Ftr2", "Feature2", victim=Soldering, dependent={"Function" : "(x1/x2)*1000000", "x1" : Voltage, "x2" : Current})
+Pressure = Feature("Ftr3", "Feature3", victim=Soldering, distribution={"Feature": {"Normal": {"mean": 180, "stdev": 30}}})
+Insertion_depth = Feature("Ftr4", "Feature4", victim=Soldering, distribution={"Feature": {"Normal": {"mean": 400, "stdev": 50}}})
+
+# Gluing
+Flow_rate = Feature("Ftr5", "Feature5", victim=Gluing, distribution={"Feature": {"Normal": {"mean": 50, "stdev": 5}}})
+# The calculated value from "dependent" becomes the distribution's mean, allowing you to apply any desired dispersion
+Temperature = Feature("Ftr6", "Feature6", victim=Gluing, dependent={"Function" : "2*x3 + 90", "x3" : Flow_rate}, distribution={"Feature": {"Normal": {"stdev": 1}}})
+Mass = Feature("Ftr7", "Feature7", victim=Gluing, distribution={"Feature": {"Normal": {"mean": 400, "stdev": 50}}})
+
+
 # ObjectInterruption
-# Löten
-Spannung = Feature("Ftr0", "Feature0", victim=Löten,
-               distribution={"Feature": {"Normal": {"mean": 1.6, "stdev": 0.2}}})
-Strom = Feature("Ftr1", "Feature1", victim=Löten, dependent={"Function" : "1000*x + 1900", "x" : Spannung})
-Widerstand = Feature("Ftr2", "Feature2", victim=Löten,dependent={"Function" : "(V/I)*1000000", "V" : Spannung, "I" : Strom})
-Kraft = Feature("Ftr3", "Feature3", victim=Löten,
-               distribution={"Feature": {"Normal": {"mean": 180, "stdev": 30}}})
-Einsinktiefe = Feature("Ftr4", "Feature4", victim=Löten,
-               distribution={"Feature": {"Normal": {"mean": 400, "stdev": 50}}})
 
-#Kleben
-Durchflussgeschwindigkeit = Feature("Ftr5", "Feature5", victim=Kleben,
-               distribution={"Feature": {"Normal": {"mean": 50, "stdev": 5}}})
-Temperatur = Feature("Ftr6", "Feature6", victim=Kleben,dependent={"Function" : "2*x + 90", "x" : Durchflussgeschwindigkeit},
-               distribution={"Feature": {"Normal": {"stdev": 1}}})
-Menge = Feature("Ftr7", "Feature7", victim=Kleben,
-               distribution={"Feature": {"Normal": {"mean": 400, "stdev": 50}}})
-
-StecktFest = Failure("Flr0","Failure0", victim=Kleben, entity=True,
-               distribution={"TTF": {"Fixed": {"mean": 0}}, "TTR": {"Normal": {"mean": 2,"stdev": 0.2, "min":0, "probability": 0.05}}})
+# With the parameter entity=True, the Time-to-Failure (TTF) is calculated based on the processing time of the entity within the machine
+# The time of failure can be modified on a scale from 0 to 1, where 0 represents the beginning of processing, and 1 represents the end
+# By adding "probability" to TTR, the occurrence of failure will be probabilistic, determined by chance.
+Stuck = Failure("Flr0", "Failure0", victim=Gluing, entity=True,
+                distribution={"TTF": {"Fixed": {"mean": 0}}, "TTR": {"Normal": {"mean": 2,"stdev": 0.2, "min":0, "probability": 0.05}}})
 
 
 # Routing
-S.defineRouting([Löten])
-Löten.defineRouting([S], [Q])
-Q.defineRouting([Löten], [Kleben])
-Kleben.defineRouting([Q], [E1])
-E1.defineRouting([Kleben])
+S.defineRouting([Soldering])
+Soldering.defineRouting([S], [Q])
+Q.defineRouting([Soldering], [Gluing])
+Gluing.defineRouting([Q], [E1])
+E1.defineRouting([Gluing])
 
 
 def main(test=0):
     maxSimTime = 100
-    objectList = [S, Löten, Q, Kleben, E1, StecktFest, Spannung, Strom, Widerstand, Kraft, Einsinktiefe, Durchflussgeschwindigkeit, Temperatur, Menge]
+    objectList = [S, Soldering, Q, Gluing, E1, Stuck, Voltage, Current, Resistance, Pressure, Insertion_depth, Flow_rate, Temperature, Mass]
 
     runSimulation(objectList, maxSimTime)
 
+    # show dependency
+    print("Voltage:  {:.2f} V\nCurrent:  {:.2f} A\nResistance:  {:.2f} Ohm\nV calculated (I*R):  {:.2f} V\n".format(
+        Soldering.entities[0].features[0],
+        Soldering.entities[0].features[1]/1000,
+        Soldering.entities[0].features[2]/1000,
+        (Soldering.entities[0].features[1]/1000)*(Soldering.entities[0].features[2]/1000)))
+
+    # stats
+    print("""
+            Discards:           {}
+            Produced:           {}
+            blocked for:        {:.2f}
+            """.format(len(Gluing.discards), E1.numOfExits, Gluing.totalBlockageTime))
+
+    # for unittest
     if test:
         result = {}
-        result["Spannung"] = Spannung.featureHistory
-        result["Strom"] = Strom.featureHistory
-        result["Widerstand"] = Widerstand.featureHistory
+        result["Spannung"] = Voltage.featureHistory
+        result["Strom"] = Current.featureHistory
+        result["Widerstand"] = Resistance.featureHistory
         return result
-
-    print(E1)
-    df = getFeatureData([E1], [Kleben])
-    df.to_csv("Dependency.csv", index=False, encoding="utf8")
-    #accuracy = SGD_clf(df)
-
-    print("""
-            Ausschuss:          {}
-            Produziert:         {}
-            Blockiert für:      {:.2f}
-            Simulationszeit:    {}
-            Laufzeit:           {:.2f}
-            """.format(len(Kleben.discards), E1.numOfExits, Kleben.totalBlockageTime, maxSimTime, time.time() - start))
 
 if __name__ == "__main__":
     main()

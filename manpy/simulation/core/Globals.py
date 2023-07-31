@@ -694,8 +694,14 @@ def ExcelPrinter(df, filename):
     else:
         df.to_excel("{}.xls".format(filename))
 
-# TODO: Entity ID in DataFrame
-def getFeatureData(objectList=[], time=False) -> pd.DataFrame: #TODO: check time
+def getFeatureData(objectList=[], time=False) -> pd.DataFrame:
+    """
+    getFeatureData returns feature data of specific machines as dataframes
+    :param objectList: a list of machines that will be included in the dataframe
+    :param time: boolean, should timestamps be included or not
+    :return: dataframe
+    """
+
     columns = ["ID"]        # name of columns
     df_list = []        # list for the DataFrame
     feature_list = []   # list of included features
@@ -727,7 +733,7 @@ def getFeatureData(objectList=[], time=False) -> pd.DataFrame: #TODO: check time
                 features.append(entity.features[-1])
 
                 if time:
-                    l = [None] * (len(G.ftr_st) * 2 + 1)
+                    l = [None] * (len(columns) - 1)
                     for i in range(len(l)):
                         if i % 2 == 0:
                             l[i] = features[i // 2]
@@ -748,20 +754,22 @@ def getFeatureData(objectList=[], time=False) -> pd.DataFrame: #TODO: check time
     else:
         return result.drop("Result", axis=1)
 
-def getTimeSeriesData(objectList=[]) -> [pd.DataFrame]: #TODO: guruantee no duplicates after Assembly
-    results = []
-    columns = ["ID", "Time", "Value"]
-    for ts in G.ts_st:
-        id = []
-        time = []
-        value = []
-        for o in objectList:
-            if ts[1] == o.id:
-                entities = o.entities + o.discards
-                for entity in entities:
-                    id += [int(entity.id[4:])] * (len(entity.timeseries[G.ts_st.index(ts)]))
-                    time += entity.timeseries_times[G.ts_st.index(ts)]
-                    value += entity.timeseries[G.ts_st.index(ts)]
-        results.append(pd.DataFrame(list(zip(id, time, value)), columns=columns))
+def getTimeSeriesData(ts) -> pd.DataFrame:
+    """
+    getTimeSeriesData returns timeseries data
+    :param ts: the timeseries you want the data of
+    :return: dataframe with entity-ID|time|value as columns
+    """
 
-    return results
+    columns = ["ID", "Time", "Value"]
+    id = []
+    time = []
+    value = []
+    entities = ts.victim.entities + ts.victim.discards
+    for entity in entities:
+        id += [int(entity.id[4:])] * (len(entity.timeseries[G.TimeSeriesList.index(ts)]))
+        time += entity.timeseries_times[G.TimeSeriesList.index(ts)]
+        value += entity.timeseries[G.TimeSeriesList.index(ts)]
+
+    return pd.DataFrame(list(zip(id, time, value)), columns=columns)
+

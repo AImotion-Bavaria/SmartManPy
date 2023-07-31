@@ -1,7 +1,9 @@
 from manpy.simulation.imports import Machine, Source, Exit, Failure, Queue, Feature, SimpleStateController
-from manpy.simulation.core.Globals import runSimulation, G, ExcelPrinter
+from manpy.simulation.core.Globals import runSimulation, G
 
-
+# Any function can be employed as the condition for a Failure to occur
+# You can utilize any simulation values for the condition
+# Return True to let the Failure occur
 def condition(self):
     value_1 = Ftr1.get_feature_value()
     value_2 = Ftr2.get_feature_value()
@@ -20,9 +22,12 @@ M2 = Machine("M2", "Machine2", processingTime={"Normal": {"mean": "0.01*x+0.2", 
 E1 = Exit("E1", "Exit1")
 
 # ObjectInterruption
+# Assign the condition as the "conditional" parameter for any machine
 F1 = Failure(victim=M1, conditional=condition,
                          distribution={"TTR": {"Fixed": {"mean": 30}}})
 
+# ObjectProperty
+# Link failures to "contribute" for a Feature when utilizing its values
 Ftr1 = Feature("Ftr1", "Feature1", victim=M1, contribute=[F1], no_negative=True,
                distribution={"Feature": {"Normal": {"mean": "3*x", "stdev": "0.02*x+3", "min": "2.98*x-3", "max": "3.02*x+3"}}}
                )
@@ -49,14 +54,9 @@ E1.defineRouting([M2])
 
 def main(test=0):
     maxSimTime = 250
+    runSimulation([S, Q, M1, M2, E1, F1, Ftr1, Ftr2], maxSimTime)
 
-    # runSim with trace
-    runSimulation([S, Q, M1, M2, E1, F1, Ftr1, Ftr2], maxSimTime, trace="Yes")
 
-    df = G.get_simulation_results_dataframe().drop(columns=["entity_name", "station_name"])
-    ExcelPrinter(df, "RNG")
-    #df.to_csv("RNG_testing.csv", index=False, encoding="utf8")
-    #print(df)
 
 if __name__ == "__main__":
     main()
