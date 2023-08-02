@@ -193,9 +193,20 @@
         <article role="main">
           <section id="tutorials">
 <h1>Tutorials<a class="headerlink" href="#tutorials" title="Permalink to this heading">#</a></h1>
-<p>This page gives you an overview of the general usage paradigms of our ManPy extension</p>
-<section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
+<p>This page gives you an overview of the general usage paradigms of our ManPy extension
+We have prepared additional (complete) examples that demonstrate various capabilities.
+These examples can be found in manpy/Examples.
+We recommend the following order:</p>
+<ol class="arabic simple">
+<li><p>Quality_Control.py</p></li>
+<li><p>Dependency.py</p></li>
+<li><p>ExampleTS.py</p></li>
+<li><p>Conditional_Failure.py</p></li>
+<li><p>Interpolation.py</p></li>
+<li><p>Data_Extraction.py</p></li>
+</ol>
+<section id="introduction-and-basic-principles">
+<h2>Introduction and basic principles<a class="headerlink" href="#introduction-and-basic-principles" title="Permalink to this heading">#</a></h2>
 <p>The original ManPy package is based on the SimPy discrete event simulation.
 If you are already familiar with SimPy, you may recognize some paradigms.</p>
 <p>The start and finish point of a production line is a Source and Exit:</p>
@@ -269,12 +280,55 @@ In order to work correctly, we also need to update the routing of the production
 </pre></div>
 </div>
 </section>
+<section id="advanced-usage">
+<h2>Advanced usage<a class="headerlink" href="#advanced-usage" title="Permalink to this heading">#</a></h2>
+<p>The following sections provides an introduction into the more advanced concepts of our ManPy extension.</p>
+<section id="quality-control">
+<h3>Quality Control<a class="headerlink" href="#quality-control" title="Permalink to this heading">#</a></h3>
+<p>Quality control is a standard process in manufacturing.
+Therefore, we added the option for quality control to machines.
+As a result, machines can either have an additional quality control step at the end of their production step or be a standalone quality control instance.
+The condition for quality control can be set via a custom defined function, which is simply called “condition” in the following example.
+We can access the currently active entity in a machine with the following statement:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">activeEntity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>We can then use any simulated value of the entity as measurement for quality control, e.g. feature values or internal labels.
+The condition function must return True if a defect was found, otherwise False must be returned.
+In the following example, we simply check if a given Feature value is inside a certain interval ([3, 7]).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">def</span> <span class="nf">condition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos">2</span>    <span class="c1"># self is w.r.t. to the machine in which we apply the condition!</span>
+<span class="linenos">3</span>    <span class="n">activeEntity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="linenos">4</span>    <span class="k">if</span> <span class="n">activeEntity</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">7</span> <span class="ow">or</span> <span class="n">activeEntity</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+<span class="linenos">5</span>        <span class="k">return</span> <span class="kc">True</span>
+<span class="linenos">6</span>    <span class="k">else</span><span class="p">:</span>
+<span class="linenos">7</span>        <span class="k">return</span> <span class="kc">False</span>
+</pre></div>
+</div>
+</section>
 <section id="features">
-<h2>Features<a class="headerlink" href="#features" title="Permalink to this heading">#</a></h2>
-<p>Features are our most important extension to the original ManPy.
-TODO:</p>
+<h3>Features<a class="headerlink" href="#features" title="Permalink to this heading">#</a></h3>
+<p>Features are our most important extension to the original ManPy and also the most complex one.
+Features are a sub-class of ObjectProperty, which is a generic base class for all kinds of data a machine/object can generate during production.
+We currently have two sub_classes of ObjectProperty: Features and TimeSeries.
+While TimeSeries is concerned with (as the name suggests) time series data that is generated during production
+(e.g. temperature curves), Feature is concerned with properties that are measured/logged once for each entity at a production station.
+In the following section, we will explore the most important mechanics of the Feature class.</p>
+<p>The following statement shows the most basic definition of a Feature:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">feature1</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;f1&quot;</span><span class="p">,</span>
+                   <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Feature1&quot;</span><span class="p">,</span>
+                   <span class="n">victim</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span>
+                   <span class="n">distribution</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Feature&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}}}</span>
+                   <span class="p">)</span>
+</pre></div>
+</div>
+<p>This statements assigns a new Feature with the internal id “f1” and name “Feature1” (used for data output) to Machine m1.
+The feature values are randomly drawn from a normal distribution with mean 0 and standard deviation 1.
+It is possible to select different distributions and to control the behaviour of the underlying distribution over the course of a simulation.
+Further explanations for these mechanics are provided in <a class="reference internal" href="#distributions-and-statecontrollers">Distributions and StateControllers</a>.</p>
 <ul class="simple">
 <li><p>Dependencies</p></li>
+<li><p>Labels</p></li>
 </ul>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">f1</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;F1&quot;</span><span class="p">,</span> <span class="s2">&quot;Feature1&quot;</span><span class="p">,</span> <span class="n">victim</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="linenos">2</span>                <span class="n">distribution</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Time&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Fixed&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}},</span>
@@ -283,19 +337,15 @@ TODO:</p>
 </div>
 </section>
 <section id="time-series">
-<h2>Time Series<a class="headerlink" href="#time-series" title="Permalink to this heading">#</a></h2>
+<h3>Time Series<a class="headerlink" href="#time-series" title="Permalink to this heading">#</a></h3>
 <p>TODO</p>
 </section>
 <section id="failures">
-<h2>Failures<a class="headerlink" href="#failures" title="Permalink to this heading">#</a></h2>
-<p>TODO</p>
-</section>
-<section id="quality-control">
-<h2>Quality Control<a class="headerlink" href="#quality-control" title="Permalink to this heading">#</a></h2>
+<h3>Failures<a class="headerlink" href="#failures" title="Permalink to this heading">#</a></h3>
 <p>TODO</p>
 </section>
 <section id="distributions-and-statecontrollers">
-<h2>Distributions and StateControllers<a class="headerlink" href="#distributions-and-statecontrollers" title="Permalink to this heading">#</a></h2>
+<span id="distributions"></span><h3>Distributions and StateControllers<a class="headerlink" href="#distributions-and-statecontrollers" title="Permalink to this heading">#</a></h3>
 <p>Using our StateControllers in combination with distributions allows for complex control over the lifecycle behaviour of features.
 This can be used to model data drifts of distribution shifts.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1"># TODO</span>
@@ -303,12 +353,13 @@ This can be used to model data drifts of distribution shifts.</p>
 </div>
 </section>
 <section id="export">
-<h2>Export<a class="headerlink" href="#export" title="Permalink to this heading">#</a></h2>
+<h3>Export<a class="headerlink" href="#export" title="Permalink to this heading">#</a></h3>
 <p>TODO how to export features and timeseries to csv, how to export to database, …</p>
 </section>
 <section id="further-customization">
-<h2>Further customization<a class="headerlink" href="#further-customization" title="Permalink to this heading">#</a></h2>
+<h3>Further customization<a class="headerlink" href="#further-customization" title="Permalink to this heading">#</a></h3>
 <p>How to write new classes that fit into the ManPy Framework?</p>
+</section>
 </section>
 </section>
 
@@ -368,14 +419,17 @@ This can be used to model data drifts of distribution shifts.</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Tutorials</a><ul>
-<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#introduction-and-basic-principles">Introduction and basic principles</a></li>
+<li><a class="reference internal" href="#advanced-usage">Advanced usage</a><ul>
+<li><a class="reference internal" href="#quality-control">Quality Control</a></li>
 <li><a class="reference internal" href="#features">Features</a></li>
 <li><a class="reference internal" href="#time-series">Time Series</a></li>
 <li><a class="reference internal" href="#failures">Failures</a></li>
-<li><a class="reference internal" href="#quality-control">Quality Control</a></li>
 <li><a class="reference internal" href="#distributions-and-statecontrollers">Distributions and StateControllers</a></li>
 <li><a class="reference internal" href="#export">Export</a></li>
 <li><a class="reference internal" href="#further-customization">Further customization</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

@@ -1,9 +1,23 @@
+===========
 Tutorials
 ===========
-This page gives you an overview of the general usage paradigms of our ManPy extension
 
-Introduction
--------------
+This page gives you an overview of the general usage paradigms of our ManPy extension
+We have prepared additional (complete) examples that demonstrate various capabilities.
+These examples can be found in manpy/Examples.
+We recommend the following order:
+
+1. Quality_Control.py
+2. Dependency.py
+3. ExampleTS.py
+4. Conditional_Failure.py
+5. Interpolation.py
+6. Data_Extraction.py
+
+
+Introduction and basic principles
+====================================
+
 The original ManPy package is based on the SimPy discrete event simulation.
 If you are already familiar with SimPy, you may recognize some paradigms.
 
@@ -95,13 +109,83 @@ In order to work correctly, we also need to update the routing of the production
     objectList = [start, m1, m2, q1, exit]
 
 
+Advanced usage
+================
+
+The following sections provides an introduction into the more advanced concepts of our ManPy extension.
+
+Quality Control
+-----------------
+
+Quality control is a standard process in manufacturing.
+Therefore, we added the option for quality control to machines.
+As a result, machines can either have an additional quality control step at the end of their production step or be a standalone quality control instance.
+The condition for quality control can be set via a custom defined function, which is simply called "condition" in the following example.
+We can access the currently active entity in a machine with the following statement:
+
+.. code-block:: python
+
+    activeEntity = self.Res.users[0]
+
+We can then use any simulated value of the entity as measurement for quality control, e.g. feature values or internal labels.
+The condition function must return True if a defect was found, otherwise False must be returned.
+In the following example, we simply check if a given Feature value is inside a certain interval ([3, 7]).
+
+.. code-block:: python
+    :linenos:
+
+    def condition(self):
+        # self is w.r.t. to the machine in which we apply the condition!
+        activeEntity = self.Res.users[0]
+        if activeEntity.features[0] > 7 or activeEntity.features[0] < 3:
+            return True
+        else:
+            return False
+
 Features
 --------
 
-Features are our most important extension to the original ManPy.
-TODO:
+Features are our most important extension to the original ManPy and also the most complex one.
+Features are a sub-class of ObjectProperty, which is a generic base class for all kinds of data a machine/object can generate during production.
+We currently have two sub_classes of ObjectProperty: Features and TimeSeries.
+While TimeSeries is concerned with (as the name suggests) time series data that is generated during production
+(e.g. temperature curves), Feature is concerned with properties that are measured/logged once for each entity at a production station.
+In the following section, we will explore the most important mechanics of the Feature class.
+
+The following statement shows the most basic definition of a Feature:
+
+.. code-block:: python
+
+    feature1 = Feature(id="f1",
+                       name="Feature1",
+                       victim=m1,
+                       distribution={"Feature": {"Normal": {"mean": 0, "stdev": 1.0}}}
+                       )
+
+This statements assigns a new Feature with the internal id "f1" and name "Feature1" (used for data output) to Machine m1.
+The feature values are randomly drawn from a normal distribution with mean 0 and standard deviation 1.
+It is possible to select different distributions and to control the behaviour of the underlying distribution over the course of a simulation.
+Further explanations for these mechanics are provided in `Distributions and StateControllers`_.
+
+We can of course add many more features to a machine.
+Sometimes, there are certain relationships between features, e.g. physical dependencies.
+We can model these dependencies using the "dependency" parameter:
+
+.. code-block:: python
+
+    feature2 = Feature(id="f2",
+                       name="Feature2",
+                       victim=m1,
+                       dependent={"Function": "10*x + 3", "x": feature1}
+                       distribution={"Feature": {"Normal": {"stdev": 0.1}}}
+                       )
+
+Here, we define a functional dependency between feature2 and feature1, in this case the linear function 10x + 3.
+To simulate eventual measurement errors, we can apply a standard deviation to this dependency, in this cas 0.1.
+However, it is also possible to have strict functional dependencies between features by simply not passing anything as an argument for distribution.
 
 * Dependencies
+* Random walk
 
 .. code-block:: python
     :linenos:
@@ -121,21 +205,20 @@ Failures
 
 TODO
 
-Quality Control
------------------
-
-TODO
+.. _distributions:
 
 Distributions and StateControllers
 -----------------------------------
 
 Using our StateControllers in combination with distributions allows for complex control over the lifecycle behaviour of features.
-This can be used to model data drifts of distribution shifts.
+This can be used to model data drifts or distribution shifts.
 
 .. code-block:: python
     :linenos:
 
     # TODO
+
+* Labels
 
 Export
 ------
