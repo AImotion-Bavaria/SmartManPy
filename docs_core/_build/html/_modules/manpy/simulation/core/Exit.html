@@ -1,0 +1,310 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>manpy.simulation.core.Exit &#8212; Core Docu 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for manpy.simulation.core.Exit</h1><div class="highlight"><pre>
+<span></span><span class="c1"># ===========================================================================</span>
+<span class="c1"># Copyright 2013 University of Limerick</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of DREAM.</span>
+<span class="c1">#</span>
+<span class="c1"># DREAM is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU Lesser General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># DREAM is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU Lesser General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU Lesser General Public License</span>
+<span class="c1"># along with DREAM.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c1"># ===========================================================================</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Created on 6 Feb 2013</span>
+
+<span class="sd">@author: George</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">models the exit of the model</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># from SimPy.Simulation import now, Process, Resource, infinity, waituntil, waitevent</span>
+<span class="kn">import</span> <span class="nn">simpy</span>
+<span class="kn">from</span> <span class="nn">manpy.simulation.core.CoreObject</span> <span class="kn">import</span> <span class="n">CoreObject</span>
+
+<span class="c1"># ===========================================================================</span>
+<span class="c1">#                            The exit object</span>
+<span class="c1"># ===========================================================================</span>
+<div class="viewcode-block" id="Exit"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Exit.Exit">[docs]</a><span class="k">class</span> <span class="nc">Exit</span><span class="p">(</span><span class="n">CoreObject</span><span class="p">):</span>
+    <span class="n">family</span> <span class="o">=</span> <span class="s2">&quot;Exit&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">cancelCondition</span><span class="o">=</span><span class="p">{},</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s2">&quot;Exit&quot;</span>  <span class="c1"># XXX needed ?</span>
+        <span class="c1"># lists to hold statistics of multiple runs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Exits</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">UnitExits</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Lifespan</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TaktTime</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># if input is given in a dictionary</span>
+        <span class="n">CoreObject</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="kn">from</span> <span class="nn">.Globals</span> <span class="kn">import</span> <span class="n">G</span>
+
+        <span class="n">G</span><span class="o">.</span><span class="n">ExitList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cancelCondition</span> <span class="o">=</span> <span class="n">cancelCondition</span>
+
+<div class="viewcode-block" id="Exit.initialize"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Exit.Exit.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># using the Process __init__ and not the CoreObject __init__</span>
+        <span class="n">CoreObject</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="c1"># initialize the internal Queue (type Resource) of the Exit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Res</span> <span class="o">=</span> <span class="n">simpy</span><span class="o">.</span><span class="n">Resource</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">,</span> <span class="n">capacity</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+        <span class="c1"># The number of resource that exited through this exit.</span>
+        <span class="c1"># XXX bug: cannot output as json when nothing has exited.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">numOfExits</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">totalNumberOfUnitsExited</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">totalLifespan</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">entities</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">totalTaktTime</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># the total time between to consecutive exits</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">intervalThroughPutList</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;isRequested&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="Exit.run"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Exit.Exit.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># wait until the Queue can accept an entity and one predecessor requests it</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;isRequested&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">isRequested</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">isRequested</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">event</span><span class="p">()</span>
+            <span class="c1"># TODO: insert extra controls to check whether the self.giver attribute is correctly updated</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getEntity</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">signalGiver</span><span class="p">()</span></div>
+
+    <span class="c1"># =======================================================================</span>
+    <span class="c1">#                sets the routing in element for the Exit</span>
+    <span class="c1"># =======================================================================</span>
+<div class="viewcode-block" id="Exit.defineRouting"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Exit.Exit.defineRouting">[docs]</a>    <span class="k">def</span> <span class="nf">defineRouting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predecessorList</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">previous</span> <span class="o">=</span> <span class="n">predecessorList</span>  <span class="c1"># no successorList for the Exit</span></div>
+
+    <span class="c1"># =======================================================================</span>
+    <span class="c1">#                checks if the Exit can accept an entity</span>
+    <span class="c1"># =======================================================================</span>
+<div class="viewcode-block" id="Exit.canAccept"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Exit.Exit.canAccept">[docs]</a>    <span class="k">def</span> <span class="nf">canAccept</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">True</span>  <span class="c1"># the exit always can accept an entity</span></div>
+
+    <span class="c1"># =======================================================================</span>
+    <span class="c1">#                checks if the Exit can accept an entity</span>
+    <span class="c1">#                 and there is an entity waiting for it</span>
+    <span class="c1"># =======================================================================</span>
+<div class="viewcode-block" id="Exit.canAcceptAndIsRequested"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Exit.Exit.canAcceptAndIsRequested">[docs]</a>    <span class="k">def</span> <span class="nf">canAcceptAndIsRequested</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># get the active object and its internal queue</span>
+        <span class="n">activeObject</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getActiveObject</span><span class="p">()</span>
+        <span class="n">activeObjectQueue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getActiveObjectQueue</span><span class="p">()</span>
+        <span class="n">giverObject</span> <span class="o">=</span> <span class="n">callerObject</span>
+        <span class="k">assert</span> <span class="n">giverObject</span><span class="p">,</span> <span class="s2">&quot;there must be a caller for canAcceptAndIsRequested&quot;</span>
+        <span class="k">return</span> <span class="n">giverObject</span><span class="o">.</span><span class="n">haveToDispose</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+    <span class="c1"># =======================================================================</span>
+    <span class="c1">#                    gets an entity from the predecessor</span>
+    <span class="c1"># =======================================================================</span>
+<div class="viewcode-block" id="Exit.getEntity"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Exit.Exit.getEntity">[docs]</a>    <span class="k">def</span> <span class="nf">getEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">activeEntity</span> <span class="o">=</span> <span class="n">CoreObject</span><span class="o">.</span><span class="n">getEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>  <span class="c1"># run the default method</span>
+        <span class="c1"># if the entity is in the G.pendingEntities list then remove it from there</span>
+        <span class="kn">from</span> <span class="nn">.Globals</span> <span class="kn">import</span> <span class="n">G</span>
+
+        <span class="c1">#         G.pendingEntities[:]=(entity for entity in G.pendingEntities if not entity is activeEntity)</span>
+        <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">RouterList</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">activeEntity</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">pendingEntities</span><span class="p">:</span>
+                <span class="n">G</span><span class="o">.</span><span class="n">pendingEntities</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">activeEntity</span><span class="p">)</span>
+        <span class="c1">#         if activeEntity in G.EntityList:</span>
+        <span class="c1">#             G.EntityList.remove(activeEntity)</span>
+        <span class="c1">#         self.clear(activeEntity)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">totalLifespan</span> <span class="o">+=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="n">activeEntity</span><span class="o">.</span><span class="n">startTime</span>
+        <span class="p">)</span>  <span class="c1"># Add the entity&#39;s lifespan to the total one.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">numOfExits</span> <span class="o">+=</span> <span class="mi">1</span>  <span class="c1"># increase the exits by one</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">totalNumberOfUnitsExited</span> <span class="o">+=</span> <span class="p">(</span>
+            <span class="n">activeEntity</span><span class="o">.</span><span class="n">numberOfUnits</span>
+        <span class="p">)</span>  <span class="c1"># add the number of units that xited</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">totalTaktTime</span> <span class="o">+=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeLastEntityLeft</span>
+        <span class="p">)</span>  <span class="c1"># add the takt time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeLastEntityLeft</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span>
+        <span class="p">)</span>  <span class="c1"># update the time that the last entity left from the Exit</span>
+        <span class="n">activeObjectQueue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getActiveObjectQueue</span><span class="p">()</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span><span class="p">[:]</span>
+        <span class="c1"># if there is a cancelCondition the exit may end the simulation</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cancelCondition</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cancelCondition</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;reason&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;throughput&quot;</span>
+                <span class="ow">and</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cancelCondition</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;number&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">numOfExits</span>
+            <span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">endSimulation</span><span class="p">()</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cancelCondition</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;reason&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;empty&quot;</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">checkIfSystemEmpty</span><span class="p">()</span>
+            <span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">endSimulation</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">activeEntity</span></div>
+
+<div class="viewcode-block" id="Exit.clear"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Exit.Exit.clear">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="n">entity</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">.Globals</span> <span class="kn">import</span> <span class="n">G</span>
+
+        <span class="k">def</span> <span class="nf">deleteEntityfromlist</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">entity</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">:</span>
+                <span class="nb">list</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
+
+        <span class="n">lists</span> <span class="o">=</span> <span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">EntityList</span><span class="p">,</span> <span class="n">G</span><span class="o">.</span><span class="n">PartList</span><span class="p">,</span> <span class="n">G</span><span class="o">.</span><span class="n">pendingEntities</span><span class="p">,</span> <span class="n">G</span><span class="o">.</span><span class="n">WipList</span><span class="p">)</span>
+        <span class="c1">#         lists=(G.EntityList, G.PartList, G.BatchList, G.SubBatchList,</span>
+        <span class="c1">#                G.JobList, G.OrderList, G.OrderComponentList, G.MouldList,</span>
+        <span class="c1">#                G.pendingEntities, G.WipList)</span>
+        <span class="k">for</span> <span class="nb">list</span> <span class="ow">in</span> <span class="n">lists</span><span class="p">:</span>
+            <span class="n">deleteEntityfromlist</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span></div>
+
+    <span class="c1"># ===========================================================================</span>
+    <span class="c1"># haveToDispose of an exit must always return False</span>
+    <span class="c1"># ===========================================================================</span>
+<div class="viewcode-block" id="Exit.haveToDispose"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Exit.Exit.haveToDispose">[docs]</a>    <span class="k">def</span> <span class="nf">haveToDispose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+    <span class="c1"># =======================================================================</span>
+    <span class="c1">#            actions to be taken after the simulation ends</span>
+    <span class="c1"># =======================================================================</span>
+<div class="viewcode-block" id="Exit.postProcessing"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Exit.Exit.postProcessing">[docs]</a>    <span class="k">def</span> <span class="nf">postProcessing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MaxSimtime</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">.Globals</span> <span class="kn">import</span> <span class="n">G</span>
+
+        <span class="k">if</span> <span class="n">MaxSimtime</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">MaxSimtime</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">maxSimTime</span>
+        <span class="c1"># hold the numberOfExits of each replication</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Exits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">numOfExits</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">UnitExits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">totalNumberOfUnitsExited</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>  <span class="c1"># throw exception in case the numOfExits is zero</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Lifespan</span><span class="o">.</span><span class="n">append</span><span class="p">(((</span><span class="bp">self</span><span class="o">.</span><span class="n">totalLifespan</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">numOfExits</span><span class="p">)</span> <span class="o">/</span> <span class="n">G</span><span class="o">.</span><span class="n">Base</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>  <span class="c1"># the lifespan in this case is zero</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Lifespan</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>  <span class="c1"># throw exception in case of zero division</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">TaktTime</span><span class="o">.</span><span class="n">append</span><span class="p">(((</span><span class="bp">self</span><span class="o">.</span><span class="n">totalTaktTime</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">numOfExits</span><span class="p">)</span> <span class="o">/</span> <span class="n">G</span><span class="o">.</span><span class="n">Base</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>  <span class="c1"># the average time between exits is zero if no Entity exited</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">TaktTime</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
+
+    <span class="c1"># =======================================================================</span>
+    <span class="c1">#                        outputs results to JSON File</span>
+    <span class="c1"># =======================================================================</span>
+<div class="viewcode-block" id="Exit.outputResultsJSON"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Exit.Exit.outputResultsJSON">[docs]</a>    <span class="k">def</span> <span class="nf">outputResultsJSON</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">.Globals</span> <span class="kn">import</span> <span class="n">G</span>
+
+        <span class="n">json</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;_class&quot;</span><span class="p">:</span> <span class="s2">&quot;manpy.</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="s2">&quot;family&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">family</span><span class="p">,</span>
+            <span class="s2">&quot;results&quot;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="p">}</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;results&quot;</span><span class="p">][</span><span class="s2">&quot;throughput&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Exits</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;results&quot;</span><span class="p">][</span><span class="s2">&quot;lifespan&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Lifespan</span>
+        <span class="n">json</span><span class="p">[</span><span class="s2">&quot;results&quot;</span><span class="p">][</span><span class="s2">&quot;takt_time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">TaktTime</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Exits</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">UnitExits</span>
+        <span class="p">):</span>  <span class="c1"># output this only if there was variability in units</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;results&quot;</span><span class="p">][</span><span class="s2">&quot;unitsThroughput&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">UnitExits</span>
+        <span class="n">G</span><span class="o">.</span><span class="n">outputJSON</span><span class="p">[</span><span class="s2">&quot;elementList&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">json</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">Core Docu</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modules.html">core</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, Peter.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

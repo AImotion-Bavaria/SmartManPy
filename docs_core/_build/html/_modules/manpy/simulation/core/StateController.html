@@ -1,0 +1,342 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>manpy.simulation.core.StateController &#8212; Core Docu 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for manpy.simulation.core.StateController</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<div class="viewcode-block" id="StateController"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.StateController.StateController">[docs]</a><span class="k">class</span> <span class="nc">StateController</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Abstract base class for all StateControllers. A StateController must provide a get_and_update() and reset() method.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="StateController.get_initial_state"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.StateController.StateController.get_initial_state">[docs]</a>    <span class="k">def</span> <span class="nf">get_initial_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: Initial state and label: (state, label (bool))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Subclass must define &#39;get_initial_state&#39; method.&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="StateController.get_and_update"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.StateController.StateController.get_and_update">[docs]</a>    <span class="k">def</span> <span class="nf">get_and_update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the current state first, then updates the internal state transition mechanism and then returns the</span>
+<span class="sd">        retrieved state and a label for the state.</span>
+<span class="sd">        :return: Current state and label: (state, label (bool))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Subclass must define &#39;get_and_update&#39; method.&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="StateController.reset"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.StateController.StateController.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Resets the internal statistics of the controller. Should be called after something is repaired.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Subclass must define &#39;reset&#39; method.&quot;</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="SimpleStateController"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.StateController.SimpleStateController">[docs]</a><span class="k">class</span> <span class="nc">SimpleStateController</span><span class="p">(</span><span class="n">StateController</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Simple version of a StateController that sets states according to a certain amount of wear.</span>
+
+<span class="sd">    :param states (list): A list containing the actual states</span>
+<span class="sd">    :param boundaries (dict): A dict defining the boundaries for each state. Must contain pairs of (interval, state_index).</span>
+<span class="sd">           Intervals are defined as a tuple: (lower, upper). The lower bound is included, upper bound is not included.</span>
+<span class="sd">           0 must be included.</span>
+<span class="sd">           Example: states = [state0, state1, state2]</span>
+<span class="sd">           boundaries = {(0, 150): 0, (150, 300): 1, (300, None): 2}</span>
+<span class="sd">    :param wear_per_step: A number that defines how much wear is added per step. The account starts at 0.</span>
+<span class="sd">    :param reset_amount: When the account value reaches this amount, the StateController gets reset.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">states</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+                 <span class="n">boundaries</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+                 <span class="n">wear_per_step</span><span class="p">,</span>
+                 <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">initial_state_index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                 <span class="n">reset_amount</span><span class="o">=</span><span class="kc">None</span>
+                 <span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">states</span> <span class="o">=</span> <span class="n">states</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">boundaries</span> <span class="o">=</span> <span class="n">boundaries</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wear_per_step</span> <span class="o">=</span> <span class="n">wear_per_step</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_state_index</span> <span class="o">=</span> <span class="n">initial_state_index</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial_state_index</span> <span class="o">=</span> <span class="n">initial_state_index</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_amount</span> <span class="o">=</span> <span class="n">reset_amount</span>
+
+<div class="viewcode-block" id="SimpleStateController.get_initial_state"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.StateController.SimpleStateController.get_initial_state">[docs]</a>    <span class="k">def</span> <span class="nf">get_initial_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_state_index</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_state_index</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="SimpleStateController.get_and_update"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.StateController.SimpleStateController.get_and_update">[docs]</a>    <span class="k">def</span> <span class="nf">get_and_update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">states</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">current_state_index</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">current_state_index</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">account</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wear_per_step</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reset_amount</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">account</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reset_amount</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">previous_state_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_state_index</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_state_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_current_state</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">previous_state_index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_state_index</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Change state to index </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">current_state_index</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">output</span><span class="p">,</span> <span class="n">label</span></div>
+
+<div class="viewcode-block" id="SimpleStateController.reset"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.StateController.SimpleStateController.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&gt;&gt;&gt; Reset SimpleStateController &lt;&lt;&lt;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_state_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_state_index</span></div>
+
+    <span class="k">def</span> <span class="nf">__get_current_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundaries</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+
+            <span class="k">if</span> <span class="n">lower</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">account</span> <span class="o">&lt;</span> <span class="n">upper</span><span class="p">:</span>
+                    <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">boundaries</span><span class="p">[(</span><span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">)])</span>
+                <span class="k">continue</span>
+
+            <span class="k">if</span> <span class="n">upper</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">account</span> <span class="o">&gt;=</span> <span class="n">lower</span><span class="p">:</span>
+                    <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">boundaries</span><span class="p">[(</span><span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">)])</span>
+                <span class="k">continue</span>
+
+            <span class="k">if</span> <span class="n">lower</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">account</span> <span class="o">&lt;</span> <span class="n">upper</span><span class="p">:</span>
+                <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">boundaries</span><span class="p">[(</span><span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">)])</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">res</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;The boundaries dictionary contains incorrect intervals (e.g. overlapping)&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="ContinuosNormalDistribution"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.StateController.ContinuosNormalDistribution">[docs]</a><span class="k">class</span> <span class="nc">ContinuosNormalDistribution</span><span class="p">(</span><span class="n">StateController</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">wear_per_step</span><span class="p">,</span>
+                 <span class="n">break_point</span><span class="p">,</span>
+                 <span class="n">mean_change_per_step</span><span class="p">,</span>
+                 <span class="n">initial_mean</span><span class="p">,</span>
+                 <span class="n">std</span><span class="p">,</span>
+                 <span class="n">defect_mean</span><span class="p">,</span>
+                 <span class="n">defect_std</span>
+                 <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Normal Distribution that changes its mean value with each step. Optionally, a defect can occur after a defined</span>
+<span class="sd">        period. Provides label.</span>
+<span class="sd">        :param wear_per_step: How much wear happens per step</span>
+<span class="sd">        :param break_point: When this value of wear is reached, a defect happens. Will be ignored if None</span>
+<span class="sd">        :param mean_change_per_step: Value that is added to the mean of the normal distribution in each step</span>
+<span class="sd">        :param initial_mean: Initial mean value of the normal distribution</span>
+<span class="sd">        :param std: STD of the normal distribution, does not change</span>
+<span class="sd">        :param defect_mean: Mean value in the defect state</span>
+<span class="sd">        :param defect_std: STD in the defect state</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">wear_per_step</span> <span class="o">=</span> <span class="n">wear_per_step</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">break_point</span> <span class="o">=</span> <span class="n">break_point</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mean_change_per_step</span> <span class="o">=</span> <span class="n">mean_change_per_step</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial_mean</span> <span class="o">=</span> <span class="n">initial_mean</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">std</span> <span class="o">=</span> <span class="n">std</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_mean</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_mean</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">defect_mean</span> <span class="o">=</span> <span class="n">defect_mean</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">defect_std</span> <span class="o">=</span> <span class="n">defect_std</span>
+
+<div class="viewcode-block" id="ContinuosNormalDistribution.get_initial_state"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.StateController.ContinuosNormalDistribution.get_initial_state">[docs]</a>    <span class="k">def</span> <span class="nf">get_initial_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_distribution</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">std</span><span class="p">),</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="ContinuosNormalDistribution.get_and_update"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.StateController.ContinuosNormalDistribution.get_and_update">[docs]</a>    <span class="k">def</span> <span class="nf">get_and_update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># parameters are incremented before return</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">break_point</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">account</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">break_point</span><span class="p">:</span>
+            <span class="n">mean</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">defect_mean</span>
+            <span class="n">std</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">defect_std</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_mean</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean_change_per_step</span>
+            <span class="n">mean</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_mean</span>
+            <span class="n">std</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">std</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">account</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wear_per_step</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_distribution</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">std</span><span class="p">),</span> <span class="n">label</span></div>
+
+    <span class="k">def</span> <span class="nf">__get_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">std</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;Feature&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="n">mean</span><span class="p">,</span> <span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="n">std</span><span class="p">}}}</span>
+
+<div class="viewcode-block" id="ContinuosNormalDistribution.reset"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.StateController.ContinuosNormalDistribution.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&gt;&gt;&gt; Reset SimpleStateController &lt;&lt;&lt;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_mean</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_mean</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="mi">0</span></div></div>
+
+<span class="c1"># TODO kurtosis</span>
+
+
+<div class="viewcode-block" id="RandomDefectStateController"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.StateController.RandomDefectStateController">[docs]</a><span class="k">class</span> <span class="nc">RandomDefectStateController</span><span class="p">(</span><span class="n">StateController</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">failure_probability</span><span class="p">,</span>
+                 <span class="n">ok_controller</span><span class="p">:</span> <span class="n">ContinuosNormalDistribution</span><span class="p">,</span>
+                 <span class="n">defect_controller</span><span class="p">:</span> <span class="n">ContinuosNormalDistribution</span>
+                 <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Orchestrates two ContinuosNormalDistributionControllers. Using a Bernoulli-Distribution, it chooses either the</span>
+<span class="sd">        ok or the defect distribution.</span>
+
+<span class="sd">        :param failure_probability: Probability of failure for the Bernoulli-Distribution.</span>
+<span class="sd">        :param ok_controller:</span>
+<span class="sd">        :param defect_controller:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">failure_probability</span> <span class="o">=</span> <span class="n">failure_probability</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ok_controller</span> <span class="o">=</span> <span class="n">ok_controller</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">defect_controller</span> <span class="o">=</span> <span class="n">defect_controller</span>
+
+<div class="viewcode-block" id="RandomDefectStateController.get_initial_state"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.StateController.RandomDefectStateController.get_initial_state">[docs]</a>    <span class="k">def</span> <span class="nf">get_initial_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ok_controller</span><span class="o">.</span><span class="n">get_initial_state</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="RandomDefectStateController.get_and_update"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.StateController.RandomDefectStateController.get_and_update">[docs]</a>    <span class="k">def</span> <span class="nf">get_and_update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">defect</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">binomial</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">failure_probability</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">defect</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">dist</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">defect_controller</span><span class="o">.</span><span class="n">get_and_update</span><span class="p">()</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dist</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ok_controller</span><span class="o">.</span><span class="n">get_and_update</span><span class="p">()</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="n">dist</span><span class="p">,</span> <span class="n">label</span></div>
+
+<div class="viewcode-block" id="RandomDefectStateController.reset"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.StateController.RandomDefectStateController.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ok_controller</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">defect_controller</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">states</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">]</span>
+    <span class="n">boundaries</span> <span class="o">=</span> <span class="p">{(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">150</span><span class="p">):</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">300</span><span class="p">):</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span> <span class="mi">2</span><span class="p">}</span>
+
+    <span class="n">sc</span> <span class="o">=</span> <span class="n">SimpleStateController</span><span class="p">(</span><span class="n">states</span><span class="p">,</span> <span class="n">boundaries</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">get_and_update</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;------------&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">get_and_update</span><span class="p">())</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;------------&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">get_and_update</span><span class="p">())</span>
+
+    <span class="n">sc</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;------------&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">get_and_update</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;------------&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">get_and_update</span><span class="p">())</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;------------&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">get_and_update</span><span class="p">())</span>
+
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">Core Docu</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, Peter.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

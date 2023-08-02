@@ -1,0 +1,590 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>manpy.simulation.core.Failure &#8212; Core Docu 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for manpy.simulation.core.Failure</h1><div class="highlight"><pre>
+<span></span><span class="c1"># ===========================================================================</span>
+<span class="c1"># Copyright 2013 University of Limerick</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of DREAM.</span>
+<span class="c1">#</span>
+<span class="c1"># DREAM is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU Lesser General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># DREAM is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU Lesser General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU Lesser General Public License</span>
+<span class="c1"># along with DREAM.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c1"># ===========================================================================</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Created on 9 Nov 2012</span>
+
+<span class="sd">@author: George</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">models the failures that servers can have</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># from SimPy.Simulation import now, Process, hold, request, release</span>
+<span class="kn">from</span> <span class="nn">manpy.simulation.RandomNumberGenerator</span> <span class="kn">import</span> <span class="n">RandomNumberGenerator</span>
+<span class="kn">from</span> <span class="nn">manpy.simulation.core.ObjectInterruption</span> <span class="kn">import</span> <span class="n">ObjectInterruption</span>
+
+
+<div class="viewcode-block" id="Failure"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Failure.Failure">[docs]</a><span class="k">class</span> <span class="nc">Failure</span><span class="p">(</span><span class="n">ObjectInterruption</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">victim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">distribution</span><span class="o">=</span><span class="p">{},</span>
+        <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">repairman</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">offshift</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">deteriorationType</span><span class="o">=</span><span class="s2">&quot;constant&quot;</span><span class="p">,</span>
+        <span class="n">waitOnTie</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">conditional</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">entity</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kw</span>
+    <span class="p">):</span>
+        <span class="n">ObjectInterruption</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">victim</span><span class="o">=</span><span class="n">victim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rngTTF</span> <span class="o">=</span> <span class="n">RandomNumberGenerator</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">distribution</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;TTF&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;Fixed&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">}})</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rngTTR</span> <span class="o">=</span> <span class="n">RandomNumberGenerator</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">distribution</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;TTR&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;Fixed&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}})</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;F&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">repairman</span> <span class="o">=</span> <span class="n">repairman</span>  <span class="c1"># the resource that may be needed to fix the failure</span>
+        <span class="c1"># if now resource is needed this will be &quot;None&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s2">&quot;Failure&quot;</span>
+
+        <span class="c1"># shows how the time to failure is measured</span>
+        <span class="c1"># &#39;constant&#39; means it counts not matter the state of the victim</span>
+        <span class="c1"># &#39;onShift&#39; counts only if the victim is onShift</span>
+        <span class="c1"># &#39;working&#39; counts only working time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deteriorationType</span> <span class="o">=</span> <span class="n">deteriorationType</span>
+        <span class="c1"># flag used to identify if the time between failures should be counted while the victim is off-shift</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">offshift</span> <span class="o">=</span> <span class="n">offshift</span>
+        <span class="c1"># flag to show if the failure will wait on tie with other events before interrupting the victim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">waitOnTie</span> <span class="o">=</span> <span class="n">waitOnTie</span>
+        <span class="c1"># set a default function for conditional if none is defined</span>
+        <span class="k">if</span> <span class="n">conditional</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">def</span> <span class="nf">condition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">None</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">conditional</span> <span class="o">=</span> <span class="n">condition</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">conditional</span> <span class="o">=</span> <span class="n">conditional</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">entity</span> <span class="o">=</span> <span class="n">entity</span>
+
+<div class="viewcode-block" id="Failure.initialize"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Failure.Failure.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">conditional</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">entity</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">entity</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">deteriorationType</span><span class="o">=</span><span class="s2">&quot;working&quot;</span>
+        <span class="n">ObjectInterruption</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">victimStartsProcessing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">event</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">victimEndsProcessing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">event</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">contribution</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">event</span><span class="p">()</span></div>
+
+    <span class="c1"># =======================================================================</span>
+    <span class="c1">#    The run method for the failure which has to served by a repairman</span>
+    <span class="c1"># =======================================================================</span>
+<div class="viewcode-block" id="Failure.run"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Failure.Failure.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">conditional</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">.Globals</span> <span class="kn">import</span> <span class="n">G</span>
+            <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">failureNotTriggered</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;contribution&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">contribution</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">contribution</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">event</span><span class="p">()</span>
+
+                <span class="c1"># wait for victim to start process</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">conditional</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                    <span class="c1"># if the time that the victim is off-shift should not be counted</span>
+                    <span class="n">timeToFailure</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rngTTF</span><span class="o">.</span><span class="n">generateNumber</span><span class="p">()</span>
+                    <span class="n">remainingTimeToFailure</span> <span class="o">=</span> <span class="n">timeToFailure</span>
+                    <span class="n">failureNotTriggered</span> <span class="o">=</span> <span class="kc">True</span>
+
+                    <span class="c1"># if time to failure counts not matter the state of the victim</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">deteriorationType</span> <span class="o">==</span> <span class="s2">&quot;constant&quot;</span><span class="p">:</span>
+                        <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="n">remainingTimeToFailure</span><span class="p">)</span>
+                    <span class="c1"># if time to failure counts only in onShift time</span>
+                    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">deteriorationType</span> <span class="o">==</span> <span class="s2">&quot;onShift&quot;</span><span class="p">:</span>
+                        <span class="k">while</span> <span class="n">failureNotTriggered</span><span class="p">:</span>
+                            <span class="n">timeRestartedCounting</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">isWaitingForVictimOffShift</span> <span class="o">=</span> <span class="kc">True</span>
+
+                            <span class="bp">self</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;victimOffShift&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+                            <span class="n">receivedEvent</span> <span class="o">=</span> <span class="p">(</span>
+                                <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="n">remainingTimeToFailure</span><span class="p">)</span>
+                                      <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">victimOffShift</span>
+                            <span class="p">)</span>
+                            <span class="c1"># the failure should receive a signal if there is a shift-off triggered</span>
+                            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">victimOffShift</span> <span class="ow">in</span> <span class="n">receivedEvent</span><span class="p">:</span>
+                                <span class="k">assert</span> <span class="p">(</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">onShift</span> <span class="o">==</span> <span class="kc">False</span>
+                                <span class="p">),</span> <span class="s2">&quot;shiftFailure cannot recalculate TTF if the victim is onShift&quot;</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">victimOffShift</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">event</span><span class="p">()</span>
+                                <span class="n">remainingTimeToFailure</span> <span class="o">=</span> <span class="n">remainingTimeToFailure</span> <span class="o">-</span> <span class="p">(</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="n">timeRestartedCounting</span>
+                                <span class="p">)</span>
+                                <span class="c1"># wait for the shift to start again</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">isWaitingForVictimOnShift</span> <span class="o">=</span> <span class="kc">True</span>
+
+                                <span class="bp">self</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;victimOnShift&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+                                <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">victimOnShift</span>
+
+                                <span class="bp">self</span><span class="o">.</span><span class="n">isWaitingForVictimOnShift</span> <span class="o">=</span> <span class="kc">False</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">victimOnShift</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">event</span><span class="p">()</span>
+                                <span class="k">assert</span> <span class="p">(</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">onShift</span> <span class="o">==</span> <span class="kc">True</span>
+                                <span class="p">),</span> <span class="s2">&quot;the victim of shiftFailure must be onShift to continue counting the TTF&quot;</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">isWaitingForVictimOffShift</span> <span class="o">=</span> <span class="kc">False</span>
+                                <span class="n">failureNotTriggered</span> <span class="o">=</span> <span class="kc">False</span>
+
+                    <span class="c1"># if time to failure counts only in working time</span>
+                    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">deteriorationType</span> <span class="o">==</span> <span class="s2">&quot;working&quot;</span><span class="p">:</span>
+
+                        <span class="c1"># wait for victim to start process</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;victimStartsProcessing&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+                        <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">victimStartsProcessing</span>
+
+                        <span class="bp">self</span><span class="o">.</span><span class="n">victimStartsProcessing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">event</span><span class="p">()</span>
+
+                        <span class="c1"># check if failure should occur on entity</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">entity</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                            <span class="n">remainingTimeToFailure</span> <span class="o">=</span> <span class="n">timeToFailure</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">tinM</span>
+
+                        <span class="k">while</span> <span class="n">failureNotTriggered</span><span class="p">:</span>
+                            <span class="n">timeRestartedCounting</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span>
+
+                            <span class="bp">self</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;victimEndsProcessing&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+                            <span class="c1"># wait either for the failure or end of process</span>
+                            <span class="n">receivedEvent</span> <span class="o">=</span> <span class="p">(</span>
+                                <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="n">remainingTimeToFailure</span><span class="p">)</span>
+                                      <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">victimEndsProcessing</span>
+                            <span class="p">)</span>
+
+                            <span class="c1"># This happens because the victim stopped processing before remainingTimeToFailure passed;</span>
+                            <span class="c1"># That means the countdown is paused until the victim starts processing</span>
+                            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">victimEndsProcessing</span> <span class="ow">in</span> <span class="n">receivedEvent</span><span class="p">:</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">victimEndsProcessing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">event</span><span class="p">()</span>
+                                <span class="n">remainingTimeToFailure</span> <span class="o">=</span> <span class="n">remainingTimeToFailure</span> <span class="o">-</span> <span class="p">(</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="n">timeRestartedCounting</span>
+                                <span class="p">)</span>
+
+                                <span class="bp">self</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;victimStartsProcessing&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+                                <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">victimStartsProcessing</span>
+
+                                <span class="c1"># wait for victim to start again processing</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">victimStartsProcessing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">event</span><span class="p">()</span>
+
+                            <span class="c1"># Countdown to failure is over</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;victimEndsProcessing&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                                <span class="n">failureNotTriggered</span> <span class="o">=</span> <span class="kc">False</span>
+
+                    <span class="n">downtime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rngTTR</span><span class="o">.</span><span class="n">generateNumber</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">downtime</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+
+                        <span class="c1"># if the mode is to wait on tie before interruption add a dummy hold for 0</span>
+                        <span class="c1"># this is done so that if processing finishes exactly at the time of interruption</span>
+                        <span class="c1"># the processing will finish first (if this mode is selected)</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">waitOnTie</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="p">,</span> <span class="s2">&quot;timeToEndCurrentOperation&quot;</span><span class="p">):</span>
+                                <span class="k">if</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">timeToEndCurrentOperation</span><span class="p">)</span> <span class="o">==</span> <span class="nb">float</span><span class="p">(</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span>
+                                <span class="p">):</span>
+                                    <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+                        <span class="bp">self</span><span class="o">.</span><span class="n">interruptVictim</span><span class="p">()</span>
+
+                        <span class="c1"># check in the ObjectInterruptions of the victim. If there is a one that is waiting for victimFailed send it</span>
+                        <span class="k">for</span> <span class="n">oi</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">objectInterruptions</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">oi</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;victimFailed&quot;</span><span class="p">]:</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">sendSignal</span><span class="p">(</span><span class="n">receiver</span><span class="o">=</span><span class="n">oi</span><span class="p">,</span> <span class="n">signal</span><span class="o">=</span><span class="n">oi</span><span class="o">.</span><span class="n">victimFailed</span><span class="p">)</span>
+
+                        <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">objectProperties</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">op</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;victimFailed&quot;</span><span class="p">]:</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">sendSignal</span><span class="p">(</span><span class="n">receiver</span><span class="o">=</span><span class="n">op</span><span class="p">,</span> <span class="n">signal</span><span class="o">=</span><span class="n">op</span><span class="o">.</span><span class="n">victimFailed</span><span class="p">)</span>
+
+                        <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">Up</span> <span class="o">=</span> <span class="kc">False</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">timeLastFailure</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span>
+
+                        <span class="bp">self</span><span class="o">.</span><span class="n">outputTrace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">&quot;is down&quot;</span><span class="p">)</span>
+                        <span class="c1"># send Data to QuestDB</span>
+                        <span class="kn">from</span> <span class="nn">.Globals</span> <span class="kn">import</span> <span class="n">G</span>
+                        <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">db</span><span class="p">:</span>
+                            <span class="n">G</span><span class="o">.</span><span class="n">sender</span><span class="o">.</span><span class="n">row</span><span class="p">(</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                                <span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="p">,</span>
+                                         <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">id</span> <span class="o">+</span> <span class="s2">&quot; is down&quot;</span><span class="p">}</span>
+                            <span class="p">)</span>
+                            <span class="n">G</span><span class="o">.</span><span class="n">sender</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+
+                        <span class="c1"># update the failure time</span>
+                        <span class="n">failTime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span>
+                        <span class="k">if</span> <span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">repairman</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">repairman</span> <span class="o">!=</span> <span class="s2">&quot;None&quot;</span>
+                        <span class="p">):</span>  <span class="c1"># if the failure needs a resource to be fixed,</span>
+                            <span class="c1"># the machine waits until the</span>
+                            <span class="c1"># resource is available</span>
+
+                            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">repairman</span><span class="o">.</span><span class="n">getResource</span><span class="p">()</span><span class="o">.</span><span class="n">request</span><span class="p">()</span> <span class="k">as</span> <span class="n">request</span><span class="p">:</span>
+                                <span class="k">yield</span> <span class="n">request</span>
+                                <span class="c1"># update the time that the repair started</span>
+                                <span class="n">timeOperationStarted</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">repairman</span><span class="o">.</span><span class="n">timeLastOperationStarted</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span>
+
+                                <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">rngTTR</span><span class="o">.</span><span class="n">generateNumber</span><span class="p">()</span>
+                                <span class="p">)</span>  <span class="c1"># wait until the repairing process is over</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">totalFailureTime</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="n">failTime</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">reactivateVictim</span><span class="p">()</span>  <span class="c1"># since repairing is over, the Machine is reactivated</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">Up</span> <span class="o">=</span> <span class="kc">True</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">outputTrace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">&quot;is up&quot;</span><span class="p">)</span>
+                                <span class="c1"># send Data to QuestDB</span>
+                                <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">db</span><span class="p">:</span>
+                                    <span class="n">G</span><span class="o">.</span><span class="n">sender</span><span class="o">.</span><span class="n">row</span><span class="p">(</span>
+                                        <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                                        <span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="p">,</span>
+                                                 <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">id</span> <span class="o">+</span> <span class="s2">&quot; is up&quot;</span><span class="p">}</span>
+                                    <span class="p">)</span>
+                                    <span class="n">G</span><span class="o">.</span><span class="n">sender</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+
+                                <span class="bp">self</span><span class="o">.</span><span class="n">repairman</span><span class="o">.</span><span class="n">totalWorkingTime</span> <span class="o">+=</span> <span class="p">(</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="n">timeOperationStarted</span>
+                                <span class="p">)</span>
+                            <span class="k">continue</span>
+
+                        <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="n">downtime</span><span class="p">)</span>  <span class="c1"># wait until the repairing process is over</span>
+
+                        <span class="c1"># add the failure</span>
+                        <span class="c1"># if victim is off shift add only the fail time before the shift ended</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">onShift</span> <span class="ow">and</span> <span class="n">failTime</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">timeLastShiftEnded</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">totalFailureTime</span> <span class="o">+=</span> <span class="p">(</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">timeLastShiftEnded</span> <span class="o">-</span> <span class="n">failTime</span>
+                            <span class="p">)</span>
+                        <span class="c1"># if the victim was off shift since the start of the failure add nothing</span>
+                        <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">onShift</span> <span class="ow">and</span> <span class="n">failTime</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">timeLastShiftEnded</span><span class="p">:</span>
+                            <span class="k">pass</span>
+                        <span class="c1"># if victim was off shift in the start of the fail time, add on</span>
+                        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">onShift</span> <span class="ow">and</span> <span class="n">failTime</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">timeLastShiftStarted</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">totalFailureTime</span> <span class="o">+=</span> <span class="p">(</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">timeLastShiftStarted</span>
+                            <span class="p">)</span>
+                            <span class="c1"># this can happen only if deteriorationType is constant</span>
+                            <span class="k">assert</span> <span class="p">(</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">deteriorationType</span> <span class="o">==</span> <span class="s2">&quot;constant&quot;</span>
+                            <span class="p">),</span> <span class="s2">&quot;object got failure while off-shift and deterioration type not constant&quot;</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">totalFailureTime</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="n">failTime</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">reactivateVictim</span><span class="p">()</span>  <span class="c1"># since repairing is over, the Machine is reactivated</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">Up</span> <span class="o">=</span> <span class="kc">True</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">outputTrace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">&quot;is up&quot;</span><span class="p">)</span>
+
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="c1"># if the time that the victim is off-shift should not be counted</span>
+                <span class="n">timeToFailure</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rngTTF</span><span class="o">.</span><span class="n">generateNumber</span><span class="p">()</span>
+                <span class="n">remainingTimeToFailure</span> <span class="o">=</span> <span class="n">timeToFailure</span>
+                <span class="n">failureNotTriggered</span> <span class="o">=</span> <span class="kc">True</span>
+
+                <span class="c1"># if time to failure counts not matter the state of the victim</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">deteriorationType</span> <span class="o">==</span> <span class="s2">&quot;constant&quot;</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="n">remainingTimeToFailure</span><span class="p">)</span>
+                <span class="c1"># if time to failure counts only in onShift time</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">deteriorationType</span> <span class="o">==</span> <span class="s2">&quot;onShift&quot;</span><span class="p">:</span>
+                    <span class="k">while</span> <span class="n">failureNotTriggered</span><span class="p">:</span>
+                        <span class="n">timeRestartedCounting</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">isWaitingForVictimOffShift</span> <span class="o">=</span> <span class="kc">True</span>
+
+                        <span class="bp">self</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;victimOffShift&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+                        <span class="n">receivedEvent</span> <span class="o">=</span> <span class="p">(</span>
+                            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="n">remainingTimeToFailure</span><span class="p">)</span>
+                            <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">victimOffShift</span>
+                        <span class="p">)</span>
+                        <span class="c1"># the failure should receive a signal if there is a shift-off triggered</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">victimOffShift</span> <span class="ow">in</span> <span class="n">receivedEvent</span><span class="p">:</span>
+                            <span class="k">assert</span> <span class="p">(</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">onShift</span> <span class="o">==</span> <span class="kc">False</span>
+                            <span class="p">),</span> <span class="s2">&quot;shiftFailure cannot recalculate TTF if the victim is onShift&quot;</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">victimOffShift</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">event</span><span class="p">()</span>
+                            <span class="n">remainingTimeToFailure</span> <span class="o">=</span> <span class="n">remainingTimeToFailure</span> <span class="o">-</span> <span class="p">(</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="n">timeRestartedCounting</span>
+                            <span class="p">)</span>
+                            <span class="c1"># wait for the shift to start again</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">isWaitingForVictimOnShift</span> <span class="o">=</span> <span class="kc">True</span>
+
+                            <span class="bp">self</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;victimOnShift&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+                            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">victimOnShift</span>
+
+                            <span class="bp">self</span><span class="o">.</span><span class="n">isWaitingForVictimOnShift</span> <span class="o">=</span> <span class="kc">False</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">victimOnShift</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">event</span><span class="p">()</span>
+                            <span class="k">assert</span> <span class="p">(</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">onShift</span> <span class="o">==</span> <span class="kc">True</span>
+                            <span class="p">),</span> <span class="s2">&quot;the victim of shiftFailure must be onShift to continue counting the TTF&quot;</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">isWaitingForVictimOffShift</span> <span class="o">=</span> <span class="kc">False</span>
+                            <span class="n">failureNotTriggered</span> <span class="o">=</span> <span class="kc">False</span>
+
+                <span class="c1"># if time to failure counts only in working time</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">deteriorationType</span> <span class="o">==</span> <span class="s2">&quot;working&quot;</span><span class="p">:</span>
+
+
+                    <span class="c1"># wait for victim to start process</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;victimStartsProcessing&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+                    <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">victimStartsProcessing</span>
+
+                    <span class="bp">self</span><span class="o">.</span><span class="n">victimStartsProcessing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">event</span><span class="p">()</span>
+
+                    <span class="c1"># check if failure should occur on entity</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">entity</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                        <span class="n">remainingTimeToFailure</span> <span class="o">=</span> <span class="n">timeToFailure</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">tinM</span>
+
+                    <span class="k">while</span> <span class="n">failureNotTriggered</span><span class="p">:</span>
+                        <span class="n">timeRestartedCounting</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span>
+
+                        <span class="bp">self</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;victimEndsProcessing&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+                        <span class="c1"># wait either for the failure or end of process</span>
+                        <span class="n">receivedEvent</span> <span class="o">=</span> <span class="p">(</span>
+                            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="n">remainingTimeToFailure</span><span class="p">)</span>
+                            <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">victimEndsProcessing</span>
+                        <span class="p">)</span>
+
+                        <span class="c1"># This happens because the victim stopped processing before remainingTimeToFailure passed;</span>
+                        <span class="c1"># That means the countdown is paused until the victim starts processing</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">victimEndsProcessing</span> <span class="ow">in</span> <span class="n">receivedEvent</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">victimEndsProcessing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">event</span><span class="p">()</span>
+                            <span class="n">remainingTimeToFailure</span> <span class="o">=</span> <span class="n">remainingTimeToFailure</span> <span class="o">-</span> <span class="p">(</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="n">timeRestartedCounting</span>
+                            <span class="p">)</span>
+
+                            <span class="bp">self</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;victimStartsProcessing&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+                            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">victimStartsProcessing</span>
+
+                            <span class="c1"># wait for victim to start again processing</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">victimStartsProcessing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">event</span><span class="p">()</span>
+
+                        <span class="c1"># Countdown to failure is over</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;victimEndsProcessing&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                            <span class="n">failureNotTriggered</span> <span class="o">=</span> <span class="kc">False</span>
+
+                <span class="n">downtime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rngTTR</span><span class="o">.</span><span class="n">generateNumber</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">downtime</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+
+                    <span class="c1"># if the mode is to wait on tie before interruption add a dummy hold for 0</span>
+                    <span class="c1"># this is done so that if processing finishes exactly at the time of interruption</span>
+                    <span class="c1"># the processing will finish first (if this mode is selected)</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">waitOnTie</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="p">,</span> <span class="s2">&quot;timeToEndCurrentOperation&quot;</span><span class="p">):</span>
+                            <span class="k">if</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">timeToEndCurrentOperation</span><span class="p">)</span> <span class="o">==</span> <span class="nb">float</span><span class="p">(</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span>
+                            <span class="p">):</span>
+                                <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+                    <span class="bp">self</span><span class="o">.</span><span class="n">interruptVictim</span><span class="p">()</span>
+
+                    <span class="c1"># check in the ObjectInterruptions of the victim. If there is a one that is waiting for victimFailed send it</span>
+                    <span class="k">for</span> <span class="n">oi</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">objectInterruptions</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">oi</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;victimFailed&quot;</span><span class="p">]:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">sendSignal</span><span class="p">(</span><span class="n">receiver</span><span class="o">=</span><span class="n">oi</span><span class="p">,</span> <span class="n">signal</span><span class="o">=</span><span class="n">oi</span><span class="o">.</span><span class="n">victimFailed</span><span class="p">)</span>
+
+                    <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">objectProperties</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">op</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;victimFailed&quot;</span><span class="p">]:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">sendSignal</span><span class="p">(</span><span class="n">receiver</span><span class="o">=</span><span class="n">op</span><span class="p">,</span> <span class="n">signal</span><span class="o">=</span><span class="n">op</span><span class="o">.</span><span class="n">victimFailed</span><span class="p">)</span>
+
+                    <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">Up</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">timeLastFailure</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span>
+
+                    <span class="bp">self</span><span class="o">.</span><span class="n">outputTrace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">&quot;is down&quot;</span><span class="p">)</span>
+                    <span class="c1"># send Data to QuestDB</span>
+                    <span class="kn">from</span> <span class="nn">.Globals</span> <span class="kn">import</span> <span class="n">G</span>
+                    <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">db</span><span class="p">:</span>
+                        <span class="n">G</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                            <span class="p">{</span><span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="p">,</span>
+                                     <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">id</span> <span class="o">+</span> <span class="s2">&quot; is down&quot;</span><span class="p">}</span>
+                        <span class="p">)</span>
+                        <span class="n">G</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+                    <span class="c1"># update the failure time</span>
+                    <span class="n">failTime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span>
+                    <span class="k">if</span> <span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">repairman</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">repairman</span> <span class="o">!=</span> <span class="s2">&quot;None&quot;</span>
+                    <span class="p">):</span>  <span class="c1"># if the failure needs a resource to be fixed,</span>
+                        <span class="c1"># the machine waits until the</span>
+                        <span class="c1"># resource is available</span>
+
+                        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">repairman</span><span class="o">.</span><span class="n">getResource</span><span class="p">()</span><span class="o">.</span><span class="n">request</span><span class="p">()</span> <span class="k">as</span> <span class="n">request</span><span class="p">:</span>
+                            <span class="k">yield</span> <span class="n">request</span>
+                            <span class="c1"># update the time that the repair started</span>
+                            <span class="n">timeOperationStarted</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">repairman</span><span class="o">.</span><span class="n">timeLastOperationStarted</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span>
+
+                            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">rngTTR</span><span class="o">.</span><span class="n">generateNumber</span><span class="p">()</span>
+                            <span class="p">)</span>  <span class="c1"># wait until the repairing process is over</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">totalFailureTime</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="n">failTime</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">reactivateVictim</span><span class="p">()</span>  <span class="c1"># since repairing is over, the Machine is reactivated</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">Up</span> <span class="o">=</span> <span class="kc">True</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">outputTrace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">&quot;is up&quot;</span><span class="p">)</span>
+                            <span class="c1"># send Data to QuestDB</span>
+                            <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">db</span><span class="p">:</span>
+                                <span class="n">G</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                                    <span class="p">{</span><span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="p">,</span>
+                                             <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">id</span> <span class="o">+</span> <span class="s2">&quot; is up&quot;</span><span class="p">}</span>
+                                <span class="p">)</span>
+                                <span class="n">G</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+                            <span class="bp">self</span><span class="o">.</span><span class="n">repairman</span><span class="o">.</span><span class="n">totalWorkingTime</span> <span class="o">+=</span> <span class="p">(</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="n">timeOperationStarted</span>
+                            <span class="p">)</span>
+                        <span class="k">continue</span>
+
+                    <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">timeout</span><span class="p">(</span><span class="n">downtime</span><span class="p">)</span>  <span class="c1"># wait until the repairing process is over</span>
+
+                    <span class="c1"># add the failure</span>
+                    <span class="c1"># if victim is off shift add only the fail time before the shift ended</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">onShift</span> <span class="ow">and</span> <span class="n">failTime</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">timeLastShiftEnded</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">totalFailureTime</span> <span class="o">+=</span> <span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">timeLastShiftEnded</span> <span class="o">-</span> <span class="n">failTime</span>
+                        <span class="p">)</span>
+                    <span class="c1"># if the victim was off shift since the start of the failure add nothing</span>
+                    <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">onShift</span> <span class="ow">and</span> <span class="n">failTime</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">timeLastShiftEnded</span><span class="p">:</span>
+                        <span class="k">pass</span>
+                    <span class="c1"># if victim was off shift in the start of the fail time, add on</span>
+                    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">onShift</span> <span class="ow">and</span> <span class="n">failTime</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">timeLastShiftStarted</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">totalFailureTime</span> <span class="o">+=</span> <span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">timeLastShiftStarted</span>
+                        <span class="p">)</span>
+                        <span class="c1"># this can happen only if deteriorationType is constant</span>
+                        <span class="k">assert</span> <span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">deteriorationType</span> <span class="o">==</span> <span class="s2">&quot;constant&quot;</span>
+                        <span class="p">),</span> <span class="s2">&quot;object got failure while off-shift and deterioration type not constant&quot;</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">totalFailureTime</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="n">failTime</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">reactivateVictim</span><span class="p">()</span>  <span class="c1"># since repairing is over, the Machine is reactivated</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">Up</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">outputTrace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>  <span class="s2">&quot;is up&quot;</span><span class="p">)</span></div></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">Core Docu</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modules.html">core</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, Peter.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

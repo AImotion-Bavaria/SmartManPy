@@ -1,0 +1,30 @@
+name: Generate and Deploy Sphinx Documentation
+
+on: push
+
+jobs:
+  build:
+    runs-on: "self-hosted"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/checkout@v2
+      - uses: conda-incubator/setup-miniconda@v2
+        with:
+          miniconda-version: "latest"
+          activate-environment: anaconda-client-env
+          environment-file: linux_env.yml
+          auto-activate-base: true
+
+      - name: Build documentation
+        uses: ammaraskar/sphinx-action@0.4
+        with:
+          docs-folder: "manpy/simulation/docs_core"
+
+      - name: Deploy documentation
+        run: |
+          mkdir -p docs_build
+          cp -r manpy/simulation/docs_core/_build/html/* docs_build/

@@ -1,0 +1,814 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>xlwt.Workbook &#8212; Core Docu 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for xlwt.Workbook</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: windows-1252 -*-</span>
+<span class="c1"># Record Order in BIFF8</span>
+<span class="c1">#   Workbook Globals Substream</span>
+<span class="c1">#       BOF Type = workbook globals</span>
+<span class="c1">#       Interface Header</span>
+<span class="c1">#       MMS</span>
+<span class="c1">#       Interface End</span>
+<span class="c1">#       WRITEACCESS</span>
+<span class="c1">#       CODEPAGE</span>
+<span class="c1">#       DSF</span>
+<span class="c1">#       TABID</span>
+<span class="c1">#       FNGROUPCOUNT</span>
+<span class="c1">#       Workbook Protection Block</span>
+<span class="c1">#             WINDOWPROTECT</span>
+<span class="c1">#             PROTECT</span>
+<span class="c1">#             PASSWORD</span>
+<span class="c1">#             PROT4REV</span>
+<span class="c1">#             PROT4REVPASS</span>
+<span class="c1">#       BACKUP</span>
+<span class="c1">#       HIDEOBJ</span>
+<span class="c1">#       WINDOW1</span>
+<span class="c1">#       DATEMODE</span>
+<span class="c1">#       PRECISION</span>
+<span class="c1">#       REFRESHALL</span>
+<span class="c1">#       BOOKBOOL</span>
+<span class="c1">#       FONT +</span>
+<span class="c1">#       FORMAT *</span>
+<span class="c1">#       XF +</span>
+<span class="c1">#       STYLE +</span>
+<span class="c1">#     ? PALETTE</span>
+<span class="c1">#       USESELFS</span>
+<span class="c1">#</span>
+<span class="c1">#       BOUNDSHEET +</span>
+<span class="c1">#</span>
+<span class="c1">#       COUNTRY</span>
+<span class="c1">#     ? Link Table</span>
+<span class="c1">#       SST</span>
+<span class="c1">#       ExtSST</span>
+<span class="c1">#       EOF</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">BIFFRecords</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">Style</span>
+<span class="kn">from</span> <span class="nn">.compat</span> <span class="kn">import</span> <span class="n">unicode_type</span><span class="p">,</span> <span class="n">int_types</span><span class="p">,</span> <span class="n">basestring</span>
+
+<span class="k">class</span> <span class="nc">Workbook</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is a class representing a workbook and all its contents. When creating</span>
+<span class="sd">    Excel files with xlwt, you will normally start by instantiating an</span>
+<span class="sd">    object of this class.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#################################################################</span>
+    <span class="c1">## Constructor</span>
+    <span class="c1">#################################################################</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;ascii&#39;</span><span class="p">,</span> <span class="n">style_compression</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoding</span> <span class="o">=</span> <span class="n">encoding</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__owner</span> <span class="o">=</span> <span class="s1">&#39;None&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__country_code</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># 0x07 is Russia :-)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__wnd_protect</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__obj_protect</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__protect</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__backup_on_save</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># for WINDOW1 record</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__hpos_twips</span> <span class="o">=</span> <span class="mh">0x01E0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__vpos_twips</span> <span class="o">=</span> <span class="mh">0x005A</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__width_twips</span> <span class="o">=</span> <span class="mh">0x3FCF</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__height_twips</span> <span class="o">=</span> <span class="mh">0x2A4E</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__custom_palette_b8</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__active_sheet</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__first_tab_index</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__selected_tabs</span> <span class="o">=</span> <span class="mh">0x01</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__tab_width_twips</span> <span class="o">=</span> <span class="mh">0x0258</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__wnd_hidden</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__wnd_mini</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__hscroll_visible</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__vscroll_visible</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__tabs_visible</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__styles</span> <span class="o">=</span> <span class="n">Style</span><span class="o">.</span><span class="n">StyleCollection</span><span class="p">(</span><span class="n">style_compression</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dates_1904</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__use_cell_values</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__sst</span> <span class="o">=</span> <span class="n">BIFFRecords</span><span class="o">.</span><span class="n">SharedStringTable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">encoding</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__worksheets</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__worksheet_idx_from_name</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__sheet_refs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_supbook_xref</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_xcall_xref</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ownbook_supbookx</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ownbook_supbook_ref</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_xcall_supbookx</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_xcall_supbook_ref</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+
+    <span class="c1">#################################################################</span>
+    <span class="c1">## Properties, &quot;getters&quot;, &quot;setters&quot;</span>
+    <span class="c1">#################################################################</span>
+
+    <span class="k">def</span> <span class="nf">get_style_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__styles</span><span class="o">.</span><span class="n">stats</span><span class="p">[:]</span>
+
+    <span class="k">def</span> <span class="nf">set_owner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__owner</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">get_owner</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__owner</span>
+
+    <span class="n">owner</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">get_owner</span><span class="p">,</span> <span class="n">set_owner</span><span class="p">)</span>
+
+    <span class="c1">#################################################################</span>
+
+    <span class="k">def</span> <span class="nf">set_country_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__country_code</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">get_country_code</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__country_code</span>
+
+    <span class="n">country_code</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">get_country_code</span><span class="p">,</span> <span class="n">set_country_code</span><span class="p">)</span>
+
+    <span class="c1">#################################################################</span>
+
+    <span class="k">def</span> <span class="nf">set_wnd_protect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__wnd_protect</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_wnd_protect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__wnd_protect</span><span class="p">)</span>
+
+    <span class="n">wnd_protect</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">get_wnd_protect</span><span class="p">,</span> <span class="n">set_wnd_protect</span><span class="p">)</span>
+
+    <span class="c1">#################################################################</span>
+
+    <span class="k">def</span> <span class="nf">set_obj_protect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__obj_protect</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_obj_protect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__obj_protect</span><span class="p">)</span>
+
+    <span class="n">obj_protect</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">get_obj_protect</span><span class="p">,</span> <span class="n">set_obj_protect</span><span class="p">)</span>
+
+    <span class="c1">#################################################################</span>
+
+    <span class="k">def</span> <span class="nf">set_protect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__protect</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_protect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__protect</span><span class="p">)</span>
+
+    <span class="n">protect</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">get_protect</span><span class="p">,</span> <span class="n">set_protect</span><span class="p">)</span>
+
+    <span class="c1">#################################################################</span>
+
+    <span class="k">def</span> <span class="nf">set_backup_on_save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__backup_on_save</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_backup_on_save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__backup_on_save</span><span class="p">)</span>
+
+    <span class="n">backup_on_save</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">get_backup_on_save</span><span class="p">,</span> <span class="n">set_backup_on_save</span><span class="p">)</span>
+
+    <span class="c1">#################################################################</span>
+
+    <span class="k">def</span> <span class="nf">set_hpos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__hpos_twips</span> <span class="o">=</span> <span class="n">value</span> <span class="o">&amp;</span> <span class="mh">0xFFFF</span>
+
+    <span class="k">def</span> <span class="nf">get_hpos</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hpos_twips</span>
+
+    <span class="n">hpos</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">get_hpos</span><span class="p">,</span> <span class="n">set_hpos</span><span class="p">)</span>
+
+    <span class="c1">#################################################################</span>
+
+    <span class="k">def</span> <span class="nf">set_vpos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__vpos_twips</span> <span class="o">=</span> <span class="n">value</span> <span class="o">&amp;</span> <span class="mh">0xFFFF</span>
+
+    <span class="k">def</span> <span class="nf">get_vpos</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__vpos_twips</span>
+
+    <span class="n">vpos</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">get_vpos</span><span class="p">,</span> <span class="n">set_vpos</span><span class="p">)</span>
+
+    <span class="c1">#################################################################</span>
+
+    <span class="k">def</span> <span class="nf">set_width</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__width_twips</span> <span class="o">=</span> <span class="n">value</span> <span class="o">&amp;</span> <span class="mh">0xFFFF</span>
+
+    <span class="k">def</span> <span class="nf">get_width</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__width_twips</span>
+
+    <span class="n">width</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">get_width</span><span class="p">,</span> <span class="n">set_width</span><span class="p">)</span>
+
+    <span class="c1">#################################################################</span>
+
+    <span class="k">def</span> <span class="nf">set_height</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__height_twips</span> <span class="o">=</span> <span class="n">value</span> <span class="o">&amp;</span> <span class="mh">0xFFFF</span>
+
+    <span class="k">def</span> <span class="nf">get_height</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__height_twips</span>
+
+    <span class="n">height</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">get_height</span><span class="p">,</span> <span class="n">set_height</span><span class="p">)</span>
+
+    <span class="c1">#################################################################</span>
+
+    <span class="k">def</span> <span class="nf">set_active_sheet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__active_sheet</span> <span class="o">=</span> <span class="n">value</span> <span class="o">&amp;</span> <span class="mh">0xFFFF</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__first_tab_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__active_sheet</span>
+
+    <span class="k">def</span> <span class="nf">get_active_sheet</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__active_sheet</span>
+
+    <span class="n">active_sheet</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">get_active_sheet</span><span class="p">,</span> <span class="n">set_active_sheet</span><span class="p">)</span>
+
+    <span class="c1">#################################################################</span>
+
+    <span class="k">def</span> <span class="nf">set_tab_width</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__tab_width_twips</span> <span class="o">=</span> <span class="n">value</span> <span class="o">&amp;</span> <span class="mh">0xFFFF</span>
+
+    <span class="k">def</span> <span class="nf">get_tab_width</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tab_width_twips</span>
+
+    <span class="n">tab_width</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">get_tab_width</span><span class="p">,</span> <span class="n">set_tab_width</span><span class="p">)</span>
+
+    <span class="c1">#################################################################</span>
+
+    <span class="k">def</span> <span class="nf">set_wnd_visible</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__wnd_hidden</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="ow">not</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_wnd_visible</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__wnd_hidden</span><span class="p">)</span>
+
+    <span class="n">wnd_visible</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">get_wnd_visible</span><span class="p">,</span> <span class="n">set_wnd_visible</span><span class="p">)</span>
+
+    <span class="c1">#################################################################</span>
+
+    <span class="k">def</span> <span class="nf">set_wnd_mini</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__wnd_mini</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_wnd_mini</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__wnd_mini</span><span class="p">)</span>
+
+    <span class="n">wnd_mini</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">get_wnd_mini</span><span class="p">,</span> <span class="n">set_wnd_mini</span><span class="p">)</span>
+
+    <span class="c1">#################################################################</span>
+
+    <span class="k">def</span> <span class="nf">set_hscroll_visible</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__hscroll_visible</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_hscroll_visible</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__hscroll_visible</span><span class="p">)</span>
+
+    <span class="n">hscroll_visible</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">get_hscroll_visible</span><span class="p">,</span> <span class="n">set_hscroll_visible</span><span class="p">)</span>
+
+    <span class="c1">#################################################################</span>
+
+    <span class="k">def</span> <span class="nf">set_vscroll_visible</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__vscroll_visible</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_vscroll_visible</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__vscroll_visible</span><span class="p">)</span>
+
+    <span class="n">vscroll_visible</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">get_vscroll_visible</span><span class="p">,</span> <span class="n">set_vscroll_visible</span><span class="p">)</span>
+
+    <span class="c1">#################################################################</span>
+
+    <span class="k">def</span> <span class="nf">set_tabs_visible</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__tabs_visible</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_tabs_visible</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__tabs_visible</span><span class="p">)</span>
+
+    <span class="n">tabs_visible</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">get_tabs_visible</span><span class="p">,</span> <span class="n">set_tabs_visible</span><span class="p">)</span>
+
+    <span class="c1">#################################################################</span>
+
+    <span class="k">def</span> <span class="nf">set_dates_1904</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dates_1904</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_dates_1904</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dates_1904</span><span class="p">)</span>
+
+    <span class="n">dates_1904</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">get_dates_1904</span><span class="p">,</span> <span class="n">set_dates_1904</span><span class="p">)</span>
+
+    <span class="c1">#################################################################</span>
+
+    <span class="k">def</span> <span class="nf">set_use_cell_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__use_cell_values</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_use_cell_values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__use_cell_values</span><span class="p">)</span>
+
+    <span class="n">use_cell_values</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">get_use_cell_values</span><span class="p">,</span> <span class="n">set_use_cell_values</span><span class="p">)</span>
+
+    <span class="c1">#################################################################</span>
+
+    <span class="k">def</span> <span class="nf">get_default_style</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__styles</span><span class="o">.</span><span class="n">default_style</span>
+
+    <span class="n">default_style</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">get_default_style</span><span class="p">)</span>
+
+    <span class="c1">#################################################################</span>
+
+    <span class="k">def</span> <span class="nf">set_colour_RGB</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colour_index</span><span class="p">,</span> <span class="n">red</span><span class="p">,</span> <span class="n">green</span><span class="p">,</span> <span class="n">blue</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="mi">8</span> <span class="o">&lt;=</span> <span class="n">colour_index</span> <span class="o">&lt;=</span> <span class="mi">63</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;set_colour_RGB: colour_index (</span><span class="si">%d</span><span class="s2">) not in range(8, 64)&quot;</span> <span class="o">%</span> 
+                    <span class="n">colour_index</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">min</span><span class="p">(</span><span class="n">red</span><span class="p">,</span> <span class="n">green</span><span class="p">,</span> <span class="n">blue</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="nb">max</span><span class="p">(</span><span class="n">red</span><span class="p">,</span> <span class="n">green</span><span class="p">,</span> <span class="n">blue</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">255</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;set_colour_RGB: colour values (</span><span class="si">%d</span><span class="s2">,</span><span class="si">%d</span><span class="s2">,</span><span class="si">%d</span><span class="s2">) must be in range(0, 256)&quot;</span> 
+                    <span class="o">%</span> <span class="p">(</span><span class="n">red</span><span class="p">,</span> <span class="n">green</span><span class="p">,</span> <span class="n">blue</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__custom_palette_b8</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> 
+            <span class="bp">self</span><span class="o">.</span><span class="n">__custom_palette_b8</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Style</span><span class="o">.</span><span class="n">excel_default_palette_b8</span><span class="p">)</span>
+        <span class="c1"># User-defined Palette starts at colour index 8,</span>
+        <span class="c1"># so subtract 8 from colour_index when placing in palette</span>
+        <span class="n">palette_index</span> <span class="o">=</span> <span class="n">colour_index</span> <span class="o">-</span> <span class="mi">8</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__custom_palette_b8</span><span class="p">[</span><span class="n">palette_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">red</span> <span class="o">&lt;&lt;</span> <span class="mi">24</span> <span class="o">|</span> <span class="n">green</span> <span class="o">&lt;&lt;</span> <span class="mi">16</span> <span class="o">|</span> <span class="n">blue</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span>
+
+    <span class="c1">##################################################################</span>
+    <span class="c1">## Methods</span>
+    <span class="c1">##################################################################</span>
+
+    <span class="k">def</span> <span class="nf">add_style</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">style</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__styles</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">style</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">add_font</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">font</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__styles</span><span class="o">.</span><span class="n">add_font</span><span class="p">(</span><span class="n">font</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">add_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sst</span><span class="o">.</span><span class="n">add_str</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">del_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sst_idx</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__sst</span><span class="o">.</span><span class="n">del_str</span><span class="p">(</span><span class="n">sst_idx</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">str_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sst</span><span class="o">.</span><span class="n">str_index</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">add_rt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rt</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sst</span><span class="o">.</span><span class="n">add_rt</span><span class="p">(</span><span class="n">rt</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">rt_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rt</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sst</span><span class="o">.</span><span class="n">rt_index</span><span class="p">(</span><span class="n">rt</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">add_sheet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sheetname</span><span class="p">,</span> <span class="n">cell_overwrite_ok</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method is used to create Worksheets in a Workbook.</span>
+
+<span class="sd">        :param sheetname:</span>
+
+<span class="sd">          The name to use for this sheet, as it will appear in the</span>
+<span class="sd">          tabs at the bottom of the Excel application.</span>
+
+<span class="sd">        :param cell_overwrite_ok:</span>
+
+<span class="sd">          If ``True``, cells in the added worksheet will not raise an</span>
+<span class="sd">          exception if written to more than once.</span>
+
+<span class="sd">        :return:</span>
+
+<span class="sd">          The :class:`~xlwt.Worksheet.Worksheet` that was added.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">Utils</span>
+        <span class="kn">from</span> <span class="nn">.Worksheet</span> <span class="kn">import</span> <span class="n">Worksheet</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sheetname</span><span class="p">,</span> <span class="n">unicode_type</span><span class="p">):</span>
+            <span class="n">sheetname</span> <span class="o">=</span> <span class="n">sheetname</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">encoding</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">Utils</span><span class="o">.</span><span class="n">valid_sheet_name</span><span class="p">(</span><span class="n">sheetname</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;invalid worksheet name </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">sheetname</span><span class="p">)</span>
+        <span class="n">lower_name</span> <span class="o">=</span> <span class="n">sheetname</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">lower_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__worksheet_idx_from_name</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;duplicate worksheet name </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">sheetname</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__worksheet_idx_from_name</span><span class="p">[</span><span class="n">lower_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__worksheets</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__worksheets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Worksheet</span><span class="p">(</span><span class="n">sheetname</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">cell_overwrite_ok</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__worksheets</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">get_sheet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sheet</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sheet</span><span class="p">,</span> <span class="n">int_types</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__worksheets</span><span class="p">[</span><span class="n">sheet</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sheet</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span>
+            <span class="n">sheetnum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sheet_index</span><span class="p">(</span><span class="n">sheet</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__worksheets</span><span class="p">[</span><span class="n">sheetnum</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;sheet must be integer or string&quot;</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">sheet_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sheetname</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">sheetnum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__worksheet_idx_from_name</span><span class="p">[</span><span class="n">sheetname</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> 
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">raise_bad_sheetname</span><span class="p">(</span><span class="n">sheetname</span><span class="p">)</span>
+            
+        <span class="k">return</span> <span class="n">sheetnum</span>       
+
+    <span class="k">def</span> <span class="nf">raise_bad_sheetname</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sheetname</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Formula: unknown sheet name </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">sheetname</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">convert_sheetindex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strg_ref</span><span class="p">,</span> <span class="n">n_sheets</span><span class="p">):</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">strg_ref</span><span class="p">)</span>
+        <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">idx</span> <span class="o">&lt;</span> <span class="n">n_sheets</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">idx</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Formula: sheet index (</span><span class="si">%s</span><span class="s2">) &gt;= number of sheets (</span><span class="si">%d</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">strg_ref</span><span class="p">,</span> <span class="n">n_sheets</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_supbook_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">tag</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_supbook_xref</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_supbook_xref</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_supbook_xref</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span> <span class="o">=</span> <span class="n">idx</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_supbook_xref</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">idx</span>
+
+    <span class="k">def</span> <span class="nf">setup_ownbook</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ownbook_supbookx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_supbook_index</span><span class="p">((</span><span class="s1">&#39;ownbook&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ownbook_supbook_ref</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">reference</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ownbook_supbookx</span><span class="p">,</span> <span class="mh">0xFFFE</span><span class="p">,</span> <span class="mh">0xFFFE</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">reference</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sheet_refs</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;can&#39;t happen&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__sheet_refs</span><span class="p">[</span><span class="n">reference</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ownbook_supbook_ref</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__sheet_refs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">setup_xcall</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_xcall_supbookx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_supbook_index</span><span class="p">((</span><span class="s1">&#39;xcall&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_xcall_supbook_ref</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">reference</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_xcall_supbookx</span><span class="p">,</span> <span class="mh">0xFFFE</span><span class="p">,</span> <span class="mh">0xFFFE</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">reference</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sheet_refs</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;can&#39;t happen&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__sheet_refs</span><span class="p">[</span><span class="n">reference</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xcall_supbook_ref</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__sheet_refs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">add_sheet_reference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">formula</span><span class="p">):</span>
+        <span class="n">patches</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">n_sheets</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__worksheets</span><span class="p">)</span>
+        <span class="n">sheet_refs</span><span class="p">,</span> <span class="n">xcall_refs</span> <span class="o">=</span> <span class="n">formula</span><span class="o">.</span><span class="n">get_references</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">ref0</span><span class="p">,</span> <span class="n">ref1</span><span class="p">,</span> <span class="n">offset</span> <span class="ow">in</span> <span class="n">sheet_refs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">ref0</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">ref0n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__worksheet_idx_from_name</span><span class="p">[</span><span class="n">ref0</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
+                <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">raise_bad_sheetname</span><span class="p">(</span><span class="n">ref0</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ref0n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_sheetindex</span><span class="p">(</span><span class="n">ref0</span><span class="p">,</span> <span class="n">n_sheets</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">ref1</span> <span class="o">==</span> <span class="n">ref0</span><span class="p">:</span>
+                <span class="n">ref1n</span> <span class="o">=</span> <span class="n">ref0n</span>
+            <span class="k">elif</span> <span class="ow">not</span> <span class="n">ref1</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">ref1n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__worksheet_idx_from_name</span><span class="p">[</span><span class="n">ref1</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
+                <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">raise_bad_sheetname</span><span class="p">(</span><span class="n">ref1</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ref1n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_sheetindex</span><span class="p">(</span><span class="n">ref1</span><span class="p">,</span> <span class="n">n_sheets</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">ref1n</span> <span class="o">&lt;</span> <span class="n">ref0n</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Formula: sheets out of order; </span><span class="si">%r</span><span class="s2">:</span><span class="si">%r</span><span class="s2"> -&gt; (</span><span class="si">%d</span><span class="s2">, </span><span class="si">%d</span><span class="s2">)&quot;</span> \
+                    <span class="o">%</span> <span class="p">(</span><span class="n">ref0</span><span class="p">,</span> <span class="n">ref1</span><span class="p">,</span> <span class="n">ref0n</span><span class="p">,</span> <span class="n">ref1n</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ownbook_supbookx</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setup_ownbook</span><span class="p">()</span>
+            <span class="n">reference</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ownbook_supbookx</span><span class="p">,</span> <span class="n">ref0n</span><span class="p">,</span> <span class="n">ref1n</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">reference</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sheet_refs</span><span class="p">:</span>
+                <span class="n">patches</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">offset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sheet_refs</span><span class="p">[</span><span class="n">reference</span><span class="p">]))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">nrefs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__sheet_refs</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">nrefs</span> <span class="o">&gt;</span> <span class="mi">65535</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;More than 65536 inter-sheet references&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__sheet_refs</span><span class="p">[</span><span class="n">reference</span><span class="p">]</span> <span class="o">=</span> <span class="n">nrefs</span>
+                <span class="n">patches</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">offset</span><span class="p">,</span> <span class="n">nrefs</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">funcname</span><span class="p">,</span> <span class="n">offset</span> <span class="ow">in</span> <span class="n">xcall_refs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ownbook_supbookx</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setup_ownbook</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xcall_supbookx</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setup_xcall</span><span class="p">()</span>
+            <span class="c1"># print funcname, self._supbook_xref</span>
+            <span class="n">patches</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">offset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xcall_supbook_ref</span><span class="p">))</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">funcname</span><span class="p">,</span> <span class="n">unicode_type</span><span class="p">):</span>
+                <span class="n">funcname</span> <span class="o">=</span> <span class="n">funcname</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">encoding</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">funcname</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xcall_xref</span><span class="p">:</span>
+                <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xcall_xref</span><span class="p">[</span><span class="n">funcname</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_xcall_xref</span><span class="p">[</span><span class="n">funcname</span><span class="p">]</span> <span class="o">=</span> <span class="n">idx</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_xcall_xref</span><span class="p">)</span>
+            <span class="n">patches</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">offset</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+
+        <span class="n">formula</span><span class="o">.</span><span class="n">patch_references</span><span class="p">(</span><span class="n">patches</span><span class="p">)</span>
+
+    <span class="c1">##################################################################</span>
+    <span class="c1">## BIFF records generation</span>
+    <span class="c1">##################################################################</span>
+
+    <span class="k">def</span> <span class="nf">__bof_rec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">BIFFRecords</span><span class="o">.</span><span class="n">Biff8BOFRecord</span><span class="p">(</span><span class="n">BIFFRecords</span><span class="o">.</span><span class="n">Biff8BOFRecord</span><span class="o">.</span><span class="n">BOOK_GLOBAL</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__eof_rec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">BIFFRecords</span><span class="o">.</span><span class="n">EOFRecord</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__intf_hdr_rec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">BIFFRecords</span><span class="o">.</span><span class="n">InteraceHdrRecord</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__intf_end_rec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">BIFFRecords</span><span class="o">.</span><span class="n">InteraceEndRecord</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__intf_mms_rec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">BIFFRecords</span><span class="o">.</span><span class="n">MMSRecord</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__write_access_rec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">BIFFRecords</span><span class="o">.</span><span class="n">WriteAccessRecord</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__owner</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__wnd_protect_rec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">BIFFRecords</span><span class="o">.</span><span class="n">WindowProtectRecord</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__wnd_protect</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__obj_protect_rec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">BIFFRecords</span><span class="o">.</span><span class="n">ObjectProtectRecord</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__obj_protect</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__protect_rec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">BIFFRecords</span><span class="o">.</span><span class="n">ProtectRecord</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__protect</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__password_rec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">BIFFRecords</span><span class="o">.</span><span class="n">PasswordRecord</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__prot4rev_rec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">BIFFRecords</span><span class="o">.</span><span class="n">Prot4RevRecord</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__prot4rev_pass_rec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">BIFFRecords</span><span class="o">.</span><span class="n">Prot4RevPassRecord</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__backup_rec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">BIFFRecords</span><span class="o">.</span><span class="n">BackupRecord</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__backup_on_save</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__hide_obj_rec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">BIFFRecords</span><span class="o">.</span><span class="n">HideObjRecord</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__window1_rec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">flags</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">flags</span> <span class="o">|=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__wnd_hidden</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">0</span>
+        <span class="n">flags</span> <span class="o">|=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__wnd_mini</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span>
+        <span class="n">flags</span> <span class="o">|=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__hscroll_visible</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">3</span>
+        <span class="n">flags</span> <span class="o">|=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__vscroll_visible</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span>
+        <span class="n">flags</span> <span class="o">|=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__tabs_visible</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">5</span>
+
+        <span class="k">return</span> <span class="n">BIFFRecords</span><span class="o">.</span><span class="n">Window1Record</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__hpos_twips</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__vpos_twips</span><span class="p">,</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">__width_twips</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__height_twips</span><span class="p">,</span>
+                                <span class="n">flags</span><span class="p">,</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">__active_sheet</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__first_tab_index</span><span class="p">,</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">__selected_tabs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tab_width_twips</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__codepage_rec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">BIFFRecords</span><span class="o">.</span><span class="n">CodepageBiff8Record</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__country_rec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__country_code</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">BIFFRecords</span><span class="o">.</span><span class="n">CountryRecord</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__country_code</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__country_code</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__dsf_rec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">BIFFRecords</span><span class="o">.</span><span class="n">DSFRecord</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__tabid_rec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">BIFFRecords</span><span class="o">.</span><span class="n">TabIDRecord</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__worksheets</span><span class="p">))</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__fngroupcount_rec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">BIFFRecords</span><span class="o">.</span><span class="n">FnGroupCountRecord</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__datemode_rec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">BIFFRecords</span><span class="o">.</span><span class="n">DateModeRecord</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dates_1904</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__precision_rec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">BIFFRecords</span><span class="o">.</span><span class="n">PrecisionRecord</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__use_cell_values</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__refresh_all_rec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">BIFFRecords</span><span class="o">.</span><span class="n">RefreshAllRecord</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__bookbool_rec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">BIFFRecords</span><span class="o">.</span><span class="n">BookBoolRecord</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__all_fonts_num_formats_xf_styles_rec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__styles</span><span class="o">.</span><span class="n">get_biff_data</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__palette_rec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__custom_palette_b8</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> 
+            <span class="k">return</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="n">BIFFRecords</span><span class="o">.</span><span class="n">PaletteRecord</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__custom_palette_b8</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">info</span>
+
+    <span class="k">def</span> <span class="nf">__useselfs_rec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">BIFFRecords</span><span class="o">.</span><span class="n">UseSelfsRecord</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__boundsheets_rec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_len_before</span><span class="p">,</span> <span class="n">data_len_after</span><span class="p">,</span> <span class="n">sheet_biff_lens</span><span class="p">):</span>
+        <span class="c1">#  .................................</span>
+        <span class="c1"># BOUNDSEHEET0</span>
+        <span class="c1"># BOUNDSEHEET1</span>
+        <span class="c1"># BOUNDSEHEET2</span>
+        <span class="c1"># ..................................</span>
+        <span class="c1"># WORKSHEET0</span>
+        <span class="c1"># WORKSHEET1</span>
+        <span class="c1"># WORKSHEET2</span>
+        <span class="n">boundsheets_len</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">sheet</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__worksheets</span><span class="p">:</span>
+            <span class="n">boundsheets_len</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">BIFFRecords</span><span class="o">.</span><span class="n">BoundSheetRecord</span><span class="p">(</span>
+                <span class="mh">0x00</span><span class="p">,</span> <span class="n">sheet</span><span class="o">.</span><span class="n">visibility</span><span class="p">,</span> <span class="n">sheet</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoding</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+
+        <span class="n">start</span> <span class="o">=</span> <span class="n">data_len_before</span> <span class="o">+</span> <span class="n">boundsheets_len</span> <span class="o">+</span> <span class="n">data_len_after</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">sheet_biff_len</span><span class="p">,</span>  <span class="n">sheet</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">sheet_biff_lens</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__worksheets</span><span class="p">):</span>
+            <span class="n">result</span> <span class="o">+=</span> <span class="n">BIFFRecords</span><span class="o">.</span><span class="n">BoundSheetRecord</span><span class="p">(</span>
+                <span class="n">start</span><span class="p">,</span> <span class="n">sheet</span><span class="o">.</span><span class="n">visibility</span><span class="p">,</span> <span class="n">sheet</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoding</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="n">start</span> <span class="o">+=</span> <span class="n">sheet_biff_len</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">__all_links_rec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">pieces</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="p">[(</span><span class="n">idx</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span> <span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_supbook_xref</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+        <span class="n">temp</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">temp</span><span class="p">:</span>
+            <span class="n">stype</span><span class="p">,</span> <span class="n">snum</span> <span class="o">=</span> <span class="n">tag</span>
+            <span class="k">if</span> <span class="n">stype</span> <span class="o">==</span> <span class="s1">&#39;ownbook&#39;</span><span class="p">:</span>
+                <span class="n">rec</span> <span class="o">=</span> <span class="n">BIFFRecords</span><span class="o">.</span><span class="n">InternalReferenceSupBookRecord</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__worksheets</span><span class="p">))</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+                <span class="n">pieces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">stype</span> <span class="o">==</span> <span class="s1">&#39;xcall&#39;</span><span class="p">:</span>
+                <span class="n">rec</span> <span class="o">=</span> <span class="n">BIFFRecords</span><span class="o">.</span><span class="n">XcallSupBookRecord</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+                <span class="n">pieces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span>
+                <span class="n">temp</span> <span class="o">=</span> <span class="p">[(</span><span class="n">idx</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xcall_xref</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+                <span class="n">temp</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">temp</span><span class="p">:</span>
+                    <span class="n">rec</span> <span class="o">=</span> <span class="n">BIFFRecords</span><span class="o">.</span><span class="n">ExternnameRecord</span><span class="p">(</span>
+                        <span class="n">options</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">fmla</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\x02\x00\x1c\x17</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+                    <span class="n">pieces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;unknown supbook stype </span><span class="si">%r</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">stype</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__sheet_refs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># get references in index order</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="p">[(</span><span class="n">idx</span><span class="p">,</span> <span class="n">ref</span><span class="p">)</span> <span class="k">for</span> <span class="n">ref</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sheet_refs</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+            <span class="n">temp</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="p">[</span><span class="n">ref</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">ref</span> <span class="ow">in</span> <span class="n">temp</span><span class="p">]</span>
+            <span class="n">externsheet_record</span> <span class="o">=</span> <span class="n">BIFFRecords</span><span class="o">.</span><span class="n">ExternSheetRecord</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="n">pieces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">externsheet_record</span><span class="p">)</span>
+        <span class="k">return</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pieces</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__sst_rec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sst</span><span class="o">.</span><span class="n">get_biff_record</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__ext_sst_rec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">abs_stream_pos</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span>
+        <span class="c1">#return BIFFRecords.ExtSSTRecord(abs_stream_pos, self.sst_record.str_placement,</span>
+        <span class="c1">#self.sst_record.portions_len).get()</span>
+
+    <span class="k">def</span> <span class="nf">get_biff_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">before</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span>
+        <span class="n">before</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bof_rec</span><span class="p">()</span>
+        <span class="n">before</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__intf_hdr_rec</span><span class="p">()</span>
+        <span class="n">before</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__intf_mms_rec</span><span class="p">()</span>
+        <span class="n">before</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__intf_end_rec</span><span class="p">()</span>
+        <span class="n">before</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__write_access_rec</span><span class="p">()</span>
+        <span class="n">before</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__codepage_rec</span><span class="p">()</span>
+        <span class="n">before</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dsf_rec</span><span class="p">()</span>
+        <span class="n">before</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tabid_rec</span><span class="p">()</span>
+        <span class="n">before</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__fngroupcount_rec</span><span class="p">()</span>
+        <span class="n">before</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__wnd_protect_rec</span><span class="p">()</span>
+        <span class="n">before</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__protect_rec</span><span class="p">()</span>
+        <span class="n">before</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__obj_protect_rec</span><span class="p">()</span>
+        <span class="n">before</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__password_rec</span><span class="p">()</span>
+        <span class="n">before</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__prot4rev_rec</span><span class="p">()</span>
+        <span class="n">before</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__prot4rev_pass_rec</span><span class="p">()</span>
+        <span class="n">before</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__backup_rec</span><span class="p">()</span>
+        <span class="n">before</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hide_obj_rec</span><span class="p">()</span>
+        <span class="n">before</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__window1_rec</span><span class="p">()</span>
+        <span class="n">before</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__datemode_rec</span><span class="p">()</span>
+        <span class="n">before</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__precision_rec</span><span class="p">()</span>
+        <span class="n">before</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__refresh_all_rec</span><span class="p">()</span>
+        <span class="n">before</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bookbool_rec</span><span class="p">()</span>
+        <span class="n">before</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__all_fonts_num_formats_xf_styles_rec</span><span class="p">()</span>
+        <span class="n">before</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__palette_rec</span><span class="p">()</span>
+        <span class="n">before</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__useselfs_rec</span><span class="p">()</span>
+
+        <span class="n">country</span>            <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__country_rec</span><span class="p">()</span>
+        <span class="n">all_links</span>          <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__all_links_rec</span><span class="p">()</span>
+
+        <span class="n">shared_str_table</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sst_rec</span><span class="p">()</span>
+        <span class="n">after</span> <span class="o">=</span> <span class="n">country</span> <span class="o">+</span> <span class="n">all_links</span> <span class="o">+</span> <span class="n">shared_str_table</span>
+
+        <span class="n">ext_sst</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ext_sst_rec</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># need fake cause we need calc stream pos</span>
+        <span class="n">eof</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__eof_rec</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__worksheets</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__active_sheet</span><span class="p">]</span><span class="o">.</span><span class="n">selected</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">sheets</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span>
+        <span class="n">sheet_biff_lens</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">sheet</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__worksheets</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">sheet</span><span class="o">.</span><span class="n">get_biff_data</span><span class="p">()</span>
+            <span class="n">sheets</span> <span class="o">+=</span> <span class="n">data</span>
+            <span class="n">sheet_biff_lens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+
+        <span class="n">bundlesheets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__boundsheets_rec</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">before</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">after</span><span class="p">)</span><span class="o">+</span><span class="nb">len</span><span class="p">(</span><span class="n">ext_sst</span><span class="p">)</span><span class="o">+</span><span class="nb">len</span><span class="p">(</span><span class="n">eof</span><span class="p">),</span> <span class="n">sheet_biff_lens</span><span class="p">)</span>
+
+        <span class="n">sst_stream_pos</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">before</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">bundlesheets</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">country</span><span class="p">)</span>  <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_links</span><span class="p">)</span>
+        <span class="n">ext_sst</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ext_sst_rec</span><span class="p">(</span><span class="n">sst_stream_pos</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">before</span> <span class="o">+</span> <span class="n">bundlesheets</span> <span class="o">+</span> <span class="n">after</span> <span class="o">+</span> <span class="n">ext_sst</span> <span class="o">+</span> <span class="n">eof</span> <span class="o">+</span> <span class="n">sheets</span>
+
+    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename_or_stream</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method is used to save the Workbook to a file in native Excel</span>
+<span class="sd">        format.</span>
+
+<span class="sd">        :param filename_or_stream:</span>
+<span class="sd">          This can be a string containing a filename of</span>
+<span class="sd">          the file, in which case the excel file is saved to disk using the name</span>
+<span class="sd">          provided. It can also be a stream object with a write method, such as</span>
+<span class="sd">          a :class:`~io.StringIO`, in which case the data for the excel</span>
+<span class="sd">          file is written to the stream.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">CompoundDoc</span>
+
+        <span class="n">doc</span> <span class="o">=</span> <span class="n">CompoundDoc</span><span class="o">.</span><span class="n">XlsDoc</span><span class="p">()</span>
+        <span class="n">doc</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">filename_or_stream</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_biff_data</span><span class="p">())</span>
+
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Core Docu</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">core</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, Peter.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,247 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>manpy.simulation.core.Entity &#8212; Core Docu 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for manpy.simulation.core.Entity</h1><div class="highlight"><pre>
+<span></span><span class="c1"># ===========================================================================</span>
+<span class="c1"># Copyright 2013 University of Limerick</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of DREAM.</span>
+<span class="c1">#</span>
+<span class="c1"># DREAM is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU Lesser General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># DREAM is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU Lesser General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU Lesser General Public License</span>
+<span class="c1"># along with DREAM.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c1"># ===========================================================================</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Created on 18 Aug 2013</span>
+
+<span class="sd">@author: George</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Class that acts as an abstract. It should have no instances. All the Entities should inherit from it</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># from SimPy.Simulation import now</span>
+<span class="kn">from</span> <span class="nn">manpy.simulation.ManPyObject</span> <span class="kn">import</span> <span class="n">ManPyObject</span>
+<span class="kn">from</span> <span class="nn">manpy.simulation.core.Globals</span> <span class="kn">import</span> <span class="n">G</span>
+
+<span class="c1"># ===========================================================================</span>
+<span class="c1"># The entity object</span>
+<span class="c1"># ===========================================================================</span>
+<div class="viewcode-block" id="Entity"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Entity.Entity">[docs]</a><span class="k">class</span> <span class="nc">Entity</span><span class="p">(</span><span class="n">ManPyObject</span><span class="p">):</span>
+    <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;Entity&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="nb">id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">priority</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">dueDate</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">orderDate</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">isCritical</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">remainingProcessingTime</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">remainingSetupTime</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">currentStation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">status</span><span class="o">=</span><span class="s2">&quot;Good&quot;</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kw</span>
+    <span class="p">):</span>
+        <span class="n">ManPyObject</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="c1">#         information on the object holding the entity</span>
+        <span class="c1">#         initialized as None and updated every time an entity enters a new object</span>
+        <span class="c1">#         information on the lifespan of the entity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">creationTime</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">startTime</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># holds the startTime for the lifespan</span>
+        <span class="c1">#         dimension data of the entity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">length</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="c1">#         information concerning the sorting of the entities inside (for example) queues</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">priority</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">priority</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dueDate</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">dueDate</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orderDate</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">orderDate</span><span class="p">)</span>
+        <span class="c1">#         a list that holds information about the schedule</span>
+        <span class="c1">#         of the entity (when it enters and exits every station)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedule</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># the current station of the entity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">currentStation</span> <span class="o">=</span> <span class="n">currentStation</span>
+        <span class="c1">#         values to be used in the internal processing of compoundObjects</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">internal</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># informs if the entity is being processed internally</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">isCritical</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">isCritical</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">isCritical</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">isCritical</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">isCritical</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span>
+                <span class="n">isCritical</span>
+            <span class="p">)</span>  <span class="c1"># flag to inform weather the entity is critical -&gt; preemption</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">isCritical</span> <span class="o">=</span> <span class="n">isCritical</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manager</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># default value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">numberOfUnits</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># default value</span>
+        <span class="c1"># variable used to differentiate entities with and entities without routes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">family</span> <span class="o">=</span> <span class="s2">&quot;Entity&quot;</span>
+
+        <span class="c1"># variables to be used by OperatorRouter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">proceed</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># boolean that is used to check weather the entity can proceed to the candidateReceiver</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">candidateReceivers</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">[]</span>
+        <span class="p">)</span>  <span class="c1"># list of candidateReceivers of the entity (those stations that can receive the entity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">candidateReceiver</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="kc">None</span>  <span class="c1"># the station that is finaly chosen to receive the entity</span>
+        <span class="p">)</span>
+        <span class="c1"># alias used for printing the Route</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alias</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">remainingProcessingTime</span> <span class="o">=</span> <span class="n">remainingProcessingTime</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">remainingSetupTime</span> <span class="o">=</span> <span class="n">remainingSetupTime</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">status</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">ftr_st</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">ftr_st</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">feature_times</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">ftr_st</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">feature_times</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># ===========================================================================</span>
+    <span class="c1"># return the responsible operator for the current step, not implemented for entities</span>
+    <span class="c1"># ===========================================================================</span>
+<div class="viewcode-block" id="Entity.responsibleForCurrentStep"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Entity.Entity.responsibleForCurrentStep">[docs]</a>    <span class="k">def</span> <span class="nf">responsibleForCurrentStep</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+    <span class="c1"># =======================================================================</span>
+    <span class="c1"># outputs results to JSON File</span>
+    <span class="c1"># =======================================================================</span>
+<div class="viewcode-block" id="Entity.outputResultsJSON"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Entity.Entity.outputResultsJSON">[docs]</a>    <span class="k">def</span> <span class="nf">outputResultsJSON</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+    <span class="c1"># =======================================================================</span>
+    <span class="c1"># initializes all the Entity for a new simulation replication</span>
+    <span class="c1"># =======================================================================</span>
+<div class="viewcode-block" id="Entity.initialize"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Entity.Entity.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+    <span class="c1"># ===========================================================================</span>
+    <span class="c1"># print the route (the different stations the entity moved through)</span>
+    <span class="c1"># ===========================================================================</span>
+<div class="viewcode-block" id="Entity.printRoute"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Entity.Entity.printRoute">[docs]</a>    <span class="k">def</span> <span class="nf">printRoute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+    <span class="c1"># ===========================================================================</span>
+    <span class="c1"># method not implemented yet</span>
+    <span class="c1"># ===========================================================================</span>
+<div class="viewcode-block" id="Entity.checkIfRequiredPartsReady"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Entity.Entity.checkIfRequiredPartsReady">[docs]</a>    <span class="k">def</span> <span class="nf">checkIfRequiredPartsReady</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+    <span class="c1"># ===========================================================================</span>
+    <span class="c1"># method not implemented yet</span>
+    <span class="c1"># ===========================================================================</span>
+<div class="viewcode-block" id="Entity.getRequiredParts"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Entity.Entity.getRequiredParts">[docs]</a>    <span class="k">def</span> <span class="nf">getRequiredParts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="Entity.set_feature"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Entity.Entity.set_feature">[docs]</a>    <span class="k">def</span> <span class="nf">set_feature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feature</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">indexing</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">ftr_st</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">indexing</span><span class="p">)]</span> <span class="o">=</span> <span class="n">feature</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">ftr_st</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">indexing</span><span class="p">)]</span> <span class="o">=</span> <span class="n">label</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feature_times</span><span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">ftr_st</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">indexing</span><span class="p">)]</span> <span class="o">=</span> <span class="n">time</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">Core Docu</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modules.html">core</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, Peter.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
