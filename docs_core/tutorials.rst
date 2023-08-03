@@ -182,23 +182,111 @@ We can model these dependencies using the "dependency" parameter:
 
 Here, we define a functional dependency between feature2 and feature1, in this case the linear function 10x + 3.
 To simulate eventual measurement errors, we can apply a standard deviation to this dependency, in this cas 0.1.
-However, it is also possible to have strict functional dependencies between features by simply not passing anything as an argument for distribution.
-
-* Dependencies
-* Random walk
+However, it is also possible to have strict functional dependencies between features by simply not passing anything as an argument for distribution:
 
 .. code-block:: python
-    :linenos:
 
-    f1 = Feature("F1", "Feature1", victim=m1, entity=True,
-                    distribution={"Time": {"Fixed": {"mean": 1}},
-                                  "Feature": {"Normal": {"mean": 50, "stdev": 5}}})
+    feature2 = Feature(id="f2",
+                       name="Feature2",
+                       victim=m1,
+                       dependent={"Function": "10*x + 3", "x": feature1}
+                       )
+
+Sometimes, Features depend on the previous value, e.g. Temperatures.
+To model this, we can use random walks.
+When the random walk mode is activated, the randomly drawn feature value is added to the last feature value.
+A Feature generated using a random walk can be defined as follows:
+
+.. code-block:: python
+
+    random_walk_feature = Feature(id="ftr_rw",
+                                  name="Feature_Random_Walk",
+                                  victim=m1,
+                                  random_walk=True,
+                                  start_value=20,
+                                  distribution={"Feature": {"Normal": {"mean": 0, "stdev": 1.0}}})
+
+Feature "Feature_Random_Walk" has a starting value of 20.
+For each data point, a value is drawn from a normal distribution with mean 0 and standard deviation 1 and then added to the current value.
+The starting value is 20, which can be interpreted as the "mean" of the random walk.
+
 
 Time Series
 ------------
 
-TODO
+TimeSeries represents the second type of ObjectProperty in our ManPy Extension.
+At each production step, TimeSeries generates a configurable amount of data points in a certain time frame.
+Let' have a look at a simple example:
 
+.. code-block:: python
+
+    ts_features = Feature(id="ftr_ts,
+                          name="Feature_Time_Series",
+                          step_time=0.1,
+                          distribution={"Function": {(0, 2): "0.5*x + 2"},
+                                        "DataPoints": 20,
+                                        "Feature": {"Normal": {"stdev": 0.1}}
+                                       }
+                          )
+
+This example generates a time series in which the data points are 0.1 second apart.
+The time series is defined in the interval [0, 2], in which 20 data points are sampled.
+The resulting values are governed by a linear function.
+At each data point in the time series, a standard deviation of 0.1 is applied to model small differences between production steps.
+It is possible to define multiple intervals to further customize the mathematical despription of the time series:
+
+.. code-block:: python
+
+    ts_features = Feature(id="ftr_ts,
+                          name="Feature_Time_Series",
+                          step_time=0.1,
+                          distribution={"Function": {(0, 1): "0.5*x + 2", (1, 2): "0.1*x + 2"},
+                                        "DataPoints": 20,
+                                        "Feature": {"Normal": {"stdev": 0.1}}
+                                       }
+                          )
+
+The aforementioned ways of creating time series are quite powerful, but only if a functional relationship ís known.
+Sometimes, only certain values are known, which makes interpolation a very useful tool for these cases:
+
+.. code-block:: python
+
+    ts_features = Feature(id="ftr_ts,
+                          name="Feature_Time_Series",
+                          step_time=0.1,
+                          distribution={"Function": {(0, 1): "0.5*x + 2",
+                                                     (1, 3): [[1, 1.5, 2, 3], [4, 4.2, 4.3, 5.1]]},
+                                        "DataPoints": 20,
+                                        "Feature": {"Normal": {"stdev": 0.1}}
+                                       }
+                          )
+
+In this example, we give the interpolation algorithm 4 data points in the interval, between which it interpolates.
+No matter how small or large the interval is, the interpolation algorithm needs at least 4 values.
+The data points for interpolation can also have a Feature with all its customization possibilities as source:
+
+.. code-block:: python
+    :linenos:
+
+     endVal = Feature(id="endVal",
+                       name="endVal",
+                       victim=m1,
+                       distribution={"Feature": {"Normal": {"mean": 5.2, "stdev": 0.1}}}
+                       )
+
+
+    ts_features = Feature(id="ftr_ts,
+                          name="Feature_Time_Series",
+                          step_time=0.1,
+                          distribution={"Function": {(0, 1): "0.5*x + 2",
+                                                     (1, 3): [[1, 1.5, 2, 3], [4, 4.2, 4.3, "EndVal"]]},
+                                        "EndVal": endVal,
+                                        "DataPoints": 20,
+                                        "Feature": {"Normal": {"stdev": 0.1}}
+                                       }
+                          )
+
+In this example, the final value for interpolation is received from Feature "endVal".
 
 Failures
 ---------

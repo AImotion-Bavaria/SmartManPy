@@ -326,19 +326,109 @@ In the following section, we will explore the most important mechanics of the Fe
 The feature values are randomly drawn from a normal distribution with mean 0 and standard deviation 1.
 It is possible to select different distributions and to control the behaviour of the underlying distribution over the course of a simulation.
 Further explanations for these mechanics are provided in <a class="reference internal" href="#distributions-and-statecontrollers">Distributions and StateControllers</a>.</p>
-<ul class="simple">
-<li><p>Dependencies</p></li>
-<li><p>Labels</p></li>
-</ul>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">f1</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;F1&quot;</span><span class="p">,</span> <span class="s2">&quot;Feature1&quot;</span><span class="p">,</span> <span class="n">victim</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<span class="linenos">2</span>                <span class="n">distribution</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Time&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Fixed&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}},</span>
-<span class="linenos">3</span>                              <span class="s2">&quot;Feature&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">}}})</span>
+<p>We can of course add many more features to a machine.
+Sometimes, there are certain relationships between features, e.g. physical dependencies.
+We can model these dependencies using the “dependency” parameter:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">feature2</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;f2&quot;</span><span class="p">,</span>
+                   <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Feature2&quot;</span><span class="p">,</span>
+                   <span class="n">victim</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span>
+                   <span class="n">dependent</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Function&quot;</span><span class="p">:</span> <span class="s2">&quot;10*x + 3&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">feature1</span><span class="p">}</span>
+                   <span class="n">distribution</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Feature&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">}}}</span>
+                   <span class="p">)</span>
 </pre></div>
 </div>
+<p>Here, we define a functional dependency between feature2 and feature1, in this case the linear function 10x + 3.
+To simulate eventual measurement errors, we can apply a standard deviation to this dependency, in this cas 0.1.
+However, it is also possible to have strict functional dependencies between features by simply not passing anything as an argument for distribution:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">feature2</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;f2&quot;</span><span class="p">,</span>
+                   <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Feature2&quot;</span><span class="p">,</span>
+                   <span class="n">victim</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span>
+                   <span class="n">dependent</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Function&quot;</span><span class="p">:</span> <span class="s2">&quot;10*x + 3&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">feature1</span><span class="p">}</span>
+                   <span class="p">)</span>
+</pre></div>
+</div>
+<p>Sometimes, Features depend on the previous value, e.g. Temperatures.
+To model this, we can use random walks.
+When the random walk mode is activated, the randomly drawn feature value is added to the last feature value.
+A Feature generated using a random walk can be defined as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">random_walk_feature</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;ftr_rw&quot;</span><span class="p">,</span>
+                              <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Feature_Random_Walk&quot;</span><span class="p">,</span>
+                              <span class="n">victim</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span>
+                              <span class="n">random_walk</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                              <span class="n">start_value</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+                              <span class="n">distribution</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Feature&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}}})</span>
+</pre></div>
+</div>
+<p>Feature “Feature_Random_Walk” has a starting value of 20.
+For each data point, a value is drawn from a normal distribution with mean 0 and standard deviation 1 and then added to the current value.
+The starting value is 20, which can be interpreted as the “mean” of the random walk.</p>
 </section>
 <section id="time-series">
 <h3>Time Series<a class="headerlink" href="#time-series" title="Permalink to this heading">#</a></h3>
-<p>TODO</p>
+<p>TimeSeries represents the second type of ObjectProperty in our ManPy Extension.
+At each production step, TimeSeries generates a configurable amount of data points in a certain time frame.
+Let’ have a look at a simple example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ts_features</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;ftr_ts,</span>
+                      <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Feature_Time_Series&quot;</span><span class="p">,</span>
+                      <span class="n">step_time</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                      <span class="n">distribution</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Function&quot;</span><span class="p">:</span> <span class="p">{(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span> <span class="s2">&quot;0.5*x + 2&quot;</span><span class="p">},</span>
+                                    <span class="s2">&quot;DataPoints&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+                                    <span class="s2">&quot;Feature&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">}}</span>
+                                   <span class="p">}</span>
+                      <span class="p">)</span>
+</pre></div>
+</div>
+<p>This example generates a time series in which the data points are 0.1 second apart.
+The time series is defined in the interval [0, 2], in which 20 data points are sampled.
+The resulting values are governed by a linear function.
+At each data point in the time series, a standard deviation of 0.1 is applied to model small differences between production steps.
+It is possible to define multiple intervals to further customize the mathematical despription of the time series:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ts_features</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;ftr_ts,</span>
+                      <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Feature_Time_Series&quot;</span><span class="p">,</span>
+                      <span class="n">step_time</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                      <span class="n">distribution</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Function&quot;</span><span class="p">:</span> <span class="p">{(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="s2">&quot;0.5*x + 2&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span> <span class="s2">&quot;0.1*x + 2&quot;</span><span class="p">},</span>
+                                    <span class="s2">&quot;DataPoints&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+                                    <span class="s2">&quot;Feature&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">}}</span>
+                                   <span class="p">}</span>
+                      <span class="p">)</span>
+</pre></div>
+</div>
+<p>The aforementioned ways of creating time series are quite powerful, but only if a functional relationship ís known.
+Sometimes, only certain values are known, which makes interpolation a very useful tool for these cases:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ts_features</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;ftr_ts,</span>
+                      <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Feature_Time_Series&quot;</span><span class="p">,</span>
+                      <span class="n">step_time</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                      <span class="n">distribution</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Function&quot;</span><span class="p">:</span> <span class="p">{(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="s2">&quot;0.5*x + 2&quot;</span><span class="p">,</span>
+                                                 <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mf">4.2</span><span class="p">,</span> <span class="mf">4.3</span><span class="p">,</span> <span class="mf">5.1</span><span class="p">]]},</span>
+                                    <span class="s2">&quot;DataPoints&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+                                    <span class="s2">&quot;Feature&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">}}</span>
+                                   <span class="p">}</span>
+                      <span class="p">)</span>
+</pre></div>
+</div>
+<p>In this example, we give the interpolation algorithm 4 data points in the interval, between which it interpolates.
+No matter how small or large the interval is, the interpolation algorithm needs at least 4 values.
+The data points for interpolation can also have a Feature with all its customization possibilities as source:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span> <span class="n">endVal</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;endVal&quot;</span><span class="p">,</span>
+<span class="linenos"> 2</span>                   <span class="n">name</span><span class="o">=</span><span class="s2">&quot;endVal&quot;</span><span class="p">,</span>
+<span class="linenos"> 3</span>                   <span class="n">victim</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span>
+<span class="linenos"> 4</span>                   <span class="n">distribution</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Feature&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mf">5.2</span><span class="p">,</span> <span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">}}}</span>
+<span class="linenos"> 5</span>                   <span class="p">)</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="n">ts_features</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;ftr_ts,</span>
+<span class="linenos"> 9</span>                      <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Feature_Time_Series&quot;</span><span class="p">,</span>
+<span class="linenos">10</span>                      <span class="n">step_time</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+<span class="linenos">11</span>                      <span class="n">distribution</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Function&quot;</span><span class="p">:</span> <span class="p">{(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="s2">&quot;0.5*x + 2&quot;</span><span class="p">,</span>
+<span class="linenos">12</span>                                                 <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mf">4.2</span><span class="p">,</span> <span class="mf">4.3</span><span class="p">,</span> <span class="s2">&quot;EndVal&quot;</span><span class="p">]]},</span>
+<span class="linenos">13</span>                                    <span class="s2">&quot;EndVal&quot;</span><span class="p">:</span> <span class="n">endVal</span><span class="p">,</span>
+<span class="linenos">14</span>                                    <span class="s2">&quot;DataPoints&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+<span class="linenos">15</span>                                    <span class="s2">&quot;Feature&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">}}</span>
+<span class="linenos">16</span>                                   <span class="p">}</span>
+<span class="linenos">17</span>                      <span class="p">)</span>
+</pre></div>
+</div>
+<p>In this example, the final value for interpolation is received from Feature “endVal”.</p>
 </section>
 <section id="failures">
 <h3>Failures<a class="headerlink" href="#failures" title="Permalink to this heading">#</a></h3>
@@ -347,10 +437,13 @@ Further explanations for these mechanics are provided in <a class="reference int
 <section id="distributions-and-statecontrollers">
 <span id="distributions"></span><h3>Distributions and StateControllers<a class="headerlink" href="#distributions-and-statecontrollers" title="Permalink to this heading">#</a></h3>
 <p>Using our StateControllers in combination with distributions allows for complex control over the lifecycle behaviour of features.
-This can be used to model data drifts of distribution shifts.</p>
+This can be used to model data drifts or distribution shifts.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1"># TODO</span>
 </pre></div>
 </div>
+<ul class="simple">
+<li><p>Labels</p></li>
+</ul>
 </section>
 <section id="export">
 <h3>Export<a class="headerlink" href="#export" title="Permalink to this heading">#</a></h3>
