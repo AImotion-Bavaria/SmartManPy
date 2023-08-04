@@ -6,6 +6,7 @@ from manpy.simulation.RandomNumberGenerator import RandomNumberGenerator
 class Feature(ObjectProperty):
     """
     The Feature ObjectProperty generates Features for a Machine and stores them in Entities
+
     :param id: The id of the Feature
     :param name: The name of the Feature
     :param victim: The machine to which the feature belongs

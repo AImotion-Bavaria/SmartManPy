@@ -406,9 +406,9 @@ Sometimes, only certain values are known, which makes interpolation a very usefu
                       <span class="p">)</span>
 </pre></div>
 </div>
-<p>In this example, we give the interpolation algorithm 4 data points in the interval, between which it interpolates.
+<p>In this example, we provide the interpolation algorithm 4 data points in the interval in which it interpolates.
 No matter how small or large the interval is, the interpolation algorithm needs at least 4 values.
-The data points for interpolation can also have a Feature with all its customization possibilities as source:</p>
+The data points for interpolation can also be determined by a Feature with all its customization possibilities:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span> <span class="n">endVal</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;endVal&quot;</span><span class="p">,</span>
 <span class="linenos"> 2</span>                   <span class="n">name</span><span class="o">=</span><span class="s2">&quot;endVal&quot;</span><span class="p">,</span>
 <span class="linenos"> 3</span>                   <span class="n">victim</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span>
@@ -432,7 +432,48 @@ The data points for interpolation can also have a Feature with all its customiza
 </section>
 <section id="failures">
 <h3>Failures<a class="headerlink" href="#failures" title="Permalink to this heading">#</a></h3>
-<p>TODO</p>
+<p>Despite not being desired, failures play a big role in production lines.
+Therefore, in order to accurately model a production line, we must be able to model failures in a sophisticated way.
+ManPy already provides such a complex model through its Failure classe.
+The following example demonstrates a simple ManPy Failure:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">simple_failure</span> <span class="o">=</span> <span class="n">Failure</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;Flr0&quot;</span><span class="p">,</span>
+                         <span class="n">name</span><span class="o">=</span><span class="s2">&quot;SimpleFailure&quot;</span><span class="p">,</span>
+                         <span class="n">victim</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span>
+                         <span class="n">distribution</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;TTF&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Fixed&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">}},</span>
+                                       <span class="s2">&quot;TTR&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">:</span><span class="mi">50</span><span class="p">,</span>
+                                                          <span class="s2">&quot;probability&quot;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">}}})</span>
+</pre></div>
+</div>
+<p>This failure is potentially triggered every 0.8 seconds, which is determined by the time-to-failure (TTF) distribution.
+At each potential trigger point, a time-to-repair (TTR) is calculated, which determines the down time of the victim (i.e. the machine at which the failure occurs)
+Since we additionally passed a probability value to the TTR distribution, we only get actual downtime with a 1% chance.
+If we don’t pass the probability value, the frequency of the failure is solely determined by TTF.</p>
+<p>A more flexible way of triggering failures are conditional failures.
+Conditional failures are comparable to Quality Control in Machines (see <a class="reference internal" href="#quality-control">Quality Control</a>).
+You implement the condition as a function and pass it to the failure using the “conditional” parameter:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># Any function can be employed as the condition for a Failure to occur</span>
+<span class="linenos"> 2</span><span class="c1"># You can utilize any simulation values for the condition</span>
+<span class="linenos"> 3</span><span class="c1"># Return True to let the Failure occur</span>
+<span class="linenos"> 4</span><span class="k">def</span> <span class="nf">condition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos"> 5</span>    <span class="n">value_1</span> <span class="o">=</span> <span class="n">Ftr1</span><span class="o">.</span><span class="n">get_feature_value</span><span class="p">()</span>
+<span class="linenos"> 6</span>    <span class="n">value_2</span> <span class="o">=</span> <span class="n">Ftr2</span><span class="o">.</span><span class="n">get_feature_value</span><span class="p">()</span>
+<span class="linenos"> 7</span>    <span class="k">if</span> <span class="p">(</span><span class="n">value_1</span> <span class="o">+</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">value_2</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">200</span><span class="p">:</span> <span class="c1"># prev 360</span>
+<span class="linenos"> 8</span>        <span class="n">Ftr1</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span>
+<span class="linenos"> 9</span>        <span class="n">Ftr2</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span>
+<span class="linenos">10</span>        <span class="k">return</span> <span class="kc">True</span>
+<span class="linenos">11</span>    <span class="k">else</span><span class="p">:</span>
+<span class="linenos">12</span>        <span class="k">return</span> <span class="kc">False</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="n">conditional_failure</span> <span class="o">=</span> <span class="n">Failure</span><span class="p">(</span><span class="n">victim</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span>
+<span class="linenos">15</span>             <span class="n">conditional</span><span class="o">=</span><span class="n">condition</span><span class="p">,</span>
+<span class="linenos">16</span>             <span class="n">distribution</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;TTR&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Fixed&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">}}})</span>
+</pre></div>
+</div>
+<p>Here, the triggering of the failure is solely controlled by the function condition, we only need to specify TTR.
+Similarly to Quality Control, we can access the feature values to determine whether a failure should be triggered or not.</p>
+<p>A Failure is automatically resolved after TTR is passed.
+Additionally, ManPy offers the possibility to model repairmen, which can be used to model constrained maintenance resources.
+In our case, we always assume that a failure can be repaired in the given time period, which may be unrealistic.</p>
 </section>
 <section id="distributions-and-statecontrollers">
 <span id="distributions"></span><h3>Distributions and StateControllers<a class="headerlink" href="#distributions-and-statecontrollers" title="Permalink to this heading">#</a></h3>

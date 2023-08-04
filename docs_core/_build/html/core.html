@@ -685,6 +685,30 @@
 <dt class="sig sig-object py" id="manpy.simulation.core.Failure.Failure">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.Failure.</span></span><span class="sig-name descname"><span class="pre">Failure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">victim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distribution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repairman</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offshift</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deteriorationType</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'constant'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">waitOnTie</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conditional</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Failure.html#Failure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Failure.Failure" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#manpy.simulation.core.ObjectInterruption.ObjectInterruption" title="manpy.simulation.core.ObjectInterruption.ObjectInterruption"><code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectInterruption</span></code></a></p>
+<p>Models failures of machines.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> – Internal ID of the failure.</p></li>
+<li><p><strong>name</strong> – Name of the failure.</p></li>
+<li><p><strong>victim</strong> – Victim (i.e. the machine that should fail) for the Failure</p></li>
+<li><p><strong>distribution</strong> – dictionary containing the individual distributions, e.g. TTF and TTR</p></li>
+<li><p><strong>index</strong> – Internal index, only used if name is empty.</p></li>
+<li><p><strong>repairman</strong> – Repairman with constrained resources that’s assigned to this failure. Optional.</p></li>
+<li><p><strong>offshift</strong> – flag used to identify if the time between failures should be counted while the victim is off-shift</p></li>
+<li><p><strong>deteriorationType</strong> – shows how the time to failure is measured;
+‘constant’ means it counts not matter the state of the victim;
+‘onShift’ counts only if the victim is onShift;
+‘working’ counts only working time</p></li>
+<li><p><strong>waitOnTie</strong> – flag to show if the failure will wait on tie with other events before interrupting the victim</p></li>
+<li><p><strong>conditional</strong> – function that evaluates a condition. If return value true, the failure will be triggered.
+Is used instead of passing a TTF in distribution.</p></li>
+<li><p><strong>entity</strong> – Should the failure occur on an enitity or independent of entities?</p></li>
+<li><p><strong>remove</strong> – Should the entities on which the failure occured be removed from the production line (=destroyed)?</p></li>
+<li><p><strong>kw</strong> – </p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Failure.Failure.initialize">
 <span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Failure.html#Failure.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Failure.Failure.initialize" title="Permalink to this definition">#</a></dt>
@@ -704,19 +728,17 @@
 <dt class="sig sig-object py" id="manpy.simulation.core.Feature.Feature">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.Feature.</span></span><span class="sig-name descname"><span class="pre">Feature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">victim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distribution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distribution_state_controller</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reset_distributions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_negative</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_walk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dependent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Feature.html#Feature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Feature.Feature" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#manpy.simulation.core.ObjectProperty.ObjectProperty" title="manpy.simulation.core.ObjectProperty.ObjectProperty"><code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectProperty</span></code></a></p>
-<p>The Feature ObjectProperty generates Features for a Machine and stores them in Entities
-:param id: The id of the Feature
-:param name: The name of the Feature
-:param victim: The machine to which the feature belongs
-:param distribution: The statistical distribution of the value of the Feature
-:param distribution_state_controller: StateController that can contain different distributions.
-:param reset_distributions: Active with deteriorationType working; Resets distribution_state_controller when the</p>
-<blockquote>
-<div><p>victim is interrupted (=repaired)</p>
-</div></blockquote>
+<p>The Feature ObjectProperty generates Features for a Machine and stores them in Entities</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> – The id of the Feature</p></li>
+<li><p><strong>name</strong> – The name of the Feature</p></li>
+<li><p><strong>victim</strong> – The machine to which the feature belongs</p></li>
+<li><p><strong>distribution</strong> – The statistical distribution of the value of the Feature</p></li>
+<li><p><strong>distribution_state_controller</strong> – StateController that can contain different distributions.</p></li>
+<li><p><strong>reset_distributions</strong> – Active with deteriorationType working; Resets distribution_state_controller when the
+victim is interrupted (=repaired)</p></li>
 <li><p><strong>no_negative</strong> – If this value is true, returns 0 for values below 0 of the feature value</p></li>
 <li><p><strong>contribute</strong> – Needs Failures in a list as an input to contribute the Feature value to conditions</p></li>
 <li><p><strong>start_time</strong> – The starting time for the feature</p></li>

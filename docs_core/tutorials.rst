@@ -261,9 +261,9 @@ Sometimes, only certain values are known, which makes interpolation a very usefu
                                        }
                           )
 
-In this example, we give the interpolation algorithm 4 data points in the interval, between which it interpolates.
+In this example, we provide the interpolation algorithm 4 data points in the interval in which it interpolates.
 No matter how small or large the interval is, the interpolation algorithm needs at least 4 values.
-The data points for interpolation can also have a Feature with all its customization possibilities as source:
+The data points for interpolation can also be determined by a Feature with all its customization possibilities:
 
 .. code-block:: python
     :linenos:
@@ -291,7 +291,56 @@ In this example, the final value for interpolation is received from Feature "end
 Failures
 ---------
 
-TODO
+Despite not being desired, failures play a big role in production lines.
+Therefore, in order to accurately model a production line, we must be able to model failures in a sophisticated way.
+ManPy already provides such a complex model through its Failure classe.
+The following example demonstrates a simple ManPy Failure:
+
+.. code-block:: python
+
+    simple_failure = Failure(id="Flr0",
+                             name="SimpleFailure",
+                             victim=m1,
+                             distribution={"TTF": {"Fixed": {"mean": 0.8}},
+                                           "TTR": {"Normal": {"mean": 100, "stdev": 25, "min":50,
+                                                              "probability": 0.01}}})
+
+This failure is potentially triggered every 0.8 seconds, which is determined by the time-to-failure (TTF) distribution.
+At each potential trigger point, a time-to-repair (TTR) is calculated, which determines the down time of the victim (i.e. the machine at which the failure occurs)
+Since we additionally passed a probability value to the TTR distribution, we only get actual downtime with a 1% chance.
+If we don't pass the probability value, the frequency of the failure is solely determined by TTF.
+
+A more flexible way of triggering failures are conditional failures.
+Conditional failures are comparable to Quality Control in Machines (see `Quality Control`_).
+You implement the condition as a function and pass it to the failure using the "conditional" parameter:
+
+.. code-block:: python
+    :linenos:
+
+    # Any function can be employed as the condition for a Failure to occur
+    # You can utilize any simulation values for the condition
+    # Return True to let the Failure occur
+    def condition(self):
+        value_1 = Ftr1.get_feature_value()
+        value_2 = Ftr2.get_feature_value()
+        if (value_1 + 20 * value_2) > 200: # prev 360
+            Ftr1.start_time = G.env.now
+            Ftr2.start_time = G.env.now
+            return True
+        else:
+            return False
+
+    conditional_failure = Failure(victim=m1,
+                 conditional=condition,
+                 distribution={"TTR": {"Fixed": {"mean": 30}}})
+
+Here, the triggering of the failure is solely controlled by the function condition, we only need to specify TTR.
+Similarly to Quality Control, we can access the feature values to determine whether a failure should be triggered or not.
+
+A Failure is automatically resolved after TTR is passed.
+Additionally, ManPy offers the possibility to model repairmen, which can be used to model constrained maintenance resources.
+In our case, we always assume that a failure can be repaired in the given time period, which may be unrealistic.
+
 
 .. _distributions:
 
