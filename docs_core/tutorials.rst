@@ -342,28 +342,181 @@ Additionally, ManPy offers the possibility to model repairmen, which can be used
 In our case, we always assume that a failure can be repaired in the given time period, which may be unrealistic.
 
 
-.. _distributions:
-
 Distributions and StateControllers
 -----------------------------------
 
 Using our StateControllers in combination with distributions allows for complex control over the lifecycle behaviour of features.
 This can be used to model data drifts or distribution shifts.
+The StateControllers are relatively generic and would easily allow extensions to other use cases, but we focus on controlling different probability distributions.
+The for our StateControllers was the need for modelling changing behaviour of features depending on their wear.
+If a machine part (e.g. a bearing) shows signs of wear, it's underlying probability distribution changes slightly.
+In the case of a bearing, this could be modelled using a steadily increasing standard deviation.
+In the following, the different types of yet implemented StateControllers are explained.
+
+SimpleStateController is the most simple case of a StateController (surprise!).
+It models a simple "break point", e.g. a very different behaviour of a machine part after it broke.
+This can be achieved using the following piece of code:
 
 .. code-block:: python
     :linenos:
 
-    # TODO
+    dists = [{"Time": {"Fixed": {"mean": feature_cycle_time}},
+              "Feature": {"Normal": {"mean": 0, "stdev": 1}}},
+             {"Time": {"Fixed": {"mean": feature_cycle_time}},
+              "Feature": {"Normal": {"mean": 100, "stdev": 10}}}]
 
-* Labels
+    boundaries = {(0, 25): 0, (25, None): 1}
+
+    controller = SimpleStateController(states=dists, boundaries=boundaries, wear_per_step=1.0)
+
+    f3 = Feature("f3", "F3", victim=m2, distribution_state_controller=controller)
+
+This SimpleStateController controls the distributions of Feature F3.
+The actual behaviour is defined in "boundaries", which controls which distribution should be used at a certain amount of wear.
+In each production step, wear_per_step is added to the total amount of wear.
+If the total amount of wear crosses a boundary, a different distribution is used for Feature F3.
+In this case, the break point is defined at 25 units of wear, which leads to a new normal distribution with a drastically different mean (100).
+
+By default, a StateController is reset to its initial state after the victim (= the machine) of its assigned feature has ended a failure, i.e. it's been repaired.
+This behavior can be deactivated through the "reset_distributions" parameter of Feature.
+
+SimpleStateController is very generic by simply retrieving the element in the states list that is determined by boundaries.
+ContinuosNormalDistribution is a more specialized StateController.
+It is specifically designed for Features that are generated using a Gaussian distribution.
+In ContinuosNormalDistribution, we assume that wear immediately influences the underlying probability distribution, even if it's by a very small amount.
+We model this by adding a certain amount (mean_change_per_step) in each production step to the mean of the normal distribution.
+Additionally, the break point mechanic from SimpleStateController is still present.
+However, it's now simplified such that the normal distribution after the defect occurred is only defined by a mean and STD:
+
+.. code-block:: python
+    :linenos:
+
+    mean_change_per_step = 0.05
+    controller1 = ContinuosNormalDistribution(wear_per_step=0.1,
+                                             mean_change_per_step=mean_change_per_step,
+                                             initial_mean=2.0,
+                                             std=2.0,
+                                             break_point=10,
+                                             defect_mean=7.0,
+                                             defect_std=3.0
+                                             )
+
+    # not using a break point
+    controller2 = ContinuosNormalDistribution(wear_per_step=0.7,
+                                             mean_change_per_step=mean_change_per_step,
+                                             initial_mean=2.0,
+                                             std=2.0,
+                                             break_point=None,
+                                             defect_mean=None,
+                                             defect_std=None
+                                             )
+
+    f3 = Feature("f3", "F3", victim=m2, reset_distributions=True, distribution_state_controller=controller1)
+    # f3 = Feature("f3", "F3", victim=m2, reset_distributions=True, distribution_state_controller=controller2)
+
+SimpleStateController and ContinuosNormalDistribution are best used to model properties in relation to wear.
+But sometimes, failures can occur without obvious reason.
+For these cases, we designed RandomDefectStateController, which models a defect using a Bernoulli distribution.
+If the Bernoulli distribution returns 1, it selects a defect StateController from a list, otherwise it uses a "ok" StateController that model normal behaviour.
+
+.. code-block:: python
+   :linenos:
+
+    mean_change_per_step = 0.02
+
+    ok_controller = ContinuosNormalDistribution(wear_per_step=0.7,
+                                                break_point=None,
+                                                mean_change_per_step=mean_change_per_step,
+                                                initial_mean=3.0,
+                                                std=2.0,
+                                                defect_mean=7.0,
+                                                defect_std=3.0
+                                                )
+
+    defect_controller1 = ContinuosNormalDistribution(wear_per_step=0.7,
+                                                    mean_change_per_step=mean_change_per_step,
+                                                    initial_mean=7.0,
+                                                    std=2.0,
+                                                    break_point=None,
+                                                    defect_mean=None,
+                                                    defect_std=None
+                                                    )
+
+    defect_controller2 = ContinuosNormalDistribution(wear_per_step=0.1,
+                                                    mean_change_per_step=mean_change_per_step,
+                                                    initial_mean=1.0,
+                                                    std=2.0,
+                                                    break_point=None,
+                                                    defect_mean=None,
+                                                    defect_std=None
+                                                    )
+
+    random_defect_controller = RandomDefectStateController(failure_probability=0.05,
+                                                           ok_controller=ok_controller,
+                                                           defect_controllers=[defect_controller1, defect_controller2])
+
+
+The defect_controllers list can contain multiple StateControllers, which can be used to model minor deviations from the planned behaviour in multiple directions, like too much or not enough glue.
+RandomDefectController introduces an additional way of performing quality control.
+Depending on the distribution that gets selected (ok/defect), an internal label is set to either True or False, indicating whether a defect is present or not.
+This label can be used for quality control, which should create more non-obvious relationships:
+
+.. code-block:: python
+    :linenos:
+
+    def quality_control(self):
+        activeEntity = self.Res.users[0]
+
+        if any(activeEntity.labels):
+            return True
+
+This function marks an entity as "defect" if at least one feature was the result of a "defect" probability distribution.
+
+StateControllers are highly customizable.
+If necessary, you can write your own StateController that perfectly fits you demands.
+The interface is defined in core/StateController.py.
 
 Export
 ------
 
 TODO how to export features and timeseries to csv, how to export to database, ...
 
-Further customization
-------------------------
+Our ManPy extensions offers two ways to export the simulated data: Pandas DataFrames and Databases.
+To export the data to a Pandas DataFrame, you can use the getFeatureData and getTimeSeriesData functions:
 
-How to write new classes that fit into the ManPy Framework?
+.. code-block:: python
+    :linenos:
 
+    m1_data = getFeatureData([m1])
+    print(m1_data.to_string(index=False), "\n")
+
+    # With 'time=True', timestamps of the feature values are included in the DataFrame
+    m1_data_time = getFeatureData([m1], time=True)
+    print(m1_data_time.to_string(index=False), "\n")
+
+    # The function supports multiple machines
+    both = getFeatureData([m1, m2])
+    print(both.to_string(index=False), "\n")
+
+    # To retrieve timeseries data from the simulation, utilize the getTimeSeriesData function
+    # The function accepts a timeSeries and returns a DataFrame representing that timeseries
+    ts_data = getTimeSeriesData(ts_features)
+
+While getFeatureData accepts machines as input, getTimeSeriesData accepts a TimeSeries instance.
+From there on, Pandas Dataframes offer a variety of exports, e.g. to CSV.
+
+Additionally, we support data export to QuestDB and Kafka:
+
+.. code-block:: python
+    :linenos:
+
+    from manpy.simulation.core.Database import ManPyQuestDBDatabase, ManPyKafkaConnection
+
+    db = ManPyQuestDBDatabase()
+    # alternatively: db = ManPyKafkaConnection(...)
+
+    runSimulation(objectList, maxSimTime, db=db)
+
+Our Database interface is highly customizable.
+If necessary, you can write your own DB interface that perfectly fits you demands.
+The interface is defined in core/Database.py.

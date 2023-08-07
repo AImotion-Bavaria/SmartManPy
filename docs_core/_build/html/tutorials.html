@@ -476,23 +476,156 @@ Additionally, ManPy offers the possibility to model repairmen, which can be used
 In our case, we always assume that a failure can be repaired in the given time period, which may be unrealistic.</p>
 </section>
 <section id="distributions-and-statecontrollers">
-<span id="distributions"></span><h3>Distributions and StateControllers<a class="headerlink" href="#distributions-and-statecontrollers" title="Permalink to this heading">#</a></h3>
+<h3>Distributions and StateControllers<a class="headerlink" href="#distributions-and-statecontrollers" title="Permalink to this heading">#</a></h3>
 <p>Using our StateControllers in combination with distributions allows for complex control over the lifecycle behaviour of features.
-This can be used to model data drifts or distribution shifts.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1"># TODO</span>
+This can be used to model data drifts or distribution shifts.
+The StateControllers are relatively generic and would easily allow extensions to other use cases, but we focus on controlling different probability distributions.
+The for our StateControllers was the need for modelling changing behaviour of features depending on their wear.
+If a machine part (e.g. a bearing) shows signs of wear, it’s underlying probability distribution changes slightly.
+In the case of a bearing, this could be modelled using a steadily increasing standard deviation.
+In the following, the different types of yet implemented StateControllers are explained.</p>
+<p>SimpleStateController is the most simple case of a StateController (surprise!).
+It models a simple “break point”, e.g. a very different behaviour of a machine part after it broke.
+This can be achieved using the following piece of code:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="n">dists</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;Time&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Fixed&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="n">feature_cycle_time</span><span class="p">}},</span>
+<span class="linenos"> 2</span>          <span class="s2">&quot;Feature&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}},</span>
+<span class="linenos"> 3</span>         <span class="p">{</span><span class="s2">&quot;Time&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Fixed&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="n">feature_cycle_time</span><span class="p">}},</span>
+<span class="linenos"> 4</span>          <span class="s2">&quot;Feature&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}}}]</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="n">boundaries</span> <span class="o">=</span> <span class="p">{(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">25</span><span class="p">):</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span> <span class="mi">1</span><span class="p">}</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="n">controller</span> <span class="o">=</span> <span class="n">SimpleStateController</span><span class="p">(</span><span class="n">states</span><span class="o">=</span><span class="n">dists</span><span class="p">,</span> <span class="n">boundaries</span><span class="o">=</span><span class="n">boundaries</span><span class="p">,</span> <span class="n">wear_per_step</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="n">f3</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;f3&quot;</span><span class="p">,</span> <span class="s2">&quot;F3&quot;</span><span class="p">,</span> <span class="n">victim</span><span class="o">=</span><span class="n">m2</span><span class="p">,</span> <span class="n">distribution_state_controller</span><span class="o">=</span><span class="n">controller</span><span class="p">)</span>
 </pre></div>
 </div>
-<ul class="simple">
-<li><p>Labels</p></li>
-</ul>
+<p>This SimpleStateController controls the distributions of Feature F3.
+The actual behaviour is defined in “boundaries”, which controls which distribution should be used at a certain amount of wear.
+In each production step, wear_per_step is added to the total amount of wear.
+If the total amount of wear crosses a boundary, a different distribution is used for Feature F3.
+In this case, the break point is defined at 25 units of wear, which leads to a new normal distribution with a drastically different mean (100).</p>
+<p>By default, a StateController is reset to its initial state after the victim (= the machine) of its assigned feature has ended a failure, i.e. it’s been repaired.
+This behavior can be deactivated through the “reset_distributions” parameter of Feature.</p>
+<p>SimpleStateController is very generic by simply retrieving the element in the states list that is determined by boundaries.
+ContinuosNormalDistribution is a more specialized StateController.
+It is specifically designed for Features that are generated using a Gaussian distribution.
+In ContinuosNormalDistribution, we assume that wear immediately influences the underlying probability distribution, even if it’s by a very small amount.
+We model this by adding a certain amount (mean_change_per_step) in each production step to the mean of the normal distribution.
+Additionally, the break point mechanic from SimpleStateController is still present.
+However, it’s now simplified such that the normal distribution after the defect occurred is only defined by a mean and STD:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="n">mean_change_per_step</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="linenos"> 2</span><span class="n">controller1</span> <span class="o">=</span> <span class="n">ContinuosNormalDistribution</span><span class="p">(</span><span class="n">wear_per_step</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+<span class="linenos"> 3</span>                                         <span class="n">mean_change_per_step</span><span class="o">=</span><span class="n">mean_change_per_step</span><span class="p">,</span>
+<span class="linenos"> 4</span>                                         <span class="n">initial_mean</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+<span class="linenos"> 5</span>                                         <span class="n">std</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+<span class="linenos"> 6</span>                                         <span class="n">break_point</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+<span class="linenos"> 7</span>                                         <span class="n">defect_mean</span><span class="o">=</span><span class="mf">7.0</span><span class="p">,</span>
+<span class="linenos"> 8</span>                                         <span class="n">defect_std</span><span class="o">=</span><span class="mf">3.0</span>
+<span class="linenos"> 9</span>                                         <span class="p">)</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="c1"># not using a break point</span>
+<span class="linenos">12</span><span class="n">controller2</span> <span class="o">=</span> <span class="n">ContinuosNormalDistribution</span><span class="p">(</span><span class="n">wear_per_step</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+<span class="linenos">13</span>                                         <span class="n">mean_change_per_step</span><span class="o">=</span><span class="n">mean_change_per_step</span><span class="p">,</span>
+<span class="linenos">14</span>                                         <span class="n">initial_mean</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+<span class="linenos">15</span>                                         <span class="n">std</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+<span class="linenos">16</span>                                         <span class="n">break_point</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="linenos">17</span>                                         <span class="n">defect_mean</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="linenos">18</span>                                         <span class="n">defect_std</span><span class="o">=</span><span class="kc">None</span>
+<span class="linenos">19</span>                                         <span class="p">)</span>
+<span class="linenos">20</span>
+<span class="linenos">21</span><span class="n">f3</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;f3&quot;</span><span class="p">,</span> <span class="s2">&quot;F3&quot;</span><span class="p">,</span> <span class="n">victim</span><span class="o">=</span><span class="n">m2</span><span class="p">,</span> <span class="n">reset_distributions</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">distribution_state_controller</span><span class="o">=</span><span class="n">controller1</span><span class="p">)</span>
+<span class="linenos">22</span><span class="c1"># f3 = Feature(&quot;f3&quot;, &quot;F3&quot;, victim=m2, reset_distributions=True, distribution_state_controller=controller2)</span>
+</pre></div>
+</div>
+<p>SimpleStateController and ContinuosNormalDistribution are best used to model properties in relation to wear.
+But sometimes, failures can occur without obvious reason.
+For these cases, we designed RandomDefectStateController, which models a defect using a Bernoulli distribution.
+If the Bernoulli distribution returns 1, it selects a defect StateController from a list, otherwise it uses a “ok” StateController that model normal behaviour.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span> <span class="n">mean_change_per_step</span> <span class="o">=</span> <span class="mf">0.02</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span> <span class="n">ok_controller</span> <span class="o">=</span> <span class="n">ContinuosNormalDistribution</span><span class="p">(</span><span class="n">wear_per_step</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+<span class="linenos"> 4</span>                                             <span class="n">break_point</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="linenos"> 5</span>                                             <span class="n">mean_change_per_step</span><span class="o">=</span><span class="n">mean_change_per_step</span><span class="p">,</span>
+<span class="linenos"> 6</span>                                             <span class="n">initial_mean</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span>
+<span class="linenos"> 7</span>                                             <span class="n">std</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+<span class="linenos"> 8</span>                                             <span class="n">defect_mean</span><span class="o">=</span><span class="mf">7.0</span><span class="p">,</span>
+<span class="linenos"> 9</span>                                             <span class="n">defect_std</span><span class="o">=</span><span class="mf">3.0</span>
+<span class="linenos">10</span>                                             <span class="p">)</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span> <span class="n">defect_controller1</span> <span class="o">=</span> <span class="n">ContinuosNormalDistribution</span><span class="p">(</span><span class="n">wear_per_step</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+<span class="linenos">13</span>                                                 <span class="n">mean_change_per_step</span><span class="o">=</span><span class="n">mean_change_per_step</span><span class="p">,</span>
+<span class="linenos">14</span>                                                 <span class="n">initial_mean</span><span class="o">=</span><span class="mf">7.0</span><span class="p">,</span>
+<span class="linenos">15</span>                                                 <span class="n">std</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+<span class="linenos">16</span>                                                 <span class="n">break_point</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="linenos">17</span>                                                 <span class="n">defect_mean</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="linenos">18</span>                                                 <span class="n">defect_std</span><span class="o">=</span><span class="kc">None</span>
+<span class="linenos">19</span>                                                 <span class="p">)</span>
+<span class="linenos">20</span>
+<span class="linenos">21</span> <span class="n">defect_controller2</span> <span class="o">=</span> <span class="n">ContinuosNormalDistribution</span><span class="p">(</span><span class="n">wear_per_step</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+<span class="linenos">22</span>                                                 <span class="n">mean_change_per_step</span><span class="o">=</span><span class="n">mean_change_per_step</span><span class="p">,</span>
+<span class="linenos">23</span>                                                 <span class="n">initial_mean</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+<span class="linenos">24</span>                                                 <span class="n">std</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+<span class="linenos">25</span>                                                 <span class="n">break_point</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="linenos">26</span>                                                 <span class="n">defect_mean</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="linenos">27</span>                                                 <span class="n">defect_std</span><span class="o">=</span><span class="kc">None</span>
+<span class="linenos">28</span>                                                 <span class="p">)</span>
+<span class="linenos">29</span>
+<span class="linenos">30</span> <span class="n">random_defect_controller</span> <span class="o">=</span> <span class="n">RandomDefectStateController</span><span class="p">(</span><span class="n">failure_probability</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+<span class="linenos">31</span>                                                        <span class="n">ok_controller</span><span class="o">=</span><span class="n">ok_controller</span><span class="p">,</span>
+<span class="linenos">32</span>                                                        <span class="n">defect_controllers</span><span class="o">=</span><span class="p">[</span><span class="n">defect_controller1</span><span class="p">,</span> <span class="n">defect_controller2</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>The defect_controllers list can contain multiple StateControllers, which can be used to model minor deviations from the planned behaviour in multiple directions, like too much or not enough glue.
+RandomDefectController introduces an additional way of performing quality control.
+Depending on the distribution that gets selected (ok/defect), an internal label is set to either True or False, indicating whether a defect is present or not.
+This label can be used for quality control, which should create more non-obvious relationships:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">def</span> <span class="nf">quality_control</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos">2</span>    <span class="n">activeEntity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="linenos">3</span>
+<span class="linenos">4</span>    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">activeEntity</span><span class="o">.</span><span class="n">labels</span><span class="p">):</span>
+<span class="linenos">5</span>        <span class="k">return</span> <span class="kc">True</span>
+</pre></div>
+</div>
+<p>This function marks an entity as “defect” if at least one feature was the result of a “defect” probability distribution.</p>
+<p>StateControllers are highly customizable.
+If necessary, you can write your own StateController that perfectly fits you demands.
+The interface is defined in core/StateController.py.</p>
 </section>
 <section id="export">
 <h3>Export<a class="headerlink" href="#export" title="Permalink to this heading">#</a></h3>
 <p>TODO how to export features and timeseries to csv, how to export to database, …</p>
-</section>
-<section id="further-customization">
-<h3>Further customization<a class="headerlink" href="#further-customization" title="Permalink to this heading">#</a></h3>
-<p>How to write new classes that fit into the ManPy Framework?</p>
+<p>Our ManPy extensions offers two ways to export the simulated data: Pandas DataFrames and Databases.
+To export the data to a Pandas DataFrame, you can use the getFeatureData and getTimeSeriesData functions:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="n">m1_data</span> <span class="o">=</span> <span class="n">getFeatureData</span><span class="p">([</span><span class="n">m1</span><span class="p">])</span>
+<span class="linenos"> 2</span><span class="nb">print</span><span class="p">(</span><span class="n">m1_data</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="c1"># With &#39;time=True&#39;, timestamps of the feature values are included in the DataFrame</span>
+<span class="linenos"> 5</span><span class="n">m1_data_time</span> <span class="o">=</span> <span class="n">getFeatureData</span><span class="p">([</span><span class="n">m1</span><span class="p">],</span> <span class="n">time</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="linenos"> 6</span><span class="nb">print</span><span class="p">(</span><span class="n">m1_data_time</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="c1"># The function supports multiple machines</span>
+<span class="linenos"> 9</span><span class="n">both</span> <span class="o">=</span> <span class="n">getFeatureData</span><span class="p">([</span><span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">])</span>
+<span class="linenos">10</span><span class="nb">print</span><span class="p">(</span><span class="n">both</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="c1"># To retrieve timeseries data from the simulation, utilize the getTimeSeriesData function</span>
+<span class="linenos">13</span><span class="c1"># The function accepts a timeSeries and returns a DataFrame representing that timeseries</span>
+<span class="linenos">14</span><span class="n">ts_data</span> <span class="o">=</span> <span class="n">getTimeSeriesData</span><span class="p">(</span><span class="n">ts_features</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>While getFeatureData accepts machines as input, getTimeSeriesData accepts a TimeSeries instance.
+From there on, Pandas Dataframes offer a variety of exports, e.g. to CSV.</p>
+<p>Additionally, we support data export to QuestDB and Kafka:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">from</span> <span class="nn">manpy.simulation.core.Database</span> <span class="kn">import</span> <span class="n">ManPyQuestDBDatabase</span><span class="p">,</span> <span class="n">ManPyKafkaConnection</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="n">db</span> <span class="o">=</span> <span class="n">ManPyQuestDBDatabase</span><span class="p">()</span>
+<span class="linenos">4</span><span class="c1"># alternatively: db = ManPyKafkaConnection(...)</span>
+<span class="linenos">5</span>
+<span class="linenos">6</span><span class="n">runSimulation</span><span class="p">(</span><span class="n">objectList</span><span class="p">,</span> <span class="n">maxSimTime</span><span class="p">,</span> <span class="n">db</span><span class="o">=</span><span class="n">db</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Our Database interface is highly customizable.
+If necessary, you can write your own DB interface that perfectly fits you demands.
+The interface is defined in core/Database.py.</p>
 </section>
 </section>
 </section>
@@ -561,7 +694,6 @@ This can be used to model data drifts or distribution shifts.</p>
 <li><a class="reference internal" href="#failures">Failures</a></li>
 <li><a class="reference internal" href="#distributions-and-statecontrollers">Distributions and StateControllers</a></li>
 <li><a class="reference internal" href="#export">Export</a></li>
-<li><a class="reference internal" href="#further-customization">Further customization</a></li>
 </ul>
 </li>
 </ul>
