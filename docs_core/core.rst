@@ -1,130 +1,123 @@
-core package
+Core
 ============
 
-core.CoreObject module
-----------------------
+The core package contains the most essential files in our ManPy extension.
+
+manpy.simulation.core.CoreObject.py
+-------------------------------------
 
 .. automodule:: manpy.simulation.core.CoreObject
    :members:
    :undoc-members:
    :show-inheritance:
 
-core.Database module
---------------------
+manpy.simulation.core.Database.py
+------------------------------------
 
 .. automodule:: manpy.simulation.core.Database
    :members:
    :undoc-members:
    :show-inheritance:
 
-core.Entity module
-------------------
+manpy.simulation.core.Entity.py
+----------------------------------
 
 .. automodule:: manpy.simulation.core.Entity
    :members:
    :undoc-members:
    :show-inheritance:
 
-core.Exit module
-----------------
+manpy.simulation.core.Exit.py
+------------------------------
 
 .. automodule:: manpy.simulation.core.Exit
    :members:
    :undoc-members:
    :show-inheritance:
 
-core.Failure module
--------------------
+manpy.simulation.core.Failure.py
+---------------------------------
 
 .. automodule:: manpy.simulation.core.Failure
    :members:
    :undoc-members:
    :show-inheritance:
 
-core.Feature module
--------------------
+manpy.simulation.core.Feature.py
+-----------------------------------
 
 .. automodule:: manpy.simulation.core.Feature
    :members:
    :undoc-members:
    :show-inheritance:
 
-core.Globals module
--------------------
+manpy.simulation.core.Globals.py
+---------------------------------
 
 .. automodule:: manpy.simulation.core.Globals
    :members:
-   :undoc-members:
    :show-inheritance:
 
-core.Machine module
--------------------
+manpy.simulation.core.Machine.py
+------------------------------------
 
 .. automodule:: manpy.simulation.core.Machine
    :members:
    :undoc-members:
    :show-inheritance:
 
-core.ObjectInterruption module
-------------------------------
+manpy.simulation.core.ObjectInterruption.py
+-----------------------------------------------
 
 .. automodule:: manpy.simulation.core.ObjectInterruption
    :members:
    :undoc-members:
    :show-inheritance:
 
-core.ObjectProperty module
---------------------------
+manpy.simulation.core.ObjectProperty.py
+----------------------------------------
 
 .. automodule:: manpy.simulation.core.ObjectProperty
    :members:
    :undoc-members:
    :show-inheritance:
 
-core.ObjectResource module
---------------------------
+manpy.simulation.core.ObjectResource.py
+----------------------------------------
 
 .. automodule:: manpy.simulation.core.ObjectResource
    :members:
    :undoc-members:
    :show-inheritance:
 
-core.Queue module
------------------
+manpy.simulation.core.Queue.py
+-------------------------------
 
 .. automodule:: manpy.simulation.core.Queue
    :members:
    :undoc-members:
    :show-inheritance:
 
-core.Source module
-------------------
+manpy.simulation.core.Source.py
+--------------------------------
 
 .. automodule:: manpy.simulation.core.Source
    :members:
    :undoc-members:
    :show-inheritance:
 
-core.StateController module
----------------------------
+manpy.simulation.core.StateController.py
+------------------------------------------
 
 .. automodule:: manpy.simulation.core.StateController
    :members:
    :undoc-members:
    :show-inheritance:
 
-core.Timeseries module
-----------------------
+manpy.simulation.core.Timeseries.py
+------------------------------------
 
 .. automodule:: manpy.simulation.core.Timeseries
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: manpy.simulation.core
    :members:
    :undoc-members:
    :show-inheritance:

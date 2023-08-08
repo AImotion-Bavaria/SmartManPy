@@ -16,19 +16,22 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with DREAM.  If not, see <http://www.gnu.org/licenses/>.
 # ===========================================================================
-"""
-Created on 12 Jul 2012
 
-@author: George
-"""
-"""
-Class that acts as an abstract. It should have no instances. All the core-objects should inherit from it
-"""
+
 from manpy.simulation.core.Globals import G
 from manpy.simulation.ManPyObject import ManPyObject
 
 
 class CoreObject(ManPyObject):
+    """
+    Created on 12 Jul 2012
+
+    @author: George
+    Class that acts as an abstract. It should have no instances. All the core-objects should inherit from it
+
+    :param id: Internal Id
+    :param name: Name of the CoreObject
+    """
     class_name = "manpy.CoreObject"
 
     def __init__(self, id, name, **kw):
@@ -278,25 +281,30 @@ class CoreObject(ManPyObject):
         self.endShiftTimes = []
         self.startShiftTimes = []
 
-    # =======================================================================
-    #                the main process of the core object
-    #     this is dummy, every object must have its own implementation
-    # =======================================================================
     def run(self):
+        """
+        the main process of the core object, this is dummy, every object must have its own implementation
+
+        :return: None
+        """
         raise NotImplementedError("Subclass must define 'run' method")
 
-    # =======================================================================
-    # sets the routing in and out elements for the Object
-    # =======================================================================
     def defineRouting(self, predecessorList=[], successorList=[]):
+        """
+        sets the routing in and out elements for the Object
+
+        :param predecessorList: List containing the predecessor Objects
+        :param successorList: List containing the successor Objects
+
+        :return: None
+        """
         self.next = successorList
         self.previous = predecessorList
 
-    # =======================================================================
-    # checks if there is anything set as WIP at the begging of the simulation
-    # and sends an event to initialize the simulation
-    # =======================================================================
     def initialSignalReceiver(self):
+        """
+        checks if there is anything set as WIP at the begging of the simulation and sends an event to initialize the simulation
+        """
         if self.haveToDispose():
             self.signalReceiver()
 
@@ -317,11 +325,15 @@ class CoreObject(ManPyObject):
             if allocationNeeded:
                 self.requestAllocation()
 
-    # =======================================================================
-    # removes an Entity from the Object the Entity to be removed is passed
-    # as argument by getEntity of the receiver
-    # =======================================================================
     def removeEntity(self, entity=None, resetFlags=True, addBlockage=True):
+        """
+        removes an Entity from the Object the Entity to be removed is passed as argument by getEntity of the receiver
+
+        :param entity:
+        :param resetFlags:
+        :param addBlockage:
+        :return:
+        """
         if addBlockage and self.isBlocked:
             # add the blocking time
             self.addBlockage()
@@ -362,35 +374,34 @@ class CoreObject(ManPyObject):
             self.sendSignal(receiver=self, signal=self.entityRemoved)
         return entity
 
-    # ===========================================================================
-    # appends entity to the receiver object. to be called by the removeEntity of the giver
-    # this method is created to be overridden by the Assembly class in its getEntity where Frames are loaded
-    # ===========================================================================
     def appendEntity(self, entity=None):
+        """
+        appends entity to the receiver object. to be called by the removeEntity of the giver
+        this method is created to be overridden by the Assembly class in its getEntity where Frames are loaded
+        """
+
         activeObjectQueue = self.Res.users
         activeObjectQueue.append(entity)
 
-    # =======================================================================
-    #             called be getEntity it identifies the Entity
-    #                        to be obtained so that
-    #            getEntity gives it to removeEntity as argument
-    # =======================================================================
     def identifyEntityToGet(self):
+        """
+        called be getEntity it identifies the Entity to be obtained so that getEntity gives it to removeEntity as argument
+        """
         giverObjectQueue = self.getGiverObjectQueue()
         return giverObjectQueue[0]
 
-    # =======================================================================
-    #              adds the blockage time to totalBlockageTime
-    #                    each time an Entity is removed
-    # =======================================================================
     def addBlockage(self):
+        """
+        adds the blockage time to totalBlockageTime each time an Entity is removed
+        """
         if self.timeLastBlockageStarted:
             self.totalBlockageTime += self.env.now - self.timeLastBlockageStarted
 
-    # =======================================================================
-    # gets an entity from the giver
-    # =======================================================================
     def getEntity(self):
+        """
+        gets an entity from the giver
+        """
+
         # get active object and its queue, as well as the active (to be) entity
         # (after the sorting of the entities in the queue of the giver object)
         #         activeObject=self.getActiveObject()
@@ -466,17 +477,16 @@ class CoreObject(ManPyObject):
             )
         return activeEntity
 
-    # ===========================================================================
-    # updates the next list of the object
-    # ===========================================================================
     def updateNext(self, entity=None):
+        """
+        updates the next list of the object
+        """
         pass
 
-    # ===========================================================================
-    # check whether there is a critical entity to be disposed
-    # and if preemption is required
-    # ===========================================================================
     def preemptReceiver(self):
+        """
+        check whether there is a critical entity to be disposed and if preemption is required
+        """
         activeObjectQueue = self.Res.users
         # find a critical order if any
         critical = False
@@ -552,11 +562,11 @@ class CoreObject(ManPyObject):
                 (self.wipStatList, [[self.env.now, wip]])
             )
 
-    # ===========================================================================
-    # find possible receivers
-    # ===========================================================================
     @staticmethod
     def findReceiversFor(activeObject):
+        """
+        find possible receivers
+        """
         receivers = []
         for object in [
             x
@@ -568,10 +578,9 @@ class CoreObject(ManPyObject):
             receivers.append(object)
         return receivers
 
-    # =======================================================================
-    # signal the successor that the object can dispose an entity
-    # =======================================================================
     def signalReceiver(self, transmitter=None):
+        """signal the successor that the object can dispose an entity"""
+
         possibleReceivers = (
             [transmitter] if transmitter else self.findReceiversFor(self)
         )
@@ -612,11 +621,10 @@ class CoreObject(ManPyObject):
         self.preemptReceiver()
         return False
 
-    # =======================================================================
-    # select a receiver Object
-    # =======================================================================
     @staticmethod
     def selectReceiver(possibleReceivers=[]):
+        """select a receiver Object"""
+
         candidates = possibleReceivers
         # dummy variables that help prioritize the objects requesting to give objects to the object (activeObject)
         maxTimeWaiting = 0  # dummy variable counting the time a successor is waiting
@@ -636,17 +644,15 @@ class CoreObject(ManPyObject):
                 )
         return receiver
 
-    # ===========================================================================
-    # sort the entities of the queue for the receiver
-    # ===========================================================================
     def sortEntitiesForReceiver(self, receiver=None):
+        """sort the entities of the queue for the receiver"""
+
         pass
 
-    # ===========================================================================
-    # find possible givers
-    # ===========================================================================
     @staticmethod
     def findGiversFor(activeObject):
+        """find possible givers"""
+
         givers = []
         for object in [
             x
@@ -663,10 +669,9 @@ class CoreObject(ManPyObject):
                 givers.append(object)
         return givers
 
-    # =======================================================================
-    # signal the giver that the entity is removed from its internalQueue
-    # =======================================================================
     def signalGiver(self):
+        """signal the giver that the entity is removed from its internalQueue"""
+
         possibleGivers = self.findGiversFor(self)
         if possibleGivers:
             giver = self.selectGiver(possibleGivers)
@@ -690,11 +695,10 @@ class CoreObject(ManPyObject):
             return True
         return False
 
-    # =======================================================================
-    # select a giver Object
-    # =======================================================================
     @staticmethod
     def selectGiver(possibleGivers=[]):
+        """select a giver Object"""
+
         candidates = possibleGivers
         # dummy variables that help prioritize the objects requesting to give objects to the object (activeObject)
         maxTimeWaiting = 0  # dummy variable counting the time a predecessor is blocked
@@ -710,10 +714,9 @@ class CoreObject(ManPyObject):
                 maxTimeWaiting = timeWaiting
         return giver
 
-    # =======================================================================
-    # actions to be taken after the simulation ends
-    # =======================================================================
     def postProcessing(self, MaxSimtime=None):
+        """actions to be taken after the simulation ends"""
+
         if MaxSimtime == None:
             from .Globals import G
 
@@ -835,36 +838,31 @@ class CoreObject(ManPyObject):
         activeObject.OnBreak.append(100 * self.totalBreakTime / MaxSimtime)
         activeObject.WipStat.append(self.wipStatList.tolist())
 
-    # =======================================================================
-    # outputs results to JSON File
-    # =======================================================================
     def outputResultsJSON(self):
+        """outputs results to JSON File"""
+
         pass
 
-    # =======================================================================
-    # checks if the Object can dispose an entity to the following object
-    # =======================================================================
     def haveToDispose(self, callerObject=None):
+        """checks if the Object can dispose an entity to the following object"""
+
         activeObjectQueue = self.Res.users
         return len(activeObjectQueue) > 0
 
-    # =======================================================================
-    #    checks if the Object can accept an entity and there is an entity
-    #                in some possible giver waiting for it
-    # =======================================================================
     def canAcceptAndIsRequested(self, callerObject=None):
+        """checks if the Object can accept an entity and there is an entity in some possible giver waiting for it"""
+
         pass
 
-    # =======================================================================
-    # checks if the Object can accept an entity
     # =======================================================================
     def canAccept(self, callerObject=None):
+        """checks if the Object can accept an entity"""
+
         pass
 
-    # ===========================================================================
-    # method used to check whether the station is a successor of the caller
-    # ===========================================================================
     def isInRouteOf(self, callerObject=None):
+        """method used to check whether the station is a successor of the caller"""
+
         thecaller = callerObject
         # if the caller is not defined then return True. We are only interested in checking whether
         # the station can accept whatever entity from whichever giver
@@ -875,52 +873,44 @@ class CoreObject(ManPyObject):
             return True
         return False
 
-    # =======================================================================
-    # sorts the Entities in the activeQ of the objects
-    # =======================================================================
     def sortEntities(self):
+        """sorts the Entities in the activeQ of the objects"""
+
         pass
 
-    # =======================================================================
-    # get the active object. This always returns self
-    # =======================================================================
     def getActiveObject(self):
+        """get the active object. This always returns self"""
+
         return self
 
-    # =======================================================================
-    # get the activeQ of the active object.
-    # =======================================================================
     def getActiveObjectQueue(self):
+        """get the activeQ of the active object."""
+
         return self.Res.users
 
-    # =======================================================================
-    # get the giver object in a getEntity transaction.
-    # =======================================================================
     def getGiverObject(self):
+        """get the giver object in a getEntity transaction."""
+
         return self.giver
 
-    # =======================================================================
-    # get the giver object queue in a getEntity transaction.
-    # =======================================================================
     def getGiverObjectQueue(self):
+        """get the giver object queue in a getEntity transaction."""
+
         return self.giver.Res.users
 
-    # =======================================================================
-    # get the receiver object in a removeEntity transaction.
-    # =======================================================================
     def getReceiverObject(self):
+        """get the receiver object in a removeEntity transaction."""
+
         return self.receiver
 
-    # =======================================================================
-    # get the receiver object queue in a removeEntity transaction.
-    # =======================================================================
     def getReceiverObjectQueue(self):
+        """get the receiver object queue in a removeEntity transaction."""
+
         return self.receiver.Res.users
 
-    # =======================================================================
-    # calculates the processing time
-    # =======================================================================
     def calculateProcessingTime(self):
+        """calculates the processing time"""
+
         # this is only for processing of the initial wip
         if self.isProcessingInitialWIP:
             activeEntity = self.getActiveObjectQueue()[0]
@@ -934,95 +924,83 @@ class CoreObject(ManPyObject):
             self.rng.generateNumber()
         )  # this is if we have a default processing time for all the entities
 
-    # ===========================================================================
-    # calculates time (running through a dictionary) according to the type of processing given as argument
-    # ===========================================================================
     def calculateTime(self, type="Processing"):
+        """calculates time (running through a dictionary) according to the type of processing given as argument"""
+
         return {
             "Load": self.loadRng.generateNumber,
             "Setup": self.stpRng.generateNumber,
             "Processing": self.calculateProcessingTime,
         }[type]()
 
-    # =======================================================================
-    # checks if the object is blocked
-    # =======================================================================
     def exitIsAssignedTo(self):
+        """checks if the object is blocked"""
+
         return self.exitAssignedToReceiver
 
-    # =======================================================================
-    # assign Exit of the object
-    # =======================================================================
     def assignExitTo(self, callerObject=None):
+        """assign Exit of the object"""
+
         self.exitAssignedToReceiver = callerObject
 
-    # =======================================================================
-    # unblock the object
-    # =======================================================================
     def unAssignExit(self):
+        """unblock the object"""
+
         self.exitAssignedToReceiver = None
 
-    # =======================================================================
-    # checks if the object is blocked
-    # =======================================================================
     def entryIsAssignedTo(self):
+        """checks if the object is blocked"""
+
         return self.entryAssignedToGiver
 
-    # =======================================================================
-    # assign Exit of the object
-    # =======================================================================
     def assignEntryTo(self):
+        """assign Exit of the object"""
+
         self.entryAssignedToGiver = self.giver
 
-    # =======================================================================
-    # unblock the object
-    # =======================================================================
     def unAssignEntry(self):
+        """unblock the object"""
+
         self.entryAssignedToGiver = None
 
-    # =======================================================================
-    #        actions to be carried whenever the object is interrupted
-    #                  (failure, break, preemption, etc)
-    # =======================================================================
     def interruptionActions(self):
+        """
+        actions to be carried whenever the object is interrupted (failure, break, preemption, etc)
+        """
+
         pass
 
-    # =======================================================================
-    #         actions to be carried whenever the object recovers
-    #   control after an interruption (failure, break, preemption, etc)
-    # =======================================================================
     def postInterruptionActions(self):
+        """
+        actions to be carried whenever the object recovers control after an interruption (failure, break, preemption, etc)
+        """
+
         pass
 
-    # =======================================================================
-    # method to execute preemption
-    # =======================================================================
     def preempt(self):
+        """method to execute preemption"""
+
         # ToDO make a generic method
         pass
 
-    # =======================================================================
-    # checks if the object is in an active position
-    # =======================================================================
     def checkIfActive(self):
+        """checks if the object is in an active position"""
+
         return self.Up and self.onShift and (not self.onBreak)
 
-    # ===========================================================================
-    # filter that returns True if the activeObject Queue is empty and
-    #     false if object holds entities in its queue
-    # ===========================================================================
     def activeQueueIsEmpty(self):
+        """filter that returns True if the activeObject Queue is empty
+        false if object holds entities in its queue"""
+
         return len(self.Res.users) == 0
 
-    # =======================================================================
-    # actions to be carried out when the processing of an Entity ends
-    # =======================================================================
     def endOperationActions(self):
+        """actions to be carried out when the processing of an Entity ends"""
+
         pass
 
-    # ===========================================================================
-    # check if an entity is in the internal Queue of the object
-    # ===========================================================================
     def isInActiveQueue(self, entity=None):
+        """check if an entity is in the internal Queue of the object"""
+
         activeObjectQueue = self.Res.users
         return any(x == entity for x in activeObjectQueue)

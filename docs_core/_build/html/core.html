@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="Tutorials" href="tutorials.html" />
 
     <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
-        <title>core package - Extended ManPy 0.1 documentation</title>
+        <title>Core - Extended ManPy 0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -156,7 +156,7 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">core package</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Core</a></li>
 </ul>
 
 </div>
@@ -191,65 +191,87 @@
           </label>
         </div>
         <article role="main">
-          <section id="core-package">
-<h1>core package<a class="headerlink" href="#core-package" title="Permalink to this heading">#</a></h1>
+          <section id="core">
+<h1>Core<a class="headerlink" href="#core" title="Permalink to this heading">#</a></h1>
+<p>The core package contains the most essential files in our ManPy extension.</p>
 <section id="module-manpy.simulation.core.CoreObject">
-<span id="core-coreobject-module"></span><h2>core.CoreObject module<a class="headerlink" href="#module-manpy.simulation.core.CoreObject" title="Permalink to this heading">#</a></h2>
-<p>Created on 12 Jul 2012</p>
-<p>&#64;author: George</p>
+<span id="manpy-simulation-core-coreobject-py"></span><h2>manpy.simulation.core.CoreObject.py<a class="headerlink" href="#module-manpy.simulation.core.CoreObject" title="Permalink to this heading">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.CoreObject.</span></span><span class="sig-name descname"><span class="pre">CoreObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ManPyObject</span></code></p>
+<p>Created on 12 Jul 2012</p>
+<p>&#64;author: George
+Class that acts as an abstract. It should have no instances. All the core-objects should inherit from it</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> – Internal Id</p></li>
+<li><p><strong>name</strong> – Name of the CoreObject</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.activeQueueIsEmpty">
 <span class="sig-name descname"><span class="pre">activeQueueIsEmpty</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.activeQueueIsEmpty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.activeQueueIsEmpty" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>filter that returns True if the activeObject Queue is empty
+false if object holds entities in its queue</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.addBlockage">
 <span class="sig-name descname"><span class="pre">addBlockage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.addBlockage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.addBlockage" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>adds the blockage time to totalBlockageTime each time an Entity is removed</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.appendEntity">
 <span class="sig-name descname"><span class="pre">appendEntity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.appendEntity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.appendEntity" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>appends entity to the receiver object. to be called by the removeEntity of the giver
+this method is created to be overridden by the Assembly class in its getEntity where Frames are loaded</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.assignEntryTo">
 <span class="sig-name descname"><span class="pre">assignEntryTo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.assignEntryTo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.assignEntryTo" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>assign Exit of the object</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.assignExitTo">
 <span class="sig-name descname"><span class="pre">assignExitTo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callerObject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.assignExitTo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.assignExitTo" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>assign Exit of the object</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.calculateProcessingTime">
 <span class="sig-name descname"><span class="pre">calculateProcessingTime</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.calculateProcessingTime"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.calculateProcessingTime" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>calculates the processing time</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.calculateTime">
 <span class="sig-name descname"><span class="pre">calculateTime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Processing'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.calculateTime"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.calculateTime" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>calculates time (running through a dictionary) according to the type of processing given as argument</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.canAccept">
 <span class="sig-name descname"><span class="pre">canAccept</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callerObject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.canAccept"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.canAccept" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>checks if the Object can accept an entity</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.canAcceptAndIsRequested">
 <span class="sig-name descname"><span class="pre">canAcceptAndIsRequested</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callerObject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.canAcceptAndIsRequested"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.canAcceptAndIsRequested" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>checks if the Object can accept an entity and there is an entity in some possible giver waiting for it</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.checkIfActive">
 <span class="sig-name descname"><span class="pre">checkIfActive</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.checkIfActive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.checkIfActive" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>checks if the object is in an active position</p>
+</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.class_name">
@@ -259,77 +281,103 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.defineRouting">
 <span class="sig-name descname"><span class="pre">defineRouting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predecessorList</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">successorList</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.defineRouting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.defineRouting" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>sets the routing in and out elements for the Object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>predecessorList</strong> – List containing the predecessor Objects</p></li>
+<li><p><strong>successorList</strong> – List containing the successor Objects</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.endOperationActions">
 <span class="sig-name descname"><span class="pre">endOperationActions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.endOperationActions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.endOperationActions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>actions to be carried out when the processing of an Entity ends</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.entryIsAssignedTo">
 <span class="sig-name descname"><span class="pre">entryIsAssignedTo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.entryIsAssignedTo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.entryIsAssignedTo" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>checks if the object is blocked</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.exitIsAssignedTo">
 <span class="sig-name descname"><span class="pre">exitIsAssignedTo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.exitIsAssignedTo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.exitIsAssignedTo" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>checks if the object is blocked</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.findGiversFor">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">findGiversFor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">activeObject</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.findGiversFor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.findGiversFor" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>find possible givers</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.findReceiversFor">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">findReceiversFor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">activeObject</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.findReceiversFor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.findReceiversFor" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>find possible receivers</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.getActiveObject">
 <span class="sig-name descname"><span class="pre">getActiveObject</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.getActiveObject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.getActiveObject" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>get the active object. This always returns self</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.getActiveObjectQueue">
 <span class="sig-name descname"><span class="pre">getActiveObjectQueue</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.getActiveObjectQueue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.getActiveObjectQueue" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>get the activeQ of the active object.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.getEntity">
 <span class="sig-name descname"><span class="pre">getEntity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.getEntity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.getEntity" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>gets an entity from the giver</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.getGiverObject">
 <span class="sig-name descname"><span class="pre">getGiverObject</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.getGiverObject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.getGiverObject" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>get the giver object in a getEntity transaction.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.getGiverObjectQueue">
 <span class="sig-name descname"><span class="pre">getGiverObjectQueue</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.getGiverObjectQueue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.getGiverObjectQueue" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>get the giver object queue in a getEntity transaction.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.getReceiverObject">
 <span class="sig-name descname"><span class="pre">getReceiverObject</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.getReceiverObject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.getReceiverObject" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>get the receiver object in a removeEntity transaction.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.getReceiverObjectQueue">
 <span class="sig-name descname"><span class="pre">getReceiverObjectQueue</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.getReceiverObjectQueue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.getReceiverObjectQueue" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>get the receiver object queue in a removeEntity transaction.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.haveToDispose">
 <span class="sig-name descname"><span class="pre">haveToDispose</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callerObject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.haveToDispose"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.haveToDispose" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>checks if the Object can dispose an entity to the following object</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.identifyEntityToGet">
 <span class="sig-name descname"><span class="pre">identifyEntityToGet</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.identifyEntityToGet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.identifyEntityToGet" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>called be getEntity it identifies the Entity to be obtained so that getEntity gives it to removeEntity as argument</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.initialAllocationRequest">
@@ -339,7 +387,8 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.initialSignalReceiver">
 <span class="sig-name descname"><span class="pre">initialSignalReceiver</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.initialSignalReceiver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.initialSignalReceiver" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>checks if there is anything set as WIP at the begging of the simulation and sends an event to initialize the simulation</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.initialize">
@@ -349,103 +398,139 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.interruptionActions">
 <span class="sig-name descname"><span class="pre">interruptionActions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.interruptionActions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.interruptionActions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>actions to be carried whenever the object is interrupted (failure, break, preemption, etc)</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.isInActiveQueue">
 <span class="sig-name descname"><span class="pre">isInActiveQueue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.isInActiveQueue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.isInActiveQueue" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>check if an entity is in the internal Queue of the object</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.isInRouteOf">
 <span class="sig-name descname"><span class="pre">isInRouteOf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callerObject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.isInRouteOf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.isInRouteOf" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>method used to check whether the station is a successor of the caller</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.outputResultsJSON">
 <span class="sig-name descname"><span class="pre">outputResultsJSON</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.outputResultsJSON"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.outputResultsJSON" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>outputs results to JSON File</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.postInterruptionActions">
 <span class="sig-name descname"><span class="pre">postInterruptionActions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.postInterruptionActions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.postInterruptionActions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>actions to be carried whenever the object recovers control after an interruption (failure, break, preemption, etc)</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.postProcessing">
 <span class="sig-name descname"><span class="pre">postProcessing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">MaxSimtime</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.postProcessing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.postProcessing" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>actions to be taken after the simulation ends</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.preempt">
 <span class="sig-name descname"><span class="pre">preempt</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.preempt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.preempt" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>method to execute preemption</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.preemptReceiver">
 <span class="sig-name descname"><span class="pre">preemptReceiver</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.preemptReceiver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.preemptReceiver" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>check whether there is a critical entity to be disposed and if preemption is required</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.removeEntity">
 <span class="sig-name descname"><span class="pre">removeEntity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resetFlags</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">addBlockage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.removeEntity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.removeEntity" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>removes an Entity from the Object the Entity to be removed is passed as argument by getEntity of the receiver</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entity</strong> – </p></li>
+<li><p><strong>resetFlags</strong> – </p></li>
+<li><p><strong>addBlockage</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.run" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>the main process of the core object, this is dummy, every object must have its own implementation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.selectGiver">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">selectGiver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">possibleGivers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.selectGiver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.selectGiver" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>select a giver Object</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.selectReceiver">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">selectReceiver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">possibleReceivers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.selectReceiver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.selectReceiver" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>select a receiver Object</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.signalGiver">
 <span class="sig-name descname"><span class="pre">signalGiver</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.signalGiver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.signalGiver" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>signal the giver that the entity is removed from its internalQueue</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.signalReceiver">
 <span class="sig-name descname"><span class="pre">signalReceiver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transmitter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.signalReceiver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.signalReceiver" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>signal the successor that the object can dispose an entity</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.sortEntities">
 <span class="sig-name descname"><span class="pre">sortEntities</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.sortEntities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.sortEntities" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>sorts the Entities in the activeQ of the objects</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.sortEntitiesForReceiver">
 <span class="sig-name descname"><span class="pre">sortEntitiesForReceiver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">receiver</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.sortEntitiesForReceiver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.sortEntitiesForReceiver" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>sort the entities of the queue for the receiver</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.unAssignEntry">
 <span class="sig-name descname"><span class="pre">unAssignEntry</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.unAssignEntry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.unAssignEntry" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>unblock the object</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.unAssignExit">
 <span class="sig-name descname"><span class="pre">unAssignExit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.unAssignExit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.unAssignExit" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>unblock the object</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.updateNext">
 <span class="sig-name descname"><span class="pre">updateNext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.updateNext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.updateNext" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>updates the next list of the object</p>
+</dd></dl>
 
 </dd></dl>
 
 </section>
 <section id="module-manpy.simulation.core.Database">
-<span id="core-database-module"></span><h2>core.Database module<a class="headerlink" href="#module-manpy.simulation.core.Database" title="Permalink to this heading">#</a></h2>
+<span id="manpy-simulation-core-database-py"></span><h2>manpy.simulation.core.Database.py<a class="headerlink" href="#module-manpy.simulation.core.Database" title="Permalink to this heading">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="manpy.simulation.core.Database.ManPyDatabase">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.Database.</span></span><span class="sig-name descname"><span class="pre">ManPyDatabase</span></span><a class="reference internal" href="_modules/manpy/simulation/core/Database.html#ManPyDatabase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Database.ManPyDatabase" title="Permalink to this definition">#</a></dt>
@@ -556,52 +641,61 @@
 
 </section>
 <section id="module-manpy.simulation.core.Entity">
-<span id="core-entity-module"></span><h2>core.Entity module<a class="headerlink" href="#module-manpy.simulation.core.Entity" title="Permalink to this heading">#</a></h2>
+<span id="manpy-simulation-core-entity-py"></span><h2>manpy.simulation.core.Entity.py<a class="headerlink" href="#module-manpy.simulation.core.Entity" title="Permalink to this heading">#</a></h2>
 <p>Created on 18 Aug 2013</p>
 <p>&#64;author: George</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="manpy.simulation.core.Entity.Entity">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.Entity.</span></span><span class="sig-name descname"><span class="pre">Entity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dueDate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orderDate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">isCritical</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remainingProcessingTime</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remainingSetupTime</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">currentStation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Good'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Entity.html#Entity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Entity.Entity" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ManPyObject</span></code></p>
+<p>The entity object.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Entity.Entity.checkIfRequiredPartsReady">
 <span class="sig-name descname"><span class="pre">checkIfRequiredPartsReady</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Entity.html#Entity.checkIfRequiredPartsReady"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Entity.Entity.checkIfRequiredPartsReady" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>method not implemented yet</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Entity.Entity.getRequiredParts">
 <span class="sig-name descname"><span class="pre">getRequiredParts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Entity.html#Entity.getRequiredParts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Entity.Entity.getRequiredParts" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>method not implemented yet</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Entity.Entity.initialize">
 <span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Entity.html#Entity.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Entity.Entity.initialize" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>initializes all the Entity for a new simulation replication</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Entity.Entity.outputResultsJSON">
 <span class="sig-name descname"><span class="pre">outputResultsJSON</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Entity.html#Entity.outputResultsJSON"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Entity.Entity.outputResultsJSON" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>outputs results to JSON File</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Entity.Entity.printRoute">
 <span class="sig-name descname"><span class="pre">printRoute</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Entity.html#Entity.printRoute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Entity.Entity.printRoute" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>print the route (the different stations the entity moved through)</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Entity.Entity.responsibleForCurrentStep">
 <span class="sig-name descname"><span class="pre">responsibleForCurrentStep</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Entity.html#Entity.responsibleForCurrentStep"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Entity.Entity.responsibleForCurrentStep" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>return the responsible operator for the current step, not implemented for entities</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Entity.Entity.set_feature">
 <span class="sig-name descname"><span class="pre">set_feature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indexing</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Entity.html#Entity.set_feature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Entity.Entity.set_feature" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Sets internal feature values to passed values</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Entity.Entity.set_timeseries">
 <span class="sig-name descname"><span class="pre">set_timeseries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeseries</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indexing</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Entity.html#Entity.set_timeseries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Entity.Entity.set_timeseries" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Sets internal timeseries values to passed values</p>
+</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="manpy.simulation.core.Entity.Entity.type">
@@ -612,7 +706,7 @@
 
 </section>
 <section id="module-manpy.simulation.core.Exit">
-<span id="core-exit-module"></span><h2>core.Exit module<a class="headerlink" href="#module-manpy.simulation.core.Exit" title="Permalink to this heading">#</a></h2>
+<span id="manpy-simulation-core-exit-py"></span><h2>manpy.simulation.core.Exit.py<a class="headerlink" href="#module-manpy.simulation.core.Exit" title="Permalink to this heading">#</a></h2>
 <p>Created on 6 Feb 2013</p>
 <p>&#64;author: George</p>
 <dl class="py class">
@@ -622,12 +716,14 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Exit.Exit.canAccept">
 <span class="sig-name descname"><span class="pre">canAccept</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callerObject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Exit.html#Exit.canAccept"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Exit.Exit.canAccept" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>checks if the Object can accept an entity</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Exit.Exit.canAcceptAndIsRequested">
 <span class="sig-name descname"><span class="pre">canAcceptAndIsRequested</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callerObject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Exit.html#Exit.canAcceptAndIsRequested"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Exit.Exit.canAcceptAndIsRequested" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>checks if the Object can accept an entity and there is an entity in some possible giver waiting for it</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Exit.Exit.clear">
@@ -637,7 +733,19 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Exit.Exit.defineRouting">
 <span class="sig-name descname"><span class="pre">defineRouting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predecessorList</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Exit.html#Exit.defineRouting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Exit.Exit.defineRouting" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>sets the routing in and out elements for the Object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>predecessorList</strong> – List containing the predecessor Objects</p></li>
+<li><p><strong>successorList</strong> – List containing the successor Objects</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="manpy.simulation.core.Exit.Exit.family">
@@ -647,12 +755,14 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Exit.Exit.getEntity">
 <span class="sig-name descname"><span class="pre">getEntity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Exit.html#Exit.getEntity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Exit.Exit.getEntity" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>gets an entity from the giver</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Exit.Exit.haveToDispose">
 <span class="sig-name descname"><span class="pre">haveToDispose</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callerObject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Exit.html#Exit.haveToDispose"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Exit.Exit.haveToDispose" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>checks if the Object can dispose an entity to the following object</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Exit.Exit.initialize">
@@ -662,23 +772,31 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Exit.Exit.outputResultsJSON">
 <span class="sig-name descname"><span class="pre">outputResultsJSON</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Exit.html#Exit.outputResultsJSON"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Exit.Exit.outputResultsJSON" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>outputs results to JSON File</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Exit.Exit.postProcessing">
 <span class="sig-name descname"><span class="pre">postProcessing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">MaxSimtime</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Exit.html#Exit.postProcessing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Exit.Exit.postProcessing" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>actions to be taken after the simulation ends</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Exit.Exit.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Exit.html#Exit.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Exit.Exit.run" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>the main process of the core object, this is dummy, every object must have its own implementation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
 </section>
 <section id="module-manpy.simulation.core.Failure">
-<span id="core-failure-module"></span><h2>core.Failure module<a class="headerlink" href="#module-manpy.simulation.core.Failure" title="Permalink to this heading">#</a></h2>
+<span id="manpy-simulation-core-failure-py"></span><h2>manpy.simulation.core.Failure.py<a class="headerlink" href="#module-manpy.simulation.core.Failure" title="Permalink to this heading">#</a></h2>
 <p>Created on 9 Nov 2012</p>
 <p>&#64;author: George</p>
 <dl class="py class">
@@ -723,7 +841,7 @@ Is used instead of passing a TTF in distribution.</p></li>
 
 </section>
 <section id="module-manpy.simulation.core.Feature">
-<span id="core-feature-module"></span><h2>core.Feature module<a class="headerlink" href="#module-manpy.simulation.core.Feature" title="Permalink to this heading">#</a></h2>
+<span id="manpy-simulation-core-feature-py"></span><h2>manpy.simulation.core.Feature.py<a class="headerlink" href="#module-manpy.simulation.core.Feature" title="Permalink to this heading">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="manpy.simulation.core.Feature.Feature">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.Feature.</span></span><span class="sig-name descname"><span class="pre">Feature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">victim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distribution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distribution_state_controller</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reset_distributions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_negative</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_walk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dependent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Feature.html#Feature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Feature.Feature" title="Permalink to this definition">#</a></dt>
@@ -753,7 +871,8 @@ victim is interrupted (=repaired)</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Feature.Feature.generate_feature">
 <span class="sig-name descname"><span class="pre">generate_feature</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Feature.html#Feature.generate_feature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Feature.Feature.generate_feature" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Generates the actual feature value</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Feature.Feature.initialize">
@@ -763,284 +882,42 @@ victim is interrupted (=repaired)</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Feature.Feature.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Feature.html#Feature.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Feature.Feature.run" title="Permalink to this definition">#</a></dt>
-<dd><p>Every Object has to have a run method. Simpy is mainly used in this function
-:return: None</p>
+<dd><p>Every Object has to have a run method. Simpy is mainly used in this function</p>
 </dd></dl>
 
 </dd></dl>
 
 </section>
 <section id="module-manpy.simulation.core.Globals">
-<span id="core-globals-module"></span><h2>core.Globals module<a class="headerlink" href="#module-manpy.simulation.core.Globals" title="Permalink to this heading">#</a></h2>
+<span id="manpy-simulation-core-globals-py"></span><h2>manpy.simulation.core.Globals.py<a class="headerlink" href="#module-manpy.simulation.core.Globals" title="Permalink to this heading">#</a></h2>
 <p>Created on 8 Nov 2012</p>
 <p>&#64;author: George</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="manpy.simulation.core.Globals.ExcelPrinter">
 <span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.Globals.</span></span><span class="sig-name descname"><span class="pre">ExcelPrinter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Globals.html#ExcelPrinter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Globals.ExcelPrinter" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Prints a dataframe to excel</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – The dataframe to export</p></li>
+<li><p><strong>filename</strong> – Filename for export</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="manpy.simulation.core.Globals.G">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.Globals.</span></span><span class="sig-name descname"><span class="pre">G</span></span><a class="reference internal" href="_modules/manpy/simulation/core/Globals.html#G"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Globals.G" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.AssemblyList">
-<span class="sig-name descname"><span class="pre">AssemblyList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.AssemblyList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.Base">
-<span class="sig-name descname"><span class="pre">Base</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.Base" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.BatchDecompositionList">
-<span class="sig-name descname"><span class="pre">BatchDecompositionList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.BatchDecompositionList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.BatchList">
-<span class="sig-name descname"><span class="pre">BatchList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.BatchList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.BatchReassemblyList">
-<span class="sig-name descname"><span class="pre">BatchReassemblyList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.BatchReassemblyList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.BatchScrapMachineList">
-<span class="sig-name descname"><span class="pre">BatchScrapMachineList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.BatchScrapMachineList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.BatchSourceList">
-<span class="sig-name descname"><span class="pre">BatchSourceList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.BatchSourceList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.BrokersList">
-<span class="sig-name descname"><span class="pre">BrokersList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.BrokersList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.ConditionalBufferList">
-<span class="sig-name descname"><span class="pre">ConditionalBufferList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.ConditionalBufferList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.ConveyerList">
-<span class="sig-name descname"><span class="pre">ConveyerList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.ConveyerList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.DismantleList">
-<span class="sig-name descname"><span class="pre">DismantleList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.DismantleList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.EntityList">
-<span class="sig-name descname"><span class="pre">EntityList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.EntityList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.EventGeneratorList">
-<span class="sig-name descname"><span class="pre">EventGeneratorList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.EventGeneratorList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.ExitJobShopList">
-<span class="sig-name descname"><span class="pre">ExitJobShopList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.ExitJobShopList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.ExitList">
-<span class="sig-name descname"><span class="pre">ExitList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.ExitList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.FeatureList">
-<span class="sig-name descname"><span class="pre">FeatureList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.FeatureList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.JobList">
-<span class="sig-name descname"><span class="pre">JobList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.JobList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.LineClearanceList">
-<span class="sig-name descname"><span class="pre">LineClearanceList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.LineClearanceList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.MachineJobShopList">
-<span class="sig-name descname"><span class="pre">MachineJobShopList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.MachineJobShopList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.MachineList">
-<span class="sig-name descname"><span class="pre">MachineList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.MachineList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.MachineManagedJobList">
-<span class="sig-name descname"><span class="pre">MachineManagedJobList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.MachineManagedJobList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.ModelResourceList">
-<span class="sig-name descname"><span class="pre">ModelResourceList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.ModelResourceList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.MouldAssemblyBufferList">
-<span class="sig-name descname"><span class="pre">MouldAssemblyBufferList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.MouldAssemblyBufferList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.MouldAssemblyList">
-<span class="sig-name descname"><span class="pre">MouldAssemblyList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.MouldAssemblyList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.MouldList">
-<span class="sig-name descname"><span class="pre">MouldList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.MouldList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.ObjList">
-<span class="sig-name descname"><span class="pre">ObjList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.ObjList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.ObjectInterruptionList">
-<span class="sig-name descname"><span class="pre">ObjectInterruptionList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.ObjectInterruptionList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.ObjectPropertyList">
-<span class="sig-name descname"><span class="pre">ObjectPropertyList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.ObjectPropertyList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.ObjectResourceList">
-<span class="sig-name descname"><span class="pre">ObjectResourceList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.ObjectResourceList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.OperatedMachineList">
-<span class="sig-name descname"><span class="pre">OperatedMachineList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.OperatedMachineList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.OperatorManagedJobsList">
-<span class="sig-name descname"><span class="pre">OperatorManagedJobsList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.OperatorManagedJobsList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.OperatorPoolsList">
-<span class="sig-name descname"><span class="pre">OperatorPoolsList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.OperatorPoolsList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.OperatorsList">
-<span class="sig-name descname"><span class="pre">OperatorsList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.OperatorsList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.OrderComponentList">
-<span class="sig-name descname"><span class="pre">OrderComponentList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.OrderComponentList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.OrderDecompositionList">
-<span class="sig-name descname"><span class="pre">OrderDecompositionList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.OrderDecompositionList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.OrderList">
-<span class="sig-name descname"><span class="pre">OrderList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.OrderList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.PartList">
-<span class="sig-name descname"><span class="pre">PartList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.PartList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.QueueJobShopList">
-<span class="sig-name descname"><span class="pre">QueueJobShopList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.QueueJobShopList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.QueueList">
-<span class="sig-name descname"><span class="pre">QueueList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.QueueList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.QueueManagedJobList">
-<span class="sig-name descname"><span class="pre">QueueManagedJobList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.QueueManagedJobList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.RepairmanList">
-<span class="sig-name descname"><span class="pre">RepairmanList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.RepairmanList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.RouterList">
-<span class="sig-name descname"><span class="pre">RouterList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.RouterList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.SourceList">
-<span class="sig-name descname"><span class="pre">SourceList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.SourceList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.SubBatchList">
-<span class="sig-name descname"><span class="pre">SubBatchList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.SubBatchList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.TimeSeriesList">
-<span class="sig-name descname"><span class="pre">TimeSeriesList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.TimeSeriesList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.WipList">
-<span class="sig-name descname"><span class="pre">WipList</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.WipList" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.confidenceLevel">
-<span class="sig-name descname"><span class="pre">confidenceLevel</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.9</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.confidenceLevel" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.console">
-<span class="sig-name descname"><span class="pre">console</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.console" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.env">
-<span class="sig-name descname"><span class="pre">env</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;simpy.core.Environment</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.env" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
+<p>Defines global properties for the whole simulation</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.get_simulation_entities_history">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_simulation_entities_history</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="_modules/manpy/simulation/core/Globals.html#G.get_simulation_entities_history"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Globals.G.get_simulation_entities_history" title="Permalink to this definition">#</a></dt>
 <dd><p>Iterates through all entities that passed through the simulation and collects
 their history, i.e. all the objects they passed through and when they entered/left
 them.</p>
-<section id="returns">
-<h3>Returns<a class="headerlink" href="#returns" title="Permalink to this heading">#</a></h3>
-<dl class="simple">
-<dt>pd.DataFrame</dt><dd><p>History containing all</p>
-</dd>
-</dl>
-</section>
+<p>:returns History containing all</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1054,104 +931,8 @@ This dataframe contains the columns:
 - Station (aka Machine) ID
 - Station name
 - Trace message</p>
-<section id="id1">
-<h3>Returns<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
-<dl class="simple">
-<dt>pd.DataFrame</dt><dd><p>Dataframe containing the described columns</p>
-</dd>
-</dl>
-</section>
+<p>:returns Dataframe containing the described columns</p>
 </dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.maxSimTime">
-<span class="sig-name descname"><span class="pre">maxSimTime</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.maxSimTime" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.numberOfEntities">
-<span class="sig-name descname"><span class="pre">numberOfEntities</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.numberOfEntities" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.numberOfReplications">
-<span class="sig-name descname"><span class="pre">numberOfReplications</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.numberOfReplications" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.outputFile">
-<span class="sig-name descname"><span class="pre">outputFile</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;xlwt.Workbook.Workbook</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.outputFile" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.outputIndex">
-<span class="sig-name descname"><span class="pre">outputIndex</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.outputIndex" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.outputJSON">
-<span class="sig-name descname"><span class="pre">outputJSON</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.outputJSON" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.outputJSONFile">
-<span class="sig-name descname"><span class="pre">outputJSONFile</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.outputJSONFile" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.outputSheet">
-<span class="sig-name descname"><span class="pre">outputSheet</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;xlwt.Worksheet.Worksheet</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.outputSheet" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.pendingEntities">
-<span class="sig-name descname"><span class="pre">pendingEntities</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.pendingEntities" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.sheetIndex">
-<span class="sig-name descname"><span class="pre">sheetIndex</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.sheetIndex" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.simulation_snapshots">
-<span class="sig-name descname"><span class="pre">simulation_snapshots</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[Empty</span> <span class="pre">DataFrame</span> <span class="pre">Columns:</span> <span class="pre">[]</span> <span class="pre">Index:</span> <span class="pre">[]]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.simulation_snapshots" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.snapshots">
-<span class="sig-name descname"><span class="pre">snapshots</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.snapshots" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.totalPulpTime">
-<span class="sig-name descname"><span class="pre">totalPulpTime</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.totalPulpTime" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.trace">
-<span class="sig-name descname"><span class="pre">trace</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.trace" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.traceFile">
-<span class="sig-name descname"><span class="pre">traceFile</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;xlwt.Workbook.Workbook</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.traceFile" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.traceIndex">
-<span class="sig-name descname"><span class="pre">traceIndex</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.traceIndex" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.traceSheet">
-<span class="sig-name descname"><span class="pre">traceSheet</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;xlwt.Worksheet.Worksheet</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.traceSheet" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.G.trace_list">
-<span class="sig-name descname"><span class="pre">trace_list</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#manpy.simulation.core.Globals.G.trace_list" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 
@@ -1159,73 +940,108 @@ This dataframe contains the columns:
 <dt class="sig sig-object py" id="manpy.simulation.core.Globals.SetWipTypeError">
 <em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.Globals.</span></span><span class="sig-name descname"><span class="pre">SetWipTypeError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">setWipError</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Globals.html#SetWipTypeError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Globals.SetWipTypeError" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Error in the setting up of the WIP</p>
 </dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="manpy.simulation.core.Globals.countIntervalThroughput">
-<span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.Globals.</span></span><span class="sig-name descname"><span class="pre">countIntervalThroughput</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Globals.html#countIntervalThroughput"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Globals.countIntervalThroughput" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="manpy.simulation.core.Globals.findObjectById">
 <span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.Globals.</span></span><span class="sig-name descname"><span class="pre">findObjectById</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Globals.html#findObjectById"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Globals.findObjectById" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>method finding objects by ID</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="manpy.simulation.core.Globals.getClassFromName">
 <span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.Globals.</span></span><span class="sig-name descname"><span class="pre">getClassFromName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dotted_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Globals.html#getClassFromName"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Globals.getClassFromName" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Import a class from a dotted name used in json.</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="manpy.simulation.core.Globals.getFeatureData">
 <span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.Globals.</span></span><span class="sig-name descname"><span class="pre">getFeatureData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">objectList</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="_modules/manpy/simulation/core/Globals.html#getFeatureData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Globals.getFeatureData" title="Permalink to this definition">#</a></dt>
-<dd><p>getFeatureData returns feature data of specific machines as dataframes
-:param objectList: a list of machines that will be included in the dataframe
-:param time: boolean, should timestamps be included or not
-:return: dataframe</p>
+<dd><p>getFeatureData returns feature data of specific machines as dataframes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>objectList</strong> – a list of machines that will be included in the dataframe</p></li>
+<li><p><strong>time</strong> – boolean, should timestamps be included or not</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dataframe</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="manpy.simulation.core.Globals.getMethodFromName">
 <span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.Globals.</span></span><span class="sig-name descname"><span class="pre">getMethodFromName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dotted_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Globals.html#getMethodFromName"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Globals.getMethodFromName" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>returns a method by its name. name should be given as manpy.ClassName.MethodName</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="manpy.simulation.core.Globals.getPhrase">
 <span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.Globals.</span></span><span class="sig-name descname"><span class="pre">getPhrase</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Globals.html#getPhrase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Globals.getPhrase" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>get the phrase to print from the keyword</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="manpy.simulation.core.Globals.getSupportedPrintKwrds">
 <span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.Globals.</span></span><span class="sig-name descname"><span class="pre">getSupportedPrintKwrds</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Globals.html#getSupportedPrintKwrds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Globals.getSupportedPrintKwrds" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>get the supported print Keywords</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="manpy.simulation.core.Globals.getTimeSeriesData">
 <span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.Globals.</span></span><span class="sig-name descname"><span class="pre">getTimeSeriesData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ts</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="_modules/manpy/simulation/core/Globals.html#getTimeSeriesData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Globals.getTimeSeriesData" title="Permalink to this definition">#</a></dt>
-<dd><p>getTimeSeriesData returns timeseries data
-:param ts: the timeseries you want the data of
-:return: dataframe with entity-ID|time|value as columns</p>
+<dd><p>getTimeSeriesData returns timeseries data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ts</strong> – the timeseries you want the data of</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dataframe with entity-ID|time|value as columns</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="manpy.simulation.core.Globals.moveExcess">
 <span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.Globals.</span></span><span class="sig-name descname"><span class="pre">moveExcess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">consumption</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">safetyStock</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">70</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">giverId</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">receiverId</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Globals.html#moveExcess"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Globals.moveExcess" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>method to move entities exceeding a certain safety stock</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="manpy.simulation.core.Globals.runSimulation">
 <span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.Globals.</span></span><span class="sig-name descname"><span class="pre">runSimulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">objectList</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxSimTime</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numberOfReplications</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snapshots</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'No'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#manpy.simulation.core.Database.ManPyDatabase" title="manpy.simulation.core.Database.ManPyDatabase"><span class="pre">ManPyDatabase</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Globals.html#runSimulation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Globals.runSimulation" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Starts the simulation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>objectList</strong> – Objects for the simulation</p></li>
+<li><p><strong>maxSimTime</strong> – Timespan that’s simulated</p></li>
+<li><p><strong>numberOfReplications</strong> – TODO</p></li>
+<li><p><strong>trace</strong> – TODO</p></li>
+<li><p><strong>snapshots</strong> – TODO</p></li>
+<li><p><strong>seed</strong> – TODO</p></li>
+<li><p><strong>env</strong> – TODO</p></li>
+<li><p><strong>data</strong> – TODO</p></li>
+<li><p><strong>db</strong> – Database object. Optional. If passed, the results are saved to the database</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="manpy.simulation.core.Globals.setWIP">
 <span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.Globals.</span></span><span class="sig-name descname"><span class="pre">setWIP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entityList</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Globals.html#setWIP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Globals.setWIP" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>method to set-up the entities in the current stations as Work In Progress
+in this case the current station must be defined!
+otherwise there is no current station but a list of possible stations although the entity cannot be in more than one stations</p>
+</dd></dl>
 
 </section>
 <section id="module-manpy.simulation.core.Machine">
-<span id="core-machine-module"></span><h2>core.Machine module<a class="headerlink" href="#module-manpy.simulation.core.Machine" title="Permalink to this heading">#</a></h2>
+<span id="manpy-simulation-core-machine-py"></span><h2>manpy.simulation.core.Machine.py<a class="headerlink" href="#module-manpy.simulation.core.Machine" title="Permalink to this heading">#</a></h2>
 <p>Created on 8 Nov 2012</p>
 <p>&#64;author: George</p>
 <dl class="py class">
@@ -1240,12 +1056,14 @@ This dataframe contains the columns:
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.canAccept">
 <span class="sig-name descname"><span class="pre">canAccept</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callerObject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.canAccept"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.canAccept" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>checks if the Object can accept an entity</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.canAcceptAndIsRequested">
 <span class="sig-name descname"><span class="pre">canAcceptAndIsRequested</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callerObject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.canAcceptAndIsRequested"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.canAcceptAndIsRequested" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>checks if the Object can accept an entity and there is an entity in some possible giver waiting for it</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.canDeliver">
@@ -1275,14 +1093,7 @@ This dataframe contains the columns:
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.createOperatorPool">
 <span class="sig-name descname"><span class="pre">createOperatorPool</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">operatorPool</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.createOperatorPool"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.createOperatorPool" title="Permalink to this definition">#</a></dt>
-<dd><dl class="simple">
-<dt>sets the operator resource of the Machine</dt><dd><p>check if the operatorPool is a List or a OperatorPool type Object
-if it is a list then initiate a OperatorPool type object containing
-the list of operators provided</p>
-</dd>
-</dl>
-<p>if the  list is empty create operator pool with empty list</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.createRouter">
@@ -1292,7 +1103,8 @@ the list of operators provided</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.endOperationActions">
 <span class="sig-name descname"><span class="pre">endOperationActions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.endOperationActions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.endOperationActions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>actions to be carried out when the processing of an Entity ends</p>
+</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.family">
@@ -1302,7 +1114,8 @@ the list of operators provided</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.getEntity">
 <span class="sig-name descname"><span class="pre">getEntity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.getEntity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.getEntity" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>gets an entity from the giver</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.getOperationTime">
@@ -1313,7 +1126,8 @@ the list of operators provided</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.haveToDispose">
 <span class="sig-name descname"><span class="pre">haveToDispose</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callerObject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.haveToDispose"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.haveToDispose" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>checks if the Object can dispose an entity to the following object</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.initialize">
@@ -1338,7 +1152,8 @@ the list of operators provided</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.interruptionActions">
 <span class="sig-name descname"><span class="pre">interruptionActions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Processing'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.interruptionActions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.interruptionActions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>actions to be carried whenever the object is interrupted (failure, break, preemption, etc)</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.isInterrupted">
@@ -1363,12 +1178,14 @@ the list of operators provided</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.outputResultsJSON">
 <span class="sig-name descname"><span class="pre">outputResultsJSON</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.outputResultsJSON"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.outputResultsJSON" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>outputs results to JSON File</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.postInterruptionActions">
 <span class="sig-name descname"><span class="pre">postInterruptionActions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.postInterruptionActions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.postInterruptionActions" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>actions to be carried whenever the object recovers control after an interruption (failure, break, preemption, etc)</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.release">
@@ -1383,7 +1200,20 @@ the list of operators provided</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.removeEntity">
 <span class="sig-name descname"><span class="pre">removeEntity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.removeEntity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.removeEntity" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>removes an Entity from the Object the Entity to be removed is passed as argument by getEntity of the receiver</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entity</strong> – </p></li>
+<li><p><strong>resetFlags</strong> – </p></li>
+<li><p><strong>addBlockage</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.request">
@@ -1398,27 +1228,24 @@ the list of operators provided</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.run" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>the main process of the core object, this is dummy, every object must have its own implementation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.shouldYield">
 <span class="sig-name descname"><span class="pre">shouldYield</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">operationTypes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">methods</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.shouldYield"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.shouldYield" title="Permalink to this definition">#</a></dt>
-<dd><p>Method that controls if the machine should yield for releasing the operator
-“methods”:{‘isInterrupted’:’0’},                                % the method isInterrupted should return False (0) or True (1)
-“operationTypes”={“Processing”:1,                               % processing must be in multiOperationTypeList</p>
-<blockquote>
-<div><blockquote>
-<div><p>“Setup”:0                                    % setup must not be in multiOperationTypeList</p>
-</div></blockquote>
-<p>}</p>
-</div></blockquote>
-</dd></dl>
+<dd></dd></dl>
 
 </dd></dl>
 
 </section>
 <section id="module-manpy.simulation.core.ObjectInterruption">
-<span id="core-objectinterruption-module"></span><h2>core.ObjectInterruption module<a class="headerlink" href="#module-manpy.simulation.core.ObjectInterruption" title="Permalink to this heading">#</a></h2>
+<span id="manpy-simulation-core-objectinterruption-py"></span><h2>manpy.simulation.core.ObjectInterruption.py<a class="headerlink" href="#module-manpy.simulation.core.ObjectInterruption" title="Permalink to this heading">#</a></h2>
 <p>Created on 18 Aug 2013</p>
 <p>&#64;author: George</p>
 <dl class="py class">
@@ -1469,7 +1296,7 @@ the list of operators provided</p>
 
 </section>
 <section id="module-manpy.simulation.core.ObjectProperty">
-<span id="core-objectproperty-module"></span><h2>core.ObjectProperty module<a class="headerlink" href="#module-manpy.simulation.core.ObjectProperty" title="Permalink to this heading">#</a></h2>
+<span id="manpy-simulation-core-objectproperty-py"></span><h2>manpy.simulation.core.ObjectProperty.py<a class="headerlink" href="#module-manpy.simulation.core.ObjectProperty" title="Permalink to this heading">#</a></h2>
 <p>Created on 18 Aug 2013</p>
 <p>&#64;author: LodesL</p>
 <dl class="py class">
@@ -1533,7 +1360,7 @@ the list of operators provided</p>
 
 </section>
 <section id="module-manpy.simulation.core.ObjectResource">
-<span id="core-objectresource-module"></span><h2>core.ObjectResource module<a class="headerlink" href="#module-manpy.simulation.core.ObjectResource" title="Permalink to this heading">#</a></h2>
+<span id="manpy-simulation-core-objectresource-py"></span><h2>manpy.simulation.core.ObjectResource.py<a class="headerlink" href="#module-manpy.simulation.core.ObjectResource" title="Permalink to this heading">#</a></h2>
 <p>Created on 18 Aug 2013</p>
 <p>&#64;author: George</p>
 <dl class="py class">
@@ -1574,7 +1401,7 @@ the list of operators provided</p>
 
 </section>
 <section id="module-manpy.simulation.core.Queue">
-<span id="core-queue-module"></span><h2>core.Queue module<a class="headerlink" href="#module-manpy.simulation.core.Queue" title="Permalink to this heading">#</a></h2>
+<span id="manpy-simulation-core-queue-py"></span><h2>manpy.simulation.core.Queue.py<a class="headerlink" href="#module-manpy.simulation.core.Queue" title="Permalink to this heading">#</a></h2>
 <p>Created on 8 Nov 2012</p>
 <p>&#64;author: George</p>
 <dl class="py class">
@@ -1589,12 +1416,14 @@ the list of operators provided</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Queue.Queue.canAccept">
 <span class="sig-name descname"><span class="pre">canAccept</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callerObject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Queue.html#Queue.canAccept"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Queue.Queue.canAccept" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>checks if the Object can accept an entity</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Queue.Queue.canAcceptAndIsRequested">
 <span class="sig-name descname"><span class="pre">canAcceptAndIsRequested</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callerObject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Queue.html#Queue.canAcceptAndIsRequested"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Queue.Queue.canAcceptAndIsRequested" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>checks if the Object can accept an entity and there is an entity in some possible giver waiting for it</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Queue.Queue.canDeliver">
@@ -1609,7 +1438,8 @@ the list of operators provided</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Queue.Queue.getEntity">
 <span class="sig-name descname"><span class="pre">getEntity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Queue.html#Queue.getEntity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Queue.Queue.getEntity" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>gets an entity from the giver</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Queue.Queue.getSupportedSchedulingRules">
@@ -1619,7 +1449,8 @@ the list of operators provided</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Queue.Queue.haveToDispose">
 <span class="sig-name descname"><span class="pre">haveToDispose</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callerObject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Queue.html#Queue.haveToDispose"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Queue.Queue.haveToDispose" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>checks if the Object can dispose an entity to the following object</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Queue.Queue.initialize">
@@ -1629,28 +1460,49 @@ the list of operators provided</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Queue.Queue.outputResultsJSON">
 <span class="sig-name descname"><span class="pre">outputResultsJSON</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Queue.html#Queue.outputResultsJSON"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Queue.Queue.outputResultsJSON" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>outputs results to JSON File</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Queue.Queue.removeEntity">
 <span class="sig-name descname"><span class="pre">removeEntity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Queue.html#Queue.removeEntity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Queue.Queue.removeEntity" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>removes an Entity from the Object the Entity to be removed is passed as argument by getEntity of the receiver</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entity</strong> – </p></li>
+<li><p><strong>resetFlags</strong> – </p></li>
+<li><p><strong>addBlockage</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Queue.Queue.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Queue.html#Queue.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Queue.Queue.run" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>the main process of the core object, this is dummy, every object must have its own implementation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Queue.Queue.sortEntities">
 <span class="sig-name descname"><span class="pre">sortEntities</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Queue.html#Queue.sortEntities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Queue.Queue.sortEntities" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>sorts the Entities in the activeQ of the objects</p>
+</dd></dl>
 
 </dd></dl>
 
 </section>
 <section id="module-manpy.simulation.core.Source">
-<span id="core-source-module"></span><h2>core.Source module<a class="headerlink" href="#module-manpy.simulation.core.Source" title="Permalink to this heading">#</a></h2>
+<span id="manpy-simulation-core-source-py"></span><h2>manpy.simulation.core.Source.py<a class="headerlink" href="#module-manpy.simulation.core.Source" title="Permalink to this heading">#</a></h2>
 <p>Created on 8 Nov 2012</p>
 <p>&#64;author: George</p>
 <dl class="py class">
@@ -1671,7 +1523,9 @@ the list of operators provided</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Source.Source.appendEntity">
 <span class="sig-name descname"><span class="pre">appendEntity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Source.html#Source.appendEntity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Source.Source.appendEntity" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>appends entity to the receiver object. to be called by the removeEntity of the giver
+this method is created to be overridden by the Assembly class in its getEntity where Frames are loaded</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Source.Source.calculateInterArrivalTime">
@@ -1686,7 +1540,19 @@ the list of operators provided</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Source.Source.defineRouting">
 <span class="sig-name descname"><span class="pre">defineRouting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">successorList</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Source.html#Source.defineRouting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Source.Source.defineRouting" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>sets the routing in and out elements for the Object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>predecessorList</strong> – List containing the predecessor Objects</p></li>
+<li><p><strong>successorList</strong> – List containing the successor Objects</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Source.Source.initialize">
@@ -1696,18 +1562,37 @@ the list of operators provided</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Source.Source.removeEntity">
 <span class="sig-name descname"><span class="pre">removeEntity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Source.html#Source.removeEntity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Source.Source.removeEntity" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>removes an Entity from the Object the Entity to be removed is passed as argument by getEntity of the receiver</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entity</strong> – </p></li>
+<li><p><strong>resetFlags</strong> – </p></li>
+<li><p><strong>addBlockage</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Source.Source.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Source.html#Source.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Source.Source.run" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>the main process of the core object, this is dummy, every object must have its own implementation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
 </section>
 <section id="module-manpy.simulation.core.StateController">
-<span id="core-statecontroller-module"></span><h2>core.StateController module<a class="headerlink" href="#module-manpy.simulation.core.StateController" title="Permalink to this heading">#</a></h2>
+<span id="manpy-simulation-core-statecontroller-py"></span><h2>manpy.simulation.core.StateController.py<a class="headerlink" href="#module-manpy.simulation.core.StateController" title="Permalink to this heading">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="manpy.simulation.core.StateController.ContinuosNormalDistribution">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.StateController.</span></span><span class="sig-name descname"><span class="pre">ContinuosNormalDistribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mean_change_per_step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_mean</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">std</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wear_per_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">break_point</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">defect_mean</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">defect_std</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/StateController.html#ContinuosNormalDistribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.StateController.ContinuosNormalDistribution" title="Permalink to this definition">#</a></dt>
@@ -1716,8 +1601,12 @@ the list of operators provided</p>
 <dt class="sig sig-object py" id="manpy.simulation.core.StateController.ContinuosNormalDistribution.get_and_update">
 <span class="sig-name descname"><span class="pre">get_and_update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/StateController.html#ContinuosNormalDistribution.get_and_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.StateController.ContinuosNormalDistribution.get_and_update" title="Permalink to this definition">#</a></dt>
 <dd><p>Retrieves the current state first, then updates the internal state transition mechanism and then returns the
-retrieved state and a label for the state.
-:return: Current state and label: (state, label (bool))</p>
+retrieved state and a label for the state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Current state and label: (state, label (bool))</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1733,8 +1622,12 @@ retrieved state and a label for the state.
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.StateController.ContinuosNormalDistribution.reset">
 <span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/StateController.html#ContinuosNormalDistribution.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.StateController.ContinuosNormalDistribution.reset" title="Permalink to this definition">#</a></dt>
-<dd><p>Resets the internal statistics of the controller. Should be called after something is repaired.
-:return: None</p>
+<dd><p>Resets the internal statistics of the controller. Should be called after something is repaired.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -1747,8 +1640,12 @@ retrieved state and a label for the state.
 <dt class="sig sig-object py" id="manpy.simulation.core.StateController.RandomDefectStateController.get_and_update">
 <span class="sig-name descname"><span class="pre">get_and_update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/StateController.html#RandomDefectStateController.get_and_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.StateController.RandomDefectStateController.get_and_update" title="Permalink to this definition">#</a></dt>
 <dd><p>Retrieves the current state first, then updates the internal state transition mechanism and then returns the
-retrieved state and a label for the state.
-:return: Current state and label: (state, label (bool))</p>
+retrieved state and a label for the state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Current state and label: (state, label (bool))</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1764,8 +1661,12 @@ retrieved state and a label for the state.
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.StateController.RandomDefectStateController.reset">
 <span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/StateController.html#RandomDefectStateController.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.StateController.RandomDefectStateController.reset" title="Permalink to this definition">#</a></dt>
-<dd><p>Resets the internal statistics of the controller. Should be called after something is repaired.
-:return: None</p>
+<dd><p>Resets the internal statistics of the controller. Should be called after something is repaired.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -1793,8 +1694,12 @@ boundaries = {(0, 150): 0, (150, 300): 1, (300, None): 2}</p></li>
 <dt class="sig sig-object py" id="manpy.simulation.core.StateController.SimpleStateController.get_and_update">
 <span class="sig-name descname"><span class="pre">get_and_update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/StateController.html#SimpleStateController.get_and_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.StateController.SimpleStateController.get_and_update" title="Permalink to this definition">#</a></dt>
 <dd><p>Retrieves the current state first, then updates the internal state transition mechanism and then returns the
-retrieved state and a label for the state.
-:return: Current state and label: (state, label (bool))</p>
+retrieved state and a label for the state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Current state and label: (state, label (bool))</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1810,8 +1715,12 @@ retrieved state and a label for the state.
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.StateController.SimpleStateController.reset">
 <span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/StateController.html#SimpleStateController.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.StateController.SimpleStateController.reset" title="Permalink to this definition">#</a></dt>
-<dd><p>Resets the internal statistics of the controller. Should be called after something is repaired.
-:return: None</p>
+<dd><p>Resets the internal statistics of the controller. Should be called after something is repaired.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -1825,8 +1734,12 @@ retrieved state and a label for the state.
 <dt class="sig sig-object py" id="manpy.simulation.core.StateController.StateController.get_and_update">
 <span class="sig-name descname"><span class="pre">get_and_update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/StateController.html#StateController.get_and_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.StateController.StateController.get_and_update" title="Permalink to this definition">#</a></dt>
 <dd><p>Retrieves the current state first, then updates the internal state transition mechanism and then returns the
-retrieved state and a label for the state.
-:return: Current state and label: (state, label (bool))</p>
+retrieved state and a label for the state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Current state and label: (state, label (bool))</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1842,32 +1755,33 @@ retrieved state and a label for the state.
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.StateController.StateController.reset">
 <span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/StateController.html#StateController.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.StateController.StateController.reset" title="Permalink to this definition">#</a></dt>
-<dd><p>Resets the internal statistics of the controller. Should be called after something is repaired.
-:return: None</p>
+<dd><p>Resets the internal statistics of the controller. Should be called after something is repaired.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 </section>
 <section id="module-manpy.simulation.core.Timeseries">
-<span id="core-timeseries-module"></span><h2>core.Timeseries module<a class="headerlink" href="#module-manpy.simulation.core.Timeseries" title="Permalink to this heading">#</a></h2>
+<span id="manpy-simulation-core-timeseries-py"></span><h2>manpy.simulation.core.Timeseries.py<a class="headerlink" href="#module-manpy.simulation.core.Timeseries" title="Permalink to this heading">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="manpy.simulation.core.Timeseries.Timeseries">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.Timeseries.</span></span><span class="sig-name descname"><span class="pre">Timeseries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">victim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distribution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distribution_state_controller</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reset_distributions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_negative</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_walk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Timeseries.html#Timeseries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Timeseries.Timeseries" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#manpy.simulation.core.ObjectProperty.ObjectProperty" title="manpy.simulation.core.ObjectProperty.ObjectProperty"><code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectProperty</span></code></a></p>
-<p>The TimeSeries ObjectProperty generates TimeSeries for a Machine and stores them in Entities
-:param id: The id of the Feature
-:param name: The name of the Feature
-:param victim: The machine to which the feature belongs
-:param distribution: The statistical distribution of the value of the Datapoints
-:param distribution_state_controller: StateController that can contain different distributions.
-:param reset_distributions: Active with deteriorationType working; Resets distribution_state_controller when the</p>
-<blockquote>
-<div><p>victim is interrupted (=repaired)</p>
-</div></blockquote>
+<p>The TimeSeries ObjectProperty generates TimeSeries for a Machine and stores them in Entities</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> – The id of the Feature</p></li>
+<li><p><strong>name</strong> – The name of the Feature</p></li>
+<li><p><strong>victim</strong> – The machine to which the feature belongs</p></li>
+<li><p><strong>distribution</strong> – The statistical distribution of the value of the Datapoints</p></li>
+<li><p><strong>distribution_state_controller</strong> – StateController that can contain different distributions.</p></li>
+<li><p><strong>reset_distributions</strong> – Active with deteriorationType working; Resets distribution_state_controller when the victim is interrupted (=repaired)</p></li>
 <li><p><strong>no_negative</strong> – If this value is true, returns 0 for values below 0 of the feature value</p></li>
 <li><p><strong>contribute</strong> – Needs Failures in a list as an input to contribute the TimeSeries value to conditions</p></li>
 <li><p><strong>start_time</strong> – The starting time for the TimeSeries</p></li>
@@ -1882,20 +1796,22 @@ retrieved state and a label for the state.
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Timeseries.Timeseries.initialize">
 <span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Timeseries.html#Timeseries.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Timeseries.Timeseries.initialize" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Initializes the object</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Timeseries.Timeseries.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Timeseries.html#Timeseries.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Timeseries.Timeseries.run" title="Permalink to this definition">#</a></dt>
-<dd><p>Every Object has to have a run method. Simpy is mainly used in this function
-:return: None</p>
+<dd><p>Every Object has to have a run method. Simpy is mainly used in this function</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
-</section>
-<section id="module-manpy.simulation.core">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-manpy.simulation.core" title="Permalink to this heading">#</a></h2>
 </section>
 </section>
 
@@ -1946,8 +1862,8 @@ retrieved state and a label for the state.
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">core package</a><ul>
-<li><a class="reference internal" href="#module-manpy.simulation.core.CoreObject">core.CoreObject module</a><ul>
+<li><a class="reference internal" href="#">Core</a><ul>
+<li><a class="reference internal" href="#module-manpy.simulation.core.CoreObject">manpy.simulation.core.CoreObject.py</a><ul>
 <li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject"><code class="docutils literal notranslate"><span class="pre">CoreObject</span></code></a><ul>
 <li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.activeQueueIsEmpty"><code class="docutils literal notranslate"><span class="pre">CoreObject.activeQueueIsEmpty()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.addBlockage"><code class="docutils literal notranslate"><span class="pre">CoreObject.addBlockage()</span></code></a></li>
@@ -2001,7 +1917,7 @@ retrieved state and a label for the state.
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-manpy.simulation.core.Database">core.Database module</a><ul>
+<li><a class="reference internal" href="#module-manpy.simulation.core.Database">manpy.simulation.core.Database.py</a><ul>
 <li><a class="reference internal" href="#manpy.simulation.core.Database.ManPyDatabase"><code class="docutils literal notranslate"><span class="pre">ManPyDatabase</span></code></a><ul>
 <li><a class="reference internal" href="#manpy.simulation.core.Database.ManPyDatabase.close_connection"><code class="docutils literal notranslate"><span class="pre">ManPyDatabase.close_connection()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Database.ManPyDatabase.commit"><code class="docutils literal notranslate"><span class="pre">ManPyDatabase.commit()</span></code></a></li>
@@ -2025,7 +1941,7 @@ retrieved state and a label for the state.
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-manpy.simulation.core.Entity">core.Entity module</a><ul>
+<li><a class="reference internal" href="#module-manpy.simulation.core.Entity">manpy.simulation.core.Entity.py</a><ul>
 <li><a class="reference internal" href="#manpy.simulation.core.Entity.Entity"><code class="docutils literal notranslate"><span class="pre">Entity</span></code></a><ul>
 <li><a class="reference internal" href="#manpy.simulation.core.Entity.Entity.checkIfRequiredPartsReady"><code class="docutils literal notranslate"><span class="pre">Entity.checkIfRequiredPartsReady()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Entity.Entity.getRequiredParts"><code class="docutils literal notranslate"><span class="pre">Entity.getRequiredParts()</span></code></a></li>
@@ -2040,7 +1956,7 @@ retrieved state and a label for the state.
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-manpy.simulation.core.Exit">core.Exit module</a><ul>
+<li><a class="reference internal" href="#module-manpy.simulation.core.Exit">manpy.simulation.core.Exit.py</a><ul>
 <li><a class="reference internal" href="#manpy.simulation.core.Exit.Exit"><code class="docutils literal notranslate"><span class="pre">Exit</span></code></a><ul>
 <li><a class="reference internal" href="#manpy.simulation.core.Exit.Exit.canAccept"><code class="docutils literal notranslate"><span class="pre">Exit.canAccept()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Exit.Exit.canAcceptAndIsRequested"><code class="docutils literal notranslate"><span class="pre">Exit.canAcceptAndIsRequested()</span></code></a></li>
@@ -2057,7 +1973,7 @@ retrieved state and a label for the state.
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-manpy.simulation.core.Failure">core.Failure module</a><ul>
+<li><a class="reference internal" href="#module-manpy.simulation.core.Failure">manpy.simulation.core.Failure.py</a><ul>
 <li><a class="reference internal" href="#manpy.simulation.core.Failure.Failure"><code class="docutils literal notranslate"><span class="pre">Failure</span></code></a><ul>
 <li><a class="reference internal" href="#manpy.simulation.core.Failure.Failure.initialize"><code class="docutils literal notranslate"><span class="pre">Failure.initialize()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Failure.Failure.run"><code class="docutils literal notranslate"><span class="pre">Failure.run()</span></code></a></li>
@@ -2065,7 +1981,7 @@ retrieved state and a label for the state.
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-manpy.simulation.core.Feature">core.Feature module</a><ul>
+<li><a class="reference internal" href="#module-manpy.simulation.core.Feature">manpy.simulation.core.Feature.py</a><ul>
 <li><a class="reference internal" href="#manpy.simulation.core.Feature.Feature"><code class="docutils literal notranslate"><span class="pre">Feature</span></code></a><ul>
 <li><a class="reference internal" href="#manpy.simulation.core.Feature.Feature.generate_feature"><code class="docutils literal notranslate"><span class="pre">Feature.generate_feature()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Feature.Feature.initialize"><code class="docutils literal notranslate"><span class="pre">Feature.initialize()</span></code></a></li>
@@ -2074,82 +1990,14 @@ retrieved state and a label for the state.
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-manpy.simulation.core.Globals">core.Globals module</a><ul>
+<li><a class="reference internal" href="#module-manpy.simulation.core.Globals">manpy.simulation.core.Globals.py</a><ul>
 <li><a class="reference internal" href="#manpy.simulation.core.Globals.ExcelPrinter"><code class="docutils literal notranslate"><span class="pre">ExcelPrinter()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Globals.G"><code class="docutils literal notranslate"><span class="pre">G</span></code></a><ul>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.AssemblyList"><code class="docutils literal notranslate"><span class="pre">G.AssemblyList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.Base"><code class="docutils literal notranslate"><span class="pre">G.Base</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.BatchDecompositionList"><code class="docutils literal notranslate"><span class="pre">G.BatchDecompositionList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.BatchList"><code class="docutils literal notranslate"><span class="pre">G.BatchList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.BatchReassemblyList"><code class="docutils literal notranslate"><span class="pre">G.BatchReassemblyList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.BatchScrapMachineList"><code class="docutils literal notranslate"><span class="pre">G.BatchScrapMachineList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.BatchSourceList"><code class="docutils literal notranslate"><span class="pre">G.BatchSourceList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.BrokersList"><code class="docutils literal notranslate"><span class="pre">G.BrokersList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.ConditionalBufferList"><code class="docutils literal notranslate"><span class="pre">G.ConditionalBufferList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.ConveyerList"><code class="docutils literal notranslate"><span class="pre">G.ConveyerList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.DismantleList"><code class="docutils literal notranslate"><span class="pre">G.DismantleList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.EntityList"><code class="docutils literal notranslate"><span class="pre">G.EntityList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.EventGeneratorList"><code class="docutils literal notranslate"><span class="pre">G.EventGeneratorList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.ExitJobShopList"><code class="docutils literal notranslate"><span class="pre">G.ExitJobShopList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.ExitList"><code class="docutils literal notranslate"><span class="pre">G.ExitList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.FeatureList"><code class="docutils literal notranslate"><span class="pre">G.FeatureList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.JobList"><code class="docutils literal notranslate"><span class="pre">G.JobList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.LineClearanceList"><code class="docutils literal notranslate"><span class="pre">G.LineClearanceList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.MachineJobShopList"><code class="docutils literal notranslate"><span class="pre">G.MachineJobShopList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.MachineList"><code class="docutils literal notranslate"><span class="pre">G.MachineList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.MachineManagedJobList"><code class="docutils literal notranslate"><span class="pre">G.MachineManagedJobList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.ModelResourceList"><code class="docutils literal notranslate"><span class="pre">G.ModelResourceList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.MouldAssemblyBufferList"><code class="docutils literal notranslate"><span class="pre">G.MouldAssemblyBufferList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.MouldAssemblyList"><code class="docutils literal notranslate"><span class="pre">G.MouldAssemblyList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.MouldList"><code class="docutils literal notranslate"><span class="pre">G.MouldList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.ObjList"><code class="docutils literal notranslate"><span class="pre">G.ObjList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.ObjectInterruptionList"><code class="docutils literal notranslate"><span class="pre">G.ObjectInterruptionList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.ObjectPropertyList"><code class="docutils literal notranslate"><span class="pre">G.ObjectPropertyList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.ObjectResourceList"><code class="docutils literal notranslate"><span class="pre">G.ObjectResourceList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.OperatedMachineList"><code class="docutils literal notranslate"><span class="pre">G.OperatedMachineList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.OperatorManagedJobsList"><code class="docutils literal notranslate"><span class="pre">G.OperatorManagedJobsList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.OperatorPoolsList"><code class="docutils literal notranslate"><span class="pre">G.OperatorPoolsList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.OperatorsList"><code class="docutils literal notranslate"><span class="pre">G.OperatorsList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.OrderComponentList"><code class="docutils literal notranslate"><span class="pre">G.OrderComponentList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.OrderDecompositionList"><code class="docutils literal notranslate"><span class="pre">G.OrderDecompositionList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.OrderList"><code class="docutils literal notranslate"><span class="pre">G.OrderList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.PartList"><code class="docutils literal notranslate"><span class="pre">G.PartList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.QueueJobShopList"><code class="docutils literal notranslate"><span class="pre">G.QueueJobShopList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.QueueList"><code class="docutils literal notranslate"><span class="pre">G.QueueList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.QueueManagedJobList"><code class="docutils literal notranslate"><span class="pre">G.QueueManagedJobList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.RepairmanList"><code class="docutils literal notranslate"><span class="pre">G.RepairmanList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.RouterList"><code class="docutils literal notranslate"><span class="pre">G.RouterList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.SourceList"><code class="docutils literal notranslate"><span class="pre">G.SourceList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.SubBatchList"><code class="docutils literal notranslate"><span class="pre">G.SubBatchList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.TimeSeriesList"><code class="docutils literal notranslate"><span class="pre">G.TimeSeriesList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.WipList"><code class="docutils literal notranslate"><span class="pre">G.WipList</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.confidenceLevel"><code class="docutils literal notranslate"><span class="pre">G.confidenceLevel</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.console"><code class="docutils literal notranslate"><span class="pre">G.console</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.env"><code class="docutils literal notranslate"><span class="pre">G.env</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Globals.G.get_simulation_entities_history"><code class="docutils literal notranslate"><span class="pre">G.get_simulation_entities_history()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Globals.G.get_simulation_results_dataframe"><code class="docutils literal notranslate"><span class="pre">G.get_simulation_results_dataframe()</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.maxSimTime"><code class="docutils literal notranslate"><span class="pre">G.maxSimTime</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.numberOfEntities"><code class="docutils literal notranslate"><span class="pre">G.numberOfEntities</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.numberOfReplications"><code class="docutils literal notranslate"><span class="pre">G.numberOfReplications</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.outputFile"><code class="docutils literal notranslate"><span class="pre">G.outputFile</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.outputIndex"><code class="docutils literal notranslate"><span class="pre">G.outputIndex</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.outputJSON"><code class="docutils literal notranslate"><span class="pre">G.outputJSON</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.outputJSONFile"><code class="docutils literal notranslate"><span class="pre">G.outputJSONFile</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.outputSheet"><code class="docutils literal notranslate"><span class="pre">G.outputSheet</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.pendingEntities"><code class="docutils literal notranslate"><span class="pre">G.pendingEntities</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.sheetIndex"><code class="docutils literal notranslate"><span class="pre">G.sheetIndex</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.simulation_snapshots"><code class="docutils literal notranslate"><span class="pre">G.simulation_snapshots</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.snapshots"><code class="docutils literal notranslate"><span class="pre">G.snapshots</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.totalPulpTime"><code class="docutils literal notranslate"><span class="pre">G.totalPulpTime</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.trace"><code class="docutils literal notranslate"><span class="pre">G.trace</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.traceFile"><code class="docutils literal notranslate"><span class="pre">G.traceFile</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.traceIndex"><code class="docutils literal notranslate"><span class="pre">G.traceIndex</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.traceSheet"><code class="docutils literal notranslate"><span class="pre">G.traceSheet</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.G.trace_list"><code class="docutils literal notranslate"><span class="pre">G.trace_list</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#manpy.simulation.core.Globals.SetWipTypeError"><code class="docutils literal notranslate"><span class="pre">SetWipTypeError</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Globals.countIntervalThroughput"><code class="docutils literal notranslate"><span class="pre">countIntervalThroughput()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Globals.findObjectById"><code class="docutils literal notranslate"><span class="pre">findObjectById()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Globals.getClassFromName"><code class="docutils literal notranslate"><span class="pre">getClassFromName()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Globals.getFeatureData"><code class="docutils literal notranslate"><span class="pre">getFeatureData()</span></code></a></li>
@@ -2162,7 +2010,7 @@ retrieved state and a label for the state.
 <li><a class="reference internal" href="#manpy.simulation.core.Globals.setWIP"><code class="docutils literal notranslate"><span class="pre">setWIP()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-manpy.simulation.core.Machine">core.Machine module</a><ul>
+<li><a class="reference internal" href="#module-manpy.simulation.core.Machine">manpy.simulation.core.Machine.py</a><ul>
 <li><a class="reference internal" href="#manpy.simulation.core.Machine.Machine"><code class="docutils literal notranslate"><span class="pre">Machine</span></code></a><ul>
 <li><a class="reference internal" href="#manpy.simulation.core.Machine.Machine.calculateInitialOperationTimes"><code class="docutils literal notranslate"><span class="pre">Machine.calculateInitialOperationTimes()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Machine.Machine.canAccept"><code class="docutils literal notranslate"><span class="pre">Machine.canAccept()</span></code></a></li>
@@ -2201,7 +2049,7 @@ retrieved state and a label for the state.
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-manpy.simulation.core.ObjectInterruption">core.ObjectInterruption module</a><ul>
+<li><a class="reference internal" href="#module-manpy.simulation.core.ObjectInterruption">manpy.simulation.core.ObjectInterruption.py</a><ul>
 <li><a class="reference internal" href="#manpy.simulation.core.ObjectInterruption.ObjectInterruption"><code class="docutils literal notranslate"><span class="pre">ObjectInterruption</span></code></a><ul>
 <li><a class="reference internal" href="#manpy.simulation.core.ObjectInterruption.ObjectInterruption.getVictimQueue"><code class="docutils literal notranslate"><span class="pre">ObjectInterruption.getVictimQueue()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.ObjectInterruption.ObjectInterruption.initialize"><code class="docutils literal notranslate"><span class="pre">ObjectInterruption.initialize()</span></code></a></li>
@@ -2215,7 +2063,7 @@ retrieved state and a label for the state.
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-manpy.simulation.core.ObjectProperty">core.ObjectProperty module</a><ul>
+<li><a class="reference internal" href="#module-manpy.simulation.core.ObjectProperty">manpy.simulation.core.ObjectProperty.py</a><ul>
 <li><a class="reference internal" href="#manpy.simulation.core.ObjectProperty.ObjectProperty"><code class="docutils literal notranslate"><span class="pre">ObjectProperty</span></code></a><ul>
 <li><a class="reference internal" href="#manpy.simulation.core.ObjectProperty.ObjectProperty.getVictimQueue"><code class="docutils literal notranslate"><span class="pre">ObjectProperty.getVictimQueue()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.ObjectProperty.ObjectProperty.get_feature_value"><code class="docutils literal notranslate"><span class="pre">ObjectProperty.get_feature_value()</span></code></a></li>
@@ -2229,7 +2077,7 @@ retrieved state and a label for the state.
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-manpy.simulation.core.ObjectResource">core.ObjectResource module</a><ul>
+<li><a class="reference internal" href="#module-manpy.simulation.core.ObjectResource">manpy.simulation.core.ObjectResource.py</a><ul>
 <li><a class="reference internal" href="#manpy.simulation.core.ObjectResource.ObjectResource"><code class="docutils literal notranslate"><span class="pre">ObjectResource</span></code></a><ul>
 <li><a class="reference internal" href="#manpy.simulation.core.ObjectResource.ObjectResource.checkIfResourceIsAvailable"><code class="docutils literal notranslate"><span class="pre">ObjectResource.checkIfResourceIsAvailable()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.ObjectResource.ObjectResource.getResource"><code class="docutils literal notranslate"><span class="pre">ObjectResource.getResource()</span></code></a></li>
@@ -2241,7 +2089,7 @@ retrieved state and a label for the state.
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-manpy.simulation.core.Queue">core.Queue module</a><ul>
+<li><a class="reference internal" href="#module-manpy.simulation.core.Queue">manpy.simulation.core.Queue.py</a><ul>
 <li><a class="reference internal" href="#manpy.simulation.core.Queue.Queue"><code class="docutils literal notranslate"><span class="pre">Queue</span></code></a><ul>
 <li><a class="reference internal" href="#manpy.simulation.core.Queue.Queue.activeQSorter"><code class="docutils literal notranslate"><span class="pre">Queue.activeQSorter()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Queue.Queue.canAccept"><code class="docutils literal notranslate"><span class="pre">Queue.canAccept()</span></code></a></li>
@@ -2260,7 +2108,7 @@ retrieved state and a label for the state.
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-manpy.simulation.core.Source">core.Source module</a><ul>
+<li><a class="reference internal" href="#module-manpy.simulation.core.Source">manpy.simulation.core.Source.py</a><ul>
 <li><a class="reference internal" href="#manpy.simulation.core.Source.EntityGenerator"><code class="docutils literal notranslate"><span class="pre">EntityGenerator</span></code></a><ul>
 <li><a class="reference internal" href="#manpy.simulation.core.Source.EntityGenerator.run"><code class="docutils literal notranslate"><span class="pre">EntityGenerator.run()</span></code></a></li>
 </ul>
@@ -2277,7 +2125,7 @@ retrieved state and a label for the state.
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-manpy.simulation.core.StateController">core.StateController module</a><ul>
+<li><a class="reference internal" href="#module-manpy.simulation.core.StateController">manpy.simulation.core.StateController.py</a><ul>
 <li><a class="reference internal" href="#manpy.simulation.core.StateController.ContinuosNormalDistribution"><code class="docutils literal notranslate"><span class="pre">ContinuosNormalDistribution</span></code></a><ul>
 <li><a class="reference internal" href="#manpy.simulation.core.StateController.ContinuosNormalDistribution.get_and_update"><code class="docutils literal notranslate"><span class="pre">ContinuosNormalDistribution.get_and_update()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.StateController.ContinuosNormalDistribution.get_initial_state"><code class="docutils literal notranslate"><span class="pre">ContinuosNormalDistribution.get_initial_state()</span></code></a></li>
@@ -2304,7 +2152,7 @@ retrieved state and a label for the state.
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-manpy.simulation.core.Timeseries">core.Timeseries module</a><ul>
+<li><a class="reference internal" href="#module-manpy.simulation.core.Timeseries">manpy.simulation.core.Timeseries.py</a><ul>
 <li><a class="reference internal" href="#manpy.simulation.core.Timeseries.Timeseries"><code class="docutils literal notranslate"><span class="pre">Timeseries</span></code></a><ul>
 <li><a class="reference internal" href="#manpy.simulation.core.Timeseries.Timeseries.initialize"><code class="docutils literal notranslate"><span class="pre">Timeseries.initialize()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Timeseries.Timeseries.run"><code class="docutils literal notranslate"><span class="pre">Timeseries.run()</span></code></a></li>
@@ -2312,7 +2160,6 @@ retrieved state and a label for the state.
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-manpy.simulation.core">Module contents</a></li>
 </ul>
 </li>
 </ul>

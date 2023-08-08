@@ -268,12 +268,12 @@ class Machine(CoreObject):
     # create an operatorPool if needed
     # ===========================================================================
     def createOperatorPool(self, operatorPool):
-        """ sets the operator resource of the Machine
-             check if the operatorPool is a List or a OperatorPool type Object
-             if it is a list then initiate a OperatorPool type object containing
-             the list of operators provided
-            if the  list is empty create operator pool with empty list
-        """
+        # sets the operator resource of the Machine
+        # check if the operatorPool is a List or a OperatorPool type Object
+        # if it is a list then initiate a OperatorPool type object containing
+        # the list of operators provided
+        # if the  list is empty create operator pool with empty list
+
         from manpy.simulation.core.Globals import G
 
         # XXX operatorPool is not None ?
@@ -384,13 +384,11 @@ class Machine(CoreObject):
     # method controlling if there is a need to yield
     # ===========================================================================
     def shouldYield(self, operationTypes={}, methods={}):
-        """
-            Method that controls if the machine should yield for releasing the operator
-            "methods":{'isInterrupted':'0'},                                % the method isInterrupted should return False (0) or True (1)
-            "operationTypes"={"Processing":1,                               % processing must be in multiOperationTypeList
-                               "Setup":0                                    % setup must not be in multiOperationTypeList
-                             }
-        """
+        # Method that controls if the machine should yield for releasing the operator
+        # "methods":{'isInterrupted':'0'},                                % the method isInterrupted should return False (0) or True (1)
+        # "operationTypes"={"Processing":1,                               % processing must be in multiOperationTypeList
+        #                    "Setup":0                                    % setup must not be in multiOperationTypeList
+        #              }
         operationsRequired = []
         operationsNotRequired = []
         opRequest = True

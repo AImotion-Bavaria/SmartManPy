@@ -72,6 +72,8 @@ class Feature(ObjectProperty):
         self.victimEndsProcessing = self.env.event()
 
     def generate_feature(self):
+        """Generates the actual feature value"""
+
         if self.dependent:
             for key in list(self.dependent.keys()):
                 if key != "Function":
@@ -95,7 +97,6 @@ class Feature(ObjectProperty):
 
     def run(self):
         """Every Object has to have a run method. Simpy is mainly used in this function
-        :return: None
         """
 
         while 1:
