@@ -22,9 +22,7 @@ Created on 18 Aug 2013
 
 @author: George
 """
-"""
-Class that acts as an abstract. It should have no instances. All object interruptions (eg failures, breaks) should inherit from it
-"""
+
 
 # from SimPy.Simulation import Process, Resource, reactivate, now
 from manpy.simulation.ManPyObject import ManPyObject
@@ -33,6 +31,10 @@ from manpy.simulation.ManPyObject import ManPyObject
 # The ObjectInterruption process
 # ===============================================================================
 class ObjectInterruption(ManPyObject):
+    """
+    Class that acts as an abstract. It should have no instances. All object interruptions (eg failures, breaks) should inherit from it
+    """
+
     def __init__(self, id="", name="", victim=None, remove=False, **kw):
         ManPyObject.__init__(self, id, name)
         self.victim = victim
@@ -91,42 +93,35 @@ class ObjectInterruption(ManPyObject):
             "victimResumesProcessing": 0
         }
 
-    # ===========================================================================
-    # the main process of the core object
-    # this is dummy, every object must have its own implementation
-    # ===========================================================================
     def run(self):
+        """ the main process of the core object. this is a dummy, every object must have its own implementation"""
+
         raise NotImplementedError("Subclass must define 'run' method")
 
-    # =======================================================================
-    #           hand in the control to the objectIterruption.run
-    #                   to be called by the machine
-    # TODO: consider removing this method,
-    #     signalling can be done via Machine request/releaseOperator
-    # =======================================================================
     def invoke(self):
+        """hand in the control to the objectIterruption.run to be called by the machine"""
+
+        # TODO: consider removing this method,
+        # signalling can be done via Machine request/releaseOperator
         if self.expectedSignals["isCalled"]:
             succeedTuple = (self.victim, self.env.now)
             self.sendSignal(
                 receiver=self, signal=self.isCalled, succeedTuple=succeedTuple
             )
 
-    # ===========================================================================
-    # returns the internal queue of the victim
-    # ===========================================================================
     def getVictimQueue(self):
+        """returns the internal queue of the victim"""
+
         return self.victim.getActiveObjectQueue()
 
-    # ===========================================================================
-    # check if the victim's internal queue is empty
-    # ===========================================================================
     def victimQueueIsEmpty(self):
+        """check if the victim's internal queue is empty"""
+
         return len(self.getVictimQueue()) == 0
 
-    # ===========================================================================
-    # interrupts the victim
-    # ===========================================================================
     def interruptVictim(self):
+        """interrupts the victim"""
+
         # print(f"Starting failure at {self.env.now}")
         # inform the victim by whom will it be interrupted
         # TODO: reconsider what happens when failure and ShiftScheduler (e.g.) signal simultaneously
@@ -149,10 +144,9 @@ class ObjectInterruption(ManPyObject):
             self.victim.discards.append(self.victim.activeEntity)
             self.victim.removeEntity(self.victim.activeEntity)
 
-    # ===========================================================================
-    # reactivate the victim
-    # ===========================================================================
     def reactivateVictim(self):
+        """reactivate the victim"""
+
         # print(f"Ending failure at {self.env.now}")
         if self.victim.expectedSignals["interruptionEnd"]:
             self.sendSignal(receiver=self.victim, signal=self.victim.interruptionEnd)
@@ -165,11 +159,9 @@ class ObjectInterruption(ManPyObject):
             # request allocation
             self.victim.requestAllocation()
 
-    # ===========================================================================
-    # prints message to the console
-    # ===========================================================================
-    # print message in the console. Format is (Simulation Time | Entity or Frame Name | message)
     def printTrace(self, entityName, message):
+        """print message in the console. Format is (Simulation Time | Entity or Frame Name | message)"""
+
         from manpy.simulation.core.Globals import G
 
         if G.console == "Yes":  # output only if the user has selected to

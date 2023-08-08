@@ -63,7 +63,6 @@ manpy.simulation.core.Machine.py
 
 .. automodule:: manpy.simulation.core.Machine
    :members:
-   :undoc-members:
    :show-inheritance:
 
 manpy.simulation.core.ObjectInterruption.py

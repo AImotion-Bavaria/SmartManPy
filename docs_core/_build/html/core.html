@@ -835,7 +835,8 @@ Is used instead of passing a TTF in distribution.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Failure.Failure.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Failure.html#Failure.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Failure.Failure.run" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>the main process of the core object. this is a dummy, every object must have its own implementation</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -1048,73 +1049,67 @@ otherwise there is no current station but a list of possible stations although t
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.Machine.</span></span><span class="sig-name descname"><span class="pre">Machine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">capacity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processingTime</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repairman</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'None'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operatorPool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'None'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operationType</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'None'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">setupTime</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loadTime</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preemption</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">canDeliverOnInterruption</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">technology</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">control</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject" title="manpy.simulation.core.CoreObject.CoreObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">CoreObject</span></code></a></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.calculateInitialOperationTimes">
-<span class="sig-name descname"><span class="pre">calculateInitialOperationTimes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.calculateInitialOperationTimes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.calculateInitialOperationTimes" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
+<p>Models a machine that can also have failures</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.canAccept">
 <span class="sig-name descname"><span class="pre">canAccept</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callerObject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.canAccept"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.canAccept" title="Permalink to this definition">#</a></dt>
-<dd><p>checks if the Object can accept an entity</p>
+<dd><p>checks if the Machine can accept an entity.
+it checks also who called it and returns TRUE only to the predecessor that will give the entity.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.canAcceptAndIsRequested">
 <span class="sig-name descname"><span class="pre">canAcceptAndIsRequested</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callerObject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.canAcceptAndIsRequested"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.canAcceptAndIsRequested" title="Permalink to this definition">#</a></dt>
-<dd><p>checks if the Object can accept an entity and there is an entity in some possible giver waiting for it</p>
+<dd><p>checks if the Machine can accept an entity and there is an entity in some possible giver waiting for it.
+also updates the giver to the one that is to be taken</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.canDeliver">
 <span class="sig-name descname"><span class="pre">canDeliver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.canDeliver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.canDeliver" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>checks whether the entity can proceed to a successor object</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.checkIfMachineIsUp">
 <span class="sig-name descname"><span class="pre">checkIfMachineIsUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.checkIfMachineIsUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.checkIfMachineIsUp" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.checkInitialOperationTypes">
-<span class="sig-name descname"><span class="pre">checkInitialOperationTypes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.checkInitialOperationTypes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.checkInitialOperationTypes" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>checks if the machine is Up</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.checkOperator">
 <span class="sig-name descname"><span class="pre">checkOperator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callerObject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.checkOperator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.checkOperator" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>to be called by canAcceptAndIsRequested and check for the operator</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.createBroker">
 <span class="sig-name descname"><span class="pre">createBroker</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.createBroker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.createBroker" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>create broker if needed</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.createOperatorPool">
 <span class="sig-name descname"><span class="pre">createOperatorPool</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">operatorPool</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.createOperatorPool"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.createOperatorPool" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>create an operatorPool if needed</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.createRouter">
 <span class="sig-name descname"><span class="pre">createRouter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.createRouter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.createRouter" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>create router if needed</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.endOperationActions">
 <span class="sig-name descname"><span class="pre">endOperationActions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.endOperationActions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.endOperationActions" title="Permalink to this definition">#</a></dt>
-<dd><p>actions to be carried out when the processing of an Entity ends</p>
+<dd><p>actions to be performed after an operation (setup or processing)</p>
 </dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.family">
-<span class="sig-name descname"><span class="pre">family</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Server'</span></em><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.family" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.getEntity">
 <span class="sig-name descname"><span class="pre">getEntity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.getEntity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.getEntity" title="Permalink to this definition">#</a></dt>
-<dd><p>gets an entity from the giver</p>
+<dd><p>get an entity from the giver</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1126,54 +1121,62 @@ otherwise there is no current station but a list of possible stations although t
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.haveToDispose">
 <span class="sig-name descname"><span class="pre">haveToDispose</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callerObject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.haveToDispose"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.haveToDispose" title="Permalink to this definition">#</a></dt>
-<dd><p>checks if the Object can dispose an entity to the following object</p>
+<dd><p>checks if the Machine can dispose an entity to the following object</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.initialize">
 <span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.initialize" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>initializes the machine</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.initializeBroker">
 <span class="sig-name descname"><span class="pre">initializeBroker</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.initializeBroker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.initializeBroker" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>initialise broker if needed</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.initializeOperatorPool">
 <span class="sig-name descname"><span class="pre">initializeOperatorPool</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.initializeOperatorPool"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.initializeOperatorPool" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>initialise broker if needed</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.initializeRouter">
 <span class="sig-name descname"><span class="pre">initializeRouter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.initializeRouter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.initializeRouter" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>initialise router if needed</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.interruptionActions">
 <span class="sig-name descname"><span class="pre">interruptionActions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Processing'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.interruptionActions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.interruptionActions" title="Permalink to this definition">#</a></dt>
-<dd><p>actions to be carried whenever the object is interrupted (failure, break, preemption, etc)</p>
+<dd><p>actions to be carried out when the processing of an Entity ends</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.isInterrupted">
 <span class="sig-name descname"><span class="pre">isInterrupted</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.isInterrupted"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.isInterrupted" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>returns true if the station is interrupted</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.isLoadRequested">
 <span class="sig-name descname"><span class="pre">isLoadRequested</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.isLoadRequested"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.isLoadRequested" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>return whether Load or setup Requested</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.isOperated">
 <span class="sig-name descname"><span class="pre">isOperated</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.isOperated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.isOperated" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>check if the machine is currently operated by an operator</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.operation">
 <span class="sig-name descname"><span class="pre">operation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Processing'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.operation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.operation" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>general process, it can be processing or setup</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.outputResultsJSON">
@@ -1184,62 +1187,50 @@ otherwise there is no current station but a list of possible stations although t
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.postInterruptionActions">
 <span class="sig-name descname"><span class="pre">postInterruptionActions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.postInterruptionActions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.postInterruptionActions" title="Permalink to this definition">#</a></dt>
-<dd><p>actions to be carried whenever the object recovers control after an interruption (failure, break, preemption, etc)</p>
+<dd><p>actions to be carried out when the processing of an Entity ends</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.release">
 <span class="sig-name descname"><span class="pre">release</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.release"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.release" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>yielding the broker process for releasing the resource</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.releaseOperator">
 <span class="sig-name descname"><span class="pre">releaseOperator</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.releaseOperator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.releaseOperator" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>prepare the machine to be released</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.removeEntity">
 <span class="sig-name descname"><span class="pre">removeEntity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.removeEntity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.removeEntity" title="Permalink to this definition">#</a></dt>
-<dd><p>removes an Entity from the Object the Entity to be removed is passed as argument by getEntity of the receiver</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>entity</strong> – </p></li>
-<li><p><strong>resetFlags</strong> – </p></li>
-<li><p><strong>addBlockage</strong> – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p></p>
-</dd>
-</dl>
+<dd><p>removes an entity from the Machine</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.request">
 <span class="sig-name descname"><span class="pre">request</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.request" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>yielding the broker process for requesting an operator</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.requestOperator">
 <span class="sig-name descname"><span class="pre">requestOperator</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.requestOperator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.requestOperator" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>prepare the machine to be operated</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.run" title="Permalink to this definition">#</a></dt>
-<dd><p>the main process of the core object, this is dummy, every object must have its own implementation</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None</p>
-</dd>
-</dl>
+<dd><p>the main process of the machine</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Machine.Machine.shouldYield">
 <span class="sig-name descname"><span class="pre">shouldYield</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">operationTypes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">methods</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Machine.html#Machine.shouldYield"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Machine.Machine.shouldYield" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>method controlling if there is a need to yield</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -1252,10 +1243,12 @@ otherwise there is no current station but a list of possible stations although t
 <dt class="sig sig-object py" id="manpy.simulation.core.ObjectInterruption.ObjectInterruption">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.ObjectInterruption.</span></span><span class="sig-name descname"><span class="pre">ObjectInterruption</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">victim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ObjectInterruption.html#ObjectInterruption"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ObjectInterruption.ObjectInterruption" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ManPyObject</span></code></p>
+<p>Class that acts as an abstract. It should have no instances. All object interruptions (eg failures, breaks) should inherit from it</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.ObjectInterruption.ObjectInterruption.getVictimQueue">
 <span class="sig-name descname"><span class="pre">getVictimQueue</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ObjectInterruption.html#ObjectInterruption.getVictimQueue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ObjectInterruption.ObjectInterruption.getVictimQueue" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>returns the internal queue of the victim</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.ObjectInterruption.ObjectInterruption.initialize">
@@ -1265,32 +1258,38 @@ otherwise there is no current station but a list of possible stations although t
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.ObjectInterruption.ObjectInterruption.interruptVictim">
 <span class="sig-name descname"><span class="pre">interruptVictim</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ObjectInterruption.html#ObjectInterruption.interruptVictim"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ObjectInterruption.ObjectInterruption.interruptVictim" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>interrupts the victim</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.ObjectInterruption.ObjectInterruption.invoke">
 <span class="sig-name descname"><span class="pre">invoke</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ObjectInterruption.html#ObjectInterruption.invoke"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ObjectInterruption.ObjectInterruption.invoke" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>hand in the control to the objectIterruption.run to be called by the machine</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.ObjectInterruption.ObjectInterruption.printTrace">
 <span class="sig-name descname"><span class="pre">printTrace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entityName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ObjectInterruption.html#ObjectInterruption.printTrace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ObjectInterruption.ObjectInterruption.printTrace" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>print message in the console. Format is (Simulation Time | Entity or Frame Name | message)</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.ObjectInterruption.ObjectInterruption.reactivateVictim">
 <span class="sig-name descname"><span class="pre">reactivateVictim</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ObjectInterruption.html#ObjectInterruption.reactivateVictim"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ObjectInterruption.ObjectInterruption.reactivateVictim" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>reactivate the victim</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.ObjectInterruption.ObjectInterruption.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ObjectInterruption.html#ObjectInterruption.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ObjectInterruption.ObjectInterruption.run" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>the main process of the core object. this is a dummy, every object must have its own implementation</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.ObjectInterruption.ObjectInterruption.victimQueueIsEmpty">
 <span class="sig-name descname"><span class="pre">victimQueueIsEmpty</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ObjectInterruption.html#ObjectInterruption.victimQueueIsEmpty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ObjectInterruption.ObjectInterruption.victimQueueIsEmpty" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>check if the victim’s internal queue is empty</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -1303,15 +1302,18 @@ otherwise there is no current station but a list of possible stations although t
 <dt class="sig sig-object py" id="manpy.simulation.core.ObjectProperty.ObjectProperty">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.ObjectProperty.</span></span><span class="sig-name descname"><span class="pre">ObjectProperty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">victim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distribution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distribution_state_controller</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reset_distributions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_negative</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_walk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dependent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ObjectProperty.html#ObjectProperty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ObjectProperty.ObjectProperty" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ManPyObject</span></code></p>
+<p>Abstract class for all kinds of object properties that are generated in somehow regular interval. Example: Features</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.ObjectProperty.ObjectProperty.getVictimQueue">
 <span class="sig-name descname"><span class="pre">getVictimQueue</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ObjectProperty.html#ObjectProperty.getVictimQueue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ObjectProperty.ObjectProperty.getVictimQueue" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>returns the internal queue of the victim</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.ObjectProperty.ObjectProperty.get_feature_value">
 <span class="sig-name descname"><span class="pre">get_feature_value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ObjectProperty.html#ObjectProperty.get_feature_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ObjectProperty.ObjectProperty.get_feature_value" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Returns the current value of the feature.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.ObjectProperty.ObjectProperty.initialize">
@@ -1321,7 +1323,8 @@ otherwise there is no current station but a list of possible stations although t
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.ObjectProperty.ObjectProperty.invoke">
 <span class="sig-name descname"><span class="pre">invoke</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ObjectProperty.html#ObjectProperty.invoke"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ObjectProperty.ObjectProperty.invoke" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>hand in the control to the objectIterruption.run to be called by the machine</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.ObjectProperty.ObjectProperty.outputTrace">
@@ -1344,17 +1347,20 @@ otherwise there is no current station but a list of possible stations although t
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.ObjectProperty.ObjectProperty.printTrace">
 <span class="sig-name descname"><span class="pre">printTrace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entityName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ObjectProperty.html#ObjectProperty.printTrace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ObjectProperty.ObjectProperty.printTrace" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>print message in the console. Format is (Simulation Time | Entity or Frame Name | message)</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.ObjectProperty.ObjectProperty.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ObjectProperty.html#ObjectProperty.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ObjectProperty.ObjectProperty.run" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>the main process of the core object. this is a dummy, every object must have its own implementation</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.ObjectProperty.ObjectProperty.victimQueueIsEmpty">
 <span class="sig-name descname"><span class="pre">victimQueueIsEmpty</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ObjectProperty.html#ObjectProperty.victimQueueIsEmpty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ObjectProperty.ObjectProperty.victimQueueIsEmpty" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>check if the victim’s internal queue is empty</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -1367,20 +1373,25 @@ otherwise there is no current station but a list of possible stations although t
 <dt class="sig sig-object py" id="manpy.simulation.core.ObjectResource.ObjectResource">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.ObjectResource.</span></span><span class="sig-name descname"><span class="pre">ObjectResource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ObjectResource.html#ObjectResource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ObjectResource.ObjectResource" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ManPyObject</span></code></p>
+<p>Class that acts as an abstract. It should have no instances. All the Resources should inherit from it.
+The resource that repairs the machines</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.ObjectResource.ObjectResource.checkIfResourceIsAvailable">
 <span class="sig-name descname"><span class="pre">checkIfResourceIsAvailable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callerObject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ObjectResource.html#ObjectResource.checkIfResourceIsAvailable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ObjectResource.ObjectResource.checkIfResourceIsAvailable" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>checks if the worker is available</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.ObjectResource.ObjectResource.getResource">
 <span class="sig-name descname"><span class="pre">getResource</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ObjectResource.html#ObjectResource.getResource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ObjectResource.ObjectResource.getResource" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>returns the resource</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.ObjectResource.ObjectResource.getResourceQueue">
 <span class="sig-name descname"><span class="pre">getResourceQueue</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ObjectResource.html#ObjectResource.getResourceQueue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ObjectResource.ObjectResource.getResourceQueue" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>returns the active queue of the resource</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.ObjectResource.ObjectResource.initialize">
@@ -1390,12 +1401,14 @@ otherwise there is no current station but a list of possible stations although t
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.ObjectResource.ObjectResource.isInitialized">
 <span class="sig-name descname"><span class="pre">isInitialized</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ObjectResource.html#ObjectResource.isInitialized"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ObjectResource.ObjectResource.isInitialized" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>check if the resource is already initialized</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.ObjectResource.ObjectResource.printRoute">
 <span class="sig-name descname"><span class="pre">printRoute</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ObjectResource.html#ObjectResource.printRoute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ObjectResource.ObjectResource.printRoute" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>print the route (the different stations the resource was occupied by)</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -2012,18 +2025,15 @@ retrieved state and a label for the state.</p>
 </li>
 <li><a class="reference internal" href="#module-manpy.simulation.core.Machine">manpy.simulation.core.Machine.py</a><ul>
 <li><a class="reference internal" href="#manpy.simulation.core.Machine.Machine"><code class="docutils literal notranslate"><span class="pre">Machine</span></code></a><ul>
-<li><a class="reference internal" href="#manpy.simulation.core.Machine.Machine.calculateInitialOperationTimes"><code class="docutils literal notranslate"><span class="pre">Machine.calculateInitialOperationTimes()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Machine.Machine.canAccept"><code class="docutils literal notranslate"><span class="pre">Machine.canAccept()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Machine.Machine.canAcceptAndIsRequested"><code class="docutils literal notranslate"><span class="pre">Machine.canAcceptAndIsRequested()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Machine.Machine.canDeliver"><code class="docutils literal notranslate"><span class="pre">Machine.canDeliver()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Machine.Machine.checkIfMachineIsUp"><code class="docutils literal notranslate"><span class="pre">Machine.checkIfMachineIsUp()</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Machine.Machine.checkInitialOperationTypes"><code class="docutils literal notranslate"><span class="pre">Machine.checkInitialOperationTypes()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Machine.Machine.checkOperator"><code class="docutils literal notranslate"><span class="pre">Machine.checkOperator()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Machine.Machine.createBroker"><code class="docutils literal notranslate"><span class="pre">Machine.createBroker()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Machine.Machine.createOperatorPool"><code class="docutils literal notranslate"><span class="pre">Machine.createOperatorPool()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Machine.Machine.createRouter"><code class="docutils literal notranslate"><span class="pre">Machine.createRouter()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Machine.Machine.endOperationActions"><code class="docutils literal notranslate"><span class="pre">Machine.endOperationActions()</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Machine.Machine.family"><code class="docutils literal notranslate"><span class="pre">Machine.family</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Machine.Machine.getEntity"><code class="docutils literal notranslate"><span class="pre">Machine.getEntity()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Machine.Machine.getOperationTime"><code class="docutils literal notranslate"><span class="pre">Machine.getOperationTime()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Machine.Machine.haveToDispose"><code class="docutils literal notranslate"><span class="pre">Machine.haveToDispose()</span></code></a></li>

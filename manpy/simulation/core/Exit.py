@@ -83,10 +83,9 @@ class Exit(CoreObject):
     def defineRouting(self, predecessorList=[]):
         self.previous = predecessorList  # no successorList for the Exit
 
-    # =======================================================================
-    #                checks if the Exit can accept an entity
-    # =======================================================================
     def canAccept(self, callerObject=None):
+        """checks if the Exit can accept an entity"""
+
         return True  # the exit always can accept an entity
 
     # =======================================================================

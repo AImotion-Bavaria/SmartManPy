@@ -113,10 +113,9 @@ class Failure(ObjectInterruption):
         self.victimEndsProcessing = self.env.event()
         self.contribution = self.env.event()
 
-    # =======================================================================
-    #    The run method for the failure which has to served by a repairman
-    # =======================================================================
     def run(self):
+        """The run method for the failure which has to served by a repairman"""
+
         if self.conditional(self) != None:
             from .Globals import G
             while 1:
