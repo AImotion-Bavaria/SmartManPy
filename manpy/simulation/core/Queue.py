@@ -21,9 +21,7 @@ Created on 8 Nov 2012
 
 @author: George
 """
-"""
-Models a FIFO queue where entities can wait in order to get into a server
-"""
+
 
 
 import simpy
@@ -33,6 +31,10 @@ from manpy.simulation.core.CoreObject import CoreObject
 #                            the Queue object
 # ===========================================================================
 class Queue(CoreObject):
+    """
+    Models a FIFO queue where entities can wait in order to get into a server
+    """
+
     family = "Buffer"
 
     # ===========================================================================
@@ -111,10 +113,9 @@ class Queue(CoreObject):
             "WINQ",
         )
 
-    # ===========================================================================
-    # the initialize method of the Queue class
-    # ===========================================================================
     def initialize(self):
+        """the initialize method of the Queue class"""
+
         # using the Process __init__ and not the CoreObject __init__
         CoreObject.initialize(self)
         # initialise the internal Queue (type Resource) of the Queue object
@@ -126,10 +127,8 @@ class Queue(CoreObject):
         self.expectedSignals["canDispose"] = 1
         self.expectedSignals["loadOperatorAvailable"] = 1
 
-    # ===========================================================================
-    # run method of the queue
-    # ===========================================================================
     def run(self):
+        """run method of the queue"""
 
         activeObjectQueue = self.Res.users
         # check if there is WIP and signal receiver
@@ -182,12 +181,11 @@ class Queue(CoreObject):
             # signal the giver (for synchronization issues)
             self.signalGiver()
 
-    # =======================================================================
-    #               checks if the Queue can accept an entity
-    #             it checks also who called it and returns TRUE
-    #            only to the predecessor that will give the entity.
-    # =======================================================================
     def canAccept(self, callerObject=None):
+        """
+        checks if the Queue can accept an entity
+        it checks also who called it and returns TRUE only to the predecessor that will give the entity.
+        """
         activeObjectQueue = self.Res.users
         # if we have only one predecessor just check if there is a place available
         # this is done to achieve better (cpu) processing time
@@ -197,13 +195,12 @@ class Queue(CoreObject):
         thecaller = callerObject
         return len(activeObjectQueue) < self.capacity and (self.isInRouteOf(thecaller))
 
-    # =======================================================================
-    #    checks if the Queue can dispose an entity to the following object
-    #            it checks also who called it and returns TRUE
-    #           only to the receiver that will give the entity.
-    #              this is kind of slow I think got to check
-    # =======================================================================
     def haveToDispose(self, callerObject=None):
+        """
+        checks if the Queue can dispose an entity to the following object
+        it checks also who called it and returns TRUE only to the receiver that will give the entity.
+        """
+
         activeObjectQueue = self.Res.users
         # if we have only one possible receiver just check if the Queue holds one or more entities
         if callerObject == None:
@@ -212,10 +209,9 @@ class Queue(CoreObject):
         thecaller = callerObject
         return len(activeObjectQueue) > 0 and thecaller.isInRouteOf(self)
 
-    # =======================================================================
-    #                    removes an entity from the Object
-    # =======================================================================
     def removeEntity(self, entity=None):
+        """removes an entity from the Object"""
+
         entities = [ent.id for ent in self.Res.users]
         self.level_history.append((self.env.now, self.id, entities, len(self.Res.users)))
         activeEntity = CoreObject.removeEntity(self, entity)  # run the default method
@@ -243,12 +239,12 @@ class Queue(CoreObject):
             pass
         return activeEntity
 
-    # =======================================================================
-    #            checks if the Queue can accept an entity and
-    #        there is an entity in some predecessor waiting for it
-    #   also updates the predecessorIndex to the one that is to be taken
-    # =======================================================================
     def canAcceptAndIsRequested(self, callerObject=None):
+        """
+        checks if the Queue can accept an entity and there is an entity in some predecessor waiting for it
+        also updates the predecessorIndex to the one that is to be taken
+        """
+
         activeObjectQueue = self.Res.users
         giverObject = callerObject
         assert giverObject, "there must be a caller for canAcceptAndIsRequested"
@@ -256,11 +252,9 @@ class Queue(CoreObject):
             self
         )
 
-    # =======================================================================
-    #            gets an entity from the predecessor that
-    #                the predecessor index points to
-    # =======================================================================
     def getEntity(self):
+        """gets an entity from the predecessor that the predecessor index points to"""
+
         entities = [ent.id for ent in self.Res.users]
         self.level_history.append((self.env.now, self.id, entities, len(self.Res.users)))
         activeEntity = CoreObject.getEntity(self)  # run the default behavior
@@ -277,10 +271,9 @@ class Queue(CoreObject):
             pass
         return activeEntity
 
-    # ===========================================================================
-    # checks whether the entity can proceed to a successor object
-    # ===========================================================================
     def canDeliver(self, entity=None):
+        """checks whether the entity can proceed to a successor object"""
+
         assert self.isInActiveQueue(entity), (
             entity.id + " not in the internalQueue of" + self.id
         )
@@ -296,10 +289,9 @@ class Queue(CoreObject):
             mayProceed = True
         return mayProceed
 
-    # =======================================================================
-    #    sorts the Entities of the Queue according to the scheduling rule
-    # =======================================================================
     def sortEntities(self):
+        """sorts the Entities of the Queue according to the scheduling rule"""
+
         # if we have sorting according to multiple criteria we have to call the sorter many times
         if self.schedulingRule == "MC":
             for criterion in reversed(self.multipleCriterionList):
@@ -308,10 +300,9 @@ class Queue(CoreObject):
         else:
             self.activeQSorter()
 
-    # =======================================================================
-    #    sorts the Entities of the Queue according to the scheduling rule
-    # =======================================================================
     def activeQSorter(self, criterion=None):
+        """sorts the Entities of the Queue according to the scheduling rule"""
+
         activeObjectQ = self.Res.users
         if criterion == None:
             criterion = self.schedulingRule
@@ -396,6 +387,8 @@ class Queue(CoreObject):
             assert False, "Unknown scheduling criterion %r" % (criterion,)
 
     def outputResultsJSON(self):
+        """Outputs the result to a JSON file."""
+
         from manpy.simulation.core.Globals import G
 
         json = {

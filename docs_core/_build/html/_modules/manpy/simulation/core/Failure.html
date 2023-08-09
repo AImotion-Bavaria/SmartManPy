@@ -155,7 +155,7 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../tutorials.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../core.html">core package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../core.html">Core</a></li>
 </ul>
 
 </div>
@@ -305,10 +305,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">victimEndsProcessing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">event</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">contribution</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">event</span><span class="p">()</span></div>
 
-    <span class="c1"># =======================================================================</span>
-    <span class="c1">#    The run method for the failure which has to served by a repairman</span>
-    <span class="c1"># =======================================================================</span>
 <div class="viewcode-block" id="Failure.run"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Failure.Failure.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The run method for the failure which has to served by a repairman&quot;&quot;&quot;</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">conditional</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
             <span class="kn">from</span> <span class="nn">.Globals</span> <span class="kn">import</span> <span class="n">G</span>
             <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>

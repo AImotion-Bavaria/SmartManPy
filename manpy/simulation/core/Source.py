@@ -23,9 +23,7 @@ Created on 8 Nov 2012
 """
 from manpy.simulation.core.Entity import Entity
 
-"""
-models the source object that generates the entities
-"""
+
 
 # from SimPy.Simulation import now, Process, Resource, infinity, hold, SimEvent, activate, waitevent
 import simpy
@@ -36,6 +34,10 @@ from manpy.simulation.core import Globals
 
 
 class EntityGenerator(object):
+    """
+    models the source object that generates the entities
+    """
+
     def __init__(self, victim=None):
         self.env = G.env
         self.type = "EntityGenerator"
@@ -96,9 +98,9 @@ class EntityGenerator(object):
 #                 The Source object is a Process
 # ============================================================================
 class Source(CoreObject):
-    # ===========================================================================
-    # the __init__method of the Source class
-    # ===========================================================================
+    """Spawns new entities for the simulations.
+    """
+
     def __init__(self, id, name, interArrivalTime=None, entity="manpy.Part", capacity=1, **kw):
 
         if not interArrivalTime:
@@ -139,36 +141,6 @@ class Source(CoreObject):
 
         G.SourceList.append(self)
 
-    # ===========================================================================
-    # The initialize method of the Source class
-    # ===========================================================================
-    def initialize(self):
-        # using the Process __init__ and not the CoreObject __init__
-        CoreObject.initialize(self)
-
-        # initialize the internal Queue (type Resource) of the Source
-        self.Res = simpy.Resource(self.env, capacity=float("inf"))
-        self.Res.users = []
-
-        # the EntityGenerator of the Source
-        self.entityGenerator = EntityGenerator(victim=self)
-
-        self.numberOfArrivals = 0
-        self.env.process(self.entityGenerator.run())
-        self.entityCreated = self.env.event()
-
-        # event used by router
-        self.loadOperatorAvailable = self.env.event()
-        # list of creations that are scheduled
-        self.scheduledEntities = []
-
-        self.expectedSignals["entityCreated"] = 1
-        self.expectedSignals["loadOperatorAvailable"] = 1
-        self.expectedSignals["canDispose"] = 1
-
-    # ===========================================================================
-    # the generator of the Source class
-    # ===========================================================================
     def run(self):
         # get active object and its queue
         activeObject = self.getActiveObject()
@@ -203,10 +175,9 @@ class Source(CoreObject):
                 if self.signalReceiver():
                     continue
 
-    # ===========================================================================
-    # add newly created entity to pendingEntities
-    # ===========================================================================
     def appendEntity(self, entity):
+        """add newly created entity to pendingEntities"""
+
         from manpy.simulation.core.Globals import G
 
         assert entity, "cannot append None entity"
@@ -215,16 +186,14 @@ class Source(CoreObject):
         if G.RouterList:
             G.pendingEntities.append(activeEntity)
 
-    # ============================================================================
-    #            sets the routing out element for the Source
-    # ============================================================================
     def defineRouting(self, successorList=[]):
+        """sets the routing out element for the Source"""
+
         self.next = successorList
 
-    # ============================================================================
-    #                          creates an Entity
-    # ============================================================================
     def createEntity(self):
+        """creates an Entity"""
+
         from manpy.simulation.core.Globals import G
 
         self.printTrace(self.id, create="")
@@ -240,17 +209,14 @@ class Source(CoreObject):
                 name=self.item.type + str(self.numberOfArrivals),
             )  # return the newly created Entity
 
-    # ============================================================================
-    #                    calculates the processing time
-    # ============================================================================
     def calculateInterArrivalTime(self):
+        """calculates the processing time"""
+
         # this is if we have a default interarrival time for all the entities
         return self.rng.generateNumber()
 
-    # =======================================================================
-    # removes an entity from the Source
-    # =======================================================================
     def removeEntity(self, entity=None):
+        """removes an entity from the Source"""
 
         if len(self.getActiveObjectQueue()) == 1 and len(self.scheduledEntities):
 

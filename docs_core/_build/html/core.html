@@ -713,16 +713,17 @@ this method is created to be overridden by the Assembly class in its getEntity w
 <dt class="sig sig-object py" id="manpy.simulation.core.Exit.Exit">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.Exit.</span></span><span class="sig-name descname"><span class="pre">Exit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cancelCondition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Exit.html#Exit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Exit.Exit" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject" title="manpy.simulation.core.CoreObject.CoreObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">CoreObject</span></code></a></p>
+<p>models the exit of the model</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Exit.Exit.canAccept">
 <span class="sig-name descname"><span class="pre">canAccept</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callerObject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Exit.html#Exit.canAccept"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Exit.Exit.canAccept" title="Permalink to this definition">#</a></dt>
-<dd><p>checks if the Object can accept an entity</p>
+<dd><p>checks if the Exit can accept an entity</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Exit.Exit.canAcceptAndIsRequested">
 <span class="sig-name descname"><span class="pre">canAcceptAndIsRequested</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callerObject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Exit.html#Exit.canAcceptAndIsRequested"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Exit.Exit.canAcceptAndIsRequested" title="Permalink to this definition">#</a></dt>
-<dd><p>checks if the Object can accept an entity and there is an entity in some possible giver waiting for it</p>
+<dd><p>checks if the Exit can accept an entity and there is an entity waiting for it</p>
 </dd></dl>
 
 <dl class="py method">
@@ -733,18 +734,7 @@ this method is created to be overridden by the Assembly class in its getEntity w
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Exit.Exit.defineRouting">
 <span class="sig-name descname"><span class="pre">defineRouting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predecessorList</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Exit.html#Exit.defineRouting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Exit.Exit.defineRouting" title="Permalink to this definition">#</a></dt>
-<dd><p>sets the routing in and out elements for the Object</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>predecessorList</strong> – List containing the predecessor Objects</p></li>
-<li><p><strong>successorList</strong> – List containing the successor Objects</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
+<dd><p>sets the routing in element for the Exit</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -755,13 +745,13 @@ this method is created to be overridden by the Assembly class in its getEntity w
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Exit.Exit.getEntity">
 <span class="sig-name descname"><span class="pre">getEntity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Exit.html#Exit.getEntity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Exit.Exit.getEntity" title="Permalink to this definition">#</a></dt>
-<dd><p>gets an entity from the giver</p>
+<dd><p>gets an entity from the predecessor</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Exit.Exit.haveToDispose">
 <span class="sig-name descname"><span class="pre">haveToDispose</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callerObject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Exit.html#Exit.haveToDispose"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Exit.Exit.haveToDispose" title="Permalink to this definition">#</a></dt>
-<dd><p>checks if the Object can dispose an entity to the following object</p>
+<dd><p>haveToDispose of an exit must always return False</p>
 </dd></dl>
 
 <dl class="py method">
@@ -835,7 +825,7 @@ Is used instead of passing a TTF in distribution.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Failure.Failure.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Failure.html#Failure.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Failure.Failure.run" title="Permalink to this definition">#</a></dt>
-<dd><p>the main process of the core object. this is a dummy, every object must have its own implementation</p>
+<dd><p>The run method for the failure which has to served by a repairman</p>
 </dd></dl>
 
 </dd></dl>
@@ -1373,8 +1363,8 @@ also updates the giver to the one that is to be taken</p>
 <dt class="sig sig-object py" id="manpy.simulation.core.ObjectResource.ObjectResource">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.ObjectResource.</span></span><span class="sig-name descname"><span class="pre">ObjectResource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ObjectResource.html#ObjectResource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ObjectResource.ObjectResource" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ManPyObject</span></code></p>
-<p>Class that acts as an abstract. It should have no instances. All the Resources should inherit from it.
-The resource that repairs the machines</p>
+<p>The resource that repairs the machines
+Class that acts as an abstract. It should have no instances. All the Resources should inherit from it.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.ObjectResource.ObjectResource.checkIfResourceIsAvailable">
 <span class="sig-name descname"><span class="pre">checkIfResourceIsAvailable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callerObject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ObjectResource.html#ObjectResource.checkIfResourceIsAvailable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ObjectResource.ObjectResource.checkIfResourceIsAvailable" title="Permalink to this definition">#</a></dt>
@@ -1421,27 +1411,32 @@ The resource that repairs the machines</p>
 <dt class="sig sig-object py" id="manpy.simulation.core.Queue.Queue">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.Queue.</span></span><span class="sig-name descname"><span class="pre">Queue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">capacity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">isDummy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schedulingRule</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'FIFO'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gatherWipStat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Queue.html#Queue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Queue.Queue" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject" title="manpy.simulation.core.CoreObject.CoreObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">CoreObject</span></code></a></p>
+<p>Models a FIFO queue where entities can wait in order to get into a server</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Queue.Queue.activeQSorter">
 <span class="sig-name descname"><span class="pre">activeQSorter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">criterion</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Queue.html#Queue.activeQSorter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Queue.Queue.activeQSorter" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>sorts the Entities of the Queue according to the scheduling rule</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Queue.Queue.canAccept">
 <span class="sig-name descname"><span class="pre">canAccept</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callerObject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Queue.html#Queue.canAccept"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Queue.Queue.canAccept" title="Permalink to this definition">#</a></dt>
-<dd><p>checks if the Object can accept an entity</p>
+<dd><p>checks if the Queue can accept an entity
+it checks also who called it and returns TRUE only to the predecessor that will give the entity.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Queue.Queue.canAcceptAndIsRequested">
 <span class="sig-name descname"><span class="pre">canAcceptAndIsRequested</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callerObject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Queue.html#Queue.canAcceptAndIsRequested"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Queue.Queue.canAcceptAndIsRequested" title="Permalink to this definition">#</a></dt>
-<dd><p>checks if the Object can accept an entity and there is an entity in some possible giver waiting for it</p>
+<dd><p>checks if the Queue can accept an entity and there is an entity in some predecessor waiting for it
+also updates the predecessorIndex to the one that is to be taken</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Queue.Queue.canDeliver">
 <span class="sig-name descname"><span class="pre">canDeliver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Queue.html#Queue.canDeliver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Queue.Queue.canDeliver" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>checks whether the entity can proceed to a successor object</p>
+</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="manpy.simulation.core.Queue.Queue.family">
@@ -1451,7 +1446,7 @@ The resource that repairs the machines</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Queue.Queue.getEntity">
 <span class="sig-name descname"><span class="pre">getEntity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Queue.html#Queue.getEntity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Queue.Queue.getEntity" title="Permalink to this definition">#</a></dt>
-<dd><p>gets an entity from the giver</p>
+<dd><p>gets an entity from the predecessor that the predecessor index points to</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1462,53 +1457,38 @@ The resource that repairs the machines</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Queue.Queue.haveToDispose">
 <span class="sig-name descname"><span class="pre">haveToDispose</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callerObject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Queue.html#Queue.haveToDispose"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Queue.Queue.haveToDispose" title="Permalink to this definition">#</a></dt>
-<dd><p>checks if the Object can dispose an entity to the following object</p>
+<dd><p>checks if the Queue can dispose an entity to the following object
+it checks also who called it and returns TRUE only to the receiver that will give the entity.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Queue.Queue.initialize">
 <span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Queue.html#Queue.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Queue.Queue.initialize" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>the initialize method of the Queue class</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Queue.Queue.outputResultsJSON">
 <span class="sig-name descname"><span class="pre">outputResultsJSON</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Queue.html#Queue.outputResultsJSON"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Queue.Queue.outputResultsJSON" title="Permalink to this definition">#</a></dt>
-<dd><p>outputs results to JSON File</p>
+<dd><p>Outputs the result to a JSON file.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Queue.Queue.removeEntity">
 <span class="sig-name descname"><span class="pre">removeEntity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Queue.html#Queue.removeEntity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Queue.Queue.removeEntity" title="Permalink to this definition">#</a></dt>
-<dd><p>removes an Entity from the Object the Entity to be removed is passed as argument by getEntity of the receiver</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>entity</strong> – </p></li>
-<li><p><strong>resetFlags</strong> – </p></li>
-<li><p><strong>addBlockage</strong> – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p></p>
-</dd>
-</dl>
+<dd><p>removes an entity from the Object</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Queue.Queue.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Queue.html#Queue.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Queue.Queue.run" title="Permalink to this definition">#</a></dt>
-<dd><p>the main process of the core object, this is dummy, every object must have its own implementation</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None</p>
-</dd>
-</dl>
+<dd><p>run method of the queue</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Queue.Queue.sortEntities">
 <span class="sig-name descname"><span class="pre">sortEntities</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Queue.html#Queue.sortEntities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Queue.Queue.sortEntities" title="Permalink to this definition">#</a></dt>
-<dd><p>sorts the Entities in the activeQ of the objects</p>
+<dd><p>sorts the Entities of the Queue according to the scheduling rule</p>
 </dd></dl>
 
 </dd></dl>
@@ -1522,6 +1502,7 @@ The resource that repairs the machines</p>
 <dt class="sig sig-object py" id="manpy.simulation.core.Source.EntityGenerator">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.Source.</span></span><span class="sig-name descname"><span class="pre">EntityGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">victim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Source.html#EntityGenerator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Source.EntityGenerator" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>models the source object that generates the entities</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Source.EntityGenerator.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Source.html#EntityGenerator.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Source.EntityGenerator.run" title="Permalink to this definition">#</a></dt>
@@ -1533,61 +1514,35 @@ The resource that repairs the machines</p>
 <dt class="sig sig-object py" id="manpy.simulation.core.Source.Source">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.Source.</span></span><span class="sig-name descname"><span class="pre">Source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interArrivalTime</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'manpy.Part'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">capacity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Source.html#Source"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Source.Source" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject" title="manpy.simulation.core.CoreObject.CoreObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">CoreObject</span></code></a></p>
+<p>Spawns new entities for the simulations.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Source.Source.appendEntity">
 <span class="sig-name descname"><span class="pre">appendEntity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Source.html#Source.appendEntity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Source.Source.appendEntity" title="Permalink to this definition">#</a></dt>
-<dd><p>appends entity to the receiver object. to be called by the removeEntity of the giver
-this method is created to be overridden by the Assembly class in its getEntity where Frames are loaded</p>
+<dd><p>add newly created entity to pendingEntities</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Source.Source.calculateInterArrivalTime">
 <span class="sig-name descname"><span class="pre">calculateInterArrivalTime</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Source.html#Source.calculateInterArrivalTime"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Source.Source.calculateInterArrivalTime" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>calculates the processing time</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Source.Source.createEntity">
 <span class="sig-name descname"><span class="pre">createEntity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Source.html#Source.createEntity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Source.Source.createEntity" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>creates an Entity</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Source.Source.defineRouting">
 <span class="sig-name descname"><span class="pre">defineRouting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">successorList</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Source.html#Source.defineRouting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Source.Source.defineRouting" title="Permalink to this definition">#</a></dt>
-<dd><p>sets the routing in and out elements for the Object</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>predecessorList</strong> – List containing the predecessor Objects</p></li>
-<li><p><strong>successorList</strong> – List containing the successor Objects</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
+<dd><p>sets the routing out element for the Source</p>
 </dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="manpy.simulation.core.Source.Source.initialize">
-<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Source.html#Source.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Source.Source.initialize" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Source.Source.removeEntity">
 <span class="sig-name descname"><span class="pre">removeEntity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Source.html#Source.removeEntity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Source.Source.removeEntity" title="Permalink to this definition">#</a></dt>
-<dd><p>removes an Entity from the Object the Entity to be removed is passed as argument by getEntity of the receiver</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>entity</strong> – </p></li>
-<li><p><strong>resetFlags</strong> – </p></li>
-<li><p><strong>addBlockage</strong> – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p></p>
-</dd>
-</dl>
+<dd><p>removes an entity from the Source</p>
 </dd></dl>
 
 <dl class="py method">
@@ -2128,7 +2083,6 @@ retrieved state and a label for the state.</p>
 <li><a class="reference internal" href="#manpy.simulation.core.Source.Source.calculateInterArrivalTime"><code class="docutils literal notranslate"><span class="pre">Source.calculateInterArrivalTime()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Source.Source.createEntity"><code class="docutils literal notranslate"><span class="pre">Source.createEntity()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Source.Source.defineRouting"><code class="docutils literal notranslate"><span class="pre">Source.defineRouting()</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.Source.Source.initialize"><code class="docutils literal notranslate"><span class="pre">Source.initialize()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Source.Source.removeEntity"><code class="docutils literal notranslate"><span class="pre">Source.removeEntity()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Source.Source.run"><code class="docutils literal notranslate"><span class="pre">Source.run()</span></code></a></li>
 </ul>
