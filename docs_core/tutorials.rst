@@ -2,7 +2,7 @@
 Tutorials
 ===========
 
-This page gives you an overview of the general usage paradigms of our ManPy extension
+This page gives you an overview of the general usage paradigms of our ManPy extension.
 We have prepared additional (complete) examples that demonstrate various capabilities.
 These examples can be found in manpy/Examples.
 We recommend the following order:
@@ -19,7 +19,7 @@ Introduction and basic principles
 ====================================
 
 The original ManPy package is based on the SimPy discrete event simulation.
-If you are already familiar with SimPy, you may recognize some paradigms.
+If you are already familiar with SimPy, you should recognize many paradigms.
 
 The start and finish point of a production line is a Source and Exit:
 
@@ -34,9 +34,9 @@ The start and finish point of a production line is a Source and Exit:
 
     exit = Exit("E1", "Exit1")
 
-Then, you can add a machine to our small example.
-Our machine have a mean processing time of 0.8 seconds, with a standard deviation of 0.075 seconds.
-However, the minimal and maximal time is set to 0.425 and 1.175 seconds:
+Then, we can add a machine to our small example.
+Our machine has a mean processing time of 0.8 seconds, with a standard deviation of 0.075 seconds.
+However, the minimal and maximal possible time is set to 0.425 and 1.175 seconds:
 
 .. code-block:: python
     :linenos:
@@ -72,12 +72,8 @@ We can now run and evaluate our simulation, e.g. for 50 time steps:
     print(f"Produced:         {exit.numOfExits}
             Simulationszeit:    {maxSimTime}")
 
-* Queues
-* Failures
-* Assembly
-
 Our example currently consists of only one production step.
-Since ManPy was designed to simulate production lines, let's see what it takes to add mode machines to a simulation.
+Since ManPy was designed to simulate production lines, let's see what it takes to add more machines to a simulation.
 First of all, we need to define a second machine:
 
 .. code-block:: python
@@ -168,7 +164,7 @@ It is possible to select different distributions and to control the behaviour of
 Further explanations for these mechanics are provided in `Distributions and StateControllers`_.
 
 We can of course add many more features to a machine.
-Sometimes, there are certain relationships between features, e.g. physical dependencies.
+Sometimes, there exist certain relationships between features, e.g. physical dependencies.
 We can model these dependencies using the "dependency" parameter:
 
 .. code-block:: python
@@ -181,7 +177,7 @@ We can model these dependencies using the "dependency" parameter:
                        )
 
 Here, we define a functional dependency between feature2 and feature1, in this case the linear function 10x + 3.
-To simulate eventual measurement errors, we can apply a standard deviation to this dependency, in this cas 0.1.
+To simulate eventual measurement errors, we can apply a standard deviation to this dependency, in this case 0.1.
 However, it is also possible to have strict functional dependencies between features by simply not passing anything as an argument for distribution:
 
 .. code-block:: python
@@ -216,7 +212,7 @@ Time Series
 
 TimeSeries represents the second type of ObjectProperty in our ManPy Extension.
 At each production step, TimeSeries generates a configurable amount of data points in a certain time frame.
-Let' have a look at a simple example:
+Let's have a look at a simple example:
 
 .. code-block:: python
 
@@ -288,6 +284,12 @@ The data points for interpolation can also be determined by a Feature with all i
 
 In this example, the final value for interpolation is received from Feature "endVal".
 
+The following plot shows two complex TimeSeries that were created using both interpolation and functional dependencies:
+
+.. image:: ./images/ts_complex.png
+    :width: 600
+    :alt: Complex TimeSeries
+
 Failures
 ---------
 
@@ -348,7 +350,7 @@ Distributions and StateControllers
 Using our StateControllers in combination with distributions allows for complex control over the lifecycle behaviour of features.
 This can be used to model data drifts or distribution shifts.
 The StateControllers are relatively generic and would easily allow extensions to other use cases, but we focus on controlling different probability distributions.
-The for our StateControllers was the need for modelling changing behaviour of features depending on their wear.
+The motivation for StateControllers was the need for modelling changing behaviour of features depending on their wear.
 If a machine part (e.g. a bearing) shows signs of wear, it's underlying probability distribution changes slightly.
 In the case of a bearing, this could be modelled using a steadily increasing standard deviation.
 In the following, the different types of yet implemented StateControllers are explained.
@@ -372,7 +374,7 @@ This can be achieved using the following piece of code:
     f3 = Feature("f3", "F3", victim=m2, distribution_state_controller=controller)
 
 This SimpleStateController controls the distributions of Feature F3.
-The actual behaviour is defined in "boundaries", which controls which distribution should be used at a certain amount of wear.
+The actual behaviour is defined in "boundaries", which controls the exact distribution that should be used at a certain amount of wear.
 In each production step, wear_per_step is added to the total amount of wear.
 If the total amount of wear crosses a boundary, a different distribution is used for Feature F3.
 In this case, the break point is defined at 25 units of wear, which leads to a new normal distribution with a drastically different mean (100).
@@ -414,7 +416,14 @@ However, it's now simplified such that the normal distribution after the defect 
     f3 = Feature("f3", "F3", victim=m2, reset_distributions=True, distribution_state_controller=controller1)
     # f3 = Feature("f3", "F3", victim=m2, reset_distributions=True, distribution_state_controller=controller2)
 
-SimpleStateController and ContinuosNormalDistribution are best used to model properties in relation to wear.
+The typical behaviour of ContinuosNormalDistribution can be seen in the following plot.
+It contains the evolution of the feature value of two ContinuosNormalDistribution StateControllers over the span of 250 steps.
+
+.. image:: ./images/continuos_normal_dist.png
+    :width: 500
+    :alt: Two ContinuosNormalDistributions
+
+SimpleStateController and ContinuosNormalDistribution are best used to model properties related to wear.
 But sometimes, failures can occur without obvious reason.
 For these cases, we designed RandomDefectStateController, which models a defect using a Bernoulli distribution.
 If the Bernoulli distribution returns 1, it selects a defect StateController from a list, otherwise it uses a "ok" StateController that model normal behaviour.
@@ -455,8 +464,13 @@ If the Bernoulli distribution returns 1, it selects a defect StateController fro
                                                            ok_controller=ok_controller,
                                                            defect_controllers=[defect_controller1, defect_controller2])
 
+The typical behavior of a RandomDefectStateController looks similar to the following plot (Red crosses = defect):
 
-The defect_controllers list can contain multiple StateControllers, which can be used to model minor deviations from the planned behaviour in multiple directions, like too much or not enough glue.
+.. image:: ./images/random_defect.png
+    :width: 600
+    :alt: Plot with random defects.
+
+The defect_controllers list can contain multiple StateControllers, which can be used to model minor deviations from the planned behaviour in multiple directions, e.g. too much or not enough glue.
 RandomDefectController introduces an additional way of performing quality control.
 Depending on the distribution that gets selected (ok/defect), an internal label is set to either True or False, indicating whether a defect is present or not.
 This label can be used for quality control, which should create more non-obvious relationships:
@@ -478,8 +492,6 @@ The interface is defined in core/StateController.py.
 
 Export
 ------
-
-TODO how to export features and timeseries to csv, how to export to database, ...
 
 Our ManPy extensions offers two ways to export the simulated data: Pandas DataFrames and Databases.
 To export the data to a Pandas DataFrame, you can use the getFeatureData and getTimeSeriesData functions:

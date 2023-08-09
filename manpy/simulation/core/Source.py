@@ -99,6 +99,12 @@ class EntityGenerator(object):
 # ============================================================================
 class Source(CoreObject):
     """Spawns new entities for the simulations.
+
+    :param id: Internal ID
+    :param name: Name of the Source
+    :param interArrivalTime: Time until the next Entity is spawned
+    :param entity: Type of Entity that's generated. One of "manpy.{Part, Batch, Frame, Job, CapacityEntity, CapacityProject}".
+    :param capacity: Capacity of the generated Entities, Only relevant for entity="manpy.Frame"
     """
 
     def __init__(self, id, name, interArrivalTime=None, entity="manpy.Part", capacity=1, **kw):
@@ -140,6 +146,33 @@ class Source(CoreObject):
         from manpy.simulation.core.Globals import G
 
         G.SourceList.append(self)
+
+    # ===========================================================================
+    # The initialize method of the Source class
+    # ===========================================================================
+    def initialize(self):
+        # using the Process __init__ and not the CoreObject __init__
+        CoreObject.initialize(self)
+
+        # initialize the internal Queue (type Resource) of the Source
+        self.Res = simpy.Resource(self.env, capacity=float("inf"))
+        self.Res.users = []
+
+        # the EntityGenerator of the Source
+        self.entityGenerator = EntityGenerator(victim=self)
+
+        self.numberOfArrivals = 0
+        self.env.process(self.entityGenerator.run())
+        self.entityCreated = self.env.event()
+
+        # event used by router
+        self.loadOperatorAvailable = self.env.event()
+        # list of creations that are scheduled
+        self.scheduledEntities = []
+
+        self.expectedSignals["entityCreated"] = 1
+        self.expectedSignals["loadOperatorAvailable"] = 1
+        self.expectedSignals["canDispose"] = 1
 
     def run(self):
         # get active object and its queue

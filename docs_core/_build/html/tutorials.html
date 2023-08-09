@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="core package" href="core.html" /><link rel="prev" title="Extended ManPy" href="index.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Core" href="core.html" /><link rel="prev" title="Extended ManPy" href="index.html" />
 
     <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
         <title>Tutorials - Extended ManPy 0.1 documentation</title>
@@ -156,7 +156,7 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul class="current">
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="core.html">core package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="core.html">Core</a></li>
 </ul>
 
 </div>
@@ -429,6 +429,8 @@ The data points for interpolation can also be determined by a Feature with all i
 </pre></div>
 </div>
 <p>In this example, the final value for interpolation is received from Feature “endVal”.</p>
+<p>The following plot shows two complex TimeSeries that were created using both interpolation and functional dependencies:</p>
+<a class="reference internal image-reference" href="_images/ts_complex.png"><img alt="Complex TimeSeries" src="_images/ts_complex.png" style="width: 600px;" /></a>
 </section>
 <section id="failures">
 <h3>Failures<a class="headerlink" href="#failures" title="Permalink to this heading">#</a></h3>
@@ -537,7 +539,10 @@ However, it’s now simplified such that the normal distribution after the defec
 <span class="linenos">22</span><span class="c1"># f3 = Feature(&quot;f3&quot;, &quot;F3&quot;, victim=m2, reset_distributions=True, distribution_state_controller=controller2)</span>
 </pre></div>
 </div>
-<p>SimpleStateController and ContinuosNormalDistribution are best used to model properties in relation to wear.
+<p>The typical behaviour of ContinuosNormalDistribution can be seen in the following plot.
+It containts the evolution of the feature value of two ContinuosNormalDistribution StateControllers over the span of 250 steps.</p>
+<a class="reference internal image-reference" href="_images/continuos_normal_dist.png"><img alt="Two ContinuosNormalDistributions" src="_images/continuos_normal_dist.png" style="width: 500px;" /></a>
+<p>SimpleStateController and ContinuosNormalDistribution are best used to model properties related to wear.
 But sometimes, failures can occur without obvious reason.
 For these cases, we designed RandomDefectStateController, which models a defect using a Bernoulli distribution.
 If the Bernoulli distribution returns 1, it selects a defect StateController from a list, otherwise it uses a “ok” StateController that model normal behaviour.</p>
@@ -575,6 +580,8 @@ If the Bernoulli distribution returns 1, it selects a defect StateController fro
 <span class="linenos">32</span>                                                        <span class="n">defect_controllers</span><span class="o">=</span><span class="p">[</span><span class="n">defect_controller1</span><span class="p">,</span> <span class="n">defect_controller2</span><span class="p">])</span>
 </pre></div>
 </div>
+<p>The typical behavior of a RandomDefectStateController looks similar to the following plot (Red crosses = defect):</p>
+<a class="reference internal image-reference" href="_images/random_defect.png"><img alt="Plot with random defects." src="_images/random_defect.png" style="width: 600px;" /></a>
 <p>The defect_controllers list can contain multiple StateControllers, which can be used to model minor deviations from the planned behaviour in multiple directions, like too much or not enough glue.
 RandomDefectController introduces an additional way of performing quality control.
 Depending on the distribution that gets selected (ok/defect), an internal label is set to either True or False, indicating whether a defect is present or not.
@@ -640,7 +647,7 @@ The interface is defined in core/Database.py.</p>
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">core package</div>
+                <div class="title">Core</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>

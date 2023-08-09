@@ -114,8 +114,8 @@ def demonstrate_RandomDefectStateController():
 
 if __name__ == "__main__":
     # TODO test Weibull
-    # demonstrate_ContinuosNormalDistribution()
-    demonstrate_RandomDefectStateController()
+    demonstrate_ContinuosNormalDistribution()
+    # demonstrate_RandomDefectStateController()
 
 
 
