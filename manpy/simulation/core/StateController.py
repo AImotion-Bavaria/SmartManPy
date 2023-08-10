@@ -16,6 +16,7 @@ class StateController:
         """
         Retrieves the current state first, then updates the internal state transition mechanism and then returns the
         retrieved state and a label for the state.
+
         :return: Current state and label: (state, label (bool))
         """
         raise NotImplementedError("Subclass must define 'get_and_update' method.")
@@ -23,6 +24,7 @@ class StateController:
     def reset(self):
         """
         Resets the internal statistics of the controller. Should be called after something is repaired.
+
         :return: None
         """
         raise NotImplementedError("Subclass must define 'reset' method.")
@@ -126,6 +128,7 @@ class ContinuosNormalDistribution(StateController):
         """
         Normal Distribution that changes its mean value with each step. Optionally, a defect can occur after a defined
         period. Provides label.
+
         :param wear_per_step: How much wear happens per step
         :param break_point: When this value of wear is reached, a defect happens. Will be ignored if None
         :param mean_change_per_step: Value that is added to the mean of the normal distribution in each step

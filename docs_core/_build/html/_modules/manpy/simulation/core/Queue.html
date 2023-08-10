@@ -1,0 +1,633 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
+
+    <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
+        <title>manpy.simulation.core.Queue - Extended ManPy (beta) Docs</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../../index.html"><div class="brand">Extended ManPy (beta) Docs</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
+  
+  
+  <span class="sidebar-brand-text">Extended ManPy (beta) Docs</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples.html">Full examples</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <h1>Source code for manpy.simulation.core.Queue</h1><div class="highlight"><pre>
+<span></span><span class="c1"># ===========================================================================</span>
+<span class="c1"># Copyright 2013 University of Limerick</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of DREAM.</span>
+<span class="c1">#</span>
+<span class="c1"># DREAM is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU Lesser General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># DREAM is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU Lesser General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU Lesser General Public License</span>
+<span class="c1"># along with DREAM.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c1"># ===========================================================================</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Created on 8 Nov 2012</span>
+
+<span class="sd">@author: George</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+
+<span class="kn">import</span> <span class="nn">simpy</span>
+<span class="kn">from</span> <span class="nn">manpy.simulation.core.CoreObject</span> <span class="kn">import</span> <span class="n">CoreObject</span>
+
+<span class="c1"># ===========================================================================</span>
+<span class="c1">#                            the Queue object</span>
+<span class="c1"># ===========================================================================</span>
+<div class="viewcode-block" id="Queue"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Queue.Queue">[docs]</a><span class="k">class</span> <span class="nc">Queue</span><span class="p">(</span><span class="n">CoreObject</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Models a FIFO queue where entities can wait in order to get into a server</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">family</span> <span class="o">=</span> <span class="s2">&quot;Buffer&quot;</span>
+
+    <span class="c1"># ===========================================================================</span>
+    <span class="c1"># the __init__ method of the Queue</span>
+    <span class="c1"># ===========================================================================</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">capacity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">isDummy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">schedulingRule</span><span class="o">=</span><span class="s2">&quot;FIFO&quot;</span><span class="p">,</span>
+        <span class="n">level</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">gatherWipStat</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kw</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s2">&quot;Queue&quot;</span>  <span class="c1"># String that shows the type of object</span>
+        <span class="n">CoreObject</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="n">capacity</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">capacity</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">capacity</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">capacity</span> <span class="o">==</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">capacity</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">capacity</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">capacity</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">isDummy</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span>
+            <span class="nb">int</span><span class="p">(</span><span class="n">isDummy</span><span class="p">)</span>
+        <span class="p">)</span>  <span class="c1"># Boolean that shows if it is the dummy first Queue</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schedulingRule</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">schedulingRule</span>  <span class="c1"># the scheduling rule that the Queue follows</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">multipleCriterionList</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">[]</span>
+        <span class="p">)</span>  <span class="c1"># list with the criteria used to sort the Entities in the Queue</span>
+        <span class="n">SRlist</span> <span class="o">=</span> <span class="p">[</span><span class="n">schedulingRule</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">schedulingRule</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span>
+            <span class="s2">&quot;MC&quot;</span>
+        <span class="p">):</span>  <span class="c1"># if the first criterion is MC aka multiple criteria</span>
+            <span class="n">SRlist</span> <span class="o">=</span> <span class="n">schedulingRule</span><span class="o">.</span><span class="n">split</span><span class="p">(</span>
+                <span class="s2">&quot;-&quot;</span>
+            <span class="p">)</span>  <span class="c1"># split the string of the criteria (delimiter -)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">schedulingRule</span> <span class="o">=</span> <span class="n">SRlist</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># take the first criterion of the list</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">multipleCriterionList</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">SRlist</span>  <span class="c1"># hold the criteria list in the property multipleCriterionList</span>
+            <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">scheduling_rule</span> <span class="ow">in</span> <span class="n">SRlist</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">scheduling_rule</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSupportedSchedulingRules</span><span class="p">():</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;Unknown scheduling rule </span><span class="si">%s</span><span class="s2"> for </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">scheduling_rule</span><span class="p">,</span> <span class="nb">id</span><span class="p">)</span>
+                <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">gatherWipStat</span> <span class="o">=</span> <span class="n">gatherWipStat</span>
+        <span class="c1"># trigger level for the reallocation of operators</span>
+        <span class="k">if</span> <span class="n">level</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="p">(</span>
+                <span class="n">level</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">capacity</span>
+            <span class="p">),</span> <span class="s2">&quot;the level cannot be bigger than the capacity of the queue&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="n">level</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">level_history</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="kn">from</span> <span class="nn">manpy.simulation.core.Globals</span> <span class="kn">import</span> <span class="n">G</span>
+
+        <span class="n">G</span><span class="o">.</span><span class="n">QueueList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Queue.getSupportedSchedulingRules"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Queue.Queue.getSupportedSchedulingRules">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">getSupportedSchedulingRules</span><span class="p">():</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="s2">&quot;FIFO&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Priority&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;EDD&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;EOD&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;NumStages&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;RPC&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;LPT&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;SPT&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;MS&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;WINQ&quot;</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Queue.initialize"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Queue.Queue.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;the initialize method of the Queue class&quot;&quot;&quot;</span>
+
+        <span class="c1"># using the Process __init__ and not the CoreObject __init__</span>
+        <span class="n">CoreObject</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="c1"># initialise the internal Queue (type Resource) of the Queue object</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Res</span> <span class="o">=</span> <span class="n">simpy</span><span class="o">.</span><span class="n">Resource</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">capacity</span><span class="p">)</span>
+        <span class="c1"># event used by router</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loadOperatorAvailable</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">event</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;isRequested&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;canDispose&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;loadOperatorAvailable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="Queue.run"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Queue.Queue.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;run method of the queue&quot;&quot;&quot;</span>
+
+        <span class="n">activeObjectQueue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span>
+        <span class="c1"># check if there is WIP and signal receiver</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initialSignalReceiver</span><span class="p">()</span>
+        <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">printTrace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">waitEvent</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="c1"># wait until the Queue can accept an entity and one predecessor requests it</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;canDispose&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;isRequested&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;loadOperatorAvailable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+            <span class="n">receivedEvent</span> <span class="o">=</span> <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">any_of</span><span class="p">(</span>
+                <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">isRequested</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">canDispose</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">loadOperatorAvailable</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">printTrace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">received</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="c1"># if the event that activated the thread is isRequested then getEntity</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">isRequested</span> <span class="ow">in</span> <span class="n">receivedEvent</span><span class="p">:</span>
+                <span class="n">transmitter</span><span class="p">,</span> <span class="n">eventTime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">isRequested</span><span class="o">.</span><span class="n">value</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">printTrace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">isRequested</span><span class="o">=</span><span class="n">transmitter</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+
+                <span class="c1"># reset the isRequested signal parameter</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">isRequested</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">event</span><span class="p">()</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">getEntity</span><span class="p">()</span>
+                <span class="c1"># if entity just got to the dummyQ set its startTime as the current time</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">isDummy</span><span class="p">:</span>
+                    <span class="n">activeObjectQueue</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">startTime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span>
+
+            <span class="c1"># if the queue received an loadOperatorIsAvailable (from Router) with signalparam time</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">loadOperatorAvailable</span> <span class="ow">in</span> <span class="n">receivedEvent</span><span class="p">:</span>
+                <span class="n">transmitter</span><span class="p">,</span> <span class="n">eventTime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loadOperatorAvailable</span><span class="o">.</span><span class="n">value</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">loadOperatorAvailable</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">event</span><span class="p">()</span>
+
+            <span class="c1"># if the queue received an canDispose with signalparam time, this means that the signals was sent from a MouldAssemblyBuffer</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">canDispose</span> <span class="ow">in</span> <span class="n">receivedEvent</span><span class="p">:</span>
+                <span class="n">transmitter</span><span class="p">,</span> <span class="n">eventTime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">canDispose</span><span class="o">.</span><span class="n">value</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">printTrace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">canDispose</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">canDispose</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">event</span><span class="p">()</span>
+
+            <span class="c1"># if the event that activated the thread is canDispose then signalReceiver</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">haveToDispose</span><span class="p">():</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">receiver</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">receiver</span><span class="o">.</span><span class="n">entryIsAssignedTo</span><span class="p">():</span>
+                        <span class="c1"># try to signal receiver. In case of failure signal giver (for synchronization issues)</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">signalReceiver</span><span class="p">():</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">signalGiver</span><span class="p">()</span>
+                    <span class="k">continue</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">signalReceiver</span><span class="p">()</span>
+
+            <span class="c1"># signal the giver (for synchronization issues)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">signalGiver</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Queue.canAccept"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Queue.Queue.canAccept">[docs]</a>    <span class="k">def</span> <span class="nf">canAccept</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        checks if the Queue can accept an entity</span>
+<span class="sd">        it checks also who called it and returns TRUE only to the predecessor that will give the entity.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">activeObjectQueue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span>
+        <span class="c1"># if we have only one predecessor just check if there is a place available</span>
+        <span class="c1"># this is done to achieve better (cpu) processing time</span>
+        <span class="c1"># then we can also use it as a filter for a yield method</span>
+        <span class="k">if</span> <span class="n">callerObject</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">activeObjectQueue</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">capacity</span>
+        <span class="n">thecaller</span> <span class="o">=</span> <span class="n">callerObject</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">activeObjectQueue</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">capacity</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">isInRouteOf</span><span class="p">(</span><span class="n">thecaller</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Queue.haveToDispose"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Queue.Queue.haveToDispose">[docs]</a>    <span class="k">def</span> <span class="nf">haveToDispose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        checks if the Queue can dispose an entity to the following object</span>
+<span class="sd">        it checks also who called it and returns TRUE only to the receiver that will give the entity.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">activeObjectQueue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span>
+        <span class="c1"># if we have only one possible receiver just check if the Queue holds one or more entities</span>
+        <span class="k">if</span> <span class="n">callerObject</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">activeObjectQueue</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+
+        <span class="n">thecaller</span> <span class="o">=</span> <span class="n">callerObject</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">activeObjectQueue</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">thecaller</span><span class="o">.</span><span class="n">isInRouteOf</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Queue.removeEntity"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Queue.Queue.removeEntity">[docs]</a>    <span class="k">def</span> <span class="nf">removeEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;removes an entity from the Object&quot;&quot;&quot;</span>
+
+        <span class="n">entities</span> <span class="o">=</span> <span class="p">[</span><span class="n">ent</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">ent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">level_history</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">entities</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span><span class="p">)))</span>
+        <span class="n">activeEntity</span> <span class="o">=</span> <span class="n">CoreObject</span><span class="o">.</span><span class="n">removeEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">)</span>  <span class="c1"># run the default method</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">canAccept</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">signalGiver</span><span class="p">()</span>
+        <span class="c1"># TODO: disable that for the mouldAssemblyBuffer</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;MouldAssemblyBufferManaged&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">haveToDispose</span><span class="p">():</span>
+                <span class="c1">#                 self.printTrace(self.id, attemptSignalReceiver=&#39;(removeEntity)&#39;)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">signalReceiver</span><span class="p">()</span>
+        <span class="c1"># reset the signals for the Queue. It be in the start of the loop for now</span>
+        <span class="c1"># xxx consider to dothis in all CoreObjects</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;isRequested&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;canDispose&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;loadOperatorAvailable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="c1"># check if the queue is empty, if yes then try to signal the router, operators may need reallocation</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getActiveObjectQueue</span><span class="p">())</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">checkForDedicatedOperators</span><span class="p">()</span>
+                <span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">requestAllocation</span><span class="p">()</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">return</span> <span class="n">activeEntity</span></div>
+
+<div class="viewcode-block" id="Queue.canAcceptAndIsRequested"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Queue.Queue.canAcceptAndIsRequested">[docs]</a>    <span class="k">def</span> <span class="nf">canAcceptAndIsRequested</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        checks if the Queue can accept an entity and there is an entity in some predecessor waiting for it</span>
+<span class="sd">        also updates the predecessorIndex to the one that is to be taken</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">activeObjectQueue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span>
+        <span class="n">giverObject</span> <span class="o">=</span> <span class="n">callerObject</span>
+        <span class="k">assert</span> <span class="n">giverObject</span><span class="p">,</span> <span class="s2">&quot;there must be a caller for canAcceptAndIsRequested&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">activeObjectQueue</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">capacity</span> <span class="ow">and</span> <span class="n">giverObject</span><span class="o">.</span><span class="n">haveToDispose</span><span class="p">(</span>
+            <span class="bp">self</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Queue.getEntity"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Queue.Queue.getEntity">[docs]</a>    <span class="k">def</span> <span class="nf">getEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;gets an entity from the predecessor that the predecessor index points to&quot;&quot;&quot;</span>
+
+        <span class="n">entities</span> <span class="o">=</span> <span class="p">[</span><span class="n">ent</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">ent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">level_history</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">entities</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span><span class="p">)))</span>
+        <span class="n">activeEntity</span> <span class="o">=</span> <span class="n">CoreObject</span><span class="o">.</span><span class="n">getEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>  <span class="c1"># run the default behavior</span>
+
+        <span class="c1"># if the level is reached then try to signal the Router to reallocate the operators</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getActiveObjectQueue</span><span class="p">())</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">checkForDedicatedOperators</span><span class="p">()</span>
+                <span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">requestAllocation</span><span class="p">()</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">return</span> <span class="n">activeEntity</span></div>
+
+<div class="viewcode-block" id="Queue.canDeliver"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Queue.Queue.canDeliver">[docs]</a>    <span class="k">def</span> <span class="nf">canDeliver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;checks whether the entity can proceed to a successor object&quot;&quot;&quot;</span>
+
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">isInActiveQueue</span><span class="p">(</span><span class="n">entity</span><span class="p">),</span> <span class="p">(</span>
+            <span class="n">entity</span><span class="o">.</span><span class="n">id</span> <span class="o">+</span> <span class="s2">&quot; not in the internalQueue of&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span>
+        <span class="p">)</span>
+        <span class="n">activeEntity</span> <span class="o">=</span> <span class="n">entity</span>
+
+        <span class="n">mayProceed</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1"># for all the possible receivers of an entity check whether they can accept and then set accordingly the canProceed flag of the entity</span>
+        <span class="k">for</span> <span class="n">nextObject</span> <span class="ow">in</span> <span class="p">[</span>
+            <span class="nb">object</span> <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">next</span> <span class="k">if</span> <span class="nb">object</span><span class="o">.</span><span class="n">canAcceptEntity</span><span class="p">(</span><span class="n">activeEntity</span><span class="p">)</span>
+        <span class="p">]:</span>
+            <span class="n">activeEntity</span><span class="o">.</span><span class="n">proceed</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">activeEntity</span><span class="o">.</span><span class="n">candidateReceivers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nextObject</span><span class="p">)</span>
+            <span class="n">mayProceed</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="n">mayProceed</span></div>
+
+<div class="viewcode-block" id="Queue.sortEntities"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Queue.Queue.sortEntities">[docs]</a>    <span class="k">def</span> <span class="nf">sortEntities</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;sorts the Entities of the Queue according to the scheduling rule&quot;&quot;&quot;</span>
+
+        <span class="c1"># if we have sorting according to multiple criteria we have to call the sorter many times</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedulingRule</span> <span class="o">==</span> <span class="s2">&quot;MC&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">criterion</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">multipleCriterionList</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">activeQSorter</span><span class="p">(</span><span class="n">criterion</span><span class="o">=</span><span class="n">criterion</span><span class="p">)</span>
+        <span class="c1"># else we just use the default scheduling rule</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">activeQSorter</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Queue.activeQSorter"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Queue.Queue.activeQSorter">[docs]</a>    <span class="k">def</span> <span class="nf">activeQSorter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">criterion</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;sorts the Entities of the Queue according to the scheduling rule&quot;&quot;&quot;</span>
+
+        <span class="n">activeObjectQ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span>
+        <span class="k">if</span> <span class="n">criterion</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">criterion</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedulingRule</span>
+        <span class="c1"># if the schedulingRule is first in first out</span>
+        <span class="k">if</span> <span class="n">criterion</span> <span class="o">==</span> <span class="s2">&quot;FIFO&quot;</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="c1"># if the schedulingRule is based on a pre-defined priority</span>
+        <span class="k">elif</span> <span class="n">criterion</span> <span class="o">==</span> <span class="s2">&quot;Priority&quot;</span><span class="p">:</span>
+            <span class="n">activeObjectQ</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">priority</span><span class="p">)</span>
+        <span class="c1"># if the schedulingRule is earliest due date</span>
+        <span class="k">elif</span> <span class="n">criterion</span> <span class="o">==</span> <span class="s2">&quot;EDD&quot;</span><span class="p">:</span>
+            <span class="n">activeObjectQ</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">dueDate</span><span class="p">)</span>
+        <span class="c1"># if the schedulingRule is earliest order date</span>
+        <span class="k">elif</span> <span class="n">criterion</span> <span class="o">==</span> <span class="s2">&quot;EOD&quot;</span><span class="p">:</span>
+            <span class="n">activeObjectQ</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">orderDate</span><span class="p">)</span>
+        <span class="c1"># if the schedulingRule is to sort Entities according to the stations they have to visit</span>
+        <span class="k">elif</span> <span class="n">criterion</span> <span class="o">==</span> <span class="s2">&quot;NumStages&quot;</span><span class="p">:</span>
+            <span class="n">activeObjectQ</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">remainingRoute</span><span class="p">),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># if the schedulingRule is to sort Entities according to the their remaining processing time in the system</span>
+        <span class="k">elif</span> <span class="n">criterion</span> <span class="o">==</span> <span class="s2">&quot;RPC&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">entity</span> <span class="ow">in</span> <span class="n">activeObjectQ</span><span class="p">:</span>
+                <span class="n">RPT</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="n">entity</span><span class="o">.</span><span class="n">remainingRoute</span><span class="p">:</span>
+                    <span class="n">processingTime</span> <span class="o">=</span> <span class="n">step</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;processingTime&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">processingTime</span><span class="p">:</span>
+                        <span class="n">RPT</span> <span class="o">+=</span> <span class="nb">float</span><span class="p">(</span><span class="n">processingTime</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Fixed&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+                <span class="n">entity</span><span class="o">.</span><span class="n">totalRemainingProcessingTime</span> <span class="o">=</span> <span class="n">RPT</span>
+            <span class="n">activeObjectQ</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span>
+                <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">totalRemainingProcessingTime</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+        <span class="c1"># if the schedulingRule is to sort Entities according to longest processing time first in the next station</span>
+        <span class="k">elif</span> <span class="n">criterion</span> <span class="o">==</span> <span class="s2">&quot;LPT&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">entity</span> <span class="ow">in</span> <span class="n">activeObjectQ</span><span class="p">:</span>
+                <span class="n">processingTime</span> <span class="o">=</span> <span class="n">entity</span><span class="o">.</span><span class="n">remainingRoute</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;processingTime&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">processingTime</span><span class="p">:</span>
+                    <span class="n">entity</span><span class="o">.</span><span class="n">processingTimeInNextStation</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
+                        <span class="n">processingTime</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Fixed&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">entity</span><span class="o">.</span><span class="n">processingTimeInNextStation</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">activeObjectQ</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span>
+                <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">processingTimeInNextStation</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+        <span class="c1"># if the schedulingRule is to sort Entities according to shortest processing time first in the next station</span>
+        <span class="k">elif</span> <span class="n">criterion</span> <span class="o">==</span> <span class="s2">&quot;SPT&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">entity</span> <span class="ow">in</span> <span class="n">activeObjectQ</span><span class="p">:</span>
+                <span class="n">processingTime</span> <span class="o">=</span> <span class="n">entity</span><span class="o">.</span><span class="n">remainingRoute</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;processingTime&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">processingTime</span><span class="p">:</span>
+                    <span class="n">entity</span><span class="o">.</span><span class="n">processingTimeInNextStation</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
+                        <span class="n">processingTime</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Fixed&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">entity</span><span class="o">.</span><span class="n">processingTimeInNextStation</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">activeObjectQ</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">processingTimeInNextStation</span><span class="p">)</span>
+        <span class="c1"># if the schedulingRule is to sort Entities based on the minimum slackness</span>
+        <span class="k">elif</span> <span class="n">criterion</span> <span class="o">==</span> <span class="s2">&quot;MS&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">entity</span> <span class="ow">in</span> <span class="n">activeObjectQ</span><span class="p">:</span>
+                <span class="n">RPT</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="n">entity</span><span class="o">.</span><span class="n">remainingRoute</span><span class="p">:</span>
+                    <span class="n">processingTime</span> <span class="o">=</span> <span class="n">step</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;processingTime&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">processingTime</span><span class="p">:</span>
+                        <span class="n">RPT</span> <span class="o">+=</span> <span class="nb">float</span><span class="p">(</span><span class="n">processingTime</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Fixed&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+                <span class="n">entity</span><span class="o">.</span><span class="n">totalRemainingProcessingTime</span> <span class="o">=</span> <span class="n">RPT</span>
+            <span class="n">activeObjectQ</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span>
+                <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">dueDate</span> <span class="o">-</span> <span class="n">x</span><span class="o">.</span><span class="n">totalRemainingProcessingTime</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="c1"># if the schedulingRule is to sort Entities based on the length of the following Queue</span>
+        <span class="k">elif</span> <span class="n">criterion</span> <span class="o">==</span> <span class="s2">&quot;WINQ&quot;</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">manpy.simulation.core.Globals</span> <span class="kn">import</span> <span class="n">G</span>
+
+            <span class="k">for</span> <span class="n">entity</span> <span class="ow">in</span> <span class="n">activeObjectQ</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">entity</span><span class="o">.</span><span class="n">remainingRoute</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">nextObjIds</span> <span class="o">=</span> <span class="n">entity</span><span class="o">.</span><span class="n">remainingRoute</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;stationIdsList&quot;</span><span class="p">,</span> <span class="p">[])</span>
+                    <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">ObjList</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">id</span> <span class="ow">in</span> <span class="n">nextObjIds</span><span class="p">:</span>
+                            <span class="n">nextObject</span> <span class="o">=</span> <span class="n">obj</span>
+                    <span class="n">entity</span><span class="o">.</span><span class="n">nextQueueLength</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nextObject</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">entity</span><span class="o">.</span><span class="n">nextQueueLength</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">activeObjectQ</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">nextQueueLength</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;Unknown scheduling criterion </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">criterion</span><span class="p">,)</span></div>
+
+<div class="viewcode-block" id="Queue.outputResultsJSON"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Queue.Queue.outputResultsJSON">[docs]</a>    <span class="k">def</span> <span class="nf">outputResultsJSON</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Outputs the result to a JSON file.&quot;&quot;&quot;</span>
+
+        <span class="kn">from</span> <span class="nn">manpy.simulation.core.Globals</span> <span class="kn">import</span> <span class="n">G</span>
+
+        <span class="n">json</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;_class&quot;</span><span class="p">:</span> <span class="s2">&quot;manpy.</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
+            <span class="s2">&quot;family&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">family</span><span class="p">,</span>
+            <span class="s2">&quot;results&quot;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gatherWipStat</span><span class="p">:</span>
+            <span class="n">json</span><span class="p">[</span><span class="s2">&quot;results&quot;</span><span class="p">][</span><span class="s2">&quot;wip_stat_list&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">WipStat</span>
+        <span class="n">G</span><span class="o">.</span><span class="n">outputJSON</span><span class="p">[</span><span class="s2">&quot;elementList&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">json</span><span class="p">)</span></div></div>
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, AImotion Bavaria
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/scripts/furo.js"></script>
+    </body>
+</html>

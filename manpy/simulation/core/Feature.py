@@ -6,6 +6,7 @@ from manpy.simulation.RandomNumberGenerator import RandomNumberGenerator
 class Feature(ObjectProperty):
     """
     The Feature ObjectProperty generates Features for a Machine and stores them in Entities
+
     :param id: The id of the Feature
     :param name: The name of the Feature
     :param victim: The machine to which the feature belongs
@@ -71,6 +72,8 @@ class Feature(ObjectProperty):
         self.victimEndsProcessing = self.env.event()
 
     def generate_feature(self):
+        """Generates the actual feature value"""
+
         if self.dependent:
             for key in list(self.dependent.keys()):
                 if key != "Function":
@@ -94,7 +97,6 @@ class Feature(ObjectProperty):
 
     def run(self):
         """Every Object has to have a run method. Simpy is mainly used in this function
-        :return: None
         """
 
         while 1:

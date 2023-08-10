@@ -31,10 +31,9 @@ import xlwt
 from manpy.simulation.core.Database import ManPyDatabase
 
 
-# ===========================================================================
-# globals
-# ===========================================================================
 class G:
+    """Defines global properties for the whole simulation"""
+
     ObjList = []  # a list that holds all the CoreObjects
     EntityList = []  # a list that holds all the Entities
     ObjectResourceList = []
@@ -136,10 +135,7 @@ class G:
         - Station name
         - Trace message
 
-        Returns
-        -------
-        pd.DataFrame
-            Dataframe containing the described columns
+        :returns Dataframe containing the described columns
 
         """
         df = pd.DataFrame(
@@ -163,10 +159,7 @@ class G:
         their history, i.e. all the objects they passed through and when they entered/left
         them.
 
-        Returns
-        -------
-        pd.DataFrame
-            History containing all
+        :returns History containing all
 
         """
         dfs = []
@@ -182,10 +175,8 @@ class G:
         return entity_hist
 
 
-# =======================================================================
-# method to move entities exceeding a certain safety stock
-# =======================================================================
 def moveExcess(consumption=1, safetyStock=70, giverId=None, receiverId=None):
+    """method to move entities exceeding a certain safety stock"""
     giver = findObjectById(giverId)
     receiver = findObjectById(receiverId)
     safetyStock = int(safetyStock)
@@ -202,10 +193,9 @@ def moveExcess(consumption=1, safetyStock=70, giverId=None, receiverId=None):
         print("Giver and/or Receiver not defined")
 
 
-# =======================================================================
-# Import a class from a dotted name used in json.
-# =======================================================================
 def getClassFromName(dotted_name):
+    """Import a class from a dotted name used in json."""
+
     from zope.dottedname.resolve import resolve
     import logging
 
@@ -225,10 +215,9 @@ def getClassFromName(dotted_name):
     return resolve(dotted_name)
 
 
-# =======================================================================
-# returns a method by its name. name should be given as manpy.ClassName.MethodName
-# =======================================================================
 def getMethodFromName(dotted_name):
+    """returns a method by its name. name should be given as manpy.ClassName.MethodName"""
+
     name = dotted_name.split(".")
     methodName = name[-1]
     # if the method is in this script
@@ -252,10 +241,9 @@ def getMethodFromName(dotted_name):
     return method
 
 
-# =======================================================================
-# method finding objects by ID
-# =======================================================================
 def findObjectById(id):
+    """method finding objects by ID"""
+
     for obj in (
         G.ObjList
         + G.ObjectResourceList
@@ -269,22 +257,20 @@ def findObjectById(id):
     return None
 
 
-# =======================================================================
-# Error in the setting up of the WIP
-# =======================================================================
 class SetWipTypeError(Exception):
+    """Error in the setting up of the WIP"""
+
     def __init__(self, setWipError):
         Exception.__init__(self, setWipError)
 
 
-# =======================================================================
-# method to set-up the entities in the current stations
-# as Work In Progress
-# in this case the current station must be defined!
-# otherwise there is no current station but a list of possible stations
-# although the entity cannot be in more than one stations
-# =======================================================================
 def setWIP(entityList):
+    """
+    method to set-up the entities in the current stations as Work In Progress
+    in this case the current station must be defined!
+    otherwise there is no current station but a list of possible stations although the entity cannot be in more than one stations
+    """
+
     # for all the entities in the entityList
     for entity in entityList:
         # if the entity is of type Part
@@ -442,10 +428,8 @@ def countIntervalThroughput(**kw):
 #             else:
 #                 print phrase,arg
 
-# ===========================================================================
-# get the supported print Keywords
-# ===========================================================================
 def getSupportedPrintKwrds():
+    """get the supported print Keywords"""
     return (
         "create",
         "signal",
@@ -476,10 +460,8 @@ def getSupportedPrintKwrds():
     )
 
 
-# ===========================================================================
-# get the phrase to print from the keyword
-# ===========================================================================
 def getPhrase():
+    """get the phrase to print from the keyword"""
     printKwrds = {
         "create": {"phrase": "created an entity"},
         "destroy": {"phrase": "destroyed at", "suffix": " * "},
@@ -524,6 +506,19 @@ def runSimulation(
     data="No",
     db: ManPyDatabase = None,
 ):
+    """
+    Starts the simulation
+
+    :param objectList: Objects for the simulation
+    :param maxSimTime: Timespan that's simulated
+    :param numberOfReplications: TODO
+    :param trace: TODO
+    :param snapshots: TODO
+    :param seed: TODO
+    :param env: TODO
+    :param data: TODO
+    :param db: Database object. Optional. If passed, the results are saved to the database
+    """
     G.numberOfReplications = numberOfReplications
     G.trace = trace
     G.snapshots = snapshots
@@ -685,6 +680,12 @@ def runSimulation(
                 object.postProcessing()
 
 def ExcelPrinter(df, filename):
+    """
+    Prints a dataframe to excel
+
+    :param df: The dataframe to export
+    :param filename: Filename for export
+    """
     number_sheets = df.shape[0] // 65535 + 1
 
     if number_sheets > 1:
@@ -694,9 +695,11 @@ def ExcelPrinter(df, filename):
     else:
         df.to_excel("{}.xls".format(filename))
 
+
 def getFeatureData(objectList=[], time=False) -> pd.DataFrame:
     """
     getFeatureData returns feature data of specific machines as dataframes
+
     :param objectList: a list of machines that will be included in the dataframe
     :param time: boolean, should timestamps be included or not
     :return: dataframe
@@ -757,6 +760,7 @@ def getFeatureData(objectList=[], time=False) -> pd.DataFrame:
 def getTimeSeriesData(ts) -> pd.DataFrame:
     """
     getTimeSeriesData returns timeseries data
+
     :param ts: the timeseries you want the data of
     :return: dataframe with entity-ID|time|value as columns
     """

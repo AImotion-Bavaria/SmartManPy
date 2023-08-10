@@ -29,10 +29,8 @@ Class that acts as an abstract. It should have no instances. All the Entities sh
 from manpy.simulation.ManPyObject import ManPyObject
 from manpy.simulation.core.Globals import G
 
-# ===========================================================================
-# The entity object
-# ===========================================================================
 class Entity(ManPyObject):
+    """The entity object."""
     type = "Entity"
 
     def __init__(
@@ -104,48 +102,46 @@ class Entity(ManPyObject):
         self.timeseries = [None] * len(G.ts_st)
         self.timeseries_times = [None] * len(G.ts_st)
 
-    # ===========================================================================
-    # return the responsible operator for the current step, not implemented for entities
-    # ===========================================================================
     def responsibleForCurrentStep(self):
+        """return the responsible operator for the current step, not implemented for entities"""
+
         return None
 
-    # =======================================================================
-    # outputs results to JSON File
-    # =======================================================================
     def outputResultsJSON(self):
+        """outputs results to JSON File"""
+
         pass
 
-    # =======================================================================
-    # initializes all the Entity for a new simulation replication
-    # =======================================================================
     def initialize(self):
+        """initializes all the Entity for a new simulation replication"""
+
         pass
 
-    # ===========================================================================
-    # print the route (the different stations the entity moved through)
-    # ===========================================================================
     def printRoute(self):
+        """print the route (the different stations the entity moved through)"""
+
         pass
 
-    # ===========================================================================
-    # method not implemented yet
-    # ===========================================================================
     def checkIfRequiredPartsReady(self):
+        """method not implemented yet"""
+
         return True
 
-    # ===========================================================================
-    # method not implemented yet
-    # ===========================================================================
     def getRequiredParts(self):
+        """method not implemented yet"""
+
         return []
 
     def set_feature(self, feature, label, time, indexing):
+        """Sets internal feature values to passed values"""
+
         self.labels[G.ftr_st.index(indexing)] = label
         self.features[G.ftr_st.index(indexing)] = feature
         self.feature_times[G.ftr_st.index(indexing)] = time
 
     def set_timeseries(self, timeseries, label, time, indexing):
+        """Sets internal timeseries values to passed values"""
+
         self.labels[G.ts_st.index(indexing)] = label
         self.timeseries[G.ts_st.index(indexing)] = timeseries
         self.timeseries_times[G.ts_st.index(indexing)] = time

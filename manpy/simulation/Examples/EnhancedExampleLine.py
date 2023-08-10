@@ -116,6 +116,7 @@ s7_3 = ContinuosNormalDistribution(
 Menge_StateController = RandomDefectStateController(failure_probability=0.02,
                                                     ok_controller=s7_1,
                                                     defect_controllers=[s7_2, s7_3])
+
 Menge = Feature("Menge", "Menge", victim=Kleben, distribution_state_controller=Menge_StateController)
 
 # evtl verwandt mit menge?
@@ -126,7 +127,6 @@ Durchflussgeschwindigkeit = Feature("Durchfluss", "Durchflussg.", victim=Kleben,
 
 StecktFest = Failure("Flr0", "StecktFest", victim=Kleben, entity=True,
                distribution={"TTF": {"Fixed": {"mean": 0.5}}, "TTR": {"Normal": {"mean": 2,"stdev": 0.2, "min":0, "probability": 0.01}}})
-
 
 # Routing
 S.defineRouting([Löten])

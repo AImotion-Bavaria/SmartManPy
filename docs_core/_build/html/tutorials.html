@@ -1,0 +1,815 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Core" href="core.html" /><link rel="prev" title="Extended ManPy" href="index.html" />
+
+    <link rel="shortcut icon" href="_static/logo.png"/><!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
+        <title>Tutorials - Extended ManPy (beta) Docs</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">Extended ManPy (beta) Docs</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="_static/logo.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Extended ManPy (beta) Docs</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Full examples</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="tutorials">
+<h1>Tutorials<a class="headerlink" href="#tutorials" title="Permalink to this heading">#</a></h1>
+<p>This page gives you an overview of the general usage paradigms of our ManPy extension.
+We have prepared additional (complete) examples that demonstrate various capabilities.
+These examples can be found in manpy/simulation/Examples and here: <a class="reference internal" href="examples.html"><span class="doc">Full examples</span></a></p>
+<p>We recommend the following order:</p>
+<ol class="arabic simple">
+<li><p>Quality_Control.py</p></li>
+<li><p>Dependency.py</p></li>
+<li><p>ExampleTS.py</p></li>
+<li><p>Conditional_Failure.py</p></li>
+<li><p>Interpolation.py</p></li>
+<li><p>Data_Extraction.py</p></li>
+</ol>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
+<section id="basic-principles">
+<h3>Basic principles<a class="headerlink" href="#basic-principles" title="Permalink to this heading">#</a></h3>
+<p>The original ManPy package is based on the SimPy discrete event simulation.
+If you are already familiar with SimPy, you should recognize many paradigms.</p>
+<p>The start and finish point of a production line is a Source and Exit:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span> <span class="kn">from</span> <span class="nn">manpy.simulation.imports</span> <span class="kn">import</span> <span class="n">Machine</span><span class="p">,</span> <span class="n">Source</span><span class="p">,</span> <span class="n">Exit</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span> <span class="n">start</span> <span class="o">=</span> <span class="n">Source</span><span class="p">(</span><span class="s2">&quot;S1&quot;</span><span class="p">,</span> <span class="s2">&quot;Source&quot;</span><span class="p">,</span>
+<span class="linenos">4</span>                 <span class="n">interArrivalTime</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Fixed&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">}},</span>
+<span class="linenos">5</span>                 <span class="n">entity</span><span class="o">=</span><span class="s2">&quot;manpy.Part&quot;</span><span class="p">,</span> <span class="n">capacity</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="linenos">6</span>
+<span class="linenos">7</span> <span class="n">exit</span> <span class="o">=</span> <span class="n">Exit</span><span class="p">(</span><span class="s2">&quot;E1&quot;</span><span class="p">,</span> <span class="s2">&quot;Exit1&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then, we can add a machine to our small example.
+Our machine has a mean processing time of 0.8 seconds, with a standard deviation of 0.075 seconds.
+However, the minimal and maximal possible time is set to 0.425 and 1.175 seconds:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">m1</span> <span class="o">=</span> <span class="n">Machine</span><span class="p">(</span><span class="s2">&quot;M1&quot;</span><span class="p">,</span> <span class="s2">&quot;Machine1&quot;</span><span class="p">,</span>
+<span class="linenos">2</span>                <span class="n">processingTime</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span>
+<span class="linenos">3</span>                                <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> <span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="mf">0.075</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="mf">0.425</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="mf">1.175</span><span class="p">}</span>
+<span class="linenos">4</span>            <span class="p">})</span>
+</pre></div>
+</div>
+<p>In order to complete our small example, we need to define the routing between the components.
+This is done for each component individually:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">start</span><span class="o">.</span><span class="n">defineRouting</span><span class="p">(</span><span class="n">successorList</span><span class="o">=</span><span class="p">[</span><span class="n">m1</span><span class="p">])</span>
+<span class="linenos">2</span><span class="n">m1</span><span class="o">.</span><span class="n">defineRouting</span><span class="p">(</span><span class="n">predecessorList</span><span class="o">=</span><span class="p">[</span><span class="n">start</span><span class="p">],</span> <span class="n">successorList</span><span class="o">=</span><span class="p">[</span><span class="n">exit</span><span class="p">])</span>
+<span class="linenos">3</span><span class="n">exit</span><span class="o">.</span><span class="n">defineRouting</span><span class="p">(</span><span class="n">predecessorList</span><span class="o">=</span><span class="p">[</span><span class="n">m1</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>We can now run and evaluate our simulation, e.g. for 50 time steps:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="n">maxSimTime</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="linenos"> 2</span><span class="n">objectList</span> <span class="o">=</span> <span class="p">[</span><span class="n">start</span><span class="p">,</span> <span class="n">m1</span><span class="p">,</span> <span class="n">exit</span><span class="p">]</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="n">runSimulation</span><span class="p">(</span><span class="n">objectList</span><span class="p">,</span> <span class="n">maxSimTime</span><span class="p">)</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="n">df</span> <span class="o">=</span> <span class="n">getEntityData</span><span class="p">()</span>
+<span class="linenos"> 7</span><span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;ExampleLine.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Produced:         </span><span class="si">{</span><span class="n">exit</span><span class="o">.</span><span class="n">numOfExits</span><span class="si">}</span>
+<span class="linenos">10</span>        <span class="n">Simulationszeit</span><span class="p">:</span>    <span class="p">{</span><span class="n">maxSimTime</span><span class="p">}</span><span class="s2">&quot;)</span>
+</pre></div>
+</div>
+</section>
+<section id="adding-more-machines">
+<h3>Adding more machines<a class="headerlink" href="#adding-more-machines" title="Permalink to this heading">#</a></h3>
+<p>Our example currently consists of only one production step.
+Since ManPy was designed to simulate production lines, let’s see what it takes to add more machines to a simulation.
+First of all, we need to define a second machine:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">m2</span> <span class="o">=</span> <span class="n">Machine</span><span class="p">(</span><span class="s2">&quot;M2&quot;</span><span class="p">,</span> <span class="s2">&quot;Machine2&quot;</span><span class="p">,</span>
+<span class="linenos">2</span>                <span class="n">processingTime</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span>
+<span class="linenos">3</span>                                <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">,</span> <span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="mf">1.7</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="mf">2.3</span><span class="p">}</span>
+<span class="linenos">4</span>            <span class="p">})</span>
+</pre></div>
+</div>
+<p>Now we need to define how the output of Machine1 proceeds to Machine2.
+ManPy is capable of simulating complex routings, e.g. using conveyor belts.
+This makes sense if you are interested in the overall behaviour of the production line.
+For this example, we’ll stick to the simplest connection between two machines: the queue.
+Queues in ManPy act as a simple buffer with a certain capacity.
+In order to work correctly, we also need to update the routing of the production line and add the new objects to the objectList:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">q1</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">(</span><span class="s2">&quot;Q1&quot;</span><span class="p">,</span> <span class="s2">&quot;Queue1&quot;</span><span class="p">,</span> <span class="n">capacity</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="n">start</span><span class="o">.</span><span class="n">defineRouting</span><span class="p">(</span><span class="n">successorList</span><span class="o">=</span><span class="p">[</span><span class="n">m1</span><span class="p">])</span>
+<span class="linenos">4</span><span class="n">m1</span><span class="o">.</span><span class="n">defineRouting</span><span class="p">(</span><span class="n">predecessorList</span><span class="o">=</span><span class="p">[</span><span class="n">start</span><span class="p">],</span> <span class="n">successorList</span><span class="o">=</span><span class="p">[</span><span class="n">q1</span><span class="p">])</span>
+<span class="linenos">5</span><span class="n">q1</span><span class="o">.</span><span class="n">defineRouting</span><span class="p">(</span><span class="n">predecessorList</span><span class="o">=</span><span class="p">[</span><span class="n">m1</span><span class="p">],</span> <span class="n">successorList</span><span class="o">=</span><span class="p">[</span><span class="n">m2</span><span class="p">])</span>
+<span class="linenos">6</span><span class="n">m2</span><span class="o">.</span><span class="n">defineRouting</span><span class="p">(</span><span class="n">predecessorList</span><span class="o">=</span><span class="p">[</span><span class="n">q1</span><span class="p">],</span> <span class="n">successorList</span><span class="o">=</span><span class="p">[</span><span class="n">exit</span><span class="p">])</span>
+<span class="linenos">7</span><span class="n">exit</span><span class="o">.</span><span class="n">defineRouting</span><span class="p">(</span><span class="n">predecessorList</span><span class="o">=</span><span class="p">[</span><span class="n">m2</span><span class="p">])</span>
+<span class="linenos">8</span>
+<span class="linenos">9</span><span class="n">objectList</span> <span class="o">=</span> <span class="p">[</span><span class="n">start</span><span class="p">,</span> <span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">,</span> <span class="n">q1</span><span class="p">,</span> <span class="n">exit</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="advanced-usage">
+<h2>Advanced usage<a class="headerlink" href="#advanced-usage" title="Permalink to this heading">#</a></h2>
+<p>The following sections provides an introduction into the more advanced concepts of our ManPy extension.</p>
+<section id="quality-control">
+<h3>Quality Control<a class="headerlink" href="#quality-control" title="Permalink to this heading">#</a></h3>
+<p>Quality control is a standard process in manufacturing.
+Therefore, we added the option for quality control to machines.
+As a result, machines can either have an additional quality control step at the end of their production step or be a standalone quality control instance.
+The condition for quality control can be set via a custom defined function, which is simply called “condition” in the following example.
+We can access the currently active entity in a machine with the following statement:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">activeEntity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>We can then use any simulated value of the entity as measurement for quality control, e.g. feature values or internal labels.
+The condition function must return True if a defect was found, otherwise False must be returned.
+In the following example, we simply check if a given Feature value is inside a certain interval ([3, 7]).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">def</span> <span class="nf">condition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos">2</span>    <span class="c1"># self is w.r.t. to the machine in which we apply the condition!</span>
+<span class="linenos">3</span>    <span class="n">activeEntity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="linenos">4</span>    <span class="k">if</span> <span class="n">activeEntity</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">7</span> <span class="ow">or</span> <span class="n">activeEntity</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+<span class="linenos">5</span>        <span class="k">return</span> <span class="kc">True</span>
+<span class="linenos">6</span>    <span class="k">else</span><span class="p">:</span>
+<span class="linenos">7</span>        <span class="k">return</span> <span class="kc">False</span>
+</pre></div>
+</div>
+</section>
+<section id="features">
+<h3>Features<a class="headerlink" href="#features" title="Permalink to this heading">#</a></h3>
+<p>Features are our most important extension to the original ManPy and also the most complex one.</p>
+<section id="basic-usage">
+<h4>Basic usage<a class="headerlink" href="#basic-usage" title="Permalink to this heading">#</a></h4>
+<p>Features are a sub-class of ObjectProperty, which is a generic base class for all kinds of data a machine/object can generate during production.
+We currently have two sub_classes of ObjectProperty: Features and TimeSeries.
+While TimeSeries is concerned with (as the name suggests) time series data that is generated during production
+(e.g. temperature curves), Feature is concerned with properties that are measured/logged once for each entity at a production station.
+In the following section, we will explore the most important mechanics of the Feature class.</p>
+<p>The following statement shows the most basic definition of a Feature:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">feature1</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;f1&quot;</span><span class="p">,</span>
+                   <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Feature1&quot;</span><span class="p">,</span>
+                   <span class="n">victim</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span>
+                   <span class="n">distribution</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Feature&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}}}</span>
+                   <span class="p">)</span>
+</pre></div>
+</div>
+<p>This statements assigns a new Feature with the internal id “f1” and name “Feature1” (used for data output) to Machine m1.
+The feature values are randomly drawn from a normal distribution with mean 0 and standard deviation 1.
+It is possible to select different distributions and to control the behaviour of the underlying distribution over the course of a simulation.
+Further explanations for these mechanics are provided in <a class="reference internal" href="#distributions-and-statecontrollers">Distributions and StateControllers</a>.</p>
+</section>
+<section id="functional-dependencies">
+<h4>Functional dependencies<a class="headerlink" href="#functional-dependencies" title="Permalink to this heading">#</a></h4>
+<p>We can of course add many more features to a machine.
+Sometimes, there exist certain relationships between features, e.g. physical dependencies.
+We can model these dependencies using the “dependency” parameter:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">feature2</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;f2&quot;</span><span class="p">,</span>
+                   <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Feature2&quot;</span><span class="p">,</span>
+                   <span class="n">victim</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span>
+                   <span class="n">dependent</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Function&quot;</span><span class="p">:</span> <span class="s2">&quot;10*x + 3&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">feature1</span><span class="p">}</span>
+                   <span class="n">distribution</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Feature&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">}}}</span>
+                   <span class="p">)</span>
+</pre></div>
+</div>
+<p>Here, we define a functional dependency between feature2 and feature1, in this case the linear function 10x + 3.
+To simulate eventual measurement errors, we can apply a standard deviation to this dependency, in this case 0.1.
+However, it is also possible to have strict functional dependencies between features by simply not passing anything as an argument for distribution:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">feature2</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;f2&quot;</span><span class="p">,</span>
+                   <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Feature2&quot;</span><span class="p">,</span>
+                   <span class="n">victim</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span>
+                   <span class="n">dependent</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Function&quot;</span><span class="p">:</span> <span class="s2">&quot;10*x + 3&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">feature1</span><span class="p">}</span>
+                   <span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="random-walks">
+<h4>Random walks<a class="headerlink" href="#random-walks" title="Permalink to this heading">#</a></h4>
+<p>Sometimes, Features depend on the previous value, e.g. Temperatures.
+To model this, we can use random walks.
+When the random walk mode is activated, the randomly drawn feature value is added to the last feature value.
+A Feature generated using a random walk can be defined as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">random_walk_feature</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;ftr_rw&quot;</span><span class="p">,</span>
+                              <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Feature_Random_Walk&quot;</span><span class="p">,</span>
+                              <span class="n">victim</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span>
+                              <span class="n">random_walk</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                              <span class="n">start_value</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+                              <span class="n">distribution</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Feature&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}}})</span>
+</pre></div>
+</div>
+<p>Feature “Feature_Random_Walk” has a starting value of 20.
+For each data point, a value is drawn from a normal distribution with mean 0 and standard deviation 1 and then added to the current value.
+The starting value is 20, which can be interpreted as the “mean” of the random walk.</p>
+</section>
+</section>
+<section id="time-series">
+<h3>Time Series<a class="headerlink" href="#time-series" title="Permalink to this heading">#</a></h3>
+<section id="id1">
+<h4>Basic usage<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h4>
+<p>TimeSeries represents the second type of ObjectProperty in our ManPy Extension.
+At each production step, TimeSeries generates a configurable amount of data points in a certain time frame.
+Let’s have a look at a simple example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ts_features</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;ftr_ts,</span>
+                      <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Feature_Time_Series&quot;</span><span class="p">,</span>
+                      <span class="n">step_time</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                      <span class="n">distribution</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Function&quot;</span><span class="p">:</span> <span class="p">{(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span> <span class="s2">&quot;0.5*x + 2&quot;</span><span class="p">},</span>
+                                    <span class="s2">&quot;DataPoints&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+                                    <span class="s2">&quot;Feature&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">}}</span>
+                                   <span class="p">}</span>
+                      <span class="p">)</span>
+</pre></div>
+</div>
+<p>This example generates a time series in which the data points are 0.1 second apart.
+The time series is defined in the interval [0, 2], in which 20 data points are sampled.
+The resulting values are governed by a linear function.
+At each data point in the time series, a standard deviation of 0.1 is applied to model small differences between production steps.</p>
+</section>
+<section id="multiple-intervals">
+<h4>Multiple Intervals<a class="headerlink" href="#multiple-intervals" title="Permalink to this heading">#</a></h4>
+<p>It is possible to define multiple intervals to further customize the mathematical description of the time series:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ts_features</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;ftr_ts,</span>
+                      <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Feature_Time_Series&quot;</span><span class="p">,</span>
+                      <span class="n">step_time</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                      <span class="n">distribution</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Function&quot;</span><span class="p">:</span> <span class="p">{(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="s2">&quot;0.5*x + 2&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span> <span class="s2">&quot;0.1*x + 2&quot;</span><span class="p">},</span>
+                                    <span class="s2">&quot;DataPoints&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+                                    <span class="s2">&quot;Feature&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">}}</span>
+                                   <span class="p">}</span>
+                      <span class="p">)</span>
+</pre></div>
+</div>
+<p>Now, the TimeSeries behaves differently from 1 to 2 than from 0 to 1.</p>
+</section>
+<section id="interpolation">
+<h4>Interpolation<a class="headerlink" href="#interpolation" title="Permalink to this heading">#</a></h4>
+<p>The aforementioned ways of creating time series are quite powerful, but only if a functional relationship ís known.
+Sometimes, only certain values are known, which makes interpolation a very useful tool for these cases:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ts_features</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;ftr_ts,</span>
+                      <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Feature_Time_Series&quot;</span><span class="p">,</span>
+                      <span class="n">step_time</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                      <span class="n">distribution</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Function&quot;</span><span class="p">:</span> <span class="p">{(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="s2">&quot;0.5*x + 2&quot;</span><span class="p">,</span>
+                                                 <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mf">4.2</span><span class="p">,</span> <span class="mf">4.3</span><span class="p">,</span> <span class="mf">5.1</span><span class="p">]]},</span>
+                                    <span class="s2">&quot;DataPoints&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+                                    <span class="s2">&quot;Feature&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">}}</span>
+                                   <span class="p">}</span>
+                      <span class="p">)</span>
+</pre></div>
+</div>
+<p>In this example, we provide the interpolation algorithm 4 data points in the interval in which it interpolates.
+No matter how small or large the interval is, the interpolation algorithm needs at least 4 values.
+The data points for interpolation can also be determined by a Feature with all its customization possibilities:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span> <span class="n">endVal</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;endVal&quot;</span><span class="p">,</span>
+<span class="linenos"> 2</span>                   <span class="n">name</span><span class="o">=</span><span class="s2">&quot;endVal&quot;</span><span class="p">,</span>
+<span class="linenos"> 3</span>                   <span class="n">victim</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span>
+<span class="linenos"> 4</span>                   <span class="n">distribution</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Feature&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mf">5.2</span><span class="p">,</span> <span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">}}}</span>
+<span class="linenos"> 5</span>                   <span class="p">)</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="n">ts_features</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;ftr_ts,</span>
+<span class="linenos"> 9</span>                      <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Feature_Time_Series&quot;</span><span class="p">,</span>
+<span class="linenos">10</span>                      <span class="n">step_time</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+<span class="linenos">11</span>                      <span class="n">distribution</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Function&quot;</span><span class="p">:</span> <span class="p">{(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="s2">&quot;0.5*x + 2&quot;</span><span class="p">,</span>
+<span class="linenos">12</span>                                                 <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mf">4.2</span><span class="p">,</span> <span class="mf">4.3</span><span class="p">,</span> <span class="s2">&quot;EndVal&quot;</span><span class="p">]]},</span>
+<span class="linenos">13</span>                                    <span class="s2">&quot;EndVal&quot;</span><span class="p">:</span> <span class="n">endVal</span><span class="p">,</span>
+<span class="linenos">14</span>                                    <span class="s2">&quot;DataPoints&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+<span class="linenos">15</span>                                    <span class="s2">&quot;Feature&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">}}</span>
+<span class="linenos">16</span>                                   <span class="p">}</span>
+<span class="linenos">17</span>                      <span class="p">)</span>
+</pre></div>
+</div>
+<p>In this example, the final value for interpolation is received from Feature “endVal”.</p>
+</section>
+<section id="example-plot">
+<h4>Example plot<a class="headerlink" href="#example-plot" title="Permalink to this heading">#</a></h4>
+<p>The following plot shows two complex TimeSeries that were created using both interpolation and functional dependencies:</p>
+<a class="reference internal image-reference" href="_images/ts_complex.png"><img alt="Complex TimeSeries" src="_images/ts_complex.png" style="width: 600px;" /></a>
+</section>
+</section>
+<section id="failures">
+<h3>Failures<a class="headerlink" href="#failures" title="Permalink to this heading">#</a></h3>
+<section id="id2">
+<h4>Basic usage<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h4>
+<p>Despite not being desired, failures play a big role in production lines.
+Therefore, in order to accurately model a production line, we must be able to model failures in a sophisticated way.
+ManPy already provides such a complex model through its Failure classe.
+The following example demonstrates a simple ManPy Failure:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">simple_failure</span> <span class="o">=</span> <span class="n">Failure</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;Flr0&quot;</span><span class="p">,</span>
+                         <span class="n">name</span><span class="o">=</span><span class="s2">&quot;SimpleFailure&quot;</span><span class="p">,</span>
+                         <span class="n">victim</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span>
+                         <span class="n">distribution</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;TTF&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Fixed&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">}},</span>
+                                       <span class="s2">&quot;TTR&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">:</span><span class="mi">50</span><span class="p">,</span>
+                                                          <span class="s2">&quot;probability&quot;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">}}})</span>
+</pre></div>
+</div>
+<p>This failure is potentially triggered every 0.8 seconds, which is determined by the time-to-failure (TTF) distribution.
+At each potential trigger point, a time-to-repair (TTR) is calculated, which determines the down time of the victim (i.e. the machine at which the failure occurs)
+Since we additionally passed a probability value to the TTR distribution, we only get actual downtime with a 1% chance.
+If we don’t pass the probability value, the frequency of the failure is solely determined by TTF.</p>
+</section>
+<section id="conditional-failures">
+<h4>Conditional failures<a class="headerlink" href="#conditional-failures" title="Permalink to this heading">#</a></h4>
+<p>A more flexible way of triggering failures are conditional failures.
+Conditional failures are comparable to <a class="reference internal" href="#quality-control">Quality Control</a> in Machines.
+You implement the condition as a function and pass it to the failure using the “conditional” parameter:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># Any function can be employed as the condition for a Failure to occur</span>
+<span class="linenos"> 2</span><span class="c1"># You can utilize any simulation values for the condition</span>
+<span class="linenos"> 3</span><span class="c1"># Return True to let the Failure occur</span>
+<span class="linenos"> 4</span><span class="k">def</span> <span class="nf">condition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos"> 5</span>    <span class="n">value_1</span> <span class="o">=</span> <span class="n">Ftr1</span><span class="o">.</span><span class="n">get_feature_value</span><span class="p">()</span>
+<span class="linenos"> 6</span>    <span class="n">value_2</span> <span class="o">=</span> <span class="n">Ftr2</span><span class="o">.</span><span class="n">get_feature_value</span><span class="p">()</span>
+<span class="linenos"> 7</span>    <span class="k">if</span> <span class="p">(</span><span class="n">value_1</span> <span class="o">+</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">value_2</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">200</span><span class="p">:</span> <span class="c1"># prev 360</span>
+<span class="linenos"> 8</span>        <span class="n">Ftr1</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span>
+<span class="linenos"> 9</span>        <span class="n">Ftr2</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span>
+<span class="linenos">10</span>        <span class="k">return</span> <span class="kc">True</span>
+<span class="linenos">11</span>    <span class="k">else</span><span class="p">:</span>
+<span class="linenos">12</span>        <span class="k">return</span> <span class="kc">False</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="n">conditional_failure</span> <span class="o">=</span> <span class="n">Failure</span><span class="p">(</span><span class="n">victim</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span>
+<span class="linenos">15</span>             <span class="n">conditional</span><span class="o">=</span><span class="n">condition</span><span class="p">,</span>
+<span class="linenos">16</span>             <span class="n">distribution</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;TTR&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Fixed&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">}}})</span>
+</pre></div>
+</div>
+<p>Here, the triggering of the failure is solely controlled by the function condition, we only need to specify TTR.
+Similarly to Quality Control, we can access the feature values to determine whether a failure should be triggered or not.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>A Failure is automatically resolved after TTR is passed.
+Additionally, ManPy offers the possibility to model repairmen, which can be used to model constrained maintenance resources.
+In our case, we always assume that a failure can be repaired in the given time period, which may be unrealistic.</p>
+</div>
+</section>
+</section>
+<section id="distributions-and-statecontrollers">
+<h3>Distributions and StateControllers<a class="headerlink" href="#distributions-and-statecontrollers" title="Permalink to this heading">#</a></h3>
+<p>Using our StateControllers in combination with distributions allows for complex control over the lifecycle behaviour of features.
+This can be used to model data drifts or distribution shifts.
+The StateControllers are relatively generic and would easily allow extensions to other use cases, but we focus on controlling different probability distributions.
+The motivation for StateControllers was the need for modelling changing behaviour of features depending on their wear.
+If a machine part (e.g. a bearing) shows signs of wear, it’s underlying probability distribution changes slightly.
+In the case of a bearing, this could be modelled using a steadily increasing standard deviation.
+In the following, the different types of yet implemented StateControllers are explained.</p>
+<section id="simplestatecontroller">
+<h4>SimpleStateController<a class="headerlink" href="#simplestatecontroller" title="Permalink to this heading">#</a></h4>
+<p>SimpleStateController is the most simple case of a StateController (surprise!).
+It models a simple “break point”, e.g. a very different behaviour of a machine part after it broke.
+This can be achieved using the following piece of code:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="n">dists</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;Time&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Fixed&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="n">feature_cycle_time</span><span class="p">}},</span>
+<span class="linenos"> 2</span>          <span class="s2">&quot;Feature&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}},</span>
+<span class="linenos"> 3</span>         <span class="p">{</span><span class="s2">&quot;Time&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Fixed&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="n">feature_cycle_time</span><span class="p">}},</span>
+<span class="linenos"> 4</span>          <span class="s2">&quot;Feature&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}}}]</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="n">boundaries</span> <span class="o">=</span> <span class="p">{(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">25</span><span class="p">):</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span> <span class="mi">1</span><span class="p">}</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="n">controller</span> <span class="o">=</span> <span class="n">SimpleStateController</span><span class="p">(</span><span class="n">states</span><span class="o">=</span><span class="n">dists</span><span class="p">,</span> <span class="n">boundaries</span><span class="o">=</span><span class="n">boundaries</span><span class="p">,</span> <span class="n">wear_per_step</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="n">f3</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;f3&quot;</span><span class="p">,</span> <span class="s2">&quot;F3&quot;</span><span class="p">,</span> <span class="n">victim</span><span class="o">=</span><span class="n">m2</span><span class="p">,</span> <span class="n">distribution_state_controller</span><span class="o">=</span><span class="n">controller</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This SimpleStateController controls the distributions of Feature F3.
+The actual behaviour is defined in “boundaries”, which controls the exact distribution that should be used at a certain amount of wear.
+In each production step, wear_per_step is added to the total amount of wear.
+If the total amount of wear crosses a boundary, a different distribution is used for Feature F3.
+In this case, the break point is defined at 25 units of wear, which leads to a new normal distribution with a drastically different mean (100).</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>By default, a StateController is reset to its initial state after the victim (= the machine) of its assigned feature has ended a failure, i.e. it’s been repaired.
+This behavior can be deactivated through the “reset_distributions” parameter of Feature.</p>
+</div>
+</section>
+<section id="continuosnormaldistribution">
+<h4>ContinuosNormalDistribution<a class="headerlink" href="#continuosnormaldistribution" title="Permalink to this heading">#</a></h4>
+<p>SimpleStateController is very generic by simply retrieving the element in the states list that is determined by boundaries.
+ContinuosNormalDistribution is a more specialized StateController.
+It is specifically designed for Features that are generated using a Gaussian distribution.
+In ContinuosNormalDistribution, we assume that wear immediately influences the underlying probability distribution, even if it’s by a very small amount.
+We model this by adding a certain amount (mean_change_per_step) in each production step to the mean of the normal distribution.
+Additionally, the break point mechanic from SimpleStateController is still present.
+However, it’s now simplified such that the normal distribution after the defect occurred is only defined by a mean and STD:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="n">mean_change_per_step</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="linenos"> 2</span><span class="n">controller1</span> <span class="o">=</span> <span class="n">ContinuosNormalDistribution</span><span class="p">(</span><span class="n">wear_per_step</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+<span class="linenos"> 3</span>                                         <span class="n">mean_change_per_step</span><span class="o">=</span><span class="n">mean_change_per_step</span><span class="p">,</span>
+<span class="linenos"> 4</span>                                         <span class="n">initial_mean</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+<span class="linenos"> 5</span>                                         <span class="n">std</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+<span class="linenos"> 6</span>                                         <span class="n">break_point</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+<span class="linenos"> 7</span>                                         <span class="n">defect_mean</span><span class="o">=</span><span class="mf">7.0</span><span class="p">,</span>
+<span class="linenos"> 8</span>                                         <span class="n">defect_std</span><span class="o">=</span><span class="mf">3.0</span>
+<span class="linenos"> 9</span>                                         <span class="p">)</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="c1"># not using a break point</span>
+<span class="linenos">12</span><span class="n">controller2</span> <span class="o">=</span> <span class="n">ContinuosNormalDistribution</span><span class="p">(</span><span class="n">wear_per_step</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+<span class="linenos">13</span>                                         <span class="n">mean_change_per_step</span><span class="o">=</span><span class="n">mean_change_per_step</span><span class="p">,</span>
+<span class="linenos">14</span>                                         <span class="n">initial_mean</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+<span class="linenos">15</span>                                         <span class="n">std</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+<span class="linenos">16</span>                                         <span class="n">break_point</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="linenos">17</span>                                         <span class="n">defect_mean</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="linenos">18</span>                                         <span class="n">defect_std</span><span class="o">=</span><span class="kc">None</span>
+<span class="linenos">19</span>                                         <span class="p">)</span>
+<span class="linenos">20</span>
+<span class="linenos">21</span><span class="n">f3</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;f3&quot;</span><span class="p">,</span> <span class="s2">&quot;F3&quot;</span><span class="p">,</span> <span class="n">victim</span><span class="o">=</span><span class="n">m2</span><span class="p">,</span> <span class="n">reset_distributions</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">distribution_state_controller</span><span class="o">=</span><span class="n">controller1</span><span class="p">)</span>
+<span class="linenos">22</span><span class="c1"># f3 = Feature(&quot;f3&quot;, &quot;F3&quot;, victim=m2, reset_distributions=True, distribution_state_controller=controller2)</span>
+</pre></div>
+</div>
+<p>The typical behaviour of ContinuosNormalDistribution can be seen in the following plot.
+It contains the evolution of the feature value of two ContinuosNormalDistribution StateControllers over the span of 250 steps.</p>
+<a class="reference internal image-reference" href="_images/continuos_normal_dist.png"><img alt="Two ContinuosNormalDistributions" src="_images/continuos_normal_dist.png" style="width: 500px;" /></a>
+</section>
+<section id="randomdefectstatecontroller">
+<h4>RandomDefectStateController<a class="headerlink" href="#randomdefectstatecontroller" title="Permalink to this heading">#</a></h4>
+<p>SimpleStateController and ContinuosNormalDistribution are best used to model properties related to wear.
+But sometimes, failures can occur without obvious reason.
+For these cases, we designed RandomDefectStateController, which models a defect using a Bernoulli distribution.
+If the Bernoulli distribution returns 1, it selects a defect StateController from a list, otherwise it uses a “ok” StateController that model normal behaviour.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span> <span class="n">mean_change_per_step</span> <span class="o">=</span> <span class="mf">0.02</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span> <span class="n">ok_controller</span> <span class="o">=</span> <span class="n">ContinuosNormalDistribution</span><span class="p">(</span><span class="n">wear_per_step</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+<span class="linenos"> 4</span>                                             <span class="n">break_point</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="linenos"> 5</span>                                             <span class="n">mean_change_per_step</span><span class="o">=</span><span class="n">mean_change_per_step</span><span class="p">,</span>
+<span class="linenos"> 6</span>                                             <span class="n">initial_mean</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span>
+<span class="linenos"> 7</span>                                             <span class="n">std</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+<span class="linenos"> 8</span>                                             <span class="n">defect_mean</span><span class="o">=</span><span class="mf">7.0</span><span class="p">,</span>
+<span class="linenos"> 9</span>                                             <span class="n">defect_std</span><span class="o">=</span><span class="mf">3.0</span>
+<span class="linenos">10</span>                                             <span class="p">)</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span> <span class="n">defect_controller1</span> <span class="o">=</span> <span class="n">ContinuosNormalDistribution</span><span class="p">(</span><span class="n">wear_per_step</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+<span class="linenos">13</span>                                                 <span class="n">mean_change_per_step</span><span class="o">=</span><span class="n">mean_change_per_step</span><span class="p">,</span>
+<span class="linenos">14</span>                                                 <span class="n">initial_mean</span><span class="o">=</span><span class="mf">7.0</span><span class="p">,</span>
+<span class="linenos">15</span>                                                 <span class="n">std</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+<span class="linenos">16</span>                                                 <span class="n">break_point</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="linenos">17</span>                                                 <span class="n">defect_mean</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="linenos">18</span>                                                 <span class="n">defect_std</span><span class="o">=</span><span class="kc">None</span>
+<span class="linenos">19</span>                                                 <span class="p">)</span>
+<span class="linenos">20</span>
+<span class="linenos">21</span> <span class="n">defect_controller2</span> <span class="o">=</span> <span class="n">ContinuosNormalDistribution</span><span class="p">(</span><span class="n">wear_per_step</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+<span class="linenos">22</span>                                                 <span class="n">mean_change_per_step</span><span class="o">=</span><span class="n">mean_change_per_step</span><span class="p">,</span>
+<span class="linenos">23</span>                                                 <span class="n">initial_mean</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+<span class="linenos">24</span>                                                 <span class="n">std</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+<span class="linenos">25</span>                                                 <span class="n">break_point</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="linenos">26</span>                                                 <span class="n">defect_mean</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="linenos">27</span>                                                 <span class="n">defect_std</span><span class="o">=</span><span class="kc">None</span>
+<span class="linenos">28</span>                                                 <span class="p">)</span>
+<span class="linenos">29</span>
+<span class="linenos">30</span> <span class="n">random_defect_controller</span> <span class="o">=</span> <span class="n">RandomDefectStateController</span><span class="p">(</span><span class="n">failure_probability</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+<span class="linenos">31</span>                                                        <span class="n">ok_controller</span><span class="o">=</span><span class="n">ok_controller</span><span class="p">,</span>
+<span class="linenos">32</span>                                                        <span class="n">defect_controllers</span><span class="o">=</span><span class="p">[</span><span class="n">defect_controller1</span><span class="p">,</span> <span class="n">defect_controller2</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>The typical behavior of a RandomDefectStateController looks similar to the following plot (Red crosses = defect):</p>
+<a class="reference internal image-reference" href="_images/random_defect.png"><img alt="Plot with random defects." src="_images/random_defect.png" style="width: 600px;" /></a>
+<p>The defect_controllers list can contain multiple StateControllers, which can be used to model minor deviations from the planned behaviour in multiple directions, e.g. too much or not enough glue.
+RandomDefectController introduces an additional way of performing quality control.
+Depending on the distribution that gets selected (ok/defect), an internal label is set to either True or False, indicating whether a defect is present or not.
+This label can be used for quality control, which should create more non-obvious relationships:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">def</span> <span class="nf">quality_control</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos">2</span>    <span class="n">activeEntity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="linenos">3</span>
+<span class="linenos">4</span>    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">activeEntity</span><span class="o">.</span><span class="n">labels</span><span class="p">):</span>
+<span class="linenos">5</span>        <span class="k">return</span> <span class="kc">True</span>
+</pre></div>
+</div>
+<p>This function marks an entity as “defect” if at least one feature was the result of a “defect” probability distribution.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>StateControllers are highly customizable.
+If necessary, you can write your own StateController that perfectly fits you demands.
+The interface is defined in core/StateController.py.</p>
+</div>
+</section>
+</section>
+<section id="export">
+<h3>Export<a class="headerlink" href="#export" title="Permalink to this heading">#</a></h3>
+<p>Our ManPy extensions offers two ways to export the simulated data: Pandas DataFrames and Databases.</p>
+<section id="pandas-dataframes">
+<h4>Pandas DataFrames<a class="headerlink" href="#pandas-dataframes" title="Permalink to this heading">#</a></h4>
+<p>To export the data to a Pandas DataFrame, you can use the getFeatureData and getTimeSeriesData functions:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="n">m1_data</span> <span class="o">=</span> <span class="n">getFeatureData</span><span class="p">([</span><span class="n">m1</span><span class="p">])</span>
+<span class="linenos"> 2</span><span class="nb">print</span><span class="p">(</span><span class="n">m1_data</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="c1"># With &#39;time=True&#39;, timestamps of the feature values are included in the DataFrame</span>
+<span class="linenos"> 5</span><span class="n">m1_data_time</span> <span class="o">=</span> <span class="n">getFeatureData</span><span class="p">([</span><span class="n">m1</span><span class="p">],</span> <span class="n">time</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="linenos"> 6</span><span class="nb">print</span><span class="p">(</span><span class="n">m1_data_time</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="c1"># The function supports multiple machines</span>
+<span class="linenos"> 9</span><span class="n">both</span> <span class="o">=</span> <span class="n">getFeatureData</span><span class="p">([</span><span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">])</span>
+<span class="linenos">10</span><span class="nb">print</span><span class="p">(</span><span class="n">both</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="c1"># To retrieve timeseries data from the simulation, utilize the getTimeSeriesData function</span>
+<span class="linenos">13</span><span class="c1"># The function accepts a timeSeries and returns a DataFrame representing that timeseries</span>
+<span class="linenos">14</span><span class="n">ts_data</span> <span class="o">=</span> <span class="n">getTimeSeriesData</span><span class="p">(</span><span class="n">ts_features</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>While getFeatureData accepts machines as input, getTimeSeriesData accepts a TimeSeries instance.
+From there on, Pandas Dataframes offer a variety of exports, e.g. to CSV.</p>
+</section>
+<section id="databases">
+<h4>Databases<a class="headerlink" href="#databases" title="Permalink to this heading">#</a></h4>
+<p>Additionally, we support data export to QuestDB and Kafka:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">from</span> <span class="nn">manpy.simulation.core.Database</span> <span class="kn">import</span> <span class="n">ManPyQuestDBDatabase</span><span class="p">,</span> <span class="n">ManPyKafkaConnection</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="n">db</span> <span class="o">=</span> <span class="n">ManPyQuestDBDatabase</span><span class="p">()</span>
+<span class="linenos">4</span><span class="c1"># alternatively: db = ManPyKafkaConnection(...)</span>
+<span class="linenos">5</span>
+<span class="linenos">6</span><span class="n">runSimulation</span><span class="p">(</span><span class="n">objectList</span><span class="p">,</span> <span class="n">maxSimTime</span><span class="p">,</span> <span class="n">db</span><span class="o">=</span><span class="n">db</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In QuestDB, you can use SQL queries to access the datapoints.
+QuestDB also has plotting capabilities, as you can see in the following screenshot:</p>
+<a class="reference internal image-reference" href="_images/timeseries.PNG"><img alt="A screenshot of the QuestDB database." src="_images/timeseries.PNG" style="width: 800px;" /></a>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Our Database interface is highly customizable.
+If necessary, you can write your own DB interface that perfectly fits you demands.
+The interface is defined in core/Database.py.</p>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="core.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Core</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Home</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, AImotion Bavaria
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Tutorials</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a><ul>
+<li><a class="reference internal" href="#basic-principles">Basic principles</a></li>
+<li><a class="reference internal" href="#adding-more-machines">Adding more machines</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#advanced-usage">Advanced usage</a><ul>
+<li><a class="reference internal" href="#quality-control">Quality Control</a></li>
+<li><a class="reference internal" href="#features">Features</a><ul>
+<li><a class="reference internal" href="#basic-usage">Basic usage</a></li>
+<li><a class="reference internal" href="#functional-dependencies">Functional dependencies</a></li>
+<li><a class="reference internal" href="#random-walks">Random walks</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#time-series">Time Series</a><ul>
+<li><a class="reference internal" href="#id1">Basic usage</a></li>
+<li><a class="reference internal" href="#multiple-intervals">Multiple Intervals</a></li>
+<li><a class="reference internal" href="#interpolation">Interpolation</a></li>
+<li><a class="reference internal" href="#example-plot">Example plot</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#failures">Failures</a><ul>
+<li><a class="reference internal" href="#id2">Basic usage</a></li>
+<li><a class="reference internal" href="#conditional-failures">Conditional failures</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#distributions-and-statecontrollers">Distributions and StateControllers</a><ul>
+<li><a class="reference internal" href="#simplestatecontroller">SimpleStateController</a></li>
+<li><a class="reference internal" href="#continuosnormaldistribution">ContinuosNormalDistribution</a></li>
+<li><a class="reference internal" href="#randomdefectstatecontroller">RandomDefectStateController</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#export">Export</a><ul>
+<li><a class="reference internal" href="#pandas-dataframes">Pandas DataFrames</a></li>
+<li><a class="reference internal" href="#databases">Databases</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/scripts/furo.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    </body>
+</html>

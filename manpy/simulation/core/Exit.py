@@ -21,9 +21,7 @@ Created on 6 Feb 2013
 
 @author: George
 """
-"""
-models the exit of the model
-"""
+
 
 # from SimPy.Simulation import now, Process, Resource, infinity, waituntil, waitevent
 import simpy
@@ -33,6 +31,10 @@ from manpy.simulation.core.CoreObject import CoreObject
 #                            The exit object
 # ===========================================================================
 class Exit(CoreObject):
+    """
+    models the exit of the model
+    """
+
     family = "Exit"
 
     def __init__(self, id, name, cancelCondition={}, **kw):
@@ -77,23 +79,18 @@ class Exit(CoreObject):
             self.entities.append(self.getEntity())
             self.signalGiver()
 
-    # =======================================================================
-    #                sets the routing in element for the Exit
-    # =======================================================================
     def defineRouting(self, predecessorList=[]):
+        """sets the routing in element for the Exit"""
         self.previous = predecessorList  # no successorList for the Exit
 
-    # =======================================================================
-    #                checks if the Exit can accept an entity
-    # =======================================================================
     def canAccept(self, callerObject=None):
+        """checks if the Exit can accept an entity"""
+
         return True  # the exit always can accept an entity
 
-    # =======================================================================
-    #                checks if the Exit can accept an entity
-    #                 and there is an entity waiting for it
-    # =======================================================================
     def canAcceptAndIsRequested(self, callerObject=None):
+        """checks if the Exit can accept an entity and there is an entity waiting for it"""
+
         # get the active object and its internal queue
         activeObject = self.getActiveObject()
         activeObjectQueue = self.getActiveObjectQueue()
@@ -101,10 +98,9 @@ class Exit(CoreObject):
         assert giverObject, "there must be a caller for canAcceptAndIsRequested"
         return giverObject.haveToDispose(self)
 
-    # =======================================================================
-    #                    gets an entity from the predecessor
-    # =======================================================================
     def getEntity(self):
+        """gets an entity from the predecessor"""
+
         activeEntity = CoreObject.getEntity(self)  # run the default method
         # if the entity is in the G.pendingEntities list then remove it from there
         from .Globals import G
@@ -160,16 +156,14 @@ class Exit(CoreObject):
         for list in lists:
             deleteEntityfromlist(entity, list)
 
-    # ===========================================================================
-    # haveToDispose of an exit must always return False
-    # ===========================================================================
     def haveToDispose(self, callerObject=None):
+        """haveToDispose of an exit must always return False"""
+
         return False
 
-    # =======================================================================
-    #            actions to be taken after the simulation ends
-    # =======================================================================
     def postProcessing(self, MaxSimtime=None):
+        """actions to be taken after the simulation ends"""
+
         from .Globals import G
 
         if MaxSimtime == None:
@@ -186,10 +180,9 @@ class Exit(CoreObject):
         except ZeroDivisionError:  # the average time between exits is zero if no Entity exited
             self.TaktTime.append(0)
 
-    # =======================================================================
-    #                        outputs results to JSON File
-    # =======================================================================
     def outputResultsJSON(self):
+        """outputs results to JSON File"""
+
         from .Globals import G
 
         json = {

@@ -7,19 +7,19 @@ Created on 18 Aug 2013
 
 @author: LodesL
 """
-"""
-Abstract class for all kinds of object properties that are generated in somehow regular interval. Example: Features
-"""
+
 
 # from SimPy.Simulation import Process, Resource, reactivate, now
 from manpy.simulation.ManPyObject import ManPyObject
 from manpy.simulation.RandomNumberGenerator import RandomNumberGenerator
 import pandas as pd
 
-# ===============================================================================
-# The ObjectProperty process
-# ===============================================================================
+
 class ObjectProperty(ManPyObject):
+    """
+    Abstract class for all kinds of object properties that are generated in somehow regular interval. Example: Features
+    """
+
     def __init__(
         self,
         id="",
@@ -111,49 +111,42 @@ class ObjectProperty(ManPyObject):
             "victimResumesProcessing": 0
         }
 
-    # ===========================================================================
-    # the main process of the core object
-    # this is dummy, every object must have its own implementation
-    # ===========================================================================
     def run(self):
+        """ the main process of the core object. this is a dummy, every object must have its own implementation"""
         raise NotImplementedError("Subclass must define 'run' method")
 
-    # =======================================================================
-    #           hand in the control to the objectIterruption.run
-    #                   to be called by the machine
-    # TODO: consider removing this method,
-    #     signalling can be done via Machine request/releaseOperator
-    # =======================================================================
     def invoke(self):
+        """hand in the control to the objectIterruption.run to be called by the machine"""
+
+        # TODO: consider removing this method,
+        # signalling can be done via Machine request/releaseOperator
+
         if self.expectedSignals["isCalled"]:
             succeedTuple = (self.victim, self.env.now)
             self.sendSignal(
                 receiver=self, signal=self.isCalled, succeedTuple=succeedTuple
             )
 
-    # ===========================================================================
-    # returns the internal queue of the victim
-    # ===========================================================================
     def getVictimQueue(self):
+        """returns the internal queue of the victim"""
+
         return self.victim.getActiveObjectQueue()
 
-    # ===========================================================================
-    # check if the victim's internal queue is empty
-    # ===========================================================================
     def victimQueueIsEmpty(self):
+        """check if the victim's internal queue is empty"""
+
         return len(self.getVictimQueue()) == 0
 
-    # ===========================================================================
-    # prints message to the console
-    # ===========================================================================
-    # print message in the console. Format is (Simulation Time | Entity or Frame Name | message)
     def printTrace(self, entityName, message):
+        """print message in the console. Format is (Simulation Time | Entity or Frame Name | message)"""
+
         from manpy.simulation.core.Globals import G
 
         if G.console == "Yes":  # output only if the user has selected to
             print((self.env.now, entityName, message))
 
     def get_feature_value(self):
+        """Returns the current value of the feature."""
         return self.featureValue
 
     def outputTrace(self, entity_name: str, entity_id: str, message: str):

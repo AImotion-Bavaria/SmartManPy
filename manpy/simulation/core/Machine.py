@@ -21,9 +21,6 @@ Created on 8 Nov 2012
 
 @author: George
 """
-"""
-Models a machine that can also have failures
-"""
 
 # from SimPy.Simulation import Process, Resource, SimEvent
 # from SimPy.Simulation import activate, passivate, waituntil, now, hold, request, release, waitevent
@@ -42,10 +39,12 @@ from manpy.simulation.RandomNumberGenerator import RandomNumberGenerator
 
 from manpy.simulation.core.Globals import G
 
-# ===========================================================================
-# the Machine object
-# ===========================================================================
+
 class Machine(CoreObject):
+    """
+    Models a machine that can also have failures
+    """
+
     family = "Server"
 
     # =======================================================================
@@ -194,10 +193,9 @@ class Machine(CoreObject):
         # if currently operating
         self.operationNotFinished = False
 
-    # =======================================================================
-    # initialize the machine
-    # =======================================================================
     def initialize(self):
+        """initializes the machine"""
+
         # using the Process __init__ and not the CoreObject __init__
         CoreObject.initialize(self)
 
@@ -264,16 +262,15 @@ class Machine(CoreObject):
             )
         return time
 
-    # ===========================================================================
-    # create an operatorPool if needed
-    # ===========================================================================
     def createOperatorPool(self, operatorPool):
-        """ sets the operator resource of the Machine
-             check if the operatorPool is a List or a OperatorPool type Object
-             if it is a list then initiate a OperatorPool type object containing
-             the list of operators provided
-            if the  list is empty create operator pool with empty list
-        """
+        """create an operatorPool if needed"""
+
+        # sets the operator resource of the Machine
+        # check if the operatorPool is a List or a OperatorPool type Object
+        # if it is a list then initiate a OperatorPool type object containing
+        # the list of operators provided
+        # if the  list is empty create operator pool with empty list
+
         from manpy.simulation.core.Globals import G
 
         # XXX operatorPool is not None ?
@@ -302,18 +299,16 @@ class Machine(CoreObject):
             self.operatorPool.coreObjectIds.append(self.id)
             self.operatorPool.coreObjects.append(self)
 
-    # ===========================================================================
-    # create broker if needed
-    # ===========================================================================
     def createBroker(self):
+        """create broker if needed"""
+
         # initiate the Broker and the router
         if self.operatorPool != "None":
             self.broker = Broker(operatedMachine=self)
 
-    # ===========================================================================
-    # create router if needed
-    # ===========================================================================
     def createRouter(self):
+        """create router if needed"""
+
         # initiate the Broker and the router
         if self.operatorPool != "None":
             from manpy.simulation.core.Globals import G
@@ -330,10 +325,9 @@ class Machine(CoreObject):
             else:
                 self.router = G.RouterList[0]
 
-    # ===========================================================================
-    # initialise broker if needed
-    # ===========================================================================
     def initializeOperatorPool(self):
+        """initialise broker if needed"""
+
         # initialise the operator pool if any
         if self.operatorPool != "None":
             self.operatorPool.initialize()
@@ -346,19 +340,17 @@ class Machine(CoreObject):
                     operator.coreObjectIds.append(self.id)
                     operator.coreObjects.append(self)
 
-    # ===========================================================================
-    # initialise broker if needed
-    # ===========================================================================
     def initializeBroker(self):
+        """initialise broker if needed"""
+
         # initiate the Broker responsible to control the request/release
         if self.operatorPool != "None":
             self.broker.initialize()
             self.env.process(self.broker.run())
 
-    # ===========================================================================
-    # initialise router if needed
-    # ===========================================================================
     def initializeRouter(self):
+        """initialise router if needed"""
+
         if self.operatorPool != "None":
             # initialise the router only once
             if not self.router.isInitialized:
@@ -380,17 +372,14 @@ class Machine(CoreObject):
     def calculateInitialOperationTimes(self):
         pass
 
-    # ===========================================================================
-    # method controlling if there is a need to yield
-    # ===========================================================================
     def shouldYield(self, operationTypes={}, methods={}):
-        """
-            Method that controls if the machine should yield for releasing the operator
-            "methods":{'isInterrupted':'0'},                                % the method isInterrupted should return False (0) or True (1)
-            "operationTypes"={"Processing":1,                               % processing must be in multiOperationTypeList
-                               "Setup":0                                    % setup must not be in multiOperationTypeList
-                             }
-        """
+        """method controlling if there is a need to yield"""
+
+        # Method that controls if the machine should yield for releasing the operator
+        # "methods":{'isInterrupted':'0'},                                % the method isInterrupted should return False (0) or True (1)
+        # "operationTypes"={"Processing":1,                               % processing must be in multiOperationTypeList
+        #                    "Setup":0                                    % setup must not be in multiOperationTypeList
+        #              }
         operationsRequired = []
         operationsNotRequired = []
         opRequest = True
@@ -461,10 +450,9 @@ class Machine(CoreObject):
             return True
         return False
 
-    # ===========================================================================
-    # yielding the broker process for releasing the resource
-    # ===========================================================================
     def release(self):
+        """yielding the broker process for releasing the resource"""
+
         # after getting the entity release the operator
         # machine has to release the operator
         self.releaseOperator()
@@ -478,10 +466,9 @@ class Machine(CoreObject):
         assert eventTime == self.env.now, "brokerIsSet is not received on time"
         self.brokerIsSet = self.env.event()
 
-    # ===========================================================================
-    # yielding the broker process for requesting an operator
-    # ===========================================================================
     def request(self):
+        """yielding the broker process for requesting an operator"""
+
         # when it's ready to accept (canAcceptAndIsRequested) then inform the broker
         # machines waits to be operated (waits for the operator)
         self.requestOperator()
@@ -495,10 +482,9 @@ class Machine(CoreObject):
         assert eventTime == self.env.now, "brokerIsSet is not received on time"
         self.brokerIsSet = self.env.event()
 
-    # ===========================================================================
-    # general process, it can be processing or setup
-    # ===========================================================================
     def operation(self, type="Processing"):
+        """general process, it can be processing or setup"""
+
         # assert that the type is not None and is one of the already implemented ones
         assert type != None, "there must be an operation type defined"
         assert type in set(
@@ -693,10 +679,9 @@ class Machine(CoreObject):
                         self.processOperatorUnavailable = self.env.event()
                     self.operationNotFinished = False
 
-    # =======================================================================
-    # the main process of the machine
-    # =======================================================================
     def run(self):
+        """the main process of the machine"""
+
         # request for allocation if needed
         from manpy.simulation.core.Globals import G
 
@@ -1201,10 +1186,9 @@ class Machine(CoreObject):
                         if not self.haveToDispose():
                             break
 
-    # ===========================================================================
-    # actions to be performed after an operation (setup or processing)
-    # ===========================================================================
     def endOperationActions(self, type):
+        """actions to be performed after an operation (setup or processing)"""
+
         from manpy.simulation.core.Globals import G
 
         activeObjectQueue = self.Res.users
@@ -1263,10 +1247,9 @@ class Machine(CoreObject):
                 self.entities.append(self.activeEntity)
 
 
-    # =======================================================================
-    # actions to be carried out when the processing of an Entity ends
-    # =======================================================================
     def interruptionActions(self, type="Processing"):
+        """actions to be carried out when the processing of an Entity ends"""
+
         # if object was processing add the working time
         # only if object is not preempting though
         # in case of preemption endProcessingActions will be called
@@ -1330,16 +1313,14 @@ class Machine(CoreObject):
         # set isBlocked to False
         self.isBlocked = False
 
-    # ===========================================================================
-    # returns true if the station is interrupted
-    # ===========================================================================
     def isInterrupted(self):
+        """returns true if the station is interrupted"""
+
         return self.interruption
 
-    # =======================================================================
-    # actions to be carried out when the processing of an Entity ends
-    # =======================================================================
     def postInterruptionActions(self):
+        """actions to be carried out when the processing of an Entity ends"""
+
         for oi in self.objectInterruptions:
             if oi.type == "Failure":
                 if oi.deteriorationType == "working":
@@ -1389,18 +1370,16 @@ class Machine(CoreObject):
             # reset the variable holding the time the failure happened
             self.breakTime = 0
 
-    # =======================================================================
-    # checks if the machine is Up
-    # =======================================================================
     def checkIfMachineIsUp(self):
+        """checks if the machine is Up"""
+
         return self.Up
 
-    # =======================================================================
-    # checks if the Machine can accept an entity
-    # it checks also who called it and returns TRUE only to the predecessor
-    # that will give the entity.
-    # =======================================================================
     def canAccept(self, callerObject=None):
+        """
+        checks if the Machine can accept an entity.
+        it checks also who called it and returns TRUE only to the predecessor that will give the entity.
+        """
         if self.isLocked:
             return False
         activeObjectQueue = self.Res.users
@@ -1428,12 +1407,10 @@ class Machine(CoreObject):
                 and not self.entryIsAssignedTo()
             )
 
-    # =======================================================================
-    # checks if the Machine can accept an entity and there is an entity in
-    # some possible giver waiting for it
-    # also updates the giver to the one that is to be taken
-    # =======================================================================
     def canAcceptAndIsRequested(self, callerObject=None):
+        """checks if the Machine can accept an entity and there is an entity in some possible giver waiting for it.
+        also updates the giver to the one that is to be taken"""
+
         activeObjectQueue = self.Res.users
         giverObject = callerObject
         assert giverObject, "there must be a caller for canAcceptAndIsRequested"
@@ -1475,18 +1452,16 @@ class Machine(CoreObject):
                     return False
                 return True
 
-    # ===========================================================================
-    # return whether Load or setup Requested
-    # ===========================================================================
     def isLoadRequested(self):
+        """return whether Load or setup Requested"""
+
         return any(
             type == "Load" or type == "Setup" for type in self.multOperationTypeList
         )
 
-    # =======================================================================
-    # to be called by canAcceptAndIsRequested and check for the operator
-    # =======================================================================
     def checkOperator(self, callerObject=None):
+        """to be called by canAcceptAndIsRequested and check for the operator"""
+
         mayProceed = False
         if self.operatorPool.operators:
             # flag notifying that there is operator assigned to the actievObject
@@ -1508,10 +1483,9 @@ class Machine(CoreObject):
         else:
             return True
 
-    # =======================================================================
-    # get an entity from the giver
-    # =======================================================================
     def getEntity(self):
+        """get an entity from the giver"""
+
         activeEntity = CoreObject.getEntity(self)  # run the default method
         # update the entity attribute of the operator's schedule
         if self.currentOperator:
@@ -1524,10 +1498,9 @@ class Machine(CoreObject):
                 G.pendingEntities.remove(activeEntity)
         return activeEntity
 
-    # =======================================================================
-    # removes an entity from the Machine
-    # =======================================================================
     def removeEntity(self, entity=None):
+        """removes an entity from the Machine"""
+
         activeEntity = CoreObject.removeEntity(self, entity)  # run the default method
         self.waitToDispose = False  # update the waitToDispose flag
         # if the Machine canAccept then signal a giver
@@ -1536,10 +1509,9 @@ class Machine(CoreObject):
             self.signalGiver()
         return activeEntity
 
-    # =======================================================================
-    # checks if the Machine can dispose an entity to the following object
-    # =======================================================================
     def haveToDispose(self, callerObject=None):
+        """checks if the Machine can dispose an entity to the following object"""
+
         activeObjectQueue = self.Res.users
         # if we have only one successor just check if machine waits to dispose and also is up
         # this is done to achieve better (cpu) processing time
@@ -1565,10 +1537,9 @@ class Machine(CoreObject):
             )
         )
 
-    # ===========================================================================
-    # checks whether the entity can proceed to a successor object
-    # ===========================================================================
     def canDeliver(self, entity=None):
+        """checks whether the entity can proceed to a successor object"""
+
         assert self.isInActiveQueue(entity), (
             entity.id + " not in the internalQueue of" + self.id
         )
@@ -1584,18 +1555,16 @@ class Machine(CoreObject):
             return True
         return False
 
-    # =======================================================================
-    #                   prepare the machine to be operated
-    # =======================================================================
     def requestOperator(self):
+        """prepare the machine to be operated"""
+
         self.broker.invokeType = "request"
         self.broker.invoke()
         self.toBeOperated = True
 
-    # =======================================================================
-    #                   prepare the machine to be released
-    # =======================================================================
     def releaseOperator(self):
+        """prepare the machine to be released"""
+
         from manpy.simulation.core.Globals import G
         # this checks if the operator is working on the last element.
         # If yes the time that he was set off-shift should be updated
@@ -1643,7 +1612,7 @@ class Machine(CoreObject):
                 G.db.commit()
             # if the Router is expecting for signal send it
             from manpy.simulation.core.Globals import G
-            from .SkilledOperatorRouter import SkilledRouter
+            from manpy.simulation.SkilledOperatorRouter import SkilledRouter
 
             self.toBeOperated = False
             if G.RouterList[0].__class__ is SkilledRouter:
@@ -1654,16 +1623,14 @@ class Machine(CoreObject):
         self.broker.invokeType = "release"
         self.broker.invoke()
 
-    # =======================================================================
-    #       check if the machine is currently operated by an operator
-    # =======================================================================
     def isOperated(self):
+        """check if the machine is currently operated by an operator"""
+
         return self.toBeOperated
 
-    # =======================================================================
-    # outputs results to JSON File
-    # =======================================================================
     def outputResultsJSON(self):
+        """outputs results to JSON File"""
+
         from manpy.simulation.core.Globals import G
 
         json = {

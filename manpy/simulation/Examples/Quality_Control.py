@@ -1,6 +1,7 @@
 from manpy.simulation.imports import Machine, Source, Exit, Feature
 from manpy.simulation.core.Globals import runSimulation
 
+
 # Any function can be employed as the condition to control the entity's quality before it exits the machine
 # You can utilize any simulation values for quality control purposes
 # Return True to reject/discard the entity, and False to allow it to proceed
@@ -11,10 +12,14 @@ def condition(self):
     else:
         return False
 
+
 # Objects
 S = Source("S1", "Source", interArrivalTime={"Fixed": {"mean": 0.1}}, entity="manpy.Part")
+
 # Assign the condition as the "control" parameter for any machine
-M1 = Machine("M1", "Machine1", processingTime={"Normal": {"mean": 0.2, "stdev": 0.1, "min": 0.08, "max": 0.34}}, control=condition)
+M1 = Machine("M1", "Machine1", processingTime={"Normal": {"mean": 0.2, "stdev": 0.1, "min": 0.08, "max": 0.34}},
+             control=condition)
+
 E1 = Exit("E1", "Exit1")
 
 # ObjectProperty

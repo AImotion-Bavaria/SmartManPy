@@ -219,7 +219,7 @@ E1.defineRouting([EL_Test])
 
 
 def main(test=0):
-    maxSimTime = 10000
+    maxSimTime = 5000
     objectList = [Solar_Cells, Solar_Cell_Tester, Isc, Voc, Vm, Im, Pmax, IV_Curve, Power_Curve, FF, EFF, Temp, Q0,
                   Solar_Cell_Scribing, Solar_Strings, Assembly0, Tabber_Stringer, Tab_Str_Resistance_Too_High,
                   Tab_Str_Voltage, Tab_Str_Power, Tab_Str_Resistance, Tab_Str_Force, Gluing, glue_temperature, Amount,
@@ -230,13 +230,13 @@ def main(test=0):
     runSimulation(objectList, maxSimTime)
 
     sct = getFeatureData([Solar_Cell_Tester, Layup])
-    TS = getTimeSeriesData([Solar_Cell_Tester])
+    TS = getTimeSeriesData(IV_Curve)
     sct.to_csv("Solar_Cell_Tester.csv", index=False, encoding="utf8")
-    TS[0].to_csv("IV_Curve.csv", index=False, encoding="utf8")
-    TS[1].to_csv("PV_Curve.csv", index=False, encoding="utf8")
-    lamination_ts = getTimeSeriesData([Lamination])
+    TS.to_csv("IV_Curve.csv", index=False, encoding="utf8")
+    # TS[1].to_csv("PV_Curve.csv", index=False, encoding="utf8")
+    lamination_ts = getTimeSeriesData(Lamination_Pressure_Curve)
     print(lamination_ts)
-    lamination_ts[2].to_csv("TS_Lamination_Pressure.csv", index=False, encoding="utf8")
+    lamination_ts.to_csv("TS_Lamination_Pressure.csv", index=False, encoding="utf8")
 
     # with pd.option_context('display.max_columns', None):
     #     print(sct.drop(["ID"], axis=1).describe())

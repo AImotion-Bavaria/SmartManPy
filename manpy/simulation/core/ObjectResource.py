@@ -21,17 +21,16 @@ Created on 18 Aug 2013
 
 @author: George
 """
-"""
-Class that acts as an abstract. It should have no instances. All the Resources should inherit from it
-"""
+
 # from SimPy.Simulation import Resource
 import simpy
 from manpy.simulation.ManPyObject import ManPyObject
 
-# ===========================================================================
-#                    the resource that repairs the machines
-# ===========================================================================
 class ObjectResource(ManPyObject):
+    """
+    The resource that repairs the machines
+    Class that acts as an abstract. It should have no instances. All the Resources should inherit from it.
+    """
     def __init__(self, id="", name="", **kw):
         ManPyObject.__init__(self, id, name)
         self.initialized = False
@@ -69,10 +68,9 @@ class ObjectResource(ManPyObject):
         self.endShiftTimes = []
         self.startShiftTimes = []
 
-    # =======================================================================
-    #                    checks if the worker is available
-    # =======================================================================
     def checkIfResourceIsAvailable(self, callerObject=None):
+        """checks if the worker is available"""
+
         # return true if the operator is idle and on shift
         return (
             len(self.Res.users) < self.capacity
@@ -81,26 +79,21 @@ class ObjectResource(ManPyObject):
             and (not self.onBreak)
         )
 
-    # =======================================================================
-    #                           returns the resource
-    # =======================================================================
     def getResource(self):
+        """returns the resource"""
+
         return self.Res
 
-    # =======================================================================
-    #               returns the active queue of the resource
-    # =======================================================================
     def getResourceQueue(self):
+        """returns the active queue of the resource"""
+
         return self.Res.users
 
-    # =======================================================================
-    # check if the resource is already initialized
-    # =======================================================================
     def isInitialized(self):
+        """check if the resource is already initialized"""
+
         return self.initialized
 
-    # ===========================================================================
-    # print the route (the different stations the resource was occupied by)
-    # ===========================================================================
     def printRoute(self):
+        """print the route (the different stations the resource was occupied by)"""
         pass
