@@ -1,6 +1,6 @@
 from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue, RandomDefectStateController, ContinuosNormalDistribution
 from manpy.simulation.core.Database import ManPyQuestDBDatabase
-from manpy.simulation.core.Globals import runSimulation, getEntityData, G, ExcelPrinter
+from manpy.simulation.core.Globals import runSimulation, getFeatureData, G, ExcelPrinter
 import time
 
 start = time.time()
@@ -138,7 +138,7 @@ E1.defineRouting([Kleben])
 
 def main(test=0):
     # TODO investigate why there were so many discards with sim time > 10 000 -> now it looks normal
-    maxSimTime = 20000
+    maxSimTime = 5000
     objectList = [S, Löten, Q, Kleben, E1, Spannung, Strom, Widerstand, Kraft, Einsinktiefe, Durchflussgeschwindigkeit, Temperatur, Menge, StecktFest, WiderstandZuHoch]
     db = ManPyQuestDBDatabase()
 
@@ -159,7 +159,7 @@ def main(test=0):
 
     # df = G.get_simulation_results_dataframe()
     # ExcelPrinter(df, "EnahncedExampleLine")
-    df = getEntityData([E1], discards=[Kleben])
+    df = getFeatureData([Kleben])
     df.to_csv("EnhancedExampleLine.csv", index=False, encoding="utf8")
 
     num_discards = len(Kleben.discards)
