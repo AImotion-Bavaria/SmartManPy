@@ -13,12 +13,16 @@ sys.path.insert(0, os.path.abspath("../"))
 project = 'Extended ManPy'
 copyright = '2023, AImotion Bavaria'
 author = 'LOMA'
-release = '0.1'
+release = 'beta'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ["sphinx.ext.todo", "sphinx.ext.viewcode", "sphinx.ext.autodoc"]
+extensions = ["sphinx.ext.todo",
+              "sphinx.ext.viewcode",
+              "sphinx.ext.autodoc",
+              "sphinx_copybutton"
+              ]
 
 
 templates_path = ['_templates']
@@ -32,6 +36,10 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # html_theme = 'classic'
 html_theme = 'furo'
 html_static_path = ['_static']
+html_title = 'Extended ManPy (beta) Docs'
+html_link_suffix = ".html"
+html_logo = 'images/logo.png'
+html_favicon = 'images/logo.png'
 
 # autodoc_member_order = 'bysource'
 # autodoc_member_order = 'alphabetical'

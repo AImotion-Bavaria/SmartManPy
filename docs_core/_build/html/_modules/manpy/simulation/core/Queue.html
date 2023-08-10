@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
     <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
-        <title>manpy.simulation.core.Queue - Extended ManPy 0.1 documentation</title>
+        <title>manpy.simulation.core.Queue - Extended ManPy (beta) Docs</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -122,7 +122,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">Extended ManPy 0.1 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">Extended ManPy (beta) Docs</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -145,7 +145,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
   
   
-  <span class="sidebar-brand-text">Extended ManPy 0.1 documentation</span>
+  <span class="sidebar-brand-text">Extended ManPy (beta) Docs</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -156,6 +156,7 @@
   <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples.html">Full examples</a></li>
 </ul>
 
 </div>
@@ -222,7 +223,7 @@
 <span class="c1"># ===========================================================================</span>
 <span class="c1">#                            the Queue object</span>
 <span class="c1"># ===========================================================================</span>
-<div class="viewcode-block" id="Queue"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Queue.Queue">[docs]</a><span class="k">class</span> <span class="nc">Queue</span><span class="p">(</span><span class="n">CoreObject</span><span class="p">):</span>
+<div class="viewcode-block" id="Queue"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Queue.Queue">[docs]</a><span class="k">class</span> <span class="nc">Queue</span><span class="p">(</span><span class="n">CoreObject</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Models a FIFO queue where entities can wait in order to get into a server</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -290,7 +291,7 @@
 
         <span class="n">G</span><span class="o">.</span><span class="n">QueueList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Queue.getSupportedSchedulingRules"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Queue.Queue.getSupportedSchedulingRules">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Queue.getSupportedSchedulingRules"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Queue.Queue.getSupportedSchedulingRules">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">getSupportedSchedulingRules</span><span class="p">():</span>
         <span class="k">return</span> <span class="p">(</span>
             <span class="s2">&quot;FIFO&quot;</span><span class="p">,</span>
@@ -305,7 +306,7 @@
             <span class="s2">&quot;WINQ&quot;</span><span class="p">,</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="Queue.initialize"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Queue.Queue.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Queue.initialize"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Queue.Queue.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;the initialize method of the Queue class&quot;&quot;&quot;</span>
 
         <span class="c1"># using the Process __init__ and not the CoreObject __init__</span>
@@ -319,7 +320,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;canDispose&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;loadOperatorAvailable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span></div>
 
-<div class="viewcode-block" id="Queue.run"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Queue.Queue.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Queue.run"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Queue.Queue.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;run method of the queue&quot;&quot;&quot;</span>
 
         <span class="n">activeObjectQueue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span>
@@ -373,7 +374,7 @@
             <span class="c1"># signal the giver (for synchronization issues)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">signalGiver</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="Queue.canAccept"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Queue.Queue.canAccept">[docs]</a>    <span class="k">def</span> <span class="nf">canAccept</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Queue.canAccept"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Queue.Queue.canAccept">[docs]</a>    <span class="k">def</span> <span class="nf">canAccept</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        checks if the Queue can accept an entity</span>
 <span class="sd">        it checks also who called it and returns TRUE only to the predecessor that will give the entity.</span>
@@ -387,7 +388,7 @@
         <span class="n">thecaller</span> <span class="o">=</span> <span class="n">callerObject</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">activeObjectQueue</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">capacity</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">isInRouteOf</span><span class="p">(</span><span class="n">thecaller</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Queue.haveToDispose"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Queue.Queue.haveToDispose">[docs]</a>    <span class="k">def</span> <span class="nf">haveToDispose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Queue.haveToDispose"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Queue.Queue.haveToDispose">[docs]</a>    <span class="k">def</span> <span class="nf">haveToDispose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        checks if the Queue can dispose an entity to the following object</span>
 <span class="sd">        it checks also who called it and returns TRUE only to the receiver that will give the entity.</span>
@@ -401,7 +402,7 @@
         <span class="n">thecaller</span> <span class="o">=</span> <span class="n">callerObject</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">activeObjectQueue</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">thecaller</span><span class="o">.</span><span class="n">isInRouteOf</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Queue.removeEntity"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Queue.Queue.removeEntity">[docs]</a>    <span class="k">def</span> <span class="nf">removeEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Queue.removeEntity"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Queue.Queue.removeEntity">[docs]</a>    <span class="k">def</span> <span class="nf">removeEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;removes an entity from the Object&quot;&quot;&quot;</span>
 
         <span class="n">entities</span> <span class="o">=</span> <span class="p">[</span><span class="n">ent</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">ent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span><span class="p">]</span>
@@ -431,7 +432,7 @@
             <span class="k">pass</span>
         <span class="k">return</span> <span class="n">activeEntity</span></div>
 
-<div class="viewcode-block" id="Queue.canAcceptAndIsRequested"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Queue.Queue.canAcceptAndIsRequested">[docs]</a>    <span class="k">def</span> <span class="nf">canAcceptAndIsRequested</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Queue.canAcceptAndIsRequested"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Queue.Queue.canAcceptAndIsRequested">[docs]</a>    <span class="k">def</span> <span class="nf">canAcceptAndIsRequested</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        checks if the Queue can accept an entity and there is an entity in some predecessor waiting for it</span>
 <span class="sd">        also updates the predecessorIndex to the one that is to be taken</span>
@@ -444,7 +445,7 @@
             <span class="bp">self</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="Queue.getEntity"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Queue.Queue.getEntity">[docs]</a>    <span class="k">def</span> <span class="nf">getEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Queue.getEntity"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Queue.Queue.getEntity">[docs]</a>    <span class="k">def</span> <span class="nf">getEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;gets an entity from the predecessor that the predecessor index points to&quot;&quot;&quot;</span>
 
         <span class="n">entities</span> <span class="o">=</span> <span class="p">[</span><span class="n">ent</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">ent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span><span class="p">]</span>
@@ -463,7 +464,7 @@
             <span class="k">pass</span>
         <span class="k">return</span> <span class="n">activeEntity</span></div>
 
-<div class="viewcode-block" id="Queue.canDeliver"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Queue.Queue.canDeliver">[docs]</a>    <span class="k">def</span> <span class="nf">canDeliver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Queue.canDeliver"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Queue.Queue.canDeliver">[docs]</a>    <span class="k">def</span> <span class="nf">canDeliver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;checks whether the entity can proceed to a successor object&quot;&quot;&quot;</span>
 
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">isInActiveQueue</span><span class="p">(</span><span class="n">entity</span><span class="p">),</span> <span class="p">(</span>
@@ -481,7 +482,7 @@
             <span class="n">mayProceed</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="n">mayProceed</span></div>
 
-<div class="viewcode-block" id="Queue.sortEntities"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Queue.Queue.sortEntities">[docs]</a>    <span class="k">def</span> <span class="nf">sortEntities</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Queue.sortEntities"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Queue.Queue.sortEntities">[docs]</a>    <span class="k">def</span> <span class="nf">sortEntities</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;sorts the Entities of the Queue according to the scheduling rule&quot;&quot;&quot;</span>
 
         <span class="c1"># if we have sorting according to multiple criteria we have to call the sorter many times</span>
@@ -492,7 +493,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">activeQSorter</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="Queue.activeQSorter"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Queue.Queue.activeQSorter">[docs]</a>    <span class="k">def</span> <span class="nf">activeQSorter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">criterion</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Queue.activeQSorter"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Queue.Queue.activeQSorter">[docs]</a>    <span class="k">def</span> <span class="nf">activeQSorter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">criterion</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;sorts the Entities of the Queue according to the scheduling rule&quot;&quot;&quot;</span>
 
         <span class="n">activeObjectQ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span>
@@ -578,7 +579,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">assert</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;Unknown scheduling criterion </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">criterion</span><span class="p">,)</span></div>
 
-<div class="viewcode-block" id="Queue.outputResultsJSON"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Queue.Queue.outputResultsJSON">[docs]</a>    <span class="k">def</span> <span class="nf">outputResultsJSON</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Queue.outputResultsJSON"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Queue.Queue.outputResultsJSON">[docs]</a>    <span class="k">def</span> <span class="nf">outputResultsJSON</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Outputs the result to a JSON file.&quot;&quot;&quot;</span>
 
         <span class="kn">from</span> <span class="nn">manpy.simulation.core.Globals</span> <span class="kn">import</span> <span class="n">G</span>

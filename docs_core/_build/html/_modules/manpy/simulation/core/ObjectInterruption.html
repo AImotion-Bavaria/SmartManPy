@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
     <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
-        <title>manpy.simulation.core.ObjectInterruption - Extended ManPy 0.1 documentation</title>
+        <title>manpy.simulation.core.ObjectInterruption - Extended ManPy (beta) Docs</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -122,7 +122,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">Extended ManPy 0.1 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">Extended ManPy (beta) Docs</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -145,7 +145,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
   
   
-  <span class="sidebar-brand-text">Extended ManPy 0.1 documentation</span>
+  <span class="sidebar-brand-text">Extended ManPy (beta) Docs</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -156,6 +156,7 @@
   <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples.html">Full examples</a></li>
 </ul>
 
 </div>
@@ -222,7 +223,7 @@
 <span class="c1"># ===============================================================================</span>
 <span class="c1"># The ObjectInterruption process</span>
 <span class="c1"># ===============================================================================</span>
-<div class="viewcode-block" id="ObjectInterruption"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.ObjectInterruption.ObjectInterruption">[docs]</a><span class="k">class</span> <span class="nc">ObjectInterruption</span><span class="p">(</span><span class="n">ManPyObject</span><span class="p">):</span>
+<div class="viewcode-block" id="ObjectInterruption"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.ObjectInterruption.ObjectInterruption">[docs]</a><span class="k">class</span> <span class="nc">ObjectInterruption</span><span class="p">(</span><span class="n">ManPyObject</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class that acts as an abstract. It should have no instances. All object interruptions (eg failures, breaks) should inherit from it</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -257,7 +258,7 @@
             <span class="s2">&quot;victimResumesProcessing&quot;</span><span class="p">:</span> <span class="mi">0</span>
         <span class="p">}</span>
 
-<div class="viewcode-block" id="ObjectInterruption.initialize"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.ObjectInterruption.ObjectInterruption.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ObjectInterruption.initialize"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.ObjectInterruption.ObjectInterruption.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="kn">from</span> <span class="nn">manpy.simulation.core.Globals</span> <span class="kn">import</span> <span class="n">G</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">env</span>
@@ -285,12 +286,12 @@
             <span class="s2">&quot;victimResumesProcessing&quot;</span><span class="p">:</span> <span class="mi">0</span>
         <span class="p">}</span></div>
 
-<div class="viewcode-block" id="ObjectInterruption.run"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.ObjectInterruption.ObjectInterruption.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ObjectInterruption.run"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.ObjectInterruption.ObjectInterruption.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; the main process of the core object. this is a dummy, every object must have its own implementation&quot;&quot;&quot;</span>
 
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Subclass must define &#39;run&#39; method&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ObjectInterruption.invoke"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.ObjectInterruption.ObjectInterruption.invoke">[docs]</a>    <span class="k">def</span> <span class="nf">invoke</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ObjectInterruption.invoke"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.ObjectInterruption.ObjectInterruption.invoke">[docs]</a>    <span class="k">def</span> <span class="nf">invoke</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;hand in the control to the objectIterruption.run to be called by the machine&quot;&quot;&quot;</span>
 
         <span class="c1"># TODO: consider removing this method,</span>
@@ -301,17 +302,17 @@
                 <span class="n">receiver</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">signal</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">isCalled</span><span class="p">,</span> <span class="n">succeedTuple</span><span class="o">=</span><span class="n">succeedTuple</span>
             <span class="p">)</span></div>
 
-<div class="viewcode-block" id="ObjectInterruption.getVictimQueue"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.ObjectInterruption.ObjectInterruption.getVictimQueue">[docs]</a>    <span class="k">def</span> <span class="nf">getVictimQueue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ObjectInterruption.getVictimQueue"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.ObjectInterruption.ObjectInterruption.getVictimQueue">[docs]</a>    <span class="k">def</span> <span class="nf">getVictimQueue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;returns the internal queue of the victim&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">getActiveObjectQueue</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="ObjectInterruption.victimQueueIsEmpty"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.ObjectInterruption.ObjectInterruption.victimQueueIsEmpty">[docs]</a>    <span class="k">def</span> <span class="nf">victimQueueIsEmpty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ObjectInterruption.victimQueueIsEmpty"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.ObjectInterruption.ObjectInterruption.victimQueueIsEmpty">[docs]</a>    <span class="k">def</span> <span class="nf">victimQueueIsEmpty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;check if the victim&#39;s internal queue is empty&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getVictimQueue</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span></div>
 
-<div class="viewcode-block" id="ObjectInterruption.interruptVictim"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.ObjectInterruption.ObjectInterruption.interruptVictim">[docs]</a>    <span class="k">def</span> <span class="nf">interruptVictim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ObjectInterruption.interruptVictim"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.ObjectInterruption.ObjectInterruption.interruptVictim">[docs]</a>    <span class="k">def</span> <span class="nf">interruptVictim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;interrupts the victim&quot;&quot;&quot;</span>
 
         <span class="c1"># print(f&quot;Starting failure at {self.env.now}&quot;)</span>
@@ -336,7 +337,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">discards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">activeEntity</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">removeEntity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">activeEntity</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ObjectInterruption.reactivateVictim"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.ObjectInterruption.ObjectInterruption.reactivateVictim">[docs]</a>    <span class="k">def</span> <span class="nf">reactivateVictim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ObjectInterruption.reactivateVictim"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.ObjectInterruption.ObjectInterruption.reactivateVictim">[docs]</a>    <span class="k">def</span> <span class="nf">reactivateVictim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;reactivate the victim&quot;&quot;&quot;</span>
 
         <span class="c1"># print(f&quot;Ending failure at {self.env.now}&quot;)</span>
@@ -351,7 +352,7 @@
             <span class="c1"># request allocation</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">requestAllocation</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="ObjectInterruption.printTrace"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.ObjectInterruption.ObjectInterruption.printTrace">[docs]</a>    <span class="k">def</span> <span class="nf">printTrace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entityName</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+<div class="viewcode-block" id="ObjectInterruption.printTrace"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.ObjectInterruption.ObjectInterruption.printTrace">[docs]</a>    <span class="k">def</span> <span class="nf">printTrace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entityName</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;print message in the console. Format is (Simulation Time | Entity or Frame Name | message)&quot;&quot;&quot;</span>
 
         <span class="kn">from</span> <span class="nn">manpy.simulation.core.Globals</span> <span class="kn">import</span> <span class="n">G</span>

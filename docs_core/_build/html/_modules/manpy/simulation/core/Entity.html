@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
     <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
-        <title>manpy.simulation.core.Entity - Extended ManPy 0.1 documentation</title>
+        <title>manpy.simulation.core.Entity - Extended ManPy (beta) Docs</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -122,7 +122,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">Extended ManPy 0.1 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">Extended ManPy (beta) Docs</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -145,7 +145,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
   
   
-  <span class="sidebar-brand-text">Extended ManPy 0.1 documentation</span>
+  <span class="sidebar-brand-text">Extended ManPy (beta) Docs</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -156,6 +156,7 @@
   <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples.html">Full examples</a></li>
 </ul>
 
 </div>
@@ -221,7 +222,7 @@
 <span class="kn">from</span> <span class="nn">manpy.simulation.ManPyObject</span> <span class="kn">import</span> <span class="n">ManPyObject</span>
 <span class="kn">from</span> <span class="nn">manpy.simulation.core.Globals</span> <span class="kn">import</span> <span class="n">G</span>
 
-<div class="viewcode-block" id="Entity"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Entity.Entity">[docs]</a><span class="k">class</span> <span class="nc">Entity</span><span class="p">(</span><span class="n">ManPyObject</span><span class="p">):</span>
+<div class="viewcode-block" id="Entity"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Entity.Entity">[docs]</a><span class="k">class</span> <span class="nc">Entity</span><span class="p">(</span><span class="n">ManPyObject</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The entity object.&quot;&quot;&quot;</span>
     <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;Entity&quot;</span>
 
@@ -294,44 +295,44 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">timeseries</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">ts_st</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timeseries_times</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">ts_st</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Entity.responsibleForCurrentStep"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Entity.Entity.responsibleForCurrentStep">[docs]</a>    <span class="k">def</span> <span class="nf">responsibleForCurrentStep</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Entity.responsibleForCurrentStep"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Entity.Entity.responsibleForCurrentStep">[docs]</a>    <span class="k">def</span> <span class="nf">responsibleForCurrentStep</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;return the responsible operator for the current step, not implemented for entities&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="Entity.outputResultsJSON"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Entity.Entity.outputResultsJSON">[docs]</a>    <span class="k">def</span> <span class="nf">outputResultsJSON</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Entity.outputResultsJSON"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Entity.Entity.outputResultsJSON">[docs]</a>    <span class="k">def</span> <span class="nf">outputResultsJSON</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;outputs results to JSON File&quot;&quot;&quot;</span>
 
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="Entity.initialize"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Entity.Entity.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Entity.initialize"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Entity.Entity.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;initializes all the Entity for a new simulation replication&quot;&quot;&quot;</span>
 
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="Entity.printRoute"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Entity.Entity.printRoute">[docs]</a>    <span class="k">def</span> <span class="nf">printRoute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Entity.printRoute"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Entity.Entity.printRoute">[docs]</a>    <span class="k">def</span> <span class="nf">printRoute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;print the route (the different stations the entity moved through)&quot;&quot;&quot;</span>
 
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="Entity.checkIfRequiredPartsReady"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Entity.Entity.checkIfRequiredPartsReady">[docs]</a>    <span class="k">def</span> <span class="nf">checkIfRequiredPartsReady</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Entity.checkIfRequiredPartsReady"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Entity.Entity.checkIfRequiredPartsReady">[docs]</a>    <span class="k">def</span> <span class="nf">checkIfRequiredPartsReady</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;method not implemented yet&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="kc">True</span></div>
 
-<div class="viewcode-block" id="Entity.getRequiredParts"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Entity.Entity.getRequiredParts">[docs]</a>    <span class="k">def</span> <span class="nf">getRequiredParts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Entity.getRequiredParts"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Entity.Entity.getRequiredParts">[docs]</a>    <span class="k">def</span> <span class="nf">getRequiredParts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;method not implemented yet&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="p">[]</span></div>
 
-<div class="viewcode-block" id="Entity.set_feature"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Entity.Entity.set_feature">[docs]</a>    <span class="k">def</span> <span class="nf">set_feature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feature</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">indexing</span><span class="p">):</span>
+<div class="viewcode-block" id="Entity.set_feature"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Entity.Entity.set_feature">[docs]</a>    <span class="k">def</span> <span class="nf">set_feature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feature</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">indexing</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets internal feature values to passed values&quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">ftr_st</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">indexing</span><span class="p">)]</span> <span class="o">=</span> <span class="n">label</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">ftr_st</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">indexing</span><span class="p">)]</span> <span class="o">=</span> <span class="n">feature</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feature_times</span><span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">ftr_st</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">indexing</span><span class="p">)]</span> <span class="o">=</span> <span class="n">time</span></div>
 
-<div class="viewcode-block" id="Entity.set_timeseries"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Entity.Entity.set_timeseries">[docs]</a>    <span class="k">def</span> <span class="nf">set_timeseries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeseries</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">indexing</span><span class="p">):</span>
+<div class="viewcode-block" id="Entity.set_timeseries"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Entity.Entity.set_timeseries">[docs]</a>    <span class="k">def</span> <span class="nf">set_timeseries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeseries</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">indexing</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets internal timeseries values to passed values&quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">ts_st</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">indexing</span><span class="p">)]</span> <span class="o">=</span> <span class="n">label</span>

@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
     <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
-        <title>manpy.simulation.core.ObjectProperty - Extended ManPy 0.1 documentation</title>
+        <title>manpy.simulation.core.ObjectProperty - Extended ManPy (beta) Docs</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -122,7 +122,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">Extended ManPy 0.1 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">Extended ManPy (beta) Docs</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -145,7 +145,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
   
   
-  <span class="sidebar-brand-text">Extended ManPy 0.1 documentation</span>
+  <span class="sidebar-brand-text">Extended ManPy (beta) Docs</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -156,6 +156,7 @@
   <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples.html">Full examples</a></li>
 </ul>
 
 </div>
@@ -207,7 +208,7 @@
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 
-<div class="viewcode-block" id="ObjectProperty"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.ObjectProperty.ObjectProperty">[docs]</a><span class="k">class</span> <span class="nc">ObjectProperty</span><span class="p">(</span><span class="n">ManPyObject</span><span class="p">):</span>
+<div class="viewcode-block" id="ObjectProperty"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.ObjectProperty.ObjectProperty">[docs]</a><span class="k">class</span> <span class="nc">ObjectProperty</span><span class="p">(</span><span class="n">ManPyObject</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Abstract class for all kinds of object properties that are generated in somehow regular interval. Example: Features</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -281,7 +282,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">dependent</span> <span class="o">=</span> <span class="n">dependent</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s2">&quot;Feature&quot;</span>
 
-<div class="viewcode-block" id="ObjectProperty.initialize"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.ObjectProperty.ObjectProperty.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ObjectProperty.initialize"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.ObjectProperty.ObjectProperty.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="kn">from</span> <span class="nn">manpy.simulation.core.Globals</span> <span class="kn">import</span> <span class="n">G</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">env</span>
@@ -303,11 +304,11 @@
             <span class="s2">&quot;victimResumesProcessing&quot;</span><span class="p">:</span> <span class="mi">0</span>
         <span class="p">}</span></div>
 
-<div class="viewcode-block" id="ObjectProperty.run"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.ObjectProperty.ObjectProperty.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ObjectProperty.run"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.ObjectProperty.ObjectProperty.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; the main process of the core object. this is a dummy, every object must have its own implementation&quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Subclass must define &#39;run&#39; method&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ObjectProperty.invoke"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.ObjectProperty.ObjectProperty.invoke">[docs]</a>    <span class="k">def</span> <span class="nf">invoke</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ObjectProperty.invoke"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.ObjectProperty.ObjectProperty.invoke">[docs]</a>    <span class="k">def</span> <span class="nf">invoke</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;hand in the control to the objectIterruption.run to be called by the machine&quot;&quot;&quot;</span>
 
         <span class="c1"># TODO: consider removing this method,</span>
@@ -319,17 +320,17 @@
                 <span class="n">receiver</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">signal</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">isCalled</span><span class="p">,</span> <span class="n">succeedTuple</span><span class="o">=</span><span class="n">succeedTuple</span>
             <span class="p">)</span></div>
 
-<div class="viewcode-block" id="ObjectProperty.getVictimQueue"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.ObjectProperty.ObjectProperty.getVictimQueue">[docs]</a>    <span class="k">def</span> <span class="nf">getVictimQueue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ObjectProperty.getVictimQueue"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.ObjectProperty.ObjectProperty.getVictimQueue">[docs]</a>    <span class="k">def</span> <span class="nf">getVictimQueue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;returns the internal queue of the victim&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">getActiveObjectQueue</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="ObjectProperty.victimQueueIsEmpty"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.ObjectProperty.ObjectProperty.victimQueueIsEmpty">[docs]</a>    <span class="k">def</span> <span class="nf">victimQueueIsEmpty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ObjectProperty.victimQueueIsEmpty"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.ObjectProperty.ObjectProperty.victimQueueIsEmpty">[docs]</a>    <span class="k">def</span> <span class="nf">victimQueueIsEmpty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;check if the victim&#39;s internal queue is empty&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getVictimQueue</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span></div>
 
-<div class="viewcode-block" id="ObjectProperty.printTrace"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.ObjectProperty.ObjectProperty.printTrace">[docs]</a>    <span class="k">def</span> <span class="nf">printTrace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entityName</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+<div class="viewcode-block" id="ObjectProperty.printTrace"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.ObjectProperty.ObjectProperty.printTrace">[docs]</a>    <span class="k">def</span> <span class="nf">printTrace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entityName</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;print message in the console. Format is (Simulation Time | Entity or Frame Name | message)&quot;&quot;&quot;</span>
 
         <span class="kn">from</span> <span class="nn">manpy.simulation.core.Globals</span> <span class="kn">import</span> <span class="n">G</span>
@@ -337,11 +338,11 @@
         <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">console</span> <span class="o">==</span> <span class="s2">&quot;Yes&quot;</span><span class="p">:</span>  <span class="c1"># output only if the user has selected to</span>
             <span class="nb">print</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="p">,</span> <span class="n">entityName</span><span class="p">,</span> <span class="n">message</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="ObjectProperty.get_feature_value"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.ObjectProperty.ObjectProperty.get_feature_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_feature_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ObjectProperty.get_feature_value"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.ObjectProperty.ObjectProperty.get_feature_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_feature_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the current value of the feature.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">featureValue</span></div>
 
-<div class="viewcode-block" id="ObjectProperty.outputTrace"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.ObjectProperty.ObjectProperty.outputTrace">[docs]</a>    <span class="k">def</span> <span class="nf">outputTrace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">entity_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="ObjectProperty.outputTrace"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.ObjectProperty.ObjectProperty.outputTrace">[docs]</a>    <span class="k">def</span> <span class="nf">outputTrace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">entity_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Overwrites the ouputTrace function to better suite Features</span>
 

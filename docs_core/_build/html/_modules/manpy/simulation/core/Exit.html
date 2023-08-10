@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
     <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
-        <title>manpy.simulation.core.Exit - Extended ManPy 0.1 documentation</title>
+        <title>manpy.simulation.core.Exit - Extended ManPy (beta) Docs</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -122,7 +122,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">Extended ManPy 0.1 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">Extended ManPy (beta) Docs</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -145,7 +145,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
   
   
-  <span class="sidebar-brand-text">Extended ManPy 0.1 documentation</span>
+  <span class="sidebar-brand-text">Extended ManPy (beta) Docs</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -156,6 +156,7 @@
   <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples.html">Full examples</a></li>
 </ul>
 
 </div>
@@ -222,7 +223,7 @@
 <span class="c1"># ===========================================================================</span>
 <span class="c1">#                            The exit object</span>
 <span class="c1"># ===========================================================================</span>
-<div class="viewcode-block" id="Exit"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Exit.Exit">[docs]</a><span class="k">class</span> <span class="nc">Exit</span><span class="p">(</span><span class="n">CoreObject</span><span class="p">):</span>
+<div class="viewcode-block" id="Exit"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Exit.Exit">[docs]</a><span class="k">class</span> <span class="nc">Exit</span><span class="p">(</span><span class="n">CoreObject</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    models the exit of the model</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -243,7 +244,7 @@
         <span class="n">G</span><span class="o">.</span><span class="n">ExitList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cancelCondition</span> <span class="o">=</span> <span class="n">cancelCondition</span>
 
-<div class="viewcode-block" id="Exit.initialize"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Exit.Exit.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Exit.initialize"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Exit.Exit.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># using the Process __init__ and not the CoreObject __init__</span>
         <span class="n">CoreObject</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
@@ -261,7 +262,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;isRequested&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span></div>
 
-<div class="viewcode-block" id="Exit.run"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Exit.Exit.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Exit.run"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Exit.Exit.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
             <span class="c1"># wait until the Queue can accept an entity and one predecessor requests it</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;isRequested&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
@@ -271,16 +272,16 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getEntity</span><span class="p">())</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">signalGiver</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="Exit.defineRouting"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Exit.Exit.defineRouting">[docs]</a>    <span class="k">def</span> <span class="nf">defineRouting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predecessorList</span><span class="o">=</span><span class="p">[]):</span>
+<div class="viewcode-block" id="Exit.defineRouting"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Exit.Exit.defineRouting">[docs]</a>    <span class="k">def</span> <span class="nf">defineRouting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predecessorList</span><span class="o">=</span><span class="p">[]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;sets the routing in element for the Exit&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">previous</span> <span class="o">=</span> <span class="n">predecessorList</span>  <span class="c1"># no successorList for the Exit</span></div>
 
-<div class="viewcode-block" id="Exit.canAccept"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Exit.Exit.canAccept">[docs]</a>    <span class="k">def</span> <span class="nf">canAccept</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Exit.canAccept"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Exit.Exit.canAccept">[docs]</a>    <span class="k">def</span> <span class="nf">canAccept</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;checks if the Exit can accept an entity&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="kc">True</span>  <span class="c1"># the exit always can accept an entity</span></div>
 
-<div class="viewcode-block" id="Exit.canAcceptAndIsRequested"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Exit.Exit.canAcceptAndIsRequested">[docs]</a>    <span class="k">def</span> <span class="nf">canAcceptAndIsRequested</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Exit.canAcceptAndIsRequested"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Exit.Exit.canAcceptAndIsRequested">[docs]</a>    <span class="k">def</span> <span class="nf">canAcceptAndIsRequested</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;checks if the Exit can accept an entity and there is an entity waiting for it&quot;&quot;&quot;</span>
 
         <span class="c1"># get the active object and its internal queue</span>
@@ -290,7 +291,7 @@
         <span class="k">assert</span> <span class="n">giverObject</span><span class="p">,</span> <span class="s2">&quot;there must be a caller for canAcceptAndIsRequested&quot;</span>
         <span class="k">return</span> <span class="n">giverObject</span><span class="o">.</span><span class="n">haveToDispose</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Exit.getEntity"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Exit.Exit.getEntity">[docs]</a>    <span class="k">def</span> <span class="nf">getEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Exit.getEntity"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Exit.Exit.getEntity">[docs]</a>    <span class="k">def</span> <span class="nf">getEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;gets an entity from the predecessor&quot;&quot;&quot;</span>
 
         <span class="n">activeEntity</span> <span class="o">=</span> <span class="n">CoreObject</span><span class="o">.</span><span class="n">getEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>  <span class="c1"># run the default method</span>
@@ -333,7 +334,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">endSimulation</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">activeEntity</span></div>
 
-<div class="viewcode-block" id="Exit.clear"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Exit.Exit.clear">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Exit.clear"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Exit.Exit.clear">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="n">entity</span><span class="p">):</span>
         <span class="kn">from</span> <span class="nn">.Globals</span> <span class="kn">import</span> <span class="n">G</span>
 
@@ -348,12 +349,12 @@
         <span class="k">for</span> <span class="nb">list</span> <span class="ow">in</span> <span class="n">lists</span><span class="p">:</span>
             <span class="n">deleteEntityfromlist</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Exit.haveToDispose"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Exit.Exit.haveToDispose">[docs]</a>    <span class="k">def</span> <span class="nf">haveToDispose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Exit.haveToDispose"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Exit.Exit.haveToDispose">[docs]</a>    <span class="k">def</span> <span class="nf">haveToDispose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;haveToDispose of an exit must always return False&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="kc">False</span></div>
 
-<div class="viewcode-block" id="Exit.postProcessing"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Exit.Exit.postProcessing">[docs]</a>    <span class="k">def</span> <span class="nf">postProcessing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MaxSimtime</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Exit.postProcessing"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Exit.Exit.postProcessing">[docs]</a>    <span class="k">def</span> <span class="nf">postProcessing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MaxSimtime</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;actions to be taken after the simulation ends&quot;&quot;&quot;</span>
 
         <span class="kn">from</span> <span class="nn">.Globals</span> <span class="kn">import</span> <span class="n">G</span>
@@ -372,7 +373,7 @@
         <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>  <span class="c1"># the average time between exits is zero if no Entity exited</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">TaktTime</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Exit.outputResultsJSON"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Exit.Exit.outputResultsJSON">[docs]</a>    <span class="k">def</span> <span class="nf">outputResultsJSON</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Exit.outputResultsJSON"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Exit.Exit.outputResultsJSON">[docs]</a>    <span class="k">def</span> <span class="nf">outputResultsJSON</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;outputs results to JSON File&quot;&quot;&quot;</span>
 
         <span class="kn">from</span> <span class="nn">.Globals</span> <span class="kn">import</span> <span class="n">G</span>

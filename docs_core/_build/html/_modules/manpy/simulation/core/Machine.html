@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
     <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
-        <title>manpy.simulation.core.Machine - Extended ManPy 0.1 documentation</title>
+        <title>manpy.simulation.core.Machine - Extended ManPy (beta) Docs</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -122,7 +122,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">Extended ManPy 0.1 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">Extended ManPy (beta) Docs</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -145,7 +145,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
   
   
-  <span class="sidebar-brand-text">Extended ManPy 0.1 documentation</span>
+  <span class="sidebar-brand-text">Extended ManPy (beta) Docs</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -156,6 +156,7 @@
   <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples.html">Full examples</a></li>
 </ul>
 
 </div>
@@ -232,7 +233,7 @@
 <span class="kn">from</span> <span class="nn">manpy.simulation.core.Globals</span> <span class="kn">import</span> <span class="n">G</span>
 
 
-<div class="viewcode-block" id="Machine"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Machine.Machine">[docs]</a><span class="k">class</span> <span class="nc">Machine</span><span class="p">(</span><span class="n">CoreObject</span><span class="p">):</span>
+<div class="viewcode-block" id="Machine"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Machine.Machine">[docs]</a><span class="k">class</span> <span class="nc">Machine</span><span class="p">(</span><span class="n">CoreObject</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Models a machine that can also have failures</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -385,7 +386,7 @@
         <span class="c1"># if currently operating</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">operationNotFinished</span> <span class="o">=</span> <span class="kc">False</span>
 
-<div class="viewcode-block" id="Machine.initialize"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Machine.Machine.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Machine.initialize"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Machine.Machine.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;initializes the machine&quot;&quot;&quot;</span>
 
         <span class="c1"># using the Process __init__ and not the CoreObject __init__</span>
@@ -442,7 +443,7 @@
         <span class="c1"># holds the Operator currently processing the Machine</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">currentOperator</span> <span class="o">=</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="Machine.getOperationTime"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Machine.Machine.getOperationTime">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Machine.getOperationTime"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Machine.Machine.getOperationTime">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">getOperationTime</span><span class="p">(</span><span class="n">time</span><span class="p">):</span>
         <span class="c1"># XXX update time to comply with old definition</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;returns the dictionary updated&quot;&quot;&quot;</span>
@@ -454,7 +455,7 @@
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">time</span></div>
 
-<div class="viewcode-block" id="Machine.createOperatorPool"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Machine.Machine.createOperatorPool">[docs]</a>    <span class="k">def</span> <span class="nf">createOperatorPool</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operatorPool</span><span class="p">):</span>
+<div class="viewcode-block" id="Machine.createOperatorPool"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Machine.Machine.createOperatorPool">[docs]</a>    <span class="k">def</span> <span class="nf">createOperatorPool</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operatorPool</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;create an operatorPool if needed&quot;&quot;&quot;</span>
 
         <span class="c1"># sets the operator resource of the Machine</span>
@@ -491,14 +492,14 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">operatorPool</span><span class="o">.</span><span class="n">coreObjectIds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">operatorPool</span><span class="o">.</span><span class="n">coreObjects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Machine.createBroker"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Machine.Machine.createBroker">[docs]</a>    <span class="k">def</span> <span class="nf">createBroker</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Machine.createBroker"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Machine.Machine.createBroker">[docs]</a>    <span class="k">def</span> <span class="nf">createBroker</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;create broker if needed&quot;&quot;&quot;</span>
 
         <span class="c1"># initiate the Broker and the router</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">operatorPool</span> <span class="o">!=</span> <span class="s2">&quot;None&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">broker</span> <span class="o">=</span> <span class="n">Broker</span><span class="p">(</span><span class="n">operatedMachine</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Machine.createRouter"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Machine.Machine.createRouter">[docs]</a>    <span class="k">def</span> <span class="nf">createRouter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Machine.createRouter"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Machine.Machine.createRouter">[docs]</a>    <span class="k">def</span> <span class="nf">createRouter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;create router if needed&quot;&quot;&quot;</span>
 
         <span class="c1"># initiate the Broker and the router</span>
@@ -517,7 +518,7 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">router</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">RouterList</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="Machine.initializeOperatorPool"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Machine.Machine.initializeOperatorPool">[docs]</a>    <span class="k">def</span> <span class="nf">initializeOperatorPool</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Machine.initializeOperatorPool"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Machine.Machine.initializeOperatorPool">[docs]</a>    <span class="k">def</span> <span class="nf">initializeOperatorPool</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;initialise broker if needed&quot;&quot;&quot;</span>
 
         <span class="c1"># initialise the operator pool if any</span>
@@ -532,7 +533,7 @@
                     <span class="n">operator</span><span class="o">.</span><span class="n">coreObjectIds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
                     <span class="n">operator</span><span class="o">.</span><span class="n">coreObjects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Machine.initializeBroker"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Machine.Machine.initializeBroker">[docs]</a>    <span class="k">def</span> <span class="nf">initializeBroker</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Machine.initializeBroker"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Machine.Machine.initializeBroker">[docs]</a>    <span class="k">def</span> <span class="nf">initializeBroker</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;initialise broker if needed&quot;&quot;&quot;</span>
 
         <span class="c1"># initiate the Broker responsible to control the request/release</span>
@@ -540,7 +541,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">broker</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">broker</span><span class="o">.</span><span class="n">run</span><span class="p">())</span></div>
 
-<div class="viewcode-block" id="Machine.initializeRouter"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Machine.Machine.initializeRouter">[docs]</a>    <span class="k">def</span> <span class="nf">initializeRouter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Machine.initializeRouter"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Machine.Machine.initializeRouter">[docs]</a>    <span class="k">def</span> <span class="nf">initializeRouter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;initialise router if needed&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">operatorPool</span> <span class="o">!=</span> <span class="s2">&quot;None&quot;</span><span class="p">:</span>
@@ -554,17 +555,17 @@
     <span class="c1"># ===========================================================================</span>
     <span class="c1"># get the initial operationTypes (setup/processing) : manual or automatic</span>
     <span class="c1"># ===========================================================================</span>
-<div class="viewcode-block" id="Machine.checkInitialOperationTypes"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Machine.Machine.checkInitialOperationTypes">[docs]</a>    <span class="k">def</span> <span class="nf">checkInitialOperationTypes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span></div>
+    <span class="k">def</span> <span class="nf">checkInitialOperationTypes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
 
     <span class="c1"># ===========================================================================</span>
     <span class="c1"># get the initial operation times (setup/processing);</span>
     <span class="c1"># XXX initialy only setup time is calculated here</span>
     <span class="c1"># ===========================================================================</span>
-<div class="viewcode-block" id="Machine.calculateInitialOperationTimes"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Machine.Machine.calculateInitialOperationTimes">[docs]</a>    <span class="k">def</span> <span class="nf">calculateInitialOperationTimes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span></div>
+    <span class="k">def</span> <span class="nf">calculateInitialOperationTimes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
 
-<div class="viewcode-block" id="Machine.shouldYield"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Machine.Machine.shouldYield">[docs]</a>    <span class="k">def</span> <span class="nf">shouldYield</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operationTypes</span><span class="o">=</span><span class="p">{},</span> <span class="n">methods</span><span class="o">=</span><span class="p">{}):</span>
+<div class="viewcode-block" id="Machine.shouldYield"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Machine.Machine.shouldYield">[docs]</a>    <span class="k">def</span> <span class="nf">shouldYield</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operationTypes</span><span class="o">=</span><span class="p">{},</span> <span class="n">methods</span><span class="o">=</span><span class="p">{}):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;method controlling if there is a need to yield&quot;&quot;&quot;</span>
 
         <span class="c1"># Method that controls if the machine should yield for releasing the operator</span>
@@ -642,7 +643,7 @@
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="kc">False</span></div>
 
-<div class="viewcode-block" id="Machine.release"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Machine.Machine.release">[docs]</a>    <span class="k">def</span> <span class="nf">release</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Machine.release"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Machine.Machine.release">[docs]</a>    <span class="k">def</span> <span class="nf">release</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;yielding the broker process for releasing the resource&quot;&quot;&quot;</span>
 
         <span class="c1"># after getting the entity release the operator</span>
@@ -658,7 +659,7 @@
         <span class="k">assert</span> <span class="n">eventTime</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="p">,</span> <span class="s2">&quot;brokerIsSet is not received on time&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">brokerIsSet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">event</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="Machine.request"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Machine.Machine.request">[docs]</a>    <span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Machine.request"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Machine.Machine.request">[docs]</a>    <span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;yielding the broker process for requesting an operator&quot;&quot;&quot;</span>
 
         <span class="c1"># when it&#39;s ready to accept (canAcceptAndIsRequested) then inform the broker</span>
@@ -674,7 +675,7 @@
         <span class="k">assert</span> <span class="n">eventTime</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="p">,</span> <span class="s2">&quot;brokerIsSet is not received on time&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">brokerIsSet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">event</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="Machine.operation"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Machine.Machine.operation">[docs]</a>    <span class="k">def</span> <span class="nf">operation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;Processing&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="Machine.operation"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Machine.Machine.operation">[docs]</a>    <span class="k">def</span> <span class="nf">operation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;Processing&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;general process, it can be processing or setup&quot;&quot;&quot;</span>
 
         <span class="c1"># assert that the type is not None and is one of the already implemented ones</span>
@@ -871,7 +872,7 @@
                         <span class="bp">self</span><span class="o">.</span><span class="n">processOperatorUnavailable</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">event</span><span class="p">()</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">operationNotFinished</span> <span class="o">=</span> <span class="kc">False</span></div>
 
-<div class="viewcode-block" id="Machine.run"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Machine.Machine.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Machine.run"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Machine.Machine.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;the main process of the machine&quot;&quot;&quot;</span>
 
         <span class="c1"># request for allocation if needed</span>
@@ -1378,7 +1379,7 @@
                         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">haveToDispose</span><span class="p">():</span>
                             <span class="k">break</span></div>
 
-<div class="viewcode-block" id="Machine.endOperationActions"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Machine.Machine.endOperationActions">[docs]</a>    <span class="k">def</span> <span class="nf">endOperationActions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
+<div class="viewcode-block" id="Machine.endOperationActions"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Machine.Machine.endOperationActions">[docs]</a>    <span class="k">def</span> <span class="nf">endOperationActions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;actions to be performed after an operation (setup or processing)&quot;&quot;&quot;</span>
 
         <span class="kn">from</span> <span class="nn">manpy.simulation.core.Globals</span> <span class="kn">import</span> <span class="n">G</span>
@@ -1439,7 +1440,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">activeEntity</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="Machine.interruptionActions"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Machine.Machine.interruptionActions">[docs]</a>    <span class="k">def</span> <span class="nf">interruptionActions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;Processing&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="Machine.interruptionActions"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Machine.Machine.interruptionActions">[docs]</a>    <span class="k">def</span> <span class="nf">interruptionActions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;Processing&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;actions to be carried out when the processing of an Entity ends&quot;&quot;&quot;</span>
 
         <span class="c1"># if object was processing add the working time</span>
@@ -1505,12 +1506,12 @@
         <span class="c1"># set isBlocked to False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">isBlocked</span> <span class="o">=</span> <span class="kc">False</span></div>
 
-<div class="viewcode-block" id="Machine.isInterrupted"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Machine.Machine.isInterrupted">[docs]</a>    <span class="k">def</span> <span class="nf">isInterrupted</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Machine.isInterrupted"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Machine.Machine.isInterrupted">[docs]</a>    <span class="k">def</span> <span class="nf">isInterrupted</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;returns true if the station is interrupted&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">interruption</span></div>
 
-<div class="viewcode-block" id="Machine.postInterruptionActions"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Machine.Machine.postInterruptionActions">[docs]</a>    <span class="k">def</span> <span class="nf">postInterruptionActions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Machine.postInterruptionActions"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Machine.Machine.postInterruptionActions">[docs]</a>    <span class="k">def</span> <span class="nf">postInterruptionActions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;actions to be carried out when the processing of an Entity ends&quot;&quot;&quot;</span>
 
         <span class="k">for</span> <span class="n">oi</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">objectInterruptions</span><span class="p">:</span>
@@ -1562,12 +1563,12 @@
             <span class="c1"># reset the variable holding the time the failure happened</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">breakTime</span> <span class="o">=</span> <span class="mi">0</span></div>
 
-<div class="viewcode-block" id="Machine.checkIfMachineIsUp"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Machine.Machine.checkIfMachineIsUp">[docs]</a>    <span class="k">def</span> <span class="nf">checkIfMachineIsUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Machine.checkIfMachineIsUp"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Machine.Machine.checkIfMachineIsUp">[docs]</a>    <span class="k">def</span> <span class="nf">checkIfMachineIsUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;checks if the machine is Up&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Up</span></div>
 
-<div class="viewcode-block" id="Machine.canAccept"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Machine.Machine.canAccept">[docs]</a>    <span class="k">def</span> <span class="nf">canAccept</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Machine.canAccept"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Machine.Machine.canAccept">[docs]</a>    <span class="k">def</span> <span class="nf">canAccept</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        checks if the Machine can accept an entity.</span>
 <span class="sd">        it checks also who called it and returns TRUE only to the predecessor that will give the entity.</span>
@@ -1599,7 +1600,7 @@
                 <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">entryIsAssignedTo</span><span class="p">()</span>
             <span class="p">)</span></div>
 
-<div class="viewcode-block" id="Machine.canAcceptAndIsRequested"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Machine.Machine.canAcceptAndIsRequested">[docs]</a>    <span class="k">def</span> <span class="nf">canAcceptAndIsRequested</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Machine.canAcceptAndIsRequested"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Machine.Machine.canAcceptAndIsRequested">[docs]</a>    <span class="k">def</span> <span class="nf">canAcceptAndIsRequested</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;checks if the Machine can accept an entity and there is an entity in some possible giver waiting for it.</span>
 <span class="sd">        also updates the giver to the one that is to be taken&quot;&quot;&quot;</span>
 
@@ -1644,14 +1645,14 @@
                     <span class="k">return</span> <span class="kc">False</span>
                 <span class="k">return</span> <span class="kc">True</span></div>
 
-<div class="viewcode-block" id="Machine.isLoadRequested"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Machine.Machine.isLoadRequested">[docs]</a>    <span class="k">def</span> <span class="nf">isLoadRequested</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Machine.isLoadRequested"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Machine.Machine.isLoadRequested">[docs]</a>    <span class="k">def</span> <span class="nf">isLoadRequested</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;return whether Load or setup Requested&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="nb">any</span><span class="p">(</span>
             <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;Load&quot;</span> <span class="ow">or</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;Setup&quot;</span> <span class="k">for</span> <span class="nb">type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">multOperationTypeList</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="Machine.checkOperator"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Machine.Machine.checkOperator">[docs]</a>    <span class="k">def</span> <span class="nf">checkOperator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Machine.checkOperator"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Machine.Machine.checkOperator">[docs]</a>    <span class="k">def</span> <span class="nf">checkOperator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;to be called by canAcceptAndIsRequested and check for the operator&quot;&quot;&quot;</span>
 
         <span class="n">mayProceed</span> <span class="o">=</span> <span class="kc">False</span>
@@ -1675,7 +1676,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span></div>
 
-<div class="viewcode-block" id="Machine.getEntity"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Machine.Machine.getEntity">[docs]</a>    <span class="k">def</span> <span class="nf">getEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Machine.getEntity"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Machine.Machine.getEntity">[docs]</a>    <span class="k">def</span> <span class="nf">getEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;get an entity from the giver&quot;&quot;&quot;</span>
 
         <span class="n">activeEntity</span> <span class="o">=</span> <span class="n">CoreObject</span><span class="o">.</span><span class="n">getEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>  <span class="c1"># run the default method</span>
@@ -1690,7 +1691,7 @@
                 <span class="n">G</span><span class="o">.</span><span class="n">pendingEntities</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">activeEntity</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">activeEntity</span></div>
 
-<div class="viewcode-block" id="Machine.removeEntity"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Machine.Machine.removeEntity">[docs]</a>    <span class="k">def</span> <span class="nf">removeEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Machine.removeEntity"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Machine.Machine.removeEntity">[docs]</a>    <span class="k">def</span> <span class="nf">removeEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;removes an entity from the Machine&quot;&quot;&quot;</span>
 
         <span class="n">activeEntity</span> <span class="o">=</span> <span class="n">CoreObject</span><span class="o">.</span><span class="n">removeEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">)</span>  <span class="c1"># run the default method</span>
@@ -1701,7 +1702,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">signalGiver</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">activeEntity</span></div>
 
-<div class="viewcode-block" id="Machine.haveToDispose"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Machine.Machine.haveToDispose">[docs]</a>    <span class="k">def</span> <span class="nf">haveToDispose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Machine.haveToDispose"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Machine.Machine.haveToDispose">[docs]</a>    <span class="k">def</span> <span class="nf">haveToDispose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;checks if the Machine can dispose an entity to the following object&quot;&quot;&quot;</span>
 
         <span class="n">activeObjectQueue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span>
@@ -1729,7 +1730,7 @@
             <span class="p">)</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="Machine.canDeliver"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Machine.Machine.canDeliver">[docs]</a>    <span class="k">def</span> <span class="nf">canDeliver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Machine.canDeliver"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Machine.Machine.canDeliver">[docs]</a>    <span class="k">def</span> <span class="nf">canDeliver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;checks whether the entity can proceed to a successor object&quot;&quot;&quot;</span>
 
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">isInActiveQueue</span><span class="p">(</span><span class="n">entity</span><span class="p">),</span> <span class="p">(</span>
@@ -1747,14 +1748,14 @@
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="kc">False</span></div>
 
-<div class="viewcode-block" id="Machine.requestOperator"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Machine.Machine.requestOperator">[docs]</a>    <span class="k">def</span> <span class="nf">requestOperator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Machine.requestOperator"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Machine.Machine.requestOperator">[docs]</a>    <span class="k">def</span> <span class="nf">requestOperator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;prepare the machine to be operated&quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">broker</span><span class="o">.</span><span class="n">invokeType</span> <span class="o">=</span> <span class="s2">&quot;request&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">broker</span><span class="o">.</span><span class="n">invoke</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">toBeOperated</span> <span class="o">=</span> <span class="kc">True</span></div>
 
-<div class="viewcode-block" id="Machine.releaseOperator"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Machine.Machine.releaseOperator">[docs]</a>    <span class="k">def</span> <span class="nf">releaseOperator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Machine.releaseOperator"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Machine.Machine.releaseOperator">[docs]</a>    <span class="k">def</span> <span class="nf">releaseOperator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;prepare the machine to be released&quot;&quot;&quot;</span>
 
         <span class="kn">from</span> <span class="nn">manpy.simulation.core.Globals</span> <span class="kn">import</span> <span class="n">G</span>
@@ -1815,12 +1816,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">broker</span><span class="o">.</span><span class="n">invokeType</span> <span class="o">=</span> <span class="s2">&quot;release&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">broker</span><span class="o">.</span><span class="n">invoke</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="Machine.isOperated"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Machine.Machine.isOperated">[docs]</a>    <span class="k">def</span> <span class="nf">isOperated</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Machine.isOperated"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Machine.Machine.isOperated">[docs]</a>    <span class="k">def</span> <span class="nf">isOperated</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;check if the machine is currently operated by an operator&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">toBeOperated</span></div>
 
-<div class="viewcode-block" id="Machine.outputResultsJSON"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Machine.Machine.outputResultsJSON">[docs]</a>    <span class="k">def</span> <span class="nf">outputResultsJSON</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Machine.outputResultsJSON"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Machine.Machine.outputResultsJSON">[docs]</a>    <span class="k">def</span> <span class="nf">outputResultsJSON</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;outputs results to JSON File&quot;&quot;&quot;</span>
 
         <span class="kn">from</span> <span class="nn">manpy.simulation.core.Globals</span> <span class="kn">import</span> <span class="n">G</span>
