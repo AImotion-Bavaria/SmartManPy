@@ -2,6 +2,7 @@
 from manpy.simulation.core.ObjectProperty import ObjectProperty
 from manpy.simulation.RandomNumberGenerator import RandomNumberGenerator
 from manpy.simulation.core.Globals import G
+from manpy.simulation.core.utils import check_config_dict
 from scipy import interpolate
 import copy
 
@@ -46,6 +47,7 @@ class Timeseries(ObjectProperty):
                                 name,
                                 victim=victim,
                                 distribution=distribution,
+                                # TODO needs to be properly integrated
                                 distribution_state_controller=distribution_state_controller,
                                 reset_distributions=reset_distributions,
                                 no_negative=no_negative,
@@ -65,6 +67,7 @@ class Timeseries(ObjectProperty):
 
         ObjectProperty.initialize(self)
 
+        # TODO check distribution dict here!
 
         # put all intervals into a sorted list
         self.intervals = []

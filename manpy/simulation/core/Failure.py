@@ -29,6 +29,7 @@ models the failures that servers can have
 # from SimPy.Simulation import now, Process, hold, request, release
 from manpy.simulation.RandomNumberGenerator import RandomNumberGenerator
 from manpy.simulation.core.ObjectInterruption import ObjectInterruption
+from manpy.simulation.core.utils import check_config_dict
 
 
 class Failure(ObjectInterruption):
@@ -71,12 +72,17 @@ class Failure(ObjectInterruption):
     ):
 
         ObjectInterruption.__init__(self, id, name, victim=victim, remove=remove)
+
+        check_config_dict(distribution, ["TTF", "TTR"], name)
+
         self.rngTTF = RandomNumberGenerator(
             self, distribution.get("TTF", {"Fixed": {"mean": 0}})
         )
         self.rngTTR = RandomNumberGenerator(
             self, distribution.get("TTR", {"Fixed": {"mean": 0}})
         )
+
+
         if self.name == "":
             self.name = "F" + str(index)
         self.repairman = repairman  # the resource that may be needed to fix the failure
