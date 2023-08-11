@@ -76,10 +76,10 @@ class Failure(ObjectInterruption):
         check_config_dict(distribution, ["TTF", "TTR"], name)
 
         self.rngTTF = RandomNumberGenerator(
-            self, distribution.get("TTF", {"Fixed": {"mean": 1}})
+            self, distribution.get("TTF", {"Fixed": {"mean": 0.1}})
         )
         self.rngTTR = RandomNumberGenerator(
-            self, distribution.get("TTR", {"Fixed": {"mean": 1}})
+            self, distribution.get("TTR", {"Fixed": {"mean": 0.1}})
         )
 
 
