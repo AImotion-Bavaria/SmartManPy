@@ -12,7 +12,7 @@ Created on 18 Aug 2013
 # from SimPy.Simulation import Process, Resource, reactivate, now
 from manpy.simulation.ManPyObject import ManPyObject
 from manpy.simulation.RandomNumberGenerator import RandomNumberGenerator
-from manpy.simulation.core.utils import check_config_dict
+from manpy.simulation.core.utils import info
 import pandas as pd
 
 
@@ -71,9 +71,10 @@ class ObjectProperty(ManPyObject):
         else:
             self.distribution = distribution
 
-        check_config_dict(self.distribution, ["Feature", "Time"], name)
+        # check_config_dict(self.distribution, ["Feature", "Time"], name)
 
         if not self.distribution.keys().__contains__("Feature"):
+            info(f"Defaulting to {{'Fixed': {{'mean': 10}}}} for {self.name}")
             self.distribution["Feature"] = {"Fixed": {"mean": 10}}
 
         self.rngTime = RandomNumberGenerator(self, self.distribution.get("Time", {"Fixed": {"mean": 1}}))

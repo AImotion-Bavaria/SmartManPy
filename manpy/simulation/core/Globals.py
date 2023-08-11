@@ -29,6 +29,7 @@ import pandas as pd
 import simpy
 import xlwt
 from manpy.simulation.core.Database import ManPyDatabase
+from manpy.simulation.core.utils import info
 
 
 class G:
@@ -599,6 +600,7 @@ def runSimulation(
             # set the WIP
             setWIP(G.EntityList)
 
+            info("Config finished. Starting simulation...")
             G.env.run(until=G.maxSimTime)  # run the simulation
 
             # identify from the exits what is the time that the last entity has ended.
@@ -655,6 +657,7 @@ def runSimulation(
             # set the WIP
             setWIP(G.EntityList)
 
+            info("Config finished. Starting simulation...")
             G.env.run(until=G.maxSimTime)  # run the simulation
 
             # identify from the exits what is the time that the last entity has ended.

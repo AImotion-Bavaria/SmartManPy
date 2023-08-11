@@ -1,6 +1,7 @@
 from manpy.simulation.core.Globals import G
 from manpy.simulation.core.ObjectProperty import ObjectProperty
 from manpy.simulation.RandomNumberGenerator import RandomNumberGenerator
+from manpy.simulation.core.utils import check_config_dict
 
 
 class Feature(ObjectProperty):
@@ -67,6 +68,12 @@ class Feature(ObjectProperty):
     def initialize(self):
 
         ObjectProperty.initialize(self)
+
+        check_config_dict(self.distribution, ["Feature"], self.name)
+
+        if self.dependent:
+            check_config_dict(self.dependent, ["Function"], self.name)
+
         self.victimIsInterrupted = self.env.event()
         self.victimResumesProcessing = self.env.event()
         self.victimEndsProcessing = self.env.event()

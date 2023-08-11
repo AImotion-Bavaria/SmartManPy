@@ -14,3 +14,7 @@ def check_config_dict(config_dict: dict, keys: list, object_name: str):
                 sys.exit(1)
 
     print(f"Checked a config dict of {object_name} for {keys}. No issues were found.")
+
+
+def info(text):
+    print(f"INFO: {text}")

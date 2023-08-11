@@ -67,7 +67,7 @@ class Timeseries(ObjectProperty):
 
         ObjectProperty.initialize(self)
 
-        # TODO check distribution dict here!
+        check_config_dict(self.distribution, ["Function", "DataPoints"], self.name)
 
         # put all intervals into a sorted list
         self.intervals = []
