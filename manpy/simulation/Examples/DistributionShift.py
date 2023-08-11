@@ -73,7 +73,7 @@ StecktFest = Failure("Flr0", "Failure0", victim=Kleben, conditional=F_condition,
 dists = [{"Feature": {"Normal": {"mean": 1, "stdev":2}}},
          {"Feature": {"Normal": {"mean": 100, "stdev":2}}}]
 boundaries = {(0, 25): 0, (25, None): 1}
-distribution_controller = SimpleStateController(states=dists, boundaries=boundaries, amount_per_step=1.0, reset_amount=None)
+distribution_controller = SimpleStateController(states=dists, boundaries=boundaries, wear_per_step=1.0, reset_amount=None)
 
 Test = Feature("Ftr8", "Feature9", victim=Kleben,
                distribution_state_controller=distribution_controller,
@@ -96,7 +96,7 @@ def main():
 
     runSimulation(objectList, maxSimTime)
 
-    df = getFeatureData([E1], [Kleben], time=True)[["M1_Ftr8_v", "Result"]]
+    df = getFeatureData([Kleben], time=True)[["M1_Ftr8_v", "Result"]]
     df.to_csv("DistributionShift.csv", index=False, encoding="utf8")
 
     print("""
