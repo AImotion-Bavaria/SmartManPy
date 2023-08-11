@@ -39,7 +39,6 @@ class Feature(ObjectProperty):
         start_value=None,
         random_walk=False,
         dependent=None,
-        **kw
     ):
         ObjectProperty.__init__(self, id,
                                 name,

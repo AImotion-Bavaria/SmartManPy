@@ -53,13 +53,13 @@ E1 = Exit("E1", "Exit1")
 WiderstandZuHoch = Failure("Flr1", "RTooHigh", victim=Löten, conditional=resistance_failure_condition,
             distribution={"TTF": {"Fixed": {"mean": 0}}, "TTR": {"Fixed": {"mean": 5}}}, waitOnTie=True)
 
-Spannung = Feature("Spannung", "Spannung", victim=Löten, entity=True,
+Spannung = Feature("Spannung", "Spannung", victim=Löten,
                distribution_state_controller=ContinuosNormalDistribution(mean_change_per_step=0.0001, initial_mean=1.6,
                                                                          std=0.1, wear_per_step=1, break_point=1000,
                                                                          defect_mean=2.0, defect_std=0.1))
-Strom = Feature("Strom", "Strom", victim=Löten, entity=True, dependent={"Function" : "1000*x + 1900", "x" : Spannung}, distribution={"Feature": {"Normal": {"stdev": 30}}})
+Strom = Feature("Strom", "Strom", victim=Löten, dependent={"Function" : "1000*x + 1900", "x" : Spannung}, distribution={"Feature": {"Normal": {"stdev": 30}}})
 
-Widerstand = Feature("Widerstand", "Widerstand", victim=Löten, entity=True, dependent={"Function" : "(V/I)*1000000", "V" : Spannung, "I" : Strom}, distribution={"Feature": {"Normal": {"stdev": 5}}}, contribute=[WiderstandZuHoch])
+Widerstand = Feature("Widerstand", "Widerstand", victim=Löten, dependent={"Function" : "(V/I)*1000000", "V" : Spannung, "I" : Strom}, distribution={"Feature": {"Normal": {"stdev": 5}}}, contribute=[WiderstandZuHoch])
 
 Kraft = Feature("Kraft", "Kraft", victim=Löten,
                distribution={"Feature": {"Normal": {"mean": 180, "stdev": 30}}})
@@ -121,7 +121,7 @@ Menge = Feature("Menge", "Menge", victim=Kleben, distribution_state_controller=M
 
 # evtl verwandt mit menge?
 Durchflussgeschwindigkeit = Feature("Durchfluss", "Durchflussg.", victim=Kleben,
-               dependent={"Function": "0.9*X", "X": Menge}, dependent_noise_std=10)
+               dependent={"Function": "0.9*X", "X": Menge}, distribution={"Feature": {"Normal": {"stdev": 10}}})
 
 # TODO add feature prozesszeit: wie lange dauert es den kleber aufzubringen? -> verwandt mit menge
 

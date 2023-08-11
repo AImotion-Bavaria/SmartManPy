@@ -50,7 +50,7 @@ class Failure(ObjectInterruption):
     :param waitOnTie: flag to show if the failure will wait on tie with other events before interrupting the victim
     :param conditional: function that evaluates a condition. If return value true, the failure will be triggered.
                         Is used instead of passing a TTF in distribution.
-    :param entity: Should the failure occur on an enitity or independent of entities?
+    :param entity: With the parameter entity=True, the Time-to-Failure (TTF) is calculated based on the processing time of the entity within the machine
     :param remove: Should the entities on which the failure occured be removed from the production line (=destroyed)?
     :param kw:
     """
