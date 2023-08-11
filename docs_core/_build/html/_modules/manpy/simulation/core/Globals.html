@@ -4,10 +4,11 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
+    <link rel="shortcut icon" href="../../../../_static/logo.png"/><!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
         <title>manpy.simulation.core.Globals - Extended ManPy (beta) Docs</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -144,6 +145,9 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
   
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../../../../_static/logo.png" alt="Logo"/>
+  </div>
   
   <span class="sidebar-brand-text">Extended ManPy (beta) Docs</span>
   
@@ -222,6 +226,7 @@
 <span class="kn">import</span> <span class="nn">simpy</span>
 <span class="kn">import</span> <span class="nn">xlwt</span>
 <span class="kn">from</span> <span class="nn">manpy.simulation.core.Database</span> <span class="kn">import</span> <span class="n">ManPyDatabase</span>
+<span class="kn">from</span> <span class="nn">manpy.simulation.core.utils</span> <span class="kn">import</span> <span class="n">info</span>
 
 
 <div class="viewcode-block" id="G"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Globals.G">[docs]</a><span class="k">class</span> <span class="nc">G</span><span class="p">:</span>
@@ -792,6 +797,7 @@
             <span class="c1"># set the WIP</span>
             <span class="n">setWIP</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">EntityList</span><span class="p">)</span>
 
+            <span class="n">info</span><span class="p">(</span><span class="s2">&quot;Config finished. Starting simulation...&quot;</span><span class="p">)</span>
             <span class="n">G</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">until</span><span class="o">=</span><span class="n">G</span><span class="o">.</span><span class="n">maxSimTime</span><span class="p">)</span>  <span class="c1"># run the simulation</span>
 
             <span class="c1"># identify from the exits what is the time that the last entity has ended.</span>
@@ -848,6 +854,7 @@
             <span class="c1"># set the WIP</span>
             <span class="n">setWIP</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">EntityList</span><span class="p">)</span>
 
+            <span class="n">info</span><span class="p">(</span><span class="s2">&quot;Config finished. Starting simulation...&quot;</span><span class="p">)</span>
             <span class="n">G</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">until</span><span class="o">=</span><span class="n">G</span><span class="o">.</span><span class="n">maxSimTime</span><span class="p">)</span>  <span class="c1"># run the simulation</span>
 
             <span class="c1"># identify from the exits what is the time that the last entity has ended.</span>
@@ -1006,5 +1013,7 @@
     <script src="../../../../_static/doctools.js"></script>
     <script src="../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../_static/scripts/furo.js"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
     </body>
 </html>

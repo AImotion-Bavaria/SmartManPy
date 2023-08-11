@@ -6,7 +6,7 @@ from manpy.simulation.core.Globals import runSimulation, G
 # Return True to let the Failure occur
 
 
-def c(self):
+def condition(self):
     value_1 = Ftr1.get_feature_value()
     value_2 = Ftr2.get_feature_value()
 
@@ -29,8 +29,8 @@ E1 = Exit("E1", "Exit1")
 
 # ObjectInterruption
 # Assign the condition as the "conditional" parameter for any machine
-F1 = Failure("CondFlr", "CondFailure", victim=M1, conditional=c, waitOnTie=True,
-                         distribution={"TTF": {"Fixed": {"mean": 0}, "TTR": {"Fixed": {"mean": 10}}}})
+F1 = Failure("CondFlr", "CondFailure", victim=M1, conditional=condition, waitOnTie=True,
+             distribution={"TTF": {"Fixed": {"mean": 0}, "TTR": {"Fixed": {"mean": 10}}}})
 
 # ObjectProperty
 # Link failures to "contribute" for a Feature when utilizing its values
