@@ -35,20 +35,20 @@ Solar_Cells = Source("S0", "Solar_Cells", interArrivalTime={"Fixed": {"mean": 2}
 Solar_Cell_Tester = Machine("M0", "Solar_Cell_Tester", processingTime={"Fixed": {"mean": 3}}, control=condition)
 Q0 = Queue("Q0", "Queue0")
 Solar_Cell_Scribing = Machine("M1", "Solar_Cell_Scribing", processingTime={"Fixed": {"mean": 3.75}})
-Solar_Strings = Source("S1", "Solar_Strings", interArrivalTime={"Fixed": {"mean": 100}}, entity="manpy.Frame", capacity=60)
+Solar_Strings = Source("S1", "Solar_Strings", interArrivalTime={"Fixed": {"mean": 10}}, entity="manpy.Frame", capacity=60)
 Assembly0 = Assembly("A0", "Assembly0")
-Tabber_Stringer = Machine("M2", "Tabber_Stringer", processingTime={"Fixed": {"mean": 150}})
+Tabber_Stringer = Machine("M2", "Tabber_Stringer", processingTime={"Fixed": {"mean": 15}})
 Q1 = Queue("Q1", "Queue1")
-Layup = Machine("M3", "Layup", processingTime={"Fixed": {"mean": 200}})
+Layup = Machine("M3", "Layup", processingTime={"Fixed": {"mean": 20}})
 Q2 = Queue("Q2", "Queue2")
-EL_Test = Machine("M4", "Solar_Cell_Scribing", processingTime={"Fixed": {"mean": 100}})
+EL_Test = Machine("M4", "Solar_Cell_Scribing", processingTime={"Fixed": {"mean": 10}})
 Q3 = Queue("Q3", "Queue3")
 Q4 = Queue("Q4", "Queue4")
 
 # TODO does the processing time make sense?
 # -> times are in seconds!
-Gluing = Machine("M5", "Gluing", processingTime={"Fixed": {"mean": 100}})
-Lamination = Machine("m9", "M_Lamination", processingTime={"Fixed": {"mean": 100}})
+Gluing = Machine("M5", "Gluing", processingTime={"Fixed": {"mean": 10}})
+Lamination = Machine("m9", "M_Lamination", processingTime={"Fixed": {"mean": 10}})
 E1 = Exit("E1", "Exit")
 # EVA_TPT = Source("S2", "EVA_TPT", interArrivalTime={"Fixed": {"mean": 100}}, entity="manpy.Frame")
 # EVA_TPT_Cutter = Machine("M4", "EVA_TPT_Cutter", processingTime={"Fixed": {"mean": 150}})
@@ -115,7 +115,7 @@ Tab_Str_Force = Feature("Tab_Str_Force", "Tab_Str_Force", victim=Tabber_Stringer
 
 # Gluing
 glue_temperature = Feature("glue_temp", "Glue_Temperature", victim=Gluing, random_walk=True, start_value=190,
-               distribution={"Feature": {"Normal": {"mean": 0, "stdev": 0.3}}})
+               distribution={"Feature": {"Normal": {"mean": 0, "stdev": 0.3}}}, start_time=1000, end_time=5000)
 
 sG_1 = ContinuosNormalDistribution(
                                    mean_change_per_step=0.0,
@@ -213,21 +213,27 @@ Layup.defineRouting([Q1], [Q2])
 # EL_Test.defineRouting([Q2], [E1])
 Q2.defineRouting([Layup], [Lamination])
 Lamination.defineRouting([Q2], [Q3])
-Q3.defineRouting([Lamination], [EL_Test])
-EL_Test.defineRouting([Q3], [E1])
+# Q3.defineRouting([Lamination], [EL_Test])
+Q3.defineRouting([Lamination], [Gluing])
+Gluing.defineRouting([Q3], [Q4])
+Q4.defineRouting([Gluing], [EL_Test])
+EL_Test.defineRouting([Q4], [E1])
 E1.defineRouting([EL_Test])
 
 
 def main(test=0):
-    maxSimTime = 5000
+    maxSimTime = 15000
+
     objectList = [Solar_Cells, Solar_Cell_Tester, Isc, Voc, Vm, Im, Pmax, IV_Curve, Power_Curve, FF, EFF, Temp, Q0,
                   Solar_Cell_Scribing, Solar_Strings, Assembly0, Tabber_Stringer, Tab_Str_Resistance_Too_High,
                   Tab_Str_Voltage, Tab_Str_Power, Tab_Str_Resistance, Tab_Str_Force, Gluing, glue_temperature, Amount,
-                  flow_rate, Q1, Layup, Visual_Fail, Q2,
+                  flow_rate, Q1, Layup, Visual_Fail, Q2, Q3, Q4,
                   EL_Test, E1, Lamination, L_a, L_b, L_c, L_d, L_e, L_f, L_g, Lamination_Temperature_Curve,
-                  Lamination_Peak_Pressure, Lamination_Pressure_Curve, Q3]
+                  Lamination_Peak_Pressure, Lamination_Pressure_Curve]
 
-    runSimulation(objectList, maxSimTime)
+    from manpy.simulation.core.Database import ManPyQuestDBDatabase
+    db = ManPyQuestDBDatabase()
+    runSimulation(objectList, maxSimTime, db=db)
 
     sct = getFeatureData([Solar_Cell_Tester, Layup])
     TS = getTimeSeriesData(IV_Curve)

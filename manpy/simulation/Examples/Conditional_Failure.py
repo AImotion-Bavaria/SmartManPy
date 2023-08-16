@@ -30,7 +30,7 @@ E1 = Exit("E1", "Exit1")
 # ObjectInterruption
 # Assign the condition as the "conditional" parameter for any machine
 F1 = Failure("CondFlr", "CondFailure", victim=M1, conditional=condition, waitOnTie=True,
-             distribution={"TTF": {"Fixed": {"mean": 0}, "TTR": {"Fixed": {"mean": 10}}}})
+             distribution={"TTF": {"Fixed": {"mean": 0}}, "TTR": {"Fixed": {"mean": 10}}})
 
 # ObjectProperty
 # Link failures to "contribute" for a Feature when utilizing its values

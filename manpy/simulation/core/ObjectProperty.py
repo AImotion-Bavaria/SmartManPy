@@ -84,6 +84,9 @@ class ObjectProperty(ManPyObject):
         self.contribute = contribute
         self.start_time = start_time
         self.featureValue = None
+
+        self.start_value = start_value
+
         if start_value:
             self.featureHistory = [start_value]
             self.featureValue = self.featureHistory[-1]

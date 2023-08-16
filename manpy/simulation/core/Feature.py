@@ -17,12 +17,12 @@ class Feature(ObjectProperty):
            victim is interrupted (=repaired)
     :param no_negative: If this value is true, returns 0 for values below 0 of the feature value
     :param contribute: Needs Failures in a list as an input to contribute the Feature value to conditions
-    :param start_time: The starting time for the feature
-    :param end_time: The end time for the feature
+    :param start_time: The starting time for the feature. If >0, the feature generation is started if start_time is reached
+    :param end_time: The end time for the feature. If >0 and > start_time, the feature generation is ended if end_time is reached
     :param start_value: The starting value of the Feature
     :param random_walk: If this is True, the Feature will continuously take the previous feature_value into account
     :param dependent: A dictionary containing a Function and the corresponding variables, to determine dependencies between features
-    :param kw: The keyword arguments are mainly used for classification and calculation
+    :param kw: The keyword arguments
     """
     def __init__(
         self,
@@ -90,9 +90,17 @@ class Feature(ObjectProperty):
                 self.dependent["Function"])
             self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
 
-        value = self.rngFeature.generateNumber(start_time=self.start_time)
+        value = self.rngFeature.generateNumber(start_time=self.start_time, end_time=self.end_time)
+
+        if value is None:
+            self.featureValue = None
+            return
+
         if self.random_walk == True:
-            self.featureValue += value
+            if self.featureValue is None:
+                self.featureValue = self.start_value
+            else:
+                self.featureValue += value
         else:
             self.featureValue = value
 
@@ -107,6 +115,7 @@ class Feature(ObjectProperty):
 
         while 1:
             self.generate_feature()
+
             self.expectedSignals["victimEndsProcessing"] = 1
             self.expectedSignals["victimIsInterrupted"] = 1
 
@@ -139,6 +148,8 @@ class Feature(ObjectProperty):
                     self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
                     self.generate_feature()
 
+                if self.featureValue is None:
+                    continue
                 # add featureValue to History
                 self.featureHistory.append(self.featureValue)
 

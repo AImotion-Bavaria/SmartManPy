@@ -17,12 +17,9 @@ class Timeseries(ObjectProperty):
     :param distribution: The statistical distribution of the value of the Datapoints
     :param no_negative: If this value is true, returns 0 for values below 0 of the feature value
     :param contribute: Needs Failures in a list as an input to contribute the TimeSeries value to conditions
-    :param start_time: The starting time for the TimeSeries
-    :param end_time: The end time for the TimeSeries
     :param start_value: The starting value of the TimeSeries
     :param random_walk: If this is True, the TimeSeries will continuously take the previous Datapoint value into account
     :param step_time: The time between each Datapoint for a TimeSeries
-    :param kw: The keyword arguments are mainly used for classification and calculation
     """
     def __init__(
         self,
@@ -32,12 +29,9 @@ class Timeseries(ObjectProperty):
         distribution={},
         no_negative=False,
         contribute=None,
-        start_time=0,
-        end_time=0,
         start_value=0,
         random_walk=False,
         step_time=None,
-        **kw
     ):
         ObjectProperty.__init__(self, id,
                                 name,
@@ -45,15 +39,12 @@ class Timeseries(ObjectProperty):
                                 distribution=distribution,
                                 no_negative=no_negative,
                                 contribute=contribute,
-                                start_time=start_time,
-                                end_time=end_time,
                                 start_value=start_value,
                                 random_walk=random_walk,
                                 steptime=step_time
                                 )
         G.TimeSeriesList.append(self)
         self.step_time = step_time
-
 
     def initialize(self):
         """Initializes the object"""
@@ -197,7 +188,7 @@ class Timeseries(ObjectProperty):
 
                     # generate datapoint
                     self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
-                    value = self.rngFeature.generateNumber(start_time=self.start_time)
+                    value = self.rngFeature.generateNumber()
 
                     # check random walk
                     if self.random_walk == True:
