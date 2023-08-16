@@ -489,18 +489,19 @@ You implement the condition as a function and pass it to the failure using the â
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># Any function can be employed as the condition for a Failure to occur</span>
 <span class="linenos"> 2</span><span class="c1"># You can utilize any simulation values for the condition</span>
 <span class="linenos"> 3</span><span class="c1"># Return True to let the Failure occur</span>
-<span class="linenos"> 4</span><span class="k">def</span> <span class="nf">condition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="linenos"> 5</span>    <span class="n">value_1</span> <span class="o">=</span> <span class="n">Ftr1</span><span class="o">.</span><span class="n">get_feature_value</span><span class="p">()</span>
-<span class="linenos"> 6</span>
-<span class="linenos"> 7</span>    <span class="c1"># in some cases at the start of the simulation, feature values can be None</span>
-<span class="linenos"> 8</span>    <span class="k">if</span> <span class="n">value_1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">value_1</span> <span class="o">&gt;</span> <span class="mi">20</span>
-<span class="linenos"> 9</span>        <span class="k">return</span> <span class="kc">True</span>
-<span class="linenos">10</span>    <span class="k">else</span><span class="p">:</span>
-<span class="linenos">11</span>        <span class="k">return</span> <span class="kc">False</span>
-<span class="linenos">12</span>
-<span class="linenos">13</span><span class="n">conditional_failure</span> <span class="o">=</span> <span class="n">Failure</span><span class="p">(</span><span class="n">victim</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span>
-<span class="linenos">14</span>             <span class="n">conditional</span><span class="o">=</span><span class="n">condition</span><span class="p">,</span>
-<span class="linenos">15</span>             <span class="n">distribution</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;TTR&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Fixed&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">}}})</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="k">def</span> <span class="nf">condition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos"> 6</span>    <span class="n">value_1</span> <span class="o">=</span> <span class="n">Ftr1</span><span class="o">.</span><span class="n">get_feature_value</span><span class="p">()</span>
+<span class="linenos"> 7</span>    <span class="n">value_2</span> <span class="o">=</span> <span class="n">Ftr2</span><span class="o">.</span><span class="n">get_feature_value</span><span class="p">()</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span>    <span class="k">if</span> <span class="p">(</span><span class="n">value_1</span> <span class="o">+</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">value_2</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">200</span><span class="p">:</span>
+<span class="linenos">10</span>        <span class="k">return</span> <span class="kc">True</span>
+<span class="linenos">11</span>    <span class="k">else</span><span class="p">:</span>
+<span class="linenos">12</span>        <span class="k">return</span> <span class="kc">False</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="n">conditional_failure</span> <span class="o">=</span> <span class="n">Failure</span><span class="p">(</span><span class="n">victim</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span>
+<span class="linenos">15</span>             <span class="n">conditional</span><span class="o">=</span><span class="n">condition</span><span class="p">,</span>
+<span class="linenos">16</span>             <span class="n">distribution</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;TTR&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Fixed&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">}}})</span>
 </pre></div>
 </div>
 <p>Here, the triggering of the failure is solely controlled by the function condition, we only need to specify TTR.

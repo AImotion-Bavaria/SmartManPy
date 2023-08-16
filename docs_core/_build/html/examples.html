@@ -440,15 +440,12 @@ manpy/simulation/examples/</p>
 <span class="c1"># Return True to let the Failure occur</span>
 
 
-<span class="k">def</span> <span class="nf">c</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">condition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="n">value_1</span> <span class="o">=</span> <span class="n">Ftr1</span><span class="o">.</span><span class="n">get_feature_value</span><span class="p">()</span>
     <span class="n">value_2</span> <span class="o">=</span> <span class="n">Ftr2</span><span class="o">.</span><span class="n">get_feature_value</span><span class="p">()</span>
 
-    <span class="k">if</span> <span class="n">value_1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">value_2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">value_1</span> <span class="o">+</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">value_2</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">200</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">value_1</span> <span class="o">+</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">value_2</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">200</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span>
 
@@ -463,8 +460,8 @@ manpy/simulation/examples/</p>
 
 <span class="c1"># ObjectInterruption</span>
 <span class="c1"># Assign the condition as the &quot;conditional&quot; parameter for any machine</span>
-<span class="n">F1</span> <span class="o">=</span> <span class="n">Failure</span><span class="p">(</span><span class="s2">&quot;CondFlr&quot;</span><span class="p">,</span> <span class="s2">&quot;CondFailure&quot;</span><span class="p">,</span> <span class="n">victim</span><span class="o">=</span><span class="n">M1</span><span class="p">,</span> <span class="n">conditional</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">waitOnTie</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                         <span class="n">distribution</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;TTF&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Fixed&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span> <span class="s2">&quot;TTR&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Fixed&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}}}})</span>
+<span class="n">F1</span> <span class="o">=</span> <span class="n">Failure</span><span class="p">(</span><span class="s2">&quot;CondFlr&quot;</span><span class="p">,</span> <span class="s2">&quot;CondFailure&quot;</span><span class="p">,</span> <span class="n">victim</span><span class="o">=</span><span class="n">M1</span><span class="p">,</span> <span class="n">conditional</span><span class="o">=</span><span class="n">condition</span><span class="p">,</span> <span class="n">waitOnTie</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+             <span class="n">distribution</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;TTF&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Fixed&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}},</span> <span class="s2">&quot;TTR&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Fixed&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}}})</span>
 
 <span class="c1"># ObjectProperty</span>
 <span class="c1"># Link failures to &quot;contribute&quot; for a Feature when utilizing its values</span>

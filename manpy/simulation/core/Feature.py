@@ -24,6 +24,7 @@ class Feature(ObjectProperty):
     :param dependent: A dictionary containing a Function and the corresponding variables, to determine dependencies between features
     :param kw: The keyword arguments
     """
+
     def __init__(
         self,
         id="",
@@ -56,13 +57,15 @@ class Feature(ObjectProperty):
                                 )
         G.FeatureList.append(self)
 
+        # Internal label; can be used for quality control -> indicates a defect or similar
+        self.label = None
+
         if start_value != None:
             self.featureValue = start_value
             self.featureHistory = [start_value]
         else:
             self.featureValue = 0
             self.featureHistory = []
-
 
     def initialize(self):
 

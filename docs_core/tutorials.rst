@@ -360,11 +360,12 @@ You implement the condition as a function and pass it to the failure using the "
     # Any function can be employed as the condition for a Failure to occur
     # You can utilize any simulation values for the condition
     # Return True to let the Failure occur
+
     def condition(self):
         value_1 = Ftr1.get_feature_value()
+        value_2 = Ftr2.get_feature_value()
 
-        # in some cases at the start of the simulation, feature values can be None
-        if value_1 is not None and value_1 > 20
+        if (value_1 + 20 * value_2) > 200:
             return True
         else:
             return False

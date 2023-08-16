@@ -10,11 +10,8 @@ def condition(self):
     value_1 = Ftr1.get_feature_value()
     value_2 = Ftr2.get_feature_value()
 
-    if value_1 is not None and value_2 is not None:
-        if (value_1 + 20 * value_2) > 200:
-            return True
-        else:
-            return False
+    if (value_1 + 20 * value_2) > 200:
+        return True
     else:
         return False
 
