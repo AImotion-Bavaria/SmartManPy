@@ -15,8 +15,6 @@ class Timeseries(ObjectProperty):
     :param name: The name of the Feature
     :param victim: The machine to which the feature belongs
     :param distribution: The statistical distribution of the value of the Datapoints
-    :param distribution_state_controller: StateController that can contain different distributions.
-    :param reset_distributions: Active with deteriorationType working; Resets distribution_state_controller when the victim is interrupted (=repaired)
     :param no_negative: If this value is true, returns 0 for values below 0 of the feature value
     :param contribute: Needs Failures in a list as an input to contribute the TimeSeries value to conditions
     :param start_time: The starting time for the TimeSeries
@@ -32,8 +30,6 @@ class Timeseries(ObjectProperty):
         name="",
         victim=None,
         distribution={},
-        distribution_state_controller=None,
-        reset_distributions=True,
         no_negative=False,
         contribute=None,
         start_time=0,
@@ -47,9 +43,6 @@ class Timeseries(ObjectProperty):
                                 name,
                                 victim=victim,
                                 distribution=distribution,
-                                # TODO needs to be properly integrated
-                                distribution_state_controller=distribution_state_controller,
-                                reset_distributions=reset_distributions,
                                 no_negative=no_negative,
                                 contribute=contribute,
                                 start_time=start_time,
