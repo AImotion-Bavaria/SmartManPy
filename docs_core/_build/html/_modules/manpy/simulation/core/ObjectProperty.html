@@ -4,10 +4,11 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
+    <link rel="shortcut icon" href="../../../../_static/logo.png"/><!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
         <title>manpy.simulation.core.ObjectProperty - Extended ManPy (beta) Docs</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -144,6 +145,9 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
   
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../../../../_static/logo.png" alt="Logo"/>
+  </div>
   
   <span class="sidebar-brand-text">Extended ManPy (beta) Docs</span>
   
@@ -205,6 +209,7 @@
 <span class="c1"># from SimPy.Simulation import Process, Resource, reactivate, now</span>
 <span class="kn">from</span> <span class="nn">manpy.simulation.ManPyObject</span> <span class="kn">import</span> <span class="n">ManPyObject</span>
 <span class="kn">from</span> <span class="nn">manpy.simulation.RandomNumberGenerator</span> <span class="kn">import</span> <span class="n">RandomNumberGenerator</span>
+<span class="kn">from</span> <span class="nn">manpy.simulation.core.utils</span> <span class="kn">import</span> <span class="n">info</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 
@@ -263,15 +268,22 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">distribution</span> <span class="o">=</span> <span class="n">distribution</span>
 
+        <span class="c1"># check_config_dict(self.distribution, [&quot;Feature&quot;, &quot;Time&quot;], name)</span>
+
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">distribution</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span><span class="o">.</span><span class="fm">__contains__</span><span class="p">(</span><span class="s2">&quot;Feature&quot;</span><span class="p">):</span>
+            <span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Defaulting to </span><span class="se">{{</span><span class="s2">&#39;Fixed&#39;: </span><span class="se">{{</span><span class="s2">&#39;mean&#39;: 10</span><span class="se">}}}}</span><span class="s2"> for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">distribution</span><span class="p">[</span><span class="s2">&quot;Feature&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Fixed&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}}</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">rngTime</span> <span class="o">=</span> <span class="n">RandomNumberGenerator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">distribution</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;Fixed&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rngFeature</span> <span class="o">=</span> <span class="n">RandomNumberGenerator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">distribution</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Feature&quot;</span><span class="p">))</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">no_negative</span> <span class="o">=</span> <span class="n">no_negative</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">contribute</span> <span class="o">=</span> <span class="n">contribute</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">start_time</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">featureValue</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_value</span> <span class="o">=</span> <span class="n">start_value</span>
+
         <span class="k">if</span> <span class="n">start_value</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">featureHistory</span> <span class="o">=</span> <span class="p">[</span><span class="n">start_value</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">featureValue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">featureHistory</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -406,5 +418,7 @@
     <script src="../../../../_static/doctools.js"></script>
     <script src="../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../_static/scripts/furo.js"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
     </body>
 </html>

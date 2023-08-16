@@ -2,6 +2,7 @@
 from manpy.simulation.core.ObjectProperty import ObjectProperty
 from manpy.simulation.RandomNumberGenerator import RandomNumberGenerator
 from manpy.simulation.core.Globals import G
+from manpy.simulation.core.utils import check_config_dict
 from scipy import interpolate
 import copy
 
@@ -14,16 +15,11 @@ class Timeseries(ObjectProperty):
     :param name: The name of the Feature
     :param victim: The machine to which the feature belongs
     :param distribution: The statistical distribution of the value of the Datapoints
-    :param distribution_state_controller: StateController that can contain different distributions.
-    :param reset_distributions: Active with deteriorationType working; Resets distribution_state_controller when the victim is interrupted (=repaired)
     :param no_negative: If this value is true, returns 0 for values below 0 of the feature value
     :param contribute: Needs Failures in a list as an input to contribute the TimeSeries value to conditions
-    :param start_time: The starting time for the TimeSeries
-    :param end_time: The end time for the TimeSeries
     :param start_value: The starting value of the TimeSeries
     :param random_walk: If this is True, the TimeSeries will continuously take the previous Datapoint value into account
     :param step_time: The time between each Datapoint for a TimeSeries
-    :param kw: The keyword arguments are mainly used for classification and calculation
     """
     def __init__(
         self,
@@ -31,27 +27,18 @@ class Timeseries(ObjectProperty):
         name="",
         victim=None,
         distribution={},
-        distribution_state_controller=None,
-        reset_distributions=True,
         no_negative=False,
         contribute=None,
-        start_time=0,
-        end_time=0,
         start_value=0,
         random_walk=False,
         step_time=None,
-        **kw
     ):
         ObjectProperty.__init__(self, id,
                                 name,
                                 victim=victim,
                                 distribution=distribution,
-                                distribution_state_controller=distribution_state_controller,
-                                reset_distributions=reset_distributions,
                                 no_negative=no_negative,
                                 contribute=contribute,
-                                start_time=start_time,
-                                end_time=end_time,
                                 start_value=start_value,
                                 random_walk=random_walk,
                                 steptime=step_time
@@ -59,12 +46,12 @@ class Timeseries(ObjectProperty):
         G.TimeSeriesList.append(self)
         self.step_time = step_time
 
-
     def initialize(self):
         """Initializes the object"""
 
         ObjectProperty.initialize(self)
 
+        check_config_dict(self.distribution, ["Function", "DataPoints"], self.name)
 
         # put all intervals into a sorted list
         self.intervals = []
@@ -201,7 +188,7 @@ class Timeseries(ObjectProperty):
 
                     # generate datapoint
                     self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
-                    value = self.rngFeature.generateNumber(start_time=self.start_time)
+                    value = self.rngFeature.generateNumber()
 
                     # check random walk
                     if self.random_walk == True:

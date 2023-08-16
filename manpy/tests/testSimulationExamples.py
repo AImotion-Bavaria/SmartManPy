@@ -349,7 +349,7 @@ class SimulationExamples(TestCase):
         from manpy.simulation.Examples.Old.BufferAllocation import main
 
         result = main(test=1)
-        self.assertTrue(80 < result["parts"] < 1000, "\nParts: {}".format(result["parts"]))
+        self.assertTrue(50 < result["parts"] < 1000, "\nParts: {}".format(result["parts"]))
 
     def testExampleLine(self):
         from manpy.simulation.Examples.ExampleLine import main

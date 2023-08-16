@@ -489,12 +489,12 @@ You implement the condition as a function and pass it to the failure using the â
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># Any function can be employed as the condition for a Failure to occur</span>
 <span class="linenos"> 2</span><span class="c1"># You can utilize any simulation values for the condition</span>
 <span class="linenos"> 3</span><span class="c1"># Return True to let the Failure occur</span>
-<span class="linenos"> 4</span><span class="k">def</span> <span class="nf">condition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="linenos"> 5</span>    <span class="n">value_1</span> <span class="o">=</span> <span class="n">Ftr1</span><span class="o">.</span><span class="n">get_feature_value</span><span class="p">()</span>
-<span class="linenos"> 6</span>    <span class="n">value_2</span> <span class="o">=</span> <span class="n">Ftr2</span><span class="o">.</span><span class="n">get_feature_value</span><span class="p">()</span>
-<span class="linenos"> 7</span>    <span class="k">if</span> <span class="p">(</span><span class="n">value_1</span> <span class="o">+</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">value_2</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">200</span><span class="p">:</span> <span class="c1"># prev 360</span>
-<span class="linenos"> 8</span>        <span class="n">Ftr1</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span>
-<span class="linenos"> 9</span>        <span class="n">Ftr2</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="k">def</span> <span class="nf">condition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos"> 6</span>    <span class="n">value_1</span> <span class="o">=</span> <span class="n">Ftr1</span><span class="o">.</span><span class="n">get_feature_value</span><span class="p">()</span>
+<span class="linenos"> 7</span>    <span class="n">value_2</span> <span class="o">=</span> <span class="n">Ftr2</span><span class="o">.</span><span class="n">get_feature_value</span><span class="p">()</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span>    <span class="k">if</span> <span class="p">(</span><span class="n">value_1</span> <span class="o">+</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">value_2</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">200</span><span class="p">:</span>
 <span class="linenos">10</span>        <span class="k">return</span> <span class="kc">True</span>
 <span class="linenos">11</span>    <span class="k">else</span><span class="p">:</span>
 <span class="linenos">12</span>        <span class="k">return</span> <span class="kc">False</span>

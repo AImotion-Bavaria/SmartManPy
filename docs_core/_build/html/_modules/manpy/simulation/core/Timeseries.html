@@ -4,10 +4,11 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
+    <link rel="shortcut icon" href="../../../../_static/logo.png"/><!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
         <title>manpy.simulation.core.Timeseries - Extended ManPy (beta) Docs</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -144,6 +145,9 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
   
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../../../../_static/logo.png" alt="Logo"/>
+  </div>
   
   <span class="sidebar-brand-text">Extended ManPy (beta) Docs</span>
   
@@ -195,6 +199,7 @@
 <span class="kn">from</span> <span class="nn">manpy.simulation.core.ObjectProperty</span> <span class="kn">import</span> <span class="n">ObjectProperty</span>
 <span class="kn">from</span> <span class="nn">manpy.simulation.RandomNumberGenerator</span> <span class="kn">import</span> <span class="n">RandomNumberGenerator</span>
 <span class="kn">from</span> <span class="nn">manpy.simulation.core.Globals</span> <span class="kn">import</span> <span class="n">G</span>
+<span class="kn">from</span> <span class="nn">manpy.simulation.core.utils</span> <span class="kn">import</span> <span class="n">check_config_dict</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">interpolate</span>
 <span class="kn">import</span> <span class="nn">copy</span>
 
@@ -207,16 +212,11 @@
 <span class="sd">    :param name: The name of the Feature</span>
 <span class="sd">    :param victim: The machine to which the feature belongs</span>
 <span class="sd">    :param distribution: The statistical distribution of the value of the Datapoints</span>
-<span class="sd">    :param distribution_state_controller: StateController that can contain different distributions.</span>
-<span class="sd">    :param reset_distributions: Active with deteriorationType working; Resets distribution_state_controller when the victim is interrupted (=repaired)</span>
 <span class="sd">    :param no_negative: If this value is true, returns 0 for values below 0 of the feature value</span>
 <span class="sd">    :param contribute: Needs Failures in a list as an input to contribute the TimeSeries value to conditions</span>
-<span class="sd">    :param start_time: The starting time for the TimeSeries</span>
-<span class="sd">    :param end_time: The end time for the TimeSeries</span>
 <span class="sd">    :param start_value: The starting value of the TimeSeries</span>
 <span class="sd">    :param random_walk: If this is True, the TimeSeries will continuously take the previous Datapoint value into account</span>
 <span class="sd">    :param step_time: The time between each Datapoint for a TimeSeries</span>
-<span class="sd">    :param kw: The keyword arguments are mainly used for classification and calculation</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -224,27 +224,18 @@
         <span class="n">name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
         <span class="n">victim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">distribution</span><span class="o">=</span><span class="p">{},</span>
-        <span class="n">distribution_state_controller</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">reset_distributions</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">no_negative</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">contribute</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">start_time</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-        <span class="n">end_time</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
         <span class="n">start_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
         <span class="n">random_walk</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">step_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="o">**</span><span class="n">kw</span>
     <span class="p">):</span>
         <span class="n">ObjectProperty</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span>
                                 <span class="n">name</span><span class="p">,</span>
                                 <span class="n">victim</span><span class="o">=</span><span class="n">victim</span><span class="p">,</span>
                                 <span class="n">distribution</span><span class="o">=</span><span class="n">distribution</span><span class="p">,</span>
-                                <span class="n">distribution_state_controller</span><span class="o">=</span><span class="n">distribution_state_controller</span><span class="p">,</span>
-                                <span class="n">reset_distributions</span><span class="o">=</span><span class="n">reset_distributions</span><span class="p">,</span>
                                 <span class="n">no_negative</span><span class="o">=</span><span class="n">no_negative</span><span class="p">,</span>
                                 <span class="n">contribute</span><span class="o">=</span><span class="n">contribute</span><span class="p">,</span>
-                                <span class="n">start_time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span>
-                                <span class="n">end_time</span><span class="o">=</span><span class="n">end_time</span><span class="p">,</span>
                                 <span class="n">start_value</span><span class="o">=</span><span class="n">start_value</span><span class="p">,</span>
                                 <span class="n">random_walk</span><span class="o">=</span><span class="n">random_walk</span><span class="p">,</span>
                                 <span class="n">steptime</span><span class="o">=</span><span class="n">step_time</span>
@@ -252,12 +243,12 @@
         <span class="n">G</span><span class="o">.</span><span class="n">TimeSeriesList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">step_time</span> <span class="o">=</span> <span class="n">step_time</span>
 
-
 <div class="viewcode-block" id="Timeseries.initialize"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Timeseries.Timeseries.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initializes the object&quot;&quot;&quot;</span>
 
         <span class="n">ObjectProperty</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
+        <span class="n">check_config_dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">distribution</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;Function&quot;</span><span class="p">,</span> <span class="s2">&quot;DataPoints&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
         <span class="c1"># put all intervals into a sorted list</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">intervals</span> <span class="o">=</span> <span class="p">[]</span>
@@ -394,7 +385,7 @@
 
                     <span class="c1"># generate datapoint</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">rngFeature</span> <span class="o">=</span> <span class="n">RandomNumberGenerator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">distribution</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Feature&quot;</span><span class="p">))</span>
-                    <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rngFeature</span><span class="o">.</span><span class="n">generateNumber</span><span class="p">(</span><span class="n">start_time</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">start_time</span><span class="p">)</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rngFeature</span><span class="o">.</span><span class="n">generateNumber</span><span class="p">()</span>
 
                     <span class="c1"># check random walk</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">random_walk</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
@@ -479,5 +470,7 @@
     <script src="../../../../_static/doctools.js"></script>
     <script src="../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../_static/scripts/furo.js"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
     </body>
 </html>

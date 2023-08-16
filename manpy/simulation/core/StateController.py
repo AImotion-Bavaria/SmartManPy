@@ -65,7 +65,10 @@ class SimpleStateController(StateController):
         self.reset_amount = reset_amount
 
     def get_initial_state(self):
-        return self.states[self.initial_state_index], self.labels[self.initial_state_index]
+        if self.labels is not None:
+            return self.states[self.initial_state_index], self.labels[self.initial_state_index]
+        else:
+            return self.states[self.initial_state_index], None
 
     def get_and_update(self):
         output = self.states[self.current_state_index]
@@ -151,14 +154,12 @@ class ContinuosNormalDistribution(StateController):
         self.defect_mean = defect_mean
         self.defect_std = defect_std
 
-
     def get_initial_state(self):
         return self.__get_distribution(self.initial_mean, self.std), False
 
     def get_and_update(self):
         # parameters are incremented before return
         if self.break_point is not None and self.account >= self.break_point:
-            print("Reached break point")
             mean = self.defect_mean
             std = self.defect_std
             label = True
@@ -222,6 +223,7 @@ class RandomDefectStateController(StateController):
         return dist, label
 
     def reset(self):
+        print(">>> Reset StateController <<<")
         self.ok_controller.reset()
         for c in self.defect_controllers:
             c.reset()

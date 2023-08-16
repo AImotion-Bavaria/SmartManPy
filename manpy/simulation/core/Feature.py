@@ -1,6 +1,7 @@
 from manpy.simulation.core.Globals import G
 from manpy.simulation.core.ObjectProperty import ObjectProperty
 from manpy.simulation.RandomNumberGenerator import RandomNumberGenerator
+from manpy.simulation.core.utils import check_config_dict
 
 
 class Feature(ObjectProperty):
@@ -16,13 +17,14 @@ class Feature(ObjectProperty):
            victim is interrupted (=repaired)
     :param no_negative: If this value is true, returns 0 for values below 0 of the feature value
     :param contribute: Needs Failures in a list as an input to contribute the Feature value to conditions
-    :param start_time: The starting time for the feature
-    :param end_time: The end time for the feature
+    :param start_time: The starting time for the feature. If >0, the feature generation is started if start_time is reached
+    :param end_time: The end time for the feature. If >0 and > start_time, the feature generation is ended if end_time is reached
     :param start_value: The starting value of the Feature
     :param random_walk: If this is True, the Feature will continuously take the previous feature_value into account
     :param dependent: A dictionary containing a Function and the corresponding variables, to determine dependencies between features
-    :param kw: The keyword arguments are mainly used for classification and calculation
+    :param kw: The keyword arguments
     """
+
     def __init__(
         self,
         id="",
@@ -38,7 +40,6 @@ class Feature(ObjectProperty):
         start_value=None,
         random_walk=False,
         dependent=None,
-        **kw
     ):
         ObjectProperty.__init__(self, id,
                                 name,
@@ -56,6 +57,9 @@ class Feature(ObjectProperty):
                                 )
         G.FeatureList.append(self)
 
+        # Internal label; can be used for quality control -> indicates a defect or similar
+        self.label = None
+
         if start_value != None:
             self.featureValue = start_value
             self.featureHistory = [start_value]
@@ -63,10 +67,15 @@ class Feature(ObjectProperty):
             self.featureValue = 0
             self.featureHistory = []
 
-
     def initialize(self):
 
         ObjectProperty.initialize(self)
+
+        check_config_dict(self.distribution, ["Feature"], self.name)
+
+        if self.dependent:
+            check_config_dict(self.dependent, ["Function"], self.name)
+
         self.victimIsInterrupted = self.env.event()
         self.victimResumesProcessing = self.env.event()
         self.victimEndsProcessing = self.env.event()
@@ -84,9 +93,17 @@ class Feature(ObjectProperty):
                 self.dependent["Function"])
             self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
 
-        value = self.rngFeature.generateNumber(start_time=self.start_time)
+        value = self.rngFeature.generateNumber(start_time=self.start_time, end_time=self.end_time)
+
+        if value is None:
+            self.featureValue = None
+            return
+
         if self.random_walk == True:
-            self.featureValue += value
+            if self.featureValue is None:
+                self.featureValue = self.start_value
+            else:
+                self.featureValue += value
         else:
             self.featureValue = value
 
@@ -101,6 +118,7 @@ class Feature(ObjectProperty):
 
         while 1:
             self.generate_feature()
+
             self.expectedSignals["victimEndsProcessing"] = 1
             self.expectedSignals["victimIsInterrupted"] = 1
 
@@ -133,6 +151,8 @@ class Feature(ObjectProperty):
                     self.rngFeature = RandomNumberGenerator(self, self.distribution.get("Feature"))
                     self.generate_feature()
 
+                if self.featureValue is None:
+                    continue
                 # add featureValue to History
                 self.featureHistory.append(self.featureValue)
 

@@ -4,10 +4,11 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
+    <link rel="shortcut icon" href="../../../../_static/logo.png"/><!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
         <title>manpy.simulation.core.Failure - Extended ManPy (beta) Docs</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -144,6 +145,9 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
   
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../../../../_static/logo.png" alt="Logo"/>
+  </div>
   
   <span class="sidebar-brand-text">Extended ManPy (beta) Docs</span>
   
@@ -222,6 +226,7 @@
 <span class="c1"># from SimPy.Simulation import now, Process, hold, request, release</span>
 <span class="kn">from</span> <span class="nn">manpy.simulation.RandomNumberGenerator</span> <span class="kn">import</span> <span class="n">RandomNumberGenerator</span>
 <span class="kn">from</span> <span class="nn">manpy.simulation.core.ObjectInterruption</span> <span class="kn">import</span> <span class="n">ObjectInterruption</span>
+<span class="kn">from</span> <span class="nn">manpy.simulation.core.utils</span> <span class="kn">import</span> <span class="n">check_config_dict</span>
 
 
 <div class="viewcode-block" id="Failure"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Failure.Failure">[docs]</a><span class="k">class</span> <span class="nc">Failure</span><span class="p">(</span><span class="n">ObjectInterruption</span><span class="p">):</span>
@@ -242,7 +247,7 @@
 <span class="sd">    :param waitOnTie: flag to show if the failure will wait on tie with other events before interrupting the victim</span>
 <span class="sd">    :param conditional: function that evaluates a condition. If return value true, the failure will be triggered.</span>
 <span class="sd">                        Is used instead of passing a TTF in distribution.</span>
-<span class="sd">    :param entity: Should the failure occur on an enitity or independent of entities?</span>
+<span class="sd">    :param entity: With the parameter entity=True, the Time-to-Failure (TTF) is calculated based on the processing time of the entity within the machine</span>
 <span class="sd">    :param remove: Should the entities on which the failure occured be removed from the production line (=destroyed)?</span>
 <span class="sd">    :param kw:</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -264,12 +269,17 @@
     <span class="p">):</span>
 
         <span class="n">ObjectInterruption</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">victim</span><span class="o">=</span><span class="n">victim</span><span class="p">,</span> <span class="n">remove</span><span class="o">=</span><span class="n">remove</span><span class="p">)</span>
+
+        <span class="n">check_config_dict</span><span class="p">(</span><span class="n">distribution</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;TTF&quot;</span><span class="p">,</span> <span class="s2">&quot;TTR&quot;</span><span class="p">],</span> <span class="n">name</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">rngTTF</span> <span class="o">=</span> <span class="n">RandomNumberGenerator</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">distribution</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;TTF&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;Fixed&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}})</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">distribution</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;TTF&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;Fixed&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">}})</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rngTTR</span> <span class="o">=</span> <span class="n">RandomNumberGenerator</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">distribution</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;TTR&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;Fixed&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}})</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">distribution</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;TTR&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;Fixed&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">}})</span>
         <span class="p">)</span>
+
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;F&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">repairman</span> <span class="o">=</span> <span class="n">repairman</span>  <span class="c1"># the resource that may be needed to fix the failure</span>
@@ -737,5 +747,7 @@
     <script src="../../../../_static/doctools.js"></script>
     <script src="../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../_static/scripts/furo.js"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
     </body>
 </html>

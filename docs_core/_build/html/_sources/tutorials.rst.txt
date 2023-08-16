@@ -360,12 +360,12 @@ You implement the condition as a function and pass it to the failure using the "
     # Any function can be employed as the condition for a Failure to occur
     # You can utilize any simulation values for the condition
     # Return True to let the Failure occur
+
     def condition(self):
         value_1 = Ftr1.get_feature_value()
         value_2 = Ftr2.get_feature_value()
-        if (value_1 + 20 * value_2) > 200: # prev 360
-            Ftr1.start_time = G.env.now
-            Ftr2.start_time = G.env.now
+
+        if (value_1 + 20 * value_2) > 200:
             return True
         else:
             return False

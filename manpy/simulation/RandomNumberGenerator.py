@@ -116,7 +116,7 @@ class RandomNumberGenerator(object):
         if x < 0:
             return None
 
-        '''start_time_not_reached = G.env.now <= start_time
+        start_time_not_reached = G.env.now < start_time
         end_time_reached = G.env.now > end_time
 
         if start_time_not_reached:
@@ -124,16 +124,16 @@ class RandomNumberGenerator(object):
 
         if start_time > 0 and end_time > 0:
             if start_time_not_reached or end_time_reached:
-                print("None")
+                print("Start not reached or end time reached")
                 return None
         elif start_time > 0 and end_time == 0:
             if start_time_not_reached:
-                print("None")
+                print("Start not reached")
                 return None
         elif start_time_not_reached == 0 and end_time > 0:
             if end_time_reached:
-                print("None")
-                return None'''
+                print("End reached")
+                return None
 
         # checks if probability has been set and rolls if a number should be generated
         if eval(self.probability) != None:

@@ -28,7 +28,7 @@ Documentation
 Most important modules
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
 
    tutorials
    core
