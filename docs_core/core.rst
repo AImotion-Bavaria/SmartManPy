@@ -34,6 +34,13 @@ manpy.simulation.core.Machine.py
    :members:
    :show-inheritance:
 
+manpy.simulation.core.Assembly.py
+------------------------------------
+
+.. automodule:: manpy.simulation.core.Assembly
+   :members:
+   :show-inheritance:
+
 manpy.simulation.core.Failure.py
 ---------------------------------
 
@@ -118,6 +125,14 @@ manpy.simulation.core.ObjectResource.py
 ----------------------------------------
 
 .. automodule:: manpy.simulation.core.ObjectResource
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+manpy.simulation.core.utils.py
+----------------------------------------
+
+.. automodule:: manpy.simulation.core.utils
    :members:
    :undoc-members:
    :show-inheritance:
