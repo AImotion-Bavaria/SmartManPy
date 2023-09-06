@@ -1,6 +1,7 @@
 
 from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue, Timeseries, Assembly, Frame, ContinuosNormalDistribution, RandomDefectStateController
-from manpy.simulation.core.Globals import runSimulation, getFeatureData, getTimeSeriesData, G, ExcelPrinter
+from manpy.simulation.core.utils import SequentialProductionLine
+from manpy.simulation.core.Globals import runSimulation, getFeatureData, getTimeSeriesData
 import time
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -219,6 +220,29 @@ Gluing.defineRouting([Q3], [Q4])
 Q4.defineRouting([Gluing], [EL_Test])
 EL_Test.defineRouting([Q4], [E1])
 E1.defineRouting([EL_Test])
+
+# prod_line = SequentialProductionLine()
+# prod_line.add_source(Solar_Cells, [Solar_Cell_Tester])
+# prod_line.add_machine([Solar_Cells], Solar_Cell_Tester, [Q0])
+# prod_line.add_machine([Solar_Cell_Tester], Q0, [Solar_Cell_Scribing])
+# prod_line.add_machine([Q0], Solar_Cell_Scribing, [])
+
+# Solar_Cells.defineNext([Solar_Cell_Tester])
+# Solar_Cell_Tester.defineNext([Q0])
+# Q0.defineNext([Solar_Cell_Scribing])
+# Solar_Cell_Scribing.defineNext([Assembly0])
+# Solar_Strings.defineNext([Assembly0])
+# Assembly0.defineNext([Tabber_Stringer])
+# Tabber_Stringer.defineNext([Q1])
+# Q1.defineNext(Layup)
+# Layup.defineNext([Q2])
+# Q2.defineNext([Lamination])
+# Lamination.defineNext([Q3])
+# Q3.defineNext([Gluing])
+# Gluing.defineNext([Q4])
+# Q4.defineNext([EL_Test])
+# EL_Test.defineNext([E1])
+
 
 
 def main(test=0):

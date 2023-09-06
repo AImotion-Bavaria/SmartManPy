@@ -83,6 +83,10 @@ class Exit(CoreObject):
         """sets the routing in element for the Exit"""
         self.previous = predecessorList  # no successorList for the Exit
 
+    def defineNext(self, successorList=[]):
+        """Safeguarding for mistakenly trying to set the next element on an Exit object"""
+        print("Trying to set successors for Exits does not have any effects.")
+
     def canAccept(self, callerObject=None):
         """checks if the Exit can accept an entity"""
 

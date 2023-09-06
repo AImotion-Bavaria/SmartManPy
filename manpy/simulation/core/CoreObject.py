@@ -301,6 +301,28 @@ class CoreObject(ManPyObject):
         self.next = successorList
         self.previous = predecessorList
 
+    def defineNext(self, successorList=[]):
+        """
+        sets the next element for the object and automatically registers itself as previous object of all objects in successorList.
+        :param successorList:
+        :return: None
+        """
+
+        self.next = successorList
+
+        for s in successorList:
+            s.previous.append(self)
+
+
+    def printRouting(self):
+        # print(f"{self.name}", end="")
+        #
+        # print("")
+        #
+        # for s in self.next:
+        #     s.printRouting()
+        pass
+
     def initialSignalReceiver(self):
         """
         checks if there is anything set as WIP at the begging of the simulation and sends an event to initialize the simulation
