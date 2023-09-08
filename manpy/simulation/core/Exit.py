@@ -39,6 +39,9 @@ class Exit(CoreObject):
 
     def __init__(self, id, name, cancelCondition={}, **kw):
         self.type = "Exit"  # XXX needed ?
+        self.isNext = True
+        self.isPrevious = False
+
         # lists to hold statistics of multiple runs
         self.Exits = []
         self.UnitExits = []

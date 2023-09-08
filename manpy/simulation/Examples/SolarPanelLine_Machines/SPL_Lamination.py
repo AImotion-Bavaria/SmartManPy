@@ -1,4 +1,5 @@
 from manpy.simulation.imports import Machine, Feature, Timeseries
+from manpy.simulation.core.ProductionLineModule import SequentialProductionLineModule
 
 
 Lamination = Machine("m9", "M_Lamination", processingTime={"Fixed": {"mean": 10}})
@@ -44,3 +45,11 @@ Lamination_Pressure_Curve = Timeseries("Ts_Lamination_Pressure", "Ts_Lamination_
                                                                                     (100, 120): "0.0"},
                                                                        "Mp": Lamination_Peak_Pressure,
                                                                        "DataPoints": 120})
+
+routing = [
+    [Lamination]
+]
+
+features = [L_a, L_b, L_c, L_d, L_e, L_f, L_g, Lamination_Pressure_Curve, Lamination_Temperature_Curve, Lamination_Peak_Pressure]
+
+lamination_module = SequentialProductionLineModule(routing, features, name="LaminationModule")

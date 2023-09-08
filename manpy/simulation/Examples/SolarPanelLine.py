@@ -1,7 +1,8 @@
 
-from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue, Timeseries, Assembly, Frame, ContinuosNormalDistribution, RandomDefectStateController
-from manpy.simulation.core.utils import SequentialProductionLine
 from manpy.simulation.core.Globals import runSimulation, getFeatureData, getTimeSeriesData
+from manpy.simulation.core.ProductionLineModule import generate_routing_from_list
+# from manpy.simulation.Examples.SolarPanelLine_Machines.SPL_Lamination import lamination_module
+from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue, Timeseries, Assembly, Frame, ContinuosNormalDistribution, RandomDefectStateController
 import time
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -201,25 +202,25 @@ Cold_Soder_Joint = Failure("Flr5", "Cold_Soder_Joint", victim=EL_Test, entity=Tr
 # TODO IV Test?
 
 # Routing
-Solar_Cells.defineRouting([Solar_Cell_Tester])
-Solar_Cell_Tester.defineRouting([Solar_Cells], [Q0])
-Q0.defineRouting([Solar_Cell_Tester], [Solar_Cell_Scribing])
-Solar_Cell_Scribing.defineRouting([Q0], [Assembly0])
-Solar_Strings.defineRouting([Assembly0])
-Assembly0.defineRouting([Solar_Cell_Scribing, Solar_Strings], [Tabber_Stringer])
-Tabber_Stringer.defineRouting([Assembly0], [Q1])
-Q1.defineRouting([Tabber_Stringer], [Layup])
-Layup.defineRouting([Q1], [Q2])
-# Q2.defineRouting([Layup], [EL_Test])
-# EL_Test.defineRouting([Q2], [E1])
-Q2.defineRouting([Layup], [Lamination])
-Lamination.defineRouting([Q2], [Q3])
-# Q3.defineRouting([Lamination], [EL_Test])
-Q3.defineRouting([Lamination], [Gluing])
-Gluing.defineRouting([Q3], [Q4])
-Q4.defineRouting([Gluing], [EL_Test])
-EL_Test.defineRouting([Q4], [E1])
-E1.defineRouting([EL_Test])
+# Solar_Cells.defineRouting([Solar_Cell_Tester])
+# Solar_Cell_Tester.defineRouting([Solar_Cells], [Q0])
+# Q0.defineRouting([Solar_Cell_Tester], [Solar_Cell_Scribing])
+# Solar_Cell_Scribing.defineRouting([Q0], [Assembly0])
+# Solar_Strings.defineRouting([Assembly0])
+# Assembly0.defineRouting([Solar_Cell_Scribing, Solar_Strings], [Tabber_Stringer])
+# Tabber_Stringer.defineRouting([Assembly0], [Q1])
+# Q1.defineRouting([Tabber_Stringer], [Layup])
+# Layup.defineRouting([Q1], [Q2])
+# # Q2.defineRouting([Layup], [EL_Test])
+# # EL_Test.defineRouting([Q2], [E1])
+# Q2.defineRouting([Layup], [Lamination])
+# Lamination.defineRouting([Q2], [Q3])
+# # Q3.defineRouting([Lamination], [EL_Test])
+# Q3.defineRouting([Lamination], [Gluing])
+# Gluing.defineRouting([Q3], [Q4])
+# Q4.defineRouting([Gluing], [EL_Test])
+# EL_Test.defineRouting([Q4], [E1])
+# E1.defineRouting([EL_Test])
 
 # prod_line = SequentialProductionLine()
 # prod_line.add_source(Solar_Cells, [Solar_Cell_Tester])
@@ -234,7 +235,7 @@ E1.defineRouting([EL_Test])
 # Solar_Strings.defineNext([Assembly0])
 # Assembly0.defineNext([Tabber_Stringer])
 # Tabber_Stringer.defineNext([Q1])
-# Q1.defineNext(Layup)
+# Q1.defineNext([Layup])
 # Layup.defineNext([Q2])
 # Q2.defineNext([Lamination])
 # Lamination.defineNext([Q3])
@@ -244,6 +245,28 @@ E1.defineRouting([EL_Test])
 # EL_Test.defineNext([E1])
 
 
+routing = [
+    [Solar_Cells],
+    [Solar_Cell_Tester],
+    [Q0],
+    [Solar_Cell_Scribing, Solar_Strings],
+    [Assembly0],
+    [Tabber_Stringer],
+    [Q1],
+    [Layup],
+    [Q2],
+    # [lamination_module],
+    [Lamination],
+    [Q3],
+    [Gluing],
+    [Q4],
+    [EL_Test],
+    [E1]
+]
+
+# lamination_objects = lamination_module.getObjectList()
+
+generate_routing_from_list(routing)
 
 def main(test=0):
     maxSimTime = 15000
@@ -252,12 +275,17 @@ def main(test=0):
                   Solar_Cell_Scribing, Solar_Strings, Assembly0, Tabber_Stringer, Tab_Str_Resistance_Too_High,
                   Tab_Str_Voltage, Tab_Str_Power, Tab_Str_Resistance, Tab_Str_Force, Gluing, glue_temperature, Amount,
                   flow_rate, Q1, Layup, Visual_Fail, Q2, Q3, Q4,
-                  EL_Test, E1, Lamination, L_a, L_b, L_c, L_d, L_e, L_f, L_g, Lamination_Temperature_Curve,
-                  Lamination_Peak_Pressure, Lamination_Pressure_Curve]
+                  EL_Test, E1,
+                  Lamination, L_a, L_b, L_c, L_d, L_e, L_f, L_g, Lamination_Temperature_Curve,
+                  Lamination_Peak_Pressure, Lamination_Pressure_Curve
+                  ]
 
-    from manpy.simulation.core.Database import ManPyQuestDBDatabase
-    db = ManPyQuestDBDatabase()
-    runSimulation(objectList, maxSimTime, db=db)
+    # objectList = objectList + lamination_objects
+
+    # from manpy.simulation.core.Database import ManPyQuestDBDatabase
+    # db = ManPyQuestDBDatabase()
+    # runSimulation(objectList, maxSimTime, db=db)
+    runSimulation(objectList, maxSimTime, db=None)
 
     sct = getFeatureData([Solar_Cell_Tester, Layup])
     TS = getTimeSeriesData(IV_Curve)

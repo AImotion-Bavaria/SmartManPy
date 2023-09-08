@@ -1,9 +1,5 @@
 import sys
-from manpy.simulation.core import Source, Exit, Machine, CoreObject
-from dataclasses import dataclass
 
-
-# TODO add to docs!
 
 def check_config_dict(config_dict: dict, keys: list, object_name: str):
     """
@@ -45,40 +41,41 @@ class ProductionLineStation:
         self.successors = successors
 
 
-class SequentialProductionLine:
+# class SequentialProductionLine:
+#
+#     def __init__(self):
+#         self.stations = []
+#
+#     def add_source(self, source: Source, successors: list):
+#         self.stations.append(ProductionLineStation(None, source, successors))
+#
+#     def add_exit(self, predecessors: list, exit: Exit):
+#         self.stations.append(ProductionLineStation(predecessors, exit, None))
+#
+#     # TODO it's possible that machine is eg an Assembly...
+#     def add_machine(self, predecessors: list, machine: Machine, successors: list):
+#         self.stations.append(ProductionLineStation(predecessors, machine, successors))
+#
+#     def __check_basic_line_consistency(self):
+#         assert(isinstance(self.stations[0].object, Source), True)
+#         assert(isinstance(self.stations[-1].object, Exit), True)
+#
+#     def generate_routing(self, print_routing=True):
+#         self.__check_basic_line_consistency()
+#
+#         for station in self.stations:
+#             if station.predecessors is None:
+#                 station.object.defineRouting(station.successors)
+#                 if print_routing:
+#                     print(f"Added {station.object} as source. Successors: {station.successors}")
+#
+#             elif station.successors is None:
+#                 station.object.defineRouting(station.predecessors)
+#                 if print_routing:
+#                     print(f"Added {station.object} as exit. Predecessors: {station.predecessors}")
+#
+#             else:
+#                 station.object.defineRouting(station.predecessors, station.successors)
+#                 if print_routing:
+#                     print(f"Added {station.object} as machine. Successors: {station.successors}. Predecessors: {station.predecessors}")
 
-    def __init__(self):
-        self.stations = []
-
-    def add_source(self, source: Source, successors: list):
-        self.stations.append(ProductionLineStation(None, source, successors))
-
-    def add_exit(self, predecessors: list, exit: Exit):
-        self.stations.append(ProductionLineStation(predecessors, exit, None))
-
-    # TODO it's possible that machine is eg an Assembly...
-    def add_machine(self, predecessors: list, machine: Machine, successors: list):
-        self.stations.append(ProductionLineStation(predecessors, machine, successors))
-
-    def __check_basic_line_consistency(self):
-        assert(isinstance(self.stations[0].object, Source), True)
-        assert(isinstance(self.stations[-1].object, Exit), True)
-
-    def generate_routing(self, print_routing=True):
-        self.__check_basic_line_consistency()
-
-        for station in self.stations:
-            if station.predecessors is None:
-                station.object.defineRouting(station.successors)
-                if print_routing:
-                    print(f"Added {station.object} as source. Successors: {station.successors}")
-
-            elif station.successors is None:
-                station.object.defineRouting(station.predecessors)
-                if print_routing:
-                    print(f"Added {station.object} as exit. Predecessors: {station.predecessors}")
-
-            else:
-                station.object.defineRouting(station.predecessors, station.successors)
-                if print_routing:
-                    print(f"Added {station.object} as machine. Successors: {station.successors}. Predecessors: {station.predecessors}")

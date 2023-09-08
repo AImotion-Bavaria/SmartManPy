@@ -1,0 +1,69 @@
+from abc import ABC, abstractmethod
+from manpy.simulation.core.Source import Source
+
+
+class AbstractProductionLineModule(ABC):
+
+    @abstractmethod
+    def defineNext(self, successorList=[]):
+        pass
+
+    @abstractmethod
+    def appendPrevious(self, previous):
+        pass
+
+    @abstractmethod
+    def getObjectList(self):
+        pass
+
+    @abstractmethod
+    def get_routing_target(self):
+        pass
+
+
+class SequentialProductionLineModule(AbstractProductionLineModule):
+    def __init__(self, routing: list, features: list, name=""):
+        self.routing = routing
+        self.features = features
+        self.first = self.routing[0]
+        self.last = self.routing[-1]
+
+        self.isNext = True
+        self.isPrevious = True
+
+        self.name = name
+
+    def __set_internal_routing(self, routing):
+        pass
+
+    def defineNext(self, successorList=[]):
+        generate_routing_from_list(self.routing)
+        for l in self.last:
+            l.defineNext(successorList)
+
+    def appendPrevious(self, previous):
+        for f in self.first:
+            f.appendPrevious(previous)
+
+    def getObjectList(self):
+        object_list = self.routing + self.features
+        return object_list
+
+    def get_routing_target(self):
+        return self.first
+
+
+def generate_routing_from_list(routing_list: list):
+    print(15*"#")
+    print("Start routing...")
+
+    for idx, stage in enumerate(routing_list):
+        for obj in stage:
+            try:
+                next_stage = routing_list[idx+1]
+                obj.defineNext(next_stage)
+                print(f"Added Routing for {obj.name}. Successor(s): {[s.name for s in next_stage]}")
+            except IndexError:
+                continue
+
+    print(15*"#")

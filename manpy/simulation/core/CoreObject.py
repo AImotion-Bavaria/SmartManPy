@@ -42,6 +42,8 @@ class CoreObject(ManPyObject):
         self.previous = []  # list with the previous objects in the flow
         self.nextIds = []  # list with the ids of the next objects in the flow
         self.previousIds = []  # list with the ids of the previous objects in the flow
+        self.isNext = True
+        self.isPrevious = True
 
         # lists to hold statistics of multiple runs
         self.Failure = []
@@ -307,11 +309,31 @@ class CoreObject(ManPyObject):
         :param successorList:
         :return: None
         """
-
-        self.next = successorList
-
         for s in successorList:
-            s.previous.append(self)
+            if s.isNext:  # checks if s can be a next object. e.g., exit cannot be a next object
+                # __get_routing_target() is used to handle CoreObjects and ProductionLineModules differently
+                if s.get_routing_target() not in self.next:
+                    self.next.append(s.get_routing_target())
+                s.appendPrevious(self)
+
+    def definePrevious(self, predecessorList=[]):
+        """Sets self.previous"""
+
+        self.previous = predecessorList
+
+    def appendPrevious(self, previous):
+        """Append previous to self.previous"""
+        # first checks if previous can be a previous object
+        # e.g., source cannot be a previous object
+        if previous.isPrevious and previous not in self.previous:
+            self.previous.append(previous)
+        else:
+            print(f"Registering {previous.name} as previous in {self.name} failed.")
+
+    def get_routing_target(self):
+        """Returns the object.
+        This method is used for dynamic routing in order to handle CoreObjects and ProductionLineModules differently"""
+        return self
 
 
     def printRouting(self):
