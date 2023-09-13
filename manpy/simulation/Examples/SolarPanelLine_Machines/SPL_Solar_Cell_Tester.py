@@ -1,12 +1,16 @@
 from manpy.simulation.imports import Machine, Feature, Timeseries
+from manpy.simulation.core.ProductionLineModule import SequentialProductionLineModule
+from manpy.simulation.core.Globals import get_feature_values_by_id
 
 
 def condition(self):
     activeEntity = self.Res.users[0]
-    features = [3.5, 0.62, None, None, 2.3]
-    for idx, feature in enumerate(features):
-        if feature != None:
-            if activeEntity.features[idx] < 0.9*feature or activeEntity.features[idx] > 1.1*feature:
+    features = [3.5, 0.62, 25]
+    values = get_feature_values_by_id(activeEntity, ["Ftr0", "Ftr1", "Ftr7"])
+    for v, f in zip(values, features):
+        if f != None:
+            if v < 0.8*f or v > 1.2*f:
+                print(f"Discard: {v} -> mean: {f}")
                 return True
     return False
 
@@ -47,3 +51,10 @@ EFF = Feature("Ftr6", "EFF", victim=Solar_Cell_Tester,                          
               dependent={"Function": "(Isc * Voc * FF)/1000", "Isc": Isc, "Voc": Voc, "FF": FF})
 Temp = Feature("Ftr7", "Temp", victim=Solar_Cell_Tester,                                    # Temperature
               distribution={"Feature": {"Normal": {"mean": 25, "stdev": 1.5}}})
+
+routing = [
+    [Solar_Cell_Tester]
+]
+
+features = [Isc, Voc, Vm, Im, Pmax, IV_Curve, Power_Curve, FF, EFF, Temp]
+solar_cell_tester_module = SequentialProductionLineModule(routing, features, "SolarCellTester")

@@ -532,7 +532,9 @@ def runSimulation(
     G.ObjectResourceList = []
     G.trace_list = []
     G.ftr_st = []   # list of (feature, corresponding station)
+    G.feature_indices = {}
     G.ts_st = []   # list of (timeseries, corresponding station)
+    G.timeseries_indices = {}
     G.db = db
     G.objectList = objectList
 
@@ -559,12 +561,14 @@ def runSimulation(
             G.ftr_st.append((f.id, None))
         else:
             G.ftr_st.append((f.id, f.victim.id))
+        G.feature_indices[f.id] = len(G.ftr_st) - 1
     # set ts_st
     for ts in G.TimeSeriesList:
         if ts.victim == None:
             G.ts_st.append((ts.id, None))
         else:
             G.ts_st.append((ts.id, ts.victim.id))
+        G.timeseries_indices[ts.id] = len(G.ts_st) - 1
 
     # connect to QuestDB
     if G.db:
@@ -760,6 +764,7 @@ def getFeatureData(objectList=[], time=False) -> pd.DataFrame:
     else:
         return result.drop("Result", axis=1)
 
+
 def getTimeSeriesData(ts) -> pd.DataFrame:
     """
     getTimeSeriesData returns timeseries data
@@ -780,3 +785,12 @@ def getTimeSeriesData(ts) -> pd.DataFrame:
 
     return pd.DataFrame(list(zip(id, time, value)), columns=columns)
 
+
+def get_feature_values_by_id(entity, feature_ids):
+    """
+    Returns a list of the entity's feature values of the specified ids
+    """
+    indices = [G.feature_indices[i] for i in feature_ids]
+    feature_values = [entity.features[idx] for idx in indices]
+
+    return feature_values

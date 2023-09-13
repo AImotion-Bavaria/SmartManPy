@@ -1,8 +1,11 @@
 
 from manpy.simulation.core.Globals import runSimulation, getFeatureData, getTimeSeriesData
 from manpy.simulation.core.ProductionLineModule import generate_routing_from_list
-# from manpy.simulation.Examples.SolarPanelLine_Machines.SPL_Lamination import lamination_module
 from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue, Timeseries, Assembly, Frame, ContinuosNormalDistribution, RandomDefectStateController
+
+from manpy.simulation.Examples.SolarPanelLine_Machines.SPL_Solar_Cell_Tester import solar_cell_tester_module
+from manpy.simulation.Examples.SolarPanelLine_Machines.SPL_Lamination import lamination_module
+
 import time
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -14,14 +17,14 @@ start = time.time()
 # https://www.solarmakingmachine.com/10-30MW-Full-Automatic-Solar-Panel-Assembly-Line/
 
 
-def condition(self):
-    activeEntity = self.Res.users[0]
-    features = [3.5, 0.62, None, None, 2.3]
-    for idx, feature in enumerate(features):
-        if feature != None:
-            if activeEntity.features[idx] < 0.9*feature or activeEntity.features[idx] > 1.1*feature:
-                return True
-    return False
+# def condition(self):
+#     activeEntity = self.Res.users[0]
+#     features = [3.5, 0.62, None, None, 2.3]
+#     for idx, feature in enumerate(features):
+#         if feature != None:
+#             if activeEntity.features[idx] < 0.9*feature or activeEntity.features[idx] > 1.1*feature:
+#                 return True
+#     return False
 
 def resistance_failure_condition(self):
     r = Tab_Str_Resistance.get_feature_value()
@@ -34,7 +37,7 @@ def resistance_failure_condition(self):
 
 # Objects
 Solar_Cells = Source("S0", "Solar_Cells", interArrivalTime={"Fixed": {"mean": 2}}, entity="manpy.Part")
-Solar_Cell_Tester = Machine("M0", "Solar_Cell_Tester", processingTime={"Fixed": {"mean": 3}}, control=condition)
+# Solar_Cell_Tester = Machine("M0", "Solar_Cell_Tester", processingTime={"Fixed": {"mean": 3}}, control=condition)
 Q0 = Queue("Q0", "Queue0")
 Solar_Cell_Scribing = Machine("M1", "Solar_Cell_Scribing", processingTime={"Fixed": {"mean": 3.75}})
 Solar_Strings = Source("S1", "Solar_Strings", interArrivalTime={"Fixed": {"mean": 10}}, entity="manpy.Frame", capacity=60)
@@ -43,14 +46,13 @@ Tabber_Stringer = Machine("M2", "Tabber_Stringer", processingTime={"Fixed": {"me
 Q1 = Queue("Q1", "Queue1")
 Layup = Machine("M3", "Layup", processingTime={"Fixed": {"mean": 20}})
 Q2 = Queue("Q2", "Queue2")
-EL_Test = Machine("M4", "Solar_Cell_Scribing", processingTime={"Fixed": {"mean": 10}})
+EL_Test = Machine("M4", "EL_Test", processingTime={"Fixed": {"mean": 10}})
 Q3 = Queue("Q3", "Queue3")
 Q4 = Queue("Q4", "Queue4")
 
 # TODO does the processing time make sense?
 # -> times are in seconds!
 Gluing = Machine("M5", "Gluing", processingTime={"Fixed": {"mean": 10}})
-Lamination = Machine("m9", "M_Lamination", processingTime={"Fixed": {"mean": 10}})
 E1 = Exit("E1", "Exit")
 # EVA_TPT = Source("S2", "EVA_TPT", interArrivalTime={"Fixed": {"mean": 100}}, entity="manpy.Frame")
 # EVA_TPT_Cutter = Machine("M4", "EVA_TPT_Cutter", processingTime={"Fixed": {"mean": 150}})
@@ -58,39 +60,39 @@ E1 = Exit("E1", "Exit")
 
 # ObjectProperty
 # SolarCellTester
-Isc = Feature("Ftr0", "Isc", victim=Solar_Cell_Tester,                                      # short-circuit current
-               distribution={"Feature": {"Normal": {"mean": 3.5, "stdev": 0.04375}}})
-Voc = Feature("Ftr1", "Voc", victim=Solar_Cell_Tester,                                      # open circuit voltage
-               distribution={"Feature": {"Normal": {"mean": 0.62, "stdev": 0.00155}}})
-Vm = Feature("Ftr2", "Vm", victim=Solar_Cell_Tester,                                        # Maximum Power Point Voltage
-               dependent={"Function": "Voc-0.14", "Voc": Voc},
-               distribution={"Feature": {"Normal": {"stdev": 0.004}}})
-Im = Feature("Ftr3", "Im", victim=Solar_Cell_Tester,                                        # Maximum Power Point Current
-               dependent={"Function": "Isc-0.133", "Isc": Isc},
-               distribution={"Feature": {"Normal": {"stdev": 0.0135}}})
-Pmax = Feature("Ftr4", "Pmax", victim=Solar_Cell_Tester,                                    # Peak Power
-               dependent={"Function": "2.3+(Isc+Im-6.867)", "Isc": Isc, "Im": Im})
-IV_Curve = Timeseries("Ts2", "IV_Curve", victim=Solar_Cell_Tester, no_negative=True,        # Current-Voltage Curve
-                      distribution={"Function": {(0, 0.4): "Isc - 0.05*x",
-                                                 (0.4, 0.8): [[0.4, 0.41, "Vm", "Voc"], ["Isc-0.02", "Isc-0.023", "Im", 0]]},
-                                    "Vm": Vm, "Voc": Voc, "Isc": Isc, "Im": Im,
-                                    "DataPoints": 100})
-Power_Curve = Timeseries("Ts3", "Power_Curve", victim=Solar_Cell_Tester, no_negative=True,  # Power-Voltage Curve
-                         # Interval values are acutal x values
-                         # Interval from (0, 0.46) is a function, not interpolated
-                      distribution={"Function": {(0, 0.46): "((Pmax-0.05)/0.46)*x",
-                                                 # from 0.46 to 0.8 the features are interpolated
-                                                 # first list is x, second list is y -> 4 datapoints overall
-                                                 # 4 datapoints at least
-                                                 (0.46, 0.8): [[0.46, "Vm", "Vm+0.02", "Voc"], ["Pmax-0.05", "Pmax", "Pmax-0.02", 0]]},
-                                    "Vm": Vm, "Voc": Voc, "Pmax": Pmax,
-                                    "DataPoints": 100})
-FF = Feature("Ftr5", "FF", victim=Solar_Cell_Tester,                                        # Fill Factor
-               dependent={"Function": "(Vm * Im)/(Isc * Voc)", "Vm": Vm, "Im": Im, "Isc": Isc, "Voc": Voc})
-EFF = Feature("Ftr6", "EFF", victim=Solar_Cell_Tester,                                      # Efficiency
-              dependent={"Function": "(Isc * Voc * FF)/1000", "Isc": Isc, "Voc": Voc, "FF": FF})
-Temp = Feature("Ftr7", "Temp", victim=Solar_Cell_Tester,                                    # Temperature
-              distribution={"Feature": {"Normal": {"mean": 25, "stdev": 1.5}}})
+# Isc = Feature("Ftr0", "Isc", victim=Solar_Cell_Tester,                                      # short-circuit current
+#                distribution={"Feature": {"Normal": {"mean": 3.5, "stdev": 0.04375}}})
+# Voc = Feature("Ftr1", "Voc", victim=Solar_Cell_Tester,                                      # open circuit voltage
+#                distribution={"Feature": {"Normal": {"mean": 0.62, "stdev": 0.00155}}})
+# Vm = Feature("Ftr2", "Vm", victim=Solar_Cell_Tester,                                        # Maximum Power Point Voltage
+#                dependent={"Function": "Voc-0.14", "Voc": Voc},
+#                distribution={"Feature": {"Normal": {"stdev": 0.004}}})
+# Im = Feature("Ftr3", "Im", victim=Solar_Cell_Tester,                                        # Maximum Power Point Current
+#                dependent={"Function": "Isc-0.133", "Isc": Isc},
+#                distribution={"Feature": {"Normal": {"stdev": 0.0135}}})
+# Pmax = Feature("Ftr4", "Pmax", victim=Solar_Cell_Tester,                                    # Peak Power
+#                dependent={"Function": "2.3+(Isc+Im-6.867)", "Isc": Isc, "Im": Im})
+# IV_Curve = Timeseries("Ts2", "IV_Curve", victim=Solar_Cell_Tester, no_negative=True,        # Current-Voltage Curve
+#                       distribution={"Function": {(0, 0.4): "Isc - 0.05*x",
+#                                                  (0.4, 0.8): [[0.4, 0.41, "Vm", "Voc"], ["Isc-0.02", "Isc-0.023", "Im", 0]]},
+#                                     "Vm": Vm, "Voc": Voc, "Isc": Isc, "Im": Im,
+#                                     "DataPoints": 100})
+# Power_Curve = Timeseries("Ts3", "Power_Curve", victim=Solar_Cell_Tester, no_negative=True,  # Power-Voltage Curve
+#                          # Interval values are acutal x values
+#                          # Interval from (0, 0.46) is a function, not interpolated
+#                       distribution={"Function": {(0, 0.46): "((Pmax-0.05)/0.46)*x",
+#                                                  # from 0.46 to 0.8 the features are interpolated
+#                                                  # first list is x, second list is y -> 4 datapoints overall
+#                                                  # 4 datapoints at least
+#                                                  (0.46, 0.8): [[0.46, "Vm", "Vm+0.02", "Voc"], ["Pmax-0.05", "Pmax", "Pmax-0.02", 0]]},
+#                                     "Vm": Vm, "Voc": Voc, "Pmax": Pmax,
+#                                     "DataPoints": 100})
+# FF = Feature("Ftr5", "FF", victim=Solar_Cell_Tester,                                        # Fill Factor
+#                dependent={"Function": "(Vm * Im)/(Isc * Voc)", "Vm": Vm, "Im": Im, "Isc": Isc, "Voc": Voc})
+# EFF = Feature("Ftr6", "EFF", victim=Solar_Cell_Tester,                                      # Efficiency
+#               dependent={"Function": "(Isc * Voc * FF)/1000", "Isc": Isc, "Voc": Voc, "FF": FF})
+# Temp = Feature("Ftr7", "Temp", victim=Solar_Cell_Tester,                                    # Temperature
+#               distribution={"Feature": {"Normal": {"mean": 25, "stdev": 1.5}}})
 
 # Test = Feature("Ftr", "Test", victim=Solar_Cell_Scribing,
 #               distribution={"Feature": {"Fixed": {"mean": 0}}})
@@ -146,49 +148,6 @@ flow_rate = Feature("Flow_Rate", "Flow_Rate", victim=Gluing,
                     dependent={"Function": "0.9*X", "X": Amount},
                     distribution={"Feature": {"Normal": {"stdev": 0.0135}}})
 
-# TODO State Controllers
-
-# Lamination
-# Two timeseries: pressure and temperature, interpolation based on features
-# Lamination_Pressure = Feature("Lamination_Pressure", "Lamination_Pressure", victim=Lamination, distribution={"Feature": {"Normal": {"mean": 50, "stdev": 2}}})
-# Lamination_Temperature = Feature("Lamination_Temperature", "Lamination_Temperature", victim=Lamination, distribution={"Feature": {"Normal": {"mean": 400, "stdev": 10}}})
-
-# upper interval bound is process time -> how long does the process take, e.g. 200 seconds. Not necessarily the
-# same timne unit like in manpy
-L_a = Feature("Ftr_La", "L1", victim=Lamination,
-                        distribution={"Feature": {"Normal": {"mean": 5, "stdev": 1}}})
-L_b = Feature("Ftr_Lb", "L2", victim=Lamination,
-              distribution={"Feature": {"Normal": {"mean": 60, "stdev": 1}}})
-L_c = Feature("Ftr_Lc", "L3", victim=Lamination,
-              distribution={"Feature": {"Normal": {"mean": 80, "stdev": 1}}})
-L_d = Feature("Ftr_Ld", "L4", victim=Lamination,
-              distribution={"Feature": {"Normal": {"mean": 85, "stdev": 1}}})
-L_e = Feature("Ftr_Le", "L5", victim=Lamination,
-              distribution={"Feature": {"Normal": {"mean": 40, "stdev": 1}}})
-L_f = Feature("Ftr_Lf", "L6", victim=Lamination,
-              distribution={"Feature": {"Normal": {"mean": 25, "stdev": 1}}})
-L_g = Feature("Ftr_Lg", "L7", victim=Lamination,
-              distribution={"Feature": {"Normal": {"mean": 15, "stdev": 1}}})
-
-# TODO better names for intermediate variables
-Lamination_Temperature_Curve = Timeseries("Ts_Lamination_Temp", "Ts_Lamination_Temp", victim=Lamination,
-                                          no_negative=True, distribution={"Function": {(0, 20): "x+La",
-                                                                                    (20, 55): [[20, 30, 40, 50, 55], ["20+La", "Lb", "L_c", "L_c+3", "Ld"]],
-                                                                                    (55, 80): "Ld",
-                                                                                    (80, 120): [[80, 90, 100, 110, 120], ["Ld", "Le", "Lf", "Lg", "Lg"]]},
-                                                                       "La": L_a, "Lb": L_b, "L_c": L_c, "Ld": L_d, "Le": L_e, "Lf": L_f, "Lg": L_g,
-                                                                       "DataPoints": 120})
-
-Lamination_Peak_Pressure = Feature("Ftr_Press", "Pr1", victim=Lamination,
-              distribution={"Feature": {"Normal": {"mean": 80, "stdev": 1}}})
-Lamination_Pressure_Curve = Timeseries("Ts_Lamination_Pressure", "Ts_Lamination_Pressure", victim=Lamination,
-                                          no_negative=True, distribution={"Function": {(0, 20): "0.0",
-                                                                                    (20, 40): [[20, 25, 30, 35, 40], ["0.0", "0.25*Mp", "0.5*Mp", "0.75*Mp", "Mp"]],
-                                                                                    (40, 80): "Mp",
-                                                                                    (80, 100): [[80, 85, 90, 95, 100], ["Mp", "0.75*Mp", "0.5*Mp", "0.25*Mp", "0.0"]],
-                                                                                    (100, 120): "0.0"},
-                                                                       "Mp": Lamination_Peak_Pressure,
-                                                                       "DataPoints": 120})
 # ObjectInterruption
 # Layup
 Visual_Fail = Failure("Flr0", "Visual_Fail", victim=Layup, entity=True, remove=True, distribution={"TTF": {"Fixed": {"mean": 0.8}}, "TTR": {"Normal": {"mean": 300, "stdev": 40, "min":0, "probability": 0.008}}})
@@ -202,52 +161,10 @@ Cold_Soder_Joint = Failure("Flr5", "Cold_Soder_Joint", victim=EL_Test, entity=Tr
 # TODO IV Test?
 
 # Routing
-# Solar_Cells.defineRouting([Solar_Cell_Tester])
-# Solar_Cell_Tester.defineRouting([Solar_Cells], [Q0])
-# Q0.defineRouting([Solar_Cell_Tester], [Solar_Cell_Scribing])
-# Solar_Cell_Scribing.defineRouting([Q0], [Assembly0])
-# Solar_Strings.defineRouting([Assembly0])
-# Assembly0.defineRouting([Solar_Cell_Scribing, Solar_Strings], [Tabber_Stringer])
-# Tabber_Stringer.defineRouting([Assembly0], [Q1])
-# Q1.defineRouting([Tabber_Stringer], [Layup])
-# Layup.defineRouting([Q1], [Q2])
-# # Q2.defineRouting([Layup], [EL_Test])
-# # EL_Test.defineRouting([Q2], [E1])
-# Q2.defineRouting([Layup], [Lamination])
-# Lamination.defineRouting([Q2], [Q3])
-# # Q3.defineRouting([Lamination], [EL_Test])
-# Q3.defineRouting([Lamination], [Gluing])
-# Gluing.defineRouting([Q3], [Q4])
-# Q4.defineRouting([Gluing], [EL_Test])
-# EL_Test.defineRouting([Q4], [E1])
-# E1.defineRouting([EL_Test])
-
-# prod_line = SequentialProductionLine()
-# prod_line.add_source(Solar_Cells, [Solar_Cell_Tester])
-# prod_line.add_machine([Solar_Cells], Solar_Cell_Tester, [Q0])
-# prod_line.add_machine([Solar_Cell_Tester], Q0, [Solar_Cell_Scribing])
-# prod_line.add_machine([Q0], Solar_Cell_Scribing, [])
-
-# Solar_Cells.defineNext([Solar_Cell_Tester])
-# Solar_Cell_Tester.defineNext([Q0])
-# Q0.defineNext([Solar_Cell_Scribing])
-# Solar_Cell_Scribing.defineNext([Assembly0])
-# Solar_Strings.defineNext([Assembly0])
-# Assembly0.defineNext([Tabber_Stringer])
-# Tabber_Stringer.defineNext([Q1])
-# Q1.defineNext([Layup])
-# Layup.defineNext([Q2])
-# Q2.defineNext([Lamination])
-# Lamination.defineNext([Q3])
-# Q3.defineNext([Gluing])
-# Gluing.defineNext([Q4])
-# Q4.defineNext([EL_Test])
-# EL_Test.defineNext([E1])
-
-
 routing = [
     [Solar_Cells],
-    [Solar_Cell_Tester],
+    # [Solar_Cell_Tester],
+    [solar_cell_tester_module],
     [Q0],
     [Solar_Cell_Scribing, Solar_Strings],
     [Assembly0],
@@ -255,8 +172,8 @@ routing = [
     [Q1],
     [Layup],
     [Q2],
-    # [lamination_module],
-    [Lamination],
+    [lamination_module],
+    # [Lamination],
     [Q3],
     [Gluing],
     [Q4],
@@ -264,44 +181,46 @@ routing = [
     [E1]
 ]
 
-# lamination_objects = lamination_module.getObjectList()
+lamination_objects = lamination_module.getObjectList()
+tester_objects = solar_cell_tester_module.getObjectList()
 
 generate_routing_from_list(routing)
 
 def main(test=0):
     maxSimTime = 15000
 
-    objectList = [Solar_Cells, Solar_Cell_Tester, Isc, Voc, Vm, Im, Pmax, IV_Curve, Power_Curve, FF, EFF, Temp, Q0,
+    objectList = [Solar_Cells]
+    objectList.extend(tester_objects)
+    objectList.extend(
+                  [Q0,
                   Solar_Cell_Scribing, Solar_Strings, Assembly0, Tabber_Stringer, Tab_Str_Resistance_Too_High,
                   Tab_Str_Voltage, Tab_Str_Power, Tab_Str_Resistance, Tab_Str_Force, Gluing, glue_temperature, Amount,
                   flow_rate, Q1, Layup, Visual_Fail, Q2, Q3, Q4,
-                  EL_Test, E1,
-                  Lamination, L_a, L_b, L_c, L_d, L_e, L_f, L_g, Lamination_Temperature_Curve,
-                  Lamination_Peak_Pressure, Lamination_Pressure_Curve
-                  ]
+                  EL_Test, E1])
+    objectList.extend(lamination_objects)
 
-    # objectList = objectList + lamination_objects
 
     # from manpy.simulation.core.Database import ManPyQuestDBDatabase
     # db = ManPyQuestDBDatabase()
     # runSimulation(objectList, maxSimTime, db=db)
     runSimulation(objectList, maxSimTime, db=None)
 
-    sct = getFeatureData([Solar_Cell_Tester, Layup])
-    TS = getTimeSeriesData(IV_Curve)
-    sct.to_csv("Solar_Cell_Tester.csv", index=False, encoding="utf8")
-    TS.to_csv("IV_Curve.csv", index=False, encoding="utf8")
+    # sct = getFeatureData([Solar_Cell_Tester, Layup])
+    # TS = getTimeSeriesData(IV_Curve)
+    # sct.to_csv("Solar_Cell_Tester.csv", index=False, encoding="utf8")
+    # TS.to_csv("IV_Curve.csv", index=False, encoding="utf8")
     # TS[1].to_csv("PV_Curve.csv", index=False, encoding="utf8")
-    lamination_ts = getTimeSeriesData(Lamination_Pressure_Curve)
-    print(lamination_ts)
-    lamination_ts.to_csv("TS_Lamination_Pressure.csv", index=False, encoding="utf8")
+
+    # lamination_ts = getTimeSeriesData(Lamination_Pressure_Curve)
+    # print(lamination_ts)
+    # lamination_ts.to_csv("TS_Lamination_Pressure.csv", index=False, encoding="utf8")
 
     # with pd.option_context('display.max_columns', None):
     #     print(sct.drop(["ID"], axis=1).describe())
 
     # use this code for plotting -> change machine in for loop
 
-    for i in Lamination.entities:
+    # for i in Lamination.entities:
         # print(" Isc: ", [i.features[0]], "\n",
         #       "Voc: ", [i.features[1]], "\n",
         #       "MPP: ", [i.features[2]], [i.features[3]], "\n",
@@ -314,9 +233,9 @@ def main(test=0):
         # plt.plot(i.timeseries_times[0], i.timeseries[0], c="red", label="IV")
         # plt.plot(i.timeseries_times[1], i.timeseries[1], c="green", label="PV")
         # plt.legend()
-        plt.plot(i.timeseries[-1])
-        plt.plot(i.timeseries[-2])
-        plt.show()
+        # plt.plot(i.timeseries[-1])
+        # plt.plot(i.timeseries[-2])
+        # plt.show()
 
 
     print("""
@@ -324,7 +243,7 @@ def main(test=0):
             Produziert:         {}
             Simulationszeit:    {}
             Laufzeit:           {:.2f}
-            """.format(len(Solar_Cell_Tester.discards) + len(Layup.discards), len(E1.entities), maxSimTime, time.time() - start))
+            """.format(len(solar_cell_tester_module.first[0].discards) + len(Layup.discards), len(E1.entities), maxSimTime, time.time() - start))
 
 if __name__ == "__main__":
     main()

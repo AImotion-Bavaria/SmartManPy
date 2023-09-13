@@ -28,23 +28,25 @@ L_g = Feature("Ftr_Lg", "L7", victim=Lamination,
 
 # TODO better names for intermediate variables
 Lamination_Temperature_Curve = Timeseries("Ts_Lamination_Temp", "Ts_Lamination_Temp", victim=Lamination,
-                                          no_negative=True, distribution={"Function": {(0, 20): "x+La",
-                                                                                    (20, 55): [[20, 30, 40, 50, 55], ["20+La", "Lb", "L_c", "L_c+3", "Ld"]],
-                                                                                    (55, 80): "Ld",
-                                                                                    (80, 120): [[80, 90, 100, 110, 120], ["Ld", "Le", "Lf", "Lg", "Lg"]]},
-                                                                       "La": L_a, "Lb": L_b, "L_c": L_c, "Ld": L_d, "Le": L_e, "Lf": L_f, "Lg": L_g,
-                                                                       "DataPoints": 120})
+                                          no_negative=True,
+                                          distribution={"Function": {(0, 20): "x+La",
+                                                        (20, 55): [[20, 30, 40, 50, 55], ["20+La", "Lb", "L_c", "L_c+3", "Ld"]],
+                                                        (55, 80): "Ld",
+                                                        (80, 120): [[80, 90, 100, 110, 120], ["Ld", "Le", "Lf", "Lg", "Lg"]]},
+                                                        "La": L_a, "Lb": L_b, "L_c": L_c, "Ld": L_d, "Le": L_e, "Lf": L_f, "Lg": L_g,
+                                                        "DataPoints": 120})
 
 Lamination_Peak_Pressure = Feature("Ftr_Press", "Pr1", victim=Lamination,
               distribution={"Feature": {"Normal": {"mean": 80, "stdev": 1}}})
 Lamination_Pressure_Curve = Timeseries("Ts_Lamination_Pressure", "Ts_Lamination_Pressure", victim=Lamination,
-                                          no_negative=True, distribution={"Function": {(0, 20): "0.0",
-                                                                                    (20, 40): [[20, 25, 30, 35, 40], ["0.0", "0.25*Mp", "0.5*Mp", "0.75*Mp", "Mp"]],
-                                                                                    (40, 80): "Mp",
-                                                                                    (80, 100): [[80, 85, 90, 95, 100], ["Mp", "0.75*Mp", "0.5*Mp", "0.25*Mp", "0.0"]],
-                                                                                    (100, 120): "0.0"},
-                                                                       "Mp": Lamination_Peak_Pressure,
-                                                                       "DataPoints": 120})
+                                          no_negative=True,
+                                       distribution={"Function": {(0, 20): "0.0",
+                                                     (20, 40): [[20, 25, 30, 35, 40], ["0.0", "0.25*Mp", "0.5*Mp", "0.75*Mp", "Mp"]],
+                                                     (40, 80): "Mp",
+                                                     (80, 100): [[80, 85, 90, 95, 100], ["Mp", "0.75*Mp", "0.5*Mp", "0.25*Mp", "0.0"]],
+                                                     (100, 120): "0.0"},
+                                                     "Mp": Lamination_Peak_Pressure,
+                                                     "DataPoints": 120})
 
 routing = [
     [Lamination]

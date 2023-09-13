@@ -313,7 +313,7 @@ class CoreObject(ManPyObject):
             if s.isNext:  # checks if s can be a next object. e.g., exit cannot be a next object
                 # __get_routing_target() is used to handle CoreObjects and ProductionLineModules differently
                 if s.get_routing_target() not in self.next:
-                    self.next.append(s.get_routing_target())
+                    self.next.extend(s.get_routing_target())
                 s.appendPrevious(self)
 
     def definePrevious(self, predecessorList=[]):
@@ -333,7 +333,7 @@ class CoreObject(ManPyObject):
     def get_routing_target(self):
         """Returns the object.
         This method is used for dynamic routing in order to handle CoreObjects and ProductionLineModules differently"""
-        return self
+        return [self]
 
 
     def printRouting(self):

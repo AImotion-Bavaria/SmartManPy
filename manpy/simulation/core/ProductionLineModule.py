@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from manpy.simulation.core.Source import Source
+from itertools import chain
 
 
 class AbstractProductionLineModule(ABC):
@@ -46,7 +46,9 @@ class SequentialProductionLineModule(AbstractProductionLineModule):
             f.appendPrevious(previous)
 
     def getObjectList(self):
-        object_list = self.routing + self.features
+        routing_objects = list(chain.from_iterable(self.routing))
+
+        object_list = routing_objects + self.features
         return object_list
 
     def get_routing_target(self):
