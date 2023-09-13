@@ -111,6 +111,38 @@ In order to work correctly, we also need to update the routing of the production
 
     objectList = [start, m1, m2, q1, exit]
 
+Improved Routing
+-----------------
+
+The default routing mechanism requires you to manually set the predecessors and successors of objects, with makes multiple definitions necessary if you add an object to the production line.
+Furthermore, if you decide to change the order or want to (temporarily) remove a station, you also need to make changes at multiple locations.
+As an improvement, we added an easier way of defining the routing that's based on list.
+The whole production line is defined in one list.
+Each "stage", i.e. all machines at the same level, are contained in separate lists:
+
+.. code-block:: python
+    :linenos:
+
+    routing = [
+        [start],
+        [m1],
+        [q1],
+        [m2],
+        [exit]
+    ]
+
+It is also possible to add multiple machines or sources to the same level.
+
+To actually perform the routing definition, you need to use generate_routing_from_list defined in core/ProductionLineModule.py:
+
+.. code-block:: python
+    :linenos:
+
+    from manpy.simulation.core.ProductionLineModule import generate_routing_from_list
+
+    generate_routing_from_list(routing)
+
+Using this approach for routing, you can easily change the order or remove parts of the production line with minimal changes.
 
 Advanced usage
 ================
@@ -141,6 +173,26 @@ In the following example, we simply check if a given Feature value is inside a c
         # self is w.r.t. to the machine in which we apply the condition!
         activeEntity = self.Res.users[0]
         if activeEntity.features[0] > 7 or activeEntity.features[0] < 3:
+            return True
+        else:
+            return False
+
+In this example, we had to access the feature value by index, which is usually very tedious.
+We therefore added the function "get_feature_values_by_id" in Globals.py, that let's you access certain feature values of an entity by the feature ID:
+
+.. code-block:: python
+    :linenos:
+
+    from manpy.simulation.core.Globals import get_feature_values_by_id
+
+    def condition(self):
+        # self is w.r.t. to the machine in which we apply the condition!
+        activeEntity = self.Res.users[0]
+
+        # Access first element since function returns a list
+        feature_value = get_feature_values_by_id(activeEntity, ["f1"])[0]
+
+        if feature_value > 7 or feature_value < 3:
             return True
         else:
             return False
@@ -201,6 +253,13 @@ However, it is also possible to have strict functional dependencies between feat
                        victim=m1,
                        dependent={"Function": "10*x + 3", "x": feature1}
                        )
+
+.. attention::
+
+    The order in the object list matters!
+    If you define features with functional dependencies, you need to know that the order in the object list that's passed to runSimulation is important!
+    A feature that depends on other features values needs these features to be generate before itself.
+    To ensure this, you need to place the features that are used in functional dependencies before the features that use them.
 
 Random walks
 .............
@@ -601,3 +660,10 @@ QuestDB also has plotting capabilities, as you can see in the following screensh
     Our Database interface is highly customizable.
     If necessary, you can write your own DB interface that perfectly fits you demands.
     The interface is defined in core/Database.py.
+
+
+ProductionLineModules
+----------------------
+
+The definition of long and complex production lines can get very extensive and confusing.
+To improve the clarity of complex production lines, we added ProductionLineModules, which allow the encapsulation of parts of the production line.

@@ -5,6 +5,10 @@ from itertools import chain
 class AbstractProductionLineModule(ABC):
 
     @abstractmethod
+    def defineRouting(self, predecessorList=[], successorList=[]):
+        pass
+
+    @abstractmethod
     def defineNext(self, successorList=[]):
         pass
 
@@ -24,6 +28,7 @@ class AbstractProductionLineModule(ABC):
 class SequentialProductionLineModule(AbstractProductionLineModule):
     def __init__(self, routing: list, features: list, name=""):
         self.routing = routing
+        # TODO rename, doesnt include failures etc
         self.features = features
         self.first = self.routing[0]
         self.last = self.routing[-1]
@@ -33,8 +38,14 @@ class SequentialProductionLineModule(AbstractProductionLineModule):
 
         self.name = name
 
-    def __set_internal_routing(self, routing):
-        pass
+    def defineRouting(self, predecessorList=[], successorList=[]):
+        for p in predecessorList:
+            self.appendPrevious(p)
+
+        generate_routing_from_list(self.routing)
+
+        for l in self.last:
+            l.next.extend(successorList)
 
     def defineNext(self, successorList=[]):
         generate_routing_from_list(self.routing)

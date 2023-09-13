@@ -145,6 +145,26 @@ In the following example, we simply check if a given Feature value is inside a c
         else:
             return False
 
+In this example, we had to access the feature value by index, which is usually very tedious.
+We therefore added the function "get_feature_values_by_id" in Globals.py, that let's you access certain feature values of an entity by the feature ID:
+
+.. code-block:: python
+    :linenos:
+
+    from manpy.simulation.core.Globals import get_feature_values_by_id
+
+    def condition(self):
+        # self is w.r.t. to the machine in which we apply the condition!
+        activeEntity = self.Res.users[0]
+
+        # Access first element since function returns a list
+        feature_value = get_feature_values_by_id(activeEntity, ["f1"])[0]
+
+        if feature_value > 7 or feature_value < 3:
+            return True
+        else:
+            return False
+
 Features
 ---------
 
@@ -201,6 +221,13 @@ However, it is also possible to have strict functional dependencies between feat
                        victim=m1,
                        dependent={"Function": "10*x + 3", "x": feature1}
                        )
+
+.. attention::
+
+    The order in the object list matters!
+    If you define features with functional dependencies, you need to know that the order in the object list that's passed to runSimulation is important!
+    A feature that depends on other features values needs these features to be generate before itself.
+    To ensure this, you need to place the features that are used in functional dependencies before the features that use them.
 
 Random walks
 .............

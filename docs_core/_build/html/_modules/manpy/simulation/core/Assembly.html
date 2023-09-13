@@ -284,10 +284,9 @@
 
         <span class="n">G</span><span class="o">.</span><span class="n">AssemblyList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-    <span class="c1"># =======================================================================</span>
-    <span class="c1"># parses inputs if they are given in a dictionary</span>
-    <span class="c1"># =======================================================================</span>
-    <span class="k">def</span> <span class="nf">parseInputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputsDict</span><span class="p">):</span>
+<div class="viewcode-block" id="Assembly.parseInputs"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Assembly.Assembly.parseInputs">[docs]</a>    <span class="k">def</span> <span class="nf">parseInputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputsDict</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;parses inputs if they are given in a dictionary&quot;&quot;&quot;</span>
+
         <span class="n">CoreObject</span><span class="o">.</span><span class="n">parseInputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputsDict</span><span class="p">)</span>
         <span class="n">processingTime</span> <span class="o">=</span> <span class="n">inputsDict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;processingTime&quot;</span><span class="p">,</span> <span class="p">{})</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">processingTime</span><span class="p">:</span>
@@ -314,12 +313,11 @@
         <span class="c1"># that the machine is being loaded</span>
         <span class="kn">from</span> <span class="nn">manpy.simulation.core.Globals</span> <span class="kn">import</span> <span class="n">G</span>
 
-        <span class="n">G</span><span class="o">.</span><span class="n">AssemblyList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">G</span><span class="o">.</span><span class="n">AssemblyList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
-    <span class="c1"># ===========================================================================</span>
-    <span class="c1"># initialize method</span>
-    <span class="c1"># ===========================================================================</span>
-    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Assembly.initialize"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Assembly.Assembly.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;initialize method&quot;&quot;&quot;</span>
+
         <span class="c1">#         Process.__init__(self)</span>
         <span class="n">CoreObject</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">waitToDispose</span> <span class="o">=</span> <span class="p">(</span>
@@ -371,14 +369,13 @@
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Res</span> <span class="o">=</span> <span class="n">simpy</span><span class="o">.</span><span class="n">Resource</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">numberOfArrivals</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">numberOfArrivals</span> <span class="o">=</span> <span class="mi">0</span></div>
 
     <span class="c1">#         self.Res.waitQ=[]</span>
 
-    <span class="c1"># ===========================================================================</span>
-    <span class="c1"># class generator</span>
-    <span class="c1"># ===========================================================================</span>
 <div class="viewcode-block" id="Assembly.run"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Assembly.Assembly.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;class generator&quot;&quot;&quot;</span>
+
         <span class="n">activeObjectQueue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getActiveObjectQueue</span><span class="p">()</span>
         <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
             <span class="kn">from</span> <span class="nn">manpy.simulation.core.Globals</span> <span class="kn">import</span> <span class="n">G</span>
@@ -554,10 +551,9 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;canDispose&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;interruptionStart&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span></div>
 
-    <span class="c1"># ===========================================================================</span>
-    <span class="c1"># checks if the Assembly can accept an entity</span>
-    <span class="c1"># ===========================================================================</span>
 <div class="viewcode-block" id="Assembly.canAccept"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Assembly.Assembly.canAccept">[docs]</a>    <span class="k">def</span> <span class="nf">canAccept</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;checks if the Assembly can accept an entity&quot;&quot;&quot;</span>
+
         <span class="c1"># get active and giver objects</span>
         <span class="n">activeObject</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getActiveObject</span><span class="p">()</span>
         <span class="n">activeObjectQueue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getActiveObjectQueue</span><span class="p">()</span>
@@ -578,10 +574,9 @@
                 <span class="k">return</span> <span class="ow">not</span> <span class="n">activeObject</span><span class="o">.</span><span class="n">entryIsAssignedTo</span><span class="p">()</span>
         <span class="k">return</span> <span class="kc">False</span></div>
 
-    <span class="c1"># ===========================================================================</span>
-    <span class="c1"># checks if the Assembly can accept a part or a Frame</span>
-    <span class="c1"># ===========================================================================</span>
 <div class="viewcode-block" id="Assembly.canAcceptAndIsRequested"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Assembly.Assembly.canAcceptAndIsRequested">[docs]</a>    <span class="k">def</span> <span class="nf">canAcceptAndIsRequested</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;checks if the Assembly can accept a part or a Frame&quot;&quot;&quot;</span>
+
         <span class="c1"># get the active and the giver objects</span>
         <span class="n">activeObject</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getActiveObject</span><span class="p">()</span>
         <span class="n">activeObjectQueue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getActiveObjectQueue</span><span class="p">()</span>
@@ -600,10 +595,9 @@
                 <span class="p">)</span>
         <span class="k">return</span> <span class="kc">False</span></div>
 
-    <span class="c1"># ===========================================================================</span>
-    <span class="c1"># checks if the Assembly can dispose an entity to the following object</span>
-    <span class="c1"># ===========================================================================</span>
 <div class="viewcode-block" id="Assembly.haveToDispose"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Assembly.Assembly.haveToDispose">[docs]</a>    <span class="k">def</span> <span class="nf">haveToDispose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;checks if the Assembly can dispose an entity to the following object&quot;&quot;&quot;</span>
+
         <span class="c1"># get active object and its queue</span>
         <span class="n">activeObject</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getActiveObject</span><span class="p">()</span>
         <span class="n">activeObjectQueue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getActiveObjectQueue</span><span class="p">()</span>
@@ -619,10 +613,9 @@
             <span class="ow">and</span> <span class="n">activeObject</span><span class="o">.</span><span class="n">waitToDispose</span>
         <span class="p">)</span></div>
 
-    <span class="c1"># ===========================================================================</span>
-    <span class="c1"># removes an entity from the Assembly</span>
-    <span class="c1"># ===========================================================================</span>
 <div class="viewcode-block" id="Assembly.removeEntity"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Assembly.Assembly.removeEntity">[docs]</a>    <span class="k">def</span> <span class="nf">removeEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;removes an entity from the Assembly&quot;&quot;&quot;</span>
+
         <span class="n">activeEntity</span> <span class="o">=</span> <span class="n">CoreObject</span><span class="o">.</span><span class="n">removeEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">)</span>  <span class="c1"># run the default method</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">waitToDispose</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">canAccept</span><span class="p">():</span>
@@ -630,11 +623,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">signalGiver</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">activeEntity</span></div>
 
-    <span class="c1"># ===========================================================================</span>
-    <span class="c1"># gets an entity from the giver</span>
-    <span class="c1"># it may handle both Parts and Frames</span>
-    <span class="c1"># ===========================================================================</span>
 <div class="viewcode-block" id="Assembly.getEntity"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Assembly.Assembly.getEntity">[docs]</a>    <span class="k">def</span> <span class="nf">getEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;gets an entity from the giver. it may handle both Parts and Frames&quot;&quot;&quot;</span>
+
         <span class="n">activeObject</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getActiveObject</span><span class="p">()</span>
         <span class="n">activeObjectQueue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getActiveObjectQueue</span><span class="p">()</span>
         <span class="n">giverObject</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getGiverObject</span><span class="p">()</span>
@@ -670,11 +661,11 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">signalGiver</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">activeEntity</span></div>
 
-    <span class="c1"># ===========================================================================</span>
-    <span class="c1"># appends entity to the receiver object. to be called by the removeEntity of the giver</span>
-    <span class="c1"># this method is created to be overridden by the Assembly class in its getEntity where Frames are loaded</span>
-    <span class="c1"># ===========================================================================</span>
 <div class="viewcode-block" id="Assembly.appendEntity"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Assembly.Assembly.appendEntity">[docs]</a>    <span class="k">def</span> <span class="nf">appendEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;appends entity to the receiver object. to be called by the removeEntity of the giver.</span>
+<span class="sd">        this method is created to be overridden by the Assembly class in its getEntity where Frames are loaded</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">activeObject</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getActiveObject</span><span class="p">()</span>
         <span class="n">activeObjectQueue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getActiveObjectQueue</span><span class="p">()</span>
         <span class="k">assert</span> <span class="n">entity</span><span class="p">,</span> <span class="s2">&quot;the entity to be appended cannot be None&quot;</span>
@@ -687,10 +678,9 @@
                 <span class="n">entity</span>
             <span class="p">)</span>  <span class="c1"># get the frame and append it to the internal queue</span></div>
 
-    <span class="c1"># ===========================================================================</span>
-    <span class="c1"># outputs results to JSON File</span>
-    <span class="c1"># ===========================================================================</span>
 <div class="viewcode-block" id="Assembly.outputResultsJSON"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.Assembly.Assembly.outputResultsJSON">[docs]</a>    <span class="k">def</span> <span class="nf">outputResultsJSON</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;outputs results to JSON File&quot;&quot;&quot;</span>
+
         <span class="kn">from</span> <span class="nn">manpy.simulation.core.Globals</span> <span class="kn">import</span> <span class="n">G</span>
 
         <span class="n">json</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;_class&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">class_name</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">&quot;results&quot;</span><span class="p">:</span> <span class="p">{}}</span>

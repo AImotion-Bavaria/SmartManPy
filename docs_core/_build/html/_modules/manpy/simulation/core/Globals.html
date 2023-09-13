@@ -729,7 +729,9 @@
     <span class="n">G</span><span class="o">.</span><span class="n">ObjectResourceList</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">G</span><span class="o">.</span><span class="n">trace_list</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">G</span><span class="o">.</span><span class="n">ftr_st</span> <span class="o">=</span> <span class="p">[]</span>   <span class="c1"># list of (feature, corresponding station)</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">feature_indices</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">G</span><span class="o">.</span><span class="n">ts_st</span> <span class="o">=</span> <span class="p">[]</span>   <span class="c1"># list of (timeseries, corresponding station)</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">timeseries_indices</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">G</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="n">db</span>
     <span class="n">G</span><span class="o">.</span><span class="n">objectList</span> <span class="o">=</span> <span class="n">objectList</span>
 
@@ -756,12 +758,14 @@
             <span class="n">G</span><span class="o">.</span><span class="n">ftr_st</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">f</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">G</span><span class="o">.</span><span class="n">ftr_st</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">f</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+        <span class="n">G</span><span class="o">.</span><span class="n">feature_indices</span><span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">ftr_st</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
     <span class="c1"># set ts_st</span>
     <span class="k">for</span> <span class="n">ts</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">TimeSeriesList</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">ts</span><span class="o">.</span><span class="n">victim</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">G</span><span class="o">.</span><span class="n">ts_st</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">ts</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">G</span><span class="o">.</span><span class="n">ts_st</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">ts</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">ts</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+        <span class="n">G</span><span class="o">.</span><span class="n">timeseries_indices</span><span class="p">[</span><span class="n">ts</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">ts_st</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
 
     <span class="c1"># connect to QuestDB</span>
     <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">db</span><span class="p">:</span>
@@ -957,6 +961,7 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;Result&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
 
+
 <div class="viewcode-block" id="getTimeSeriesData"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Globals.getTimeSeriesData">[docs]</a><span class="k">def</span> <span class="nf">getTimeSeriesData</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    getTimeSeriesData returns timeseries data</span>
@@ -977,6 +982,19 @@
 
     <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">value</span><span class="p">)),</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="get_feature_values_by_id"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Globals.get_feature_values_by_id">[docs]</a><span class="k">def</span> <span class="nf">get_feature_values_by_id</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span> <span class="n">feature_ids</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a list of the entity&#39;s feature values of the specified ids</span>
+
+<span class="sd">    :param entity: The entity of which the feature values should be retrieved.</span>
+<span class="sd">    :param feature_ids: List containing the IDs of the features (as string) that should be retrieved.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">feature_indices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">feature_ids</span><span class="p">]</span>
+    <span class="n">feature_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">entity</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">feature_values</span></div>
 </pre></div>
         </article>
       </div>

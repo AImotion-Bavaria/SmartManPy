@@ -237,6 +237,12 @@ this method is created to be overridden by the Assembly class in its getEntity w
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.appendPrevious">
+<span class="sig-name descname"><span class="pre">appendPrevious</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">previous</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.appendPrevious"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.appendPrevious" title="Permalink to this definition">#</a></dt>
+<dd><p>Append previous to self.previous</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.assignEntryTo">
 <span class="sig-name descname"><span class="pre">assignEntryTo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.assignEntryTo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.assignEntryTo" title="Permalink to this definition">#</a></dt>
 <dd><p>assign Exit of the object</p>
@@ -282,6 +288,20 @@ this method is created to be overridden by the Assembly class in its getEntity w
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.class_name">
 <span class="sig-name descname"><span class="pre">class_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'manpy.CoreObject'</span></em><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.class_name" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.defineNext">
+<span class="sig-name descname"><span class="pre">defineNext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">successorList</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.defineNext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.defineNext" title="Permalink to this definition">#</a></dt>
+<dd><p>sets the next element for the object and automatically registers itself as previous object of all objects in successorList.
+:param successorList:
+:return: None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.definePrevious">
+<span class="sig-name descname"><span class="pre">definePrevious</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predecessorList</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.definePrevious"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.definePrevious" title="Permalink to this definition">#</a></dt>
+<dd><p>Sets self.previous</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.defineRouting">
@@ -373,6 +393,13 @@ this method is created to be overridden by the Assembly class in its getEntity w
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.get_routing_target">
+<span class="sig-name descname"><span class="pre">get_routing_target</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.get_routing_target"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.get_routing_target" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the object.
+This method is used for dynamic routing in order to handle CoreObjects and ProductionLineModules differently</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.haveToDispose">
 <span class="sig-name descname"><span class="pre">haveToDispose</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callerObject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.haveToDispose"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.haveToDispose" title="Permalink to this definition">#</a></dt>
 <dd><p>checks if the Object can dispose an entity to the following object</p>
@@ -447,6 +474,11 @@ this method is created to be overridden by the Assembly class in its getEntity w
 <span class="sig-name descname"><span class="pre">preemptReceiver</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.preemptReceiver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.preemptReceiver" title="Permalink to this definition">#</a></dt>
 <dd><p>check whether there is a critical entity to be disposed and if preemption is required</p>
 </dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.printRouting">
+<span class="sig-name descname"><span class="pre">printRouting</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.printRouting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.printRouting" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.removeEntity">
@@ -737,6 +769,12 @@ this method is created to be overridden by the Assembly class in its getEntity w
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="manpy.simulation.core.Exit.Exit.defineNext">
+<span class="sig-name descname"><span class="pre">defineNext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">successorList</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Exit.html#Exit.defineNext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Exit.Exit.defineNext" title="Permalink to this definition">#</a></dt>
+<dd><p>Safeguarding for mistakenly trying to set the next element on an Exit object</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Exit.Exit.defineRouting">
 <span class="sig-name descname"><span class="pre">defineRouting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predecessorList</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Exit.html#Exit.defineRouting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Exit.Exit.defineRouting" title="Permalink to this definition">#</a></dt>
 <dd><p>sets the routing in element for the Exit</p>
@@ -996,6 +1034,20 @@ This dataframe contains the columns:
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>dataframe with entity-ID|time|value as columns</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="manpy.simulation.core.Globals.get_feature_values_by_id">
+<span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.Globals.</span></span><span class="sig-name descname"><span class="pre">get_feature_values_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feature_ids</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Globals.html#get_feature_values_by_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Globals.get_feature_values_by_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a list of the entity’s feature values of the specified ids</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entity</strong> – The entity of which the feature values should be retrieved.</p></li>
+<li><p><strong>feature_ids</strong> – List containing the IDs of the features (as string) that should be retrieved.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -1538,6 +1590,12 @@ it checks also who called it and returns TRUE only to the receiver that will giv
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="manpy.simulation.core.Source.Source.appendPrevious">
+<span class="sig-name descname"><span class="pre">appendPrevious</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">previous</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Source.html#Source.appendPrevious"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Source.Source.appendPrevious" title="Permalink to this definition">#</a></dt>
+<dd><p>Safeguarding to avoid setting predecessors to sources</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Source.Source.calculateInterArrivalTime">
 <span class="sig-name descname"><span class="pre">calculateInterArrivalTime</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Source.html#Source.calculateInterArrivalTime"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Source.Source.calculateInterArrivalTime" title="Permalink to this definition">#</a></dt>
 <dd><p>calculates the processing time</p>
@@ -1547,6 +1605,12 @@ it checks also who called it and returns TRUE only to the receiver that will giv
 <dt class="sig sig-object py" id="manpy.simulation.core.Source.Source.createEntity">
 <span class="sig-name descname"><span class="pre">createEntity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Source.html#Source.createEntity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Source.Source.createEntity" title="Permalink to this definition">#</a></dt>
 <dd><p>creates an Entity</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="manpy.simulation.core.Source.Source.definePrevious">
+<span class="sig-name descname"><span class="pre">definePrevious</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Source.html#Source.definePrevious"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Source.Source.definePrevious" title="Permalink to this definition">#</a></dt>
+<dd><p>Safeguarding to avoid setting predecessors to sources</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1842,6 +1906,7 @@ retrieved state and a label for the state.</p>
 <li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.activeQueueIsEmpty"><code class="docutils literal notranslate"><span class="pre">CoreObject.activeQueueIsEmpty()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.addBlockage"><code class="docutils literal notranslate"><span class="pre">CoreObject.addBlockage()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.appendEntity"><code class="docutils literal notranslate"><span class="pre">CoreObject.appendEntity()</span></code></a></li>
+<li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.appendPrevious"><code class="docutils literal notranslate"><span class="pre">CoreObject.appendPrevious()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.assignEntryTo"><code class="docutils literal notranslate"><span class="pre">CoreObject.assignEntryTo()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.assignExitTo"><code class="docutils literal notranslate"><span class="pre">CoreObject.assignExitTo()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.calculateProcessingTime"><code class="docutils literal notranslate"><span class="pre">CoreObject.calculateProcessingTime()</span></code></a></li>
@@ -1850,6 +1915,8 @@ retrieved state and a label for the state.</p>
 <li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.canAcceptAndIsRequested"><code class="docutils literal notranslate"><span class="pre">CoreObject.canAcceptAndIsRequested()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.checkIfActive"><code class="docutils literal notranslate"><span class="pre">CoreObject.checkIfActive()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.class_name"><code class="docutils literal notranslate"><span class="pre">CoreObject.class_name</span></code></a></li>
+<li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.defineNext"><code class="docutils literal notranslate"><span class="pre">CoreObject.defineNext()</span></code></a></li>
+<li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.definePrevious"><code class="docutils literal notranslate"><span class="pre">CoreObject.definePrevious()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.defineRouting"><code class="docutils literal notranslate"><span class="pre">CoreObject.defineRouting()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.endOperationActions"><code class="docutils literal notranslate"><span class="pre">CoreObject.endOperationActions()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.entryIsAssignedTo"><code class="docutils literal notranslate"><span class="pre">CoreObject.entryIsAssignedTo()</span></code></a></li>
@@ -1863,6 +1930,7 @@ retrieved state and a label for the state.</p>
 <li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.getGiverObjectQueue"><code class="docutils literal notranslate"><span class="pre">CoreObject.getGiverObjectQueue()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.getReceiverObject"><code class="docutils literal notranslate"><span class="pre">CoreObject.getReceiverObject()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.getReceiverObjectQueue"><code class="docutils literal notranslate"><span class="pre">CoreObject.getReceiverObjectQueue()</span></code></a></li>
+<li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.get_routing_target"><code class="docutils literal notranslate"><span class="pre">CoreObject.get_routing_target()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.haveToDispose"><code class="docutils literal notranslate"><span class="pre">CoreObject.haveToDispose()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.identifyEntityToGet"><code class="docutils literal notranslate"><span class="pre">CoreObject.identifyEntityToGet()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.initialAllocationRequest"><code class="docutils literal notranslate"><span class="pre">CoreObject.initialAllocationRequest()</span></code></a></li>
@@ -1876,6 +1944,7 @@ retrieved state and a label for the state.</p>
 <li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.postProcessing"><code class="docutils literal notranslate"><span class="pre">CoreObject.postProcessing()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.preempt"><code class="docutils literal notranslate"><span class="pre">CoreObject.preempt()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.preemptReceiver"><code class="docutils literal notranslate"><span class="pre">CoreObject.preemptReceiver()</span></code></a></li>
+<li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.printRouting"><code class="docutils literal notranslate"><span class="pre">CoreObject.printRouting()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.removeEntity"><code class="docutils literal notranslate"><span class="pre">CoreObject.removeEntity()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.run"><code class="docutils literal notranslate"><span class="pre">CoreObject.run()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.selectGiver"><code class="docutils literal notranslate"><span class="pre">CoreObject.selectGiver()</span></code></a></li>
@@ -1935,6 +2004,7 @@ retrieved state and a label for the state.</p>
 <li><a class="reference internal" href="#manpy.simulation.core.Exit.Exit.canAccept"><code class="docutils literal notranslate"><span class="pre">Exit.canAccept()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Exit.Exit.canAcceptAndIsRequested"><code class="docutils literal notranslate"><span class="pre">Exit.canAcceptAndIsRequested()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Exit.Exit.clear"><code class="docutils literal notranslate"><span class="pre">Exit.clear()</span></code></a></li>
+<li><a class="reference internal" href="#manpy.simulation.core.Exit.Exit.defineNext"><code class="docutils literal notranslate"><span class="pre">Exit.defineNext()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Exit.Exit.defineRouting"><code class="docutils literal notranslate"><span class="pre">Exit.defineRouting()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Exit.Exit.family"><code class="docutils literal notranslate"><span class="pre">Exit.family</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Exit.Exit.getEntity"><code class="docutils literal notranslate"><span class="pre">Exit.getEntity()</span></code></a></li>
@@ -1979,6 +2049,7 @@ retrieved state and a label for the state.</p>
 <li><a class="reference internal" href="#manpy.simulation.core.Globals.getPhrase"><code class="docutils literal notranslate"><span class="pre">getPhrase()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Globals.getSupportedPrintKwrds"><code class="docutils literal notranslate"><span class="pre">getSupportedPrintKwrds()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Globals.getTimeSeriesData"><code class="docutils literal notranslate"><span class="pre">getTimeSeriesData()</span></code></a></li>
+<li><a class="reference internal" href="#manpy.simulation.core.Globals.get_feature_values_by_id"><code class="docutils literal notranslate"><span class="pre">get_feature_values_by_id()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Globals.moveExcess"><code class="docutils literal notranslate"><span class="pre">moveExcess()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Globals.runSimulation"><code class="docutils literal notranslate"><span class="pre">runSimulation()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Globals.setWIP"><code class="docutils literal notranslate"><span class="pre">setWIP()</span></code></a></li>
@@ -2086,8 +2157,10 @@ retrieved state and a label for the state.</p>
 </li>
 <li><a class="reference internal" href="#manpy.simulation.core.Source.Source"><code class="docutils literal notranslate"><span class="pre">Source</span></code></a><ul>
 <li><a class="reference internal" href="#manpy.simulation.core.Source.Source.appendEntity"><code class="docutils literal notranslate"><span class="pre">Source.appendEntity()</span></code></a></li>
+<li><a class="reference internal" href="#manpy.simulation.core.Source.Source.appendPrevious"><code class="docutils literal notranslate"><span class="pre">Source.appendPrevious()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Source.Source.calculateInterArrivalTime"><code class="docutils literal notranslate"><span class="pre">Source.calculateInterArrivalTime()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Source.Source.createEntity"><code class="docutils literal notranslate"><span class="pre">Source.createEntity()</span></code></a></li>
+<li><a class="reference internal" href="#manpy.simulation.core.Source.Source.definePrevious"><code class="docutils literal notranslate"><span class="pre">Source.definePrevious()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Source.Source.defineRouting"><code class="docutils literal notranslate"><span class="pre">Source.defineRouting()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Source.Source.initialize"><code class="docutils literal notranslate"><span class="pre">Source.initialize()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.Source.Source.removeEntity"><code class="docutils literal notranslate"><span class="pre">Source.removeEntity()</span></code></a></li>

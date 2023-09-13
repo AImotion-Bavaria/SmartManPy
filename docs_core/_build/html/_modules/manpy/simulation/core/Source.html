@@ -329,6 +329,9 @@
 
         <span class="c1"># String that shows the type of object</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s2">&quot;Source&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">isNext</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">isPrevious</span> <span class="o">=</span> <span class="kc">True</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">rng</span> <span class="o">=</span> <span class="n">RandomNumberGenerator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interArrivalTime</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">capacity</span> <span class="o">=</span> <span class="n">capacity</span>
 
@@ -420,6 +423,14 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;sets the routing out element for the Source&quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">successorList</span></div>
+
+<div class="viewcode-block" id="Source.definePrevious"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Source.Source.definePrevious">[docs]</a>    <span class="k">def</span> <span class="nf">definePrevious</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Safeguarding to avoid setting predecessors to sources&quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cannot set predecessors to sources.&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Source.appendPrevious"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Source.Source.appendPrevious">[docs]</a>    <span class="k">def</span> <span class="nf">appendPrevious</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">previous</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Safeguarding to avoid setting predecessors to sources&quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cannot set predecessors to sources.&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Source.createEntity"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Source.Source.createEntity">[docs]</a>    <span class="k">def</span> <span class="nf">createEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;creates an Entity&quot;&quot;&quot;</span>

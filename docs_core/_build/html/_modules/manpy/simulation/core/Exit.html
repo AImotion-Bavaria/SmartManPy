@@ -236,6 +236,9 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">cancelCondition</span><span class="o">=</span><span class="p">{},</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s2">&quot;Exit&quot;</span>  <span class="c1"># XXX needed ?</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">isNext</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">isPrevious</span> <span class="o">=</span> <span class="kc">False</span>
+
         <span class="c1"># lists to hold statistics of multiple runs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Exits</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">UnitExits</span> <span class="o">=</span> <span class="p">[]</span>
@@ -279,6 +282,10 @@
 <div class="viewcode-block" id="Exit.defineRouting"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Exit.Exit.defineRouting">[docs]</a>    <span class="k">def</span> <span class="nf">defineRouting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predecessorList</span><span class="o">=</span><span class="p">[]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;sets the routing in element for the Exit&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">previous</span> <span class="o">=</span> <span class="n">predecessorList</span>  <span class="c1"># no successorList for the Exit</span></div>
+
+<div class="viewcode-block" id="Exit.defineNext"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Exit.Exit.defineNext">[docs]</a>    <span class="k">def</span> <span class="nf">defineNext</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">successorList</span><span class="o">=</span><span class="p">[]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Safeguarding for mistakenly trying to set the next element on an Exit object&quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Trying to set successors for Exits does not have any effects.&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Exit.canAccept"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Exit.Exit.canAccept">[docs]</a>    <span class="k">def</span> <span class="nf">canAccept</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;checks if the Exit can accept an entity&quot;&quot;&quot;</span>

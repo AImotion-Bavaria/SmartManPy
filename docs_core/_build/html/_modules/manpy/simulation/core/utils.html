@@ -198,8 +198,6 @@
 <span></span><span class="kn">import</span> <span class="nn">sys</span>
 
 
-<span class="c1"># TODO add to docs!</span>
-
 <div class="viewcode-block" id="check_config_dict"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.utils.check_config_dict">[docs]</a><span class="k">def</span> <span class="nf">check_config_dict</span><span class="p">(</span><span class="n">config_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">keys</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">object_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Function to check if config dictionaries contain a mistake.</span>
@@ -233,8 +231,51 @@
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;INFO: </span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="define_sequential_routing"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.utils.define_sequential_routing">[docs]</a><span class="k">def</span> <span class="nf">define_sequential_routing</span><span class="p">(</span><span class="n">sim_object</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
-    <span class="k">pass</span></div>
+<div class="viewcode-block" id="ProductionLineStation"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.utils.ProductionLineStation">[docs]</a><span class="k">class</span> <span class="nc">ProductionLineStation</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predecessors</span><span class="p">,</span> <span class="nb">object</span><span class="p">,</span> <span class="n">successors</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">predecessors</span> <span class="o">=</span> <span class="n">predecessors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object</span> <span class="o">=</span> <span class="nb">object</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">successors</span> <span class="o">=</span> <span class="n">successors</span></div>
+
+
+<span class="c1"># class SequentialProductionLine:</span>
+<span class="c1">#</span>
+<span class="c1">#     def __init__(self):</span>
+<span class="c1">#         self.stations = []</span>
+<span class="c1">#</span>
+<span class="c1">#     def add_source(self, source: Source, successors: list):</span>
+<span class="c1">#         self.stations.append(ProductionLineStation(None, source, successors))</span>
+<span class="c1">#</span>
+<span class="c1">#     def add_exit(self, predecessors: list, exit: Exit):</span>
+<span class="c1">#         self.stations.append(ProductionLineStation(predecessors, exit, None))</span>
+<span class="c1">#</span>
+<span class="c1">#     # TODO it&#39;s possible that machine is eg an Assembly...</span>
+<span class="c1">#     def add_machine(self, predecessors: list, machine: Machine, successors: list):</span>
+<span class="c1">#         self.stations.append(ProductionLineStation(predecessors, machine, successors))</span>
+<span class="c1">#</span>
+<span class="c1">#     def __check_basic_line_consistency(self):</span>
+<span class="c1">#         assert(isinstance(self.stations[0].object, Source), True)</span>
+<span class="c1">#         assert(isinstance(self.stations[-1].object, Exit), True)</span>
+<span class="c1">#</span>
+<span class="c1">#     def generate_routing(self, print_routing=True):</span>
+<span class="c1">#         self.__check_basic_line_consistency()</span>
+<span class="c1">#</span>
+<span class="c1">#         for station in self.stations:</span>
+<span class="c1">#             if station.predecessors is None:</span>
+<span class="c1">#                 station.object.defineRouting(station.successors)</span>
+<span class="c1">#                 if print_routing:</span>
+<span class="c1">#                     print(f&quot;Added {station.object} as source. Successors: {station.successors}&quot;)</span>
+<span class="c1">#</span>
+<span class="c1">#             elif station.successors is None:</span>
+<span class="c1">#                 station.object.defineRouting(station.predecessors)</span>
+<span class="c1">#                 if print_routing:</span>
+<span class="c1">#                     print(f&quot;Added {station.object} as exit. Predecessors: {station.predecessors}&quot;)</span>
+<span class="c1">#</span>
+<span class="c1">#             else:</span>
+<span class="c1">#                 station.object.defineRouting(station.predecessors, station.successors)</span>
+<span class="c1">#                 if print_routing:</span>
+<span class="c1">#                     print(f&quot;Added {station.object} as machine. Successors: {station.successors}. Predecessors: {station.predecessors}&quot;)</span>
+
 </pre></div>
         </article>
       </div>

@@ -1,5 +1,6 @@
 from manpy.simulation.imports import Machine, Feature, Failure
 from manpy.simulation.core.StateController import ContinuosNormalDistribution
+from manpy.simulation.core.ProductionLineModule import SequentialProductionLineModule
 
 
 def resistance_failure_condition(self):
@@ -28,3 +29,12 @@ Tab_Str_Resistance = Feature("Tab_Str_Resistance", "Tab_Str_Resistance", victim=
 
 Tab_Str_Force = Feature("Tab_Str_Force", "Tab_Str_Force", victim=Tabber_Stringer,
                         distribution={"Feature": {"Normal": {"mean": 180, "stdev": 30}}})
+
+routing = [
+    [Tabber_Stringer]
+]
+
+
+features = [Tab_Str_Power, Tab_Str_Resistance, Tab_Str_Force, Tab_Str_Voltage,  Tab_Str_Resistance_Too_High]
+
+tabber_str_module = SequentialProductionLineModule(routing, features, "Tabber_Str_Module")

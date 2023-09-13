@@ -311,6 +311,23 @@ In the following example, we simply check if a given Feature value is inside a c
 <span class="linenos">7</span>        <span class="k">return</span> <span class="kc">False</span>
 </pre></div>
 </div>
+<p>In this example, we had to access the feature value by index, which is usually very tedious.
+We therefore added the function “get_feature_values_by_id” in Globals.py, that let’s you access certain feature values of an entity by the feature ID:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">from</span> <span class="nn">manpy.simulation.core.Globals</span> <span class="kn">import</span> <span class="n">get_feature_values_by_id</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="k">def</span> <span class="nf">condition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos"> 4</span>    <span class="c1"># self is w.r.t. to the machine in which we apply the condition!</span>
+<span class="linenos"> 5</span>    <span class="n">activeEntity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span>    <span class="c1"># Access first element since function returns a list</span>
+<span class="linenos"> 8</span>    <span class="n">feature_value</span> <span class="o">=</span> <span class="n">get_feature_values_by_id</span><span class="p">(</span><span class="n">activeEntity</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;f1&quot;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span>    <span class="k">if</span> <span class="n">feature_value</span> <span class="o">&gt;</span> <span class="mi">7</span> <span class="ow">or</span> <span class="n">feature_value</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+<span class="linenos">11</span>        <span class="k">return</span> <span class="kc">True</span>
+<span class="linenos">12</span>    <span class="k">else</span><span class="p">:</span>
+<span class="linenos">13</span>        <span class="k">return</span> <span class="kc">False</span>
+</pre></div>
+</div>
 </section>
 <section id="features">
 <h3>Features<a class="headerlink" href="#features" title="Permalink to this heading">#</a></h3>
@@ -357,6 +374,13 @@ However, it is also possible to have strict functional dependencies between feat
                    <span class="n">dependent</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Function&quot;</span><span class="p">:</span> <span class="s2">&quot;10*x + 3&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">feature1</span><span class="p">}</span>
                    <span class="p">)</span>
 </pre></div>
+</div>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>The order in the object list matters!
+If you define features with functional dependencies, you need to know that the order in the object list that’s passed to runSimulation is important!
+A feature that depends on other features values needs these features to be generate before itself.
+To ensure this, you need to place the features that are used in functional dependencies before the features that use them.</p>
 </div>
 </section>
 <section id="random-walks">
