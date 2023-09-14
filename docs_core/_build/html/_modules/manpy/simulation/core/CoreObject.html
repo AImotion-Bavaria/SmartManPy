@@ -219,7 +219,7 @@
 <span class="kn">from</span> <span class="nn">manpy.simulation.ManPyObject</span> <span class="kn">import</span> <span class="n">ManPyObject</span>
 
 
-<div class="viewcode-block" id="CoreObject"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject">[docs]</a><span class="k">class</span> <span class="nc">CoreObject</span><span class="p">(</span><span class="n">ManPyObject</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject">[docs]</a><span class="k">class</span> <span class="nc">CoreObject</span><span class="p">(</span><span class="n">ManPyObject</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Created on 12 Jul 2012</span>
 
@@ -299,7 +299,7 @@
         <span class="c1"># keep wip stats for every replication</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">WipStat</span> <span class="o">=</span> <span class="p">[]</span>
 
-<div class="viewcode-block" id="CoreObject.initialize"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.initialize"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">env</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Up</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Boolean that shows if the object is in failure (&quot;Down&quot;) or not (&quot;up&quot;)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">onShift</span> <span class="o">=</span> <span class="kc">True</span>
@@ -480,7 +480,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">endShiftTimes</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">startShiftTimes</span> <span class="o">=</span> <span class="p">[]</span></div>
 
-<div class="viewcode-block" id="CoreObject.run"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.run"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        the main process of the core object, this is dummy, every object must have its own implementation</span>
 
@@ -488,7 +488,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Subclass must define &#39;run&#39; method&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CoreObject.defineRouting"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.defineRouting">[docs]</a>    <span class="k">def</span> <span class="nf">defineRouting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predecessorList</span><span class="o">=</span><span class="p">[],</span> <span class="n">successorList</span><span class="o">=</span><span class="p">[]):</span>
+<div class="viewcode-block" id="CoreObject.defineRouting"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.defineRouting">[docs]</a>    <span class="k">def</span> <span class="nf">defineRouting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predecessorList</span><span class="o">=</span><span class="p">[],</span> <span class="n">successorList</span><span class="o">=</span><span class="p">[]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        sets the routing in and out elements for the Object</span>
 
@@ -500,7 +500,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">successorList</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">previous</span> <span class="o">=</span> <span class="n">predecessorList</span></div>
 
-<div class="viewcode-block" id="CoreObject.defineNext"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.defineNext">[docs]</a>    <span class="k">def</span> <span class="nf">defineNext</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">successorList</span><span class="o">=</span><span class="p">[]):</span>
+<div class="viewcode-block" id="CoreObject.defineNext"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.defineNext">[docs]</a>    <span class="k">def</span> <span class="nf">defineNext</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">successorList</span><span class="o">=</span><span class="p">[]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        sets the next element for the object and automatically registers itself as previous object of all objects in successorList.</span>
 <span class="sd">        :param successorList:</span>
@@ -513,12 +513,12 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">get_routing_target</span><span class="p">())</span>
                 <span class="n">s</span><span class="o">.</span><span class="n">appendPrevious</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CoreObject.definePrevious"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.definePrevious">[docs]</a>    <span class="k">def</span> <span class="nf">definePrevious</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predecessorList</span><span class="o">=</span><span class="p">[]):</span>
+<div class="viewcode-block" id="CoreObject.definePrevious"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.definePrevious">[docs]</a>    <span class="k">def</span> <span class="nf">definePrevious</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predecessorList</span><span class="o">=</span><span class="p">[]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets self.previous&quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">previous</span> <span class="o">=</span> <span class="n">predecessorList</span></div>
 
-<div class="viewcode-block" id="CoreObject.appendPrevious"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.appendPrevious">[docs]</a>    <span class="k">def</span> <span class="nf">appendPrevious</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">previous</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.appendPrevious"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.appendPrevious">[docs]</a>    <span class="k">def</span> <span class="nf">appendPrevious</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">previous</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Append previous to self.previous&quot;&quot;&quot;</span>
         <span class="c1"># first checks if previous can be a previous object</span>
         <span class="c1"># e.g., source cannot be a previous object</span>
@@ -527,13 +527,13 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Registering </span><span class="si">{</span><span class="n">previous</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> as previous in </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> failed.&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CoreObject.get_routing_target"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.get_routing_target">[docs]</a>    <span class="k">def</span> <span class="nf">get_routing_target</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.get_routing_target"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.get_routing_target">[docs]</a>    <span class="k">def</span> <span class="nf">get_routing_target</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the object.</span>
 <span class="sd">        This method is used for dynamic routing in order to handle CoreObjects and ProductionLineModules differently&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="CoreObject.printRouting"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.printRouting">[docs]</a>    <span class="k">def</span> <span class="nf">printRouting</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.printRouting"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.printRouting">[docs]</a>    <span class="k">def</span> <span class="nf">printRouting</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># print(f&quot;{self.name}&quot;, end=&quot;&quot;)</span>
         <span class="c1">#</span>
         <span class="c1"># print(&quot;&quot;)</span>
@@ -542,14 +542,14 @@
         <span class="c1">#     s.printRouting()</span>
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="CoreObject.initialSignalReceiver"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.initialSignalReceiver">[docs]</a>    <span class="k">def</span> <span class="nf">initialSignalReceiver</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.initialSignalReceiver"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.initialSignalReceiver">[docs]</a>    <span class="k">def</span> <span class="nf">initialSignalReceiver</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        checks if there is anything set as WIP at the begging of the simulation and sends an event to initialize the simulation</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">haveToDispose</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">signalReceiver</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="CoreObject.initialAllocationRequest"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.initialAllocationRequest">[docs]</a>    <span class="k">def</span> <span class="nf">initialAllocationRequest</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.initialAllocationRequest"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.initialAllocationRequest">[docs]</a>    <span class="k">def</span> <span class="nf">initialAllocationRequest</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># TODO if the station is operated, and the operators have skills defined then the SkilledOperatorRouter should be signalled</span>
         <span class="c1"># XXX: there may be a case where one object is not assigned an operator, in that case we do not want to invoke the allocation routine</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">checkForDedicatedOperators</span><span class="p">():</span>
@@ -566,7 +566,7 @@
             <span class="k">if</span> <span class="n">allocationNeeded</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">requestAllocation</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="CoreObject.removeEntity"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.removeEntity">[docs]</a>    <span class="k">def</span> <span class="nf">removeEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resetFlags</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">addBlockage</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.removeEntity"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.removeEntity">[docs]</a>    <span class="k">def</span> <span class="nf">removeEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resetFlags</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">addBlockage</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        removes an Entity from the Object the Entity to be removed is passed as argument by getEntity of the receiver</span>
 
@@ -615,7 +615,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">sendSignal</span><span class="p">(</span><span class="n">receiver</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">signal</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">entityRemoved</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">entity</span></div>
 
-<div class="viewcode-block" id="CoreObject.appendEntity"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.appendEntity">[docs]</a>    <span class="k">def</span> <span class="nf">appendEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.appendEntity"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.appendEntity">[docs]</a>    <span class="k">def</span> <span class="nf">appendEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        appends entity to the receiver object. to be called by the removeEntity of the giver</span>
 <span class="sd">        this method is created to be overridden by the Assembly class in its getEntity where Frames are loaded</span>
@@ -624,21 +624,21 @@
         <span class="n">activeObjectQueue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span>
         <span class="n">activeObjectQueue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CoreObject.identifyEntityToGet"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.identifyEntityToGet">[docs]</a>    <span class="k">def</span> <span class="nf">identifyEntityToGet</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.identifyEntityToGet"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.identifyEntityToGet">[docs]</a>    <span class="k">def</span> <span class="nf">identifyEntityToGet</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        called be getEntity it identifies the Entity to be obtained so that getEntity gives it to removeEntity as argument</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">giverObjectQueue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getGiverObjectQueue</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">giverObjectQueue</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="CoreObject.addBlockage"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.addBlockage">[docs]</a>    <span class="k">def</span> <span class="nf">addBlockage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.addBlockage"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.addBlockage">[docs]</a>    <span class="k">def</span> <span class="nf">addBlockage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        adds the blockage time to totalBlockageTime each time an Entity is removed</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeLastBlockageStarted</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">totalBlockageTime</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeLastBlockageStarted</span></div>
 
-<div class="viewcode-block" id="CoreObject.getEntity"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.getEntity">[docs]</a>    <span class="k">def</span> <span class="nf">getEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.getEntity"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.getEntity">[docs]</a>    <span class="k">def</span> <span class="nf">getEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        gets an entity from the giver</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -718,13 +718,13 @@
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">activeEntity</span></div>
 
-<div class="viewcode-block" id="CoreObject.updateNext"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.updateNext">[docs]</a>    <span class="k">def</span> <span class="nf">updateNext</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.updateNext"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.updateNext">[docs]</a>    <span class="k">def</span> <span class="nf">updateNext</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        updates the next list of the object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="CoreObject.preemptReceiver"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.preemptReceiver">[docs]</a>    <span class="k">def</span> <span class="nf">preemptReceiver</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.preemptReceiver"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.preemptReceiver">[docs]</a>    <span class="k">def</span> <span class="nf">preemptReceiver</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        check whether there is a critical entity to be disposed and if preemption is required</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -803,7 +803,7 @@
                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wipStatList</span><span class="p">,</span> <span class="p">[[</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="p">,</span> <span class="n">wip</span><span class="p">]])</span>
             <span class="p">)</span></div>
 
-<div class="viewcode-block" id="CoreObject.findReceiversFor"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.findReceiversFor">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="CoreObject.findReceiversFor"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.findReceiversFor">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">findReceiversFor</span><span class="p">(</span><span class="n">activeObject</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        find possible receivers</span>
@@ -819,7 +819,7 @@
             <span class="n">receivers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">receivers</span></div>
 
-<div class="viewcode-block" id="CoreObject.signalReceiver"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.signalReceiver">[docs]</a>    <span class="k">def</span> <span class="nf">signalReceiver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transmitter</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.signalReceiver"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.signalReceiver">[docs]</a>    <span class="k">def</span> <span class="nf">signalReceiver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transmitter</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;signal the successor that the object can dispose an entity&quot;&quot;&quot;</span>
 
         <span class="n">possibleReceivers</span> <span class="o">=</span> <span class="p">(</span>
@@ -862,7 +862,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">preemptReceiver</span><span class="p">()</span>
         <span class="k">return</span> <span class="kc">False</span></div>
 
-<div class="viewcode-block" id="CoreObject.selectReceiver"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.selectReceiver">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="CoreObject.selectReceiver"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.selectReceiver">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">selectReceiver</span><span class="p">(</span><span class="n">possibleReceivers</span><span class="o">=</span><span class="p">[]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;select a receiver Object&quot;&quot;&quot;</span>
 
@@ -885,12 +885,12 @@
                 <span class="p">)</span>
         <span class="k">return</span> <span class="n">receiver</span></div>
 
-<div class="viewcode-block" id="CoreObject.sortEntitiesForReceiver"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.sortEntitiesForReceiver">[docs]</a>    <span class="k">def</span> <span class="nf">sortEntitiesForReceiver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">receiver</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.sortEntitiesForReceiver"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.sortEntitiesForReceiver">[docs]</a>    <span class="k">def</span> <span class="nf">sortEntitiesForReceiver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">receiver</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;sort the entities of the queue for the receiver&quot;&quot;&quot;</span>
 
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="CoreObject.findGiversFor"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.findGiversFor">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="CoreObject.findGiversFor"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.findGiversFor">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">findGiversFor</span><span class="p">(</span><span class="n">activeObject</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;find possible givers&quot;&quot;&quot;</span>
 
@@ -910,7 +910,7 @@
                 <span class="n">givers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">givers</span></div>
 
-<div class="viewcode-block" id="CoreObject.signalGiver"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.signalGiver">[docs]</a>    <span class="k">def</span> <span class="nf">signalGiver</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.signalGiver"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.signalGiver">[docs]</a>    <span class="k">def</span> <span class="nf">signalGiver</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;signal the giver that the entity is removed from its internalQueue&quot;&quot;&quot;</span>
 
         <span class="n">possibleGivers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">findGiversFor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -936,7 +936,7 @@
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="kc">False</span></div>
 
-<div class="viewcode-block" id="CoreObject.selectGiver"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.selectGiver">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="CoreObject.selectGiver"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.selectGiver">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">selectGiver</span><span class="p">(</span><span class="n">possibleGivers</span><span class="o">=</span><span class="p">[]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;select a giver Object&quot;&quot;&quot;</span>
 
@@ -955,7 +955,7 @@
                 <span class="n">maxTimeWaiting</span> <span class="o">=</span> <span class="n">timeWaiting</span>
         <span class="k">return</span> <span class="n">giver</span></div>
 
-<div class="viewcode-block" id="CoreObject.postProcessing"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.postProcessing">[docs]</a>    <span class="k">def</span> <span class="nf">postProcessing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MaxSimtime</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.postProcessing"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.postProcessing">[docs]</a>    <span class="k">def</span> <span class="nf">postProcessing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MaxSimtime</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;actions to be taken after the simulation ends&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="n">MaxSimtime</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
@@ -1079,29 +1079,29 @@
         <span class="n">activeObject</span><span class="o">.</span><span class="n">OnBreak</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">totalBreakTime</span> <span class="o">/</span> <span class="n">MaxSimtime</span><span class="p">)</span>
         <span class="n">activeObject</span><span class="o">.</span><span class="n">WipStat</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wipStatList</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span></div>
 
-<div class="viewcode-block" id="CoreObject.outputResultsJSON"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.outputResultsJSON">[docs]</a>    <span class="k">def</span> <span class="nf">outputResultsJSON</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.outputResultsJSON"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.outputResultsJSON">[docs]</a>    <span class="k">def</span> <span class="nf">outputResultsJSON</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;outputs results to JSON File&quot;&quot;&quot;</span>
 
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="CoreObject.haveToDispose"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.haveToDispose">[docs]</a>    <span class="k">def</span> <span class="nf">haveToDispose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.haveToDispose"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.haveToDispose">[docs]</a>    <span class="k">def</span> <span class="nf">haveToDispose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;checks if the Object can dispose an entity to the following object&quot;&quot;&quot;</span>
 
         <span class="n">activeObjectQueue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">activeObjectQueue</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span></div>
 
-<div class="viewcode-block" id="CoreObject.canAcceptAndIsRequested"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.canAcceptAndIsRequested">[docs]</a>    <span class="k">def</span> <span class="nf">canAcceptAndIsRequested</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.canAcceptAndIsRequested"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.canAcceptAndIsRequested">[docs]</a>    <span class="k">def</span> <span class="nf">canAcceptAndIsRequested</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;checks if the Object can accept an entity and there is an entity in some possible giver waiting for it&quot;&quot;&quot;</span>
 
         <span class="k">pass</span></div>
 
     <span class="c1"># =======================================================================</span>
-<div class="viewcode-block" id="CoreObject.canAccept"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.canAccept">[docs]</a>    <span class="k">def</span> <span class="nf">canAccept</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.canAccept"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.canAccept">[docs]</a>    <span class="k">def</span> <span class="nf">canAccept</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;checks if the Object can accept an entity&quot;&quot;&quot;</span>
 
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="CoreObject.isInRouteOf"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.isInRouteOf">[docs]</a>    <span class="k">def</span> <span class="nf">isInRouteOf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.isInRouteOf"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.isInRouteOf">[docs]</a>    <span class="k">def</span> <span class="nf">isInRouteOf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;method used to check whether the station is a successor of the caller&quot;&quot;&quot;</span>
 
         <span class="n">thecaller</span> <span class="o">=</span> <span class="n">callerObject</span>
@@ -1114,42 +1114,42 @@
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="kc">False</span></div>
 
-<div class="viewcode-block" id="CoreObject.sortEntities"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.sortEntities">[docs]</a>    <span class="k">def</span> <span class="nf">sortEntities</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.sortEntities"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.sortEntities">[docs]</a>    <span class="k">def</span> <span class="nf">sortEntities</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;sorts the Entities in the activeQ of the objects&quot;&quot;&quot;</span>
 
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="CoreObject.getActiveObject"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.getActiveObject">[docs]</a>    <span class="k">def</span> <span class="nf">getActiveObject</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.getActiveObject"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.getActiveObject">[docs]</a>    <span class="k">def</span> <span class="nf">getActiveObject</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;get the active object. This always returns self&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="CoreObject.getActiveObjectQueue"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.getActiveObjectQueue">[docs]</a>    <span class="k">def</span> <span class="nf">getActiveObjectQueue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.getActiveObjectQueue"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.getActiveObjectQueue">[docs]</a>    <span class="k">def</span> <span class="nf">getActiveObjectQueue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;get the activeQ of the active object.&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span></div>
 
-<div class="viewcode-block" id="CoreObject.getGiverObject"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.getGiverObject">[docs]</a>    <span class="k">def</span> <span class="nf">getGiverObject</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.getGiverObject"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.getGiverObject">[docs]</a>    <span class="k">def</span> <span class="nf">getGiverObject</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;get the giver object in a getEntity transaction.&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">giver</span></div>
 
-<div class="viewcode-block" id="CoreObject.getGiverObjectQueue"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.getGiverObjectQueue">[docs]</a>    <span class="k">def</span> <span class="nf">getGiverObjectQueue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.getGiverObjectQueue"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.getGiverObjectQueue">[docs]</a>    <span class="k">def</span> <span class="nf">getGiverObjectQueue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;get the giver object queue in a getEntity transaction.&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">giver</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span></div>
 
-<div class="viewcode-block" id="CoreObject.getReceiverObject"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.getReceiverObject">[docs]</a>    <span class="k">def</span> <span class="nf">getReceiverObject</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.getReceiverObject"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.getReceiverObject">[docs]</a>    <span class="k">def</span> <span class="nf">getReceiverObject</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;get the receiver object in a removeEntity transaction.&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">receiver</span></div>
 
-<div class="viewcode-block" id="CoreObject.getReceiverObjectQueue"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.getReceiverObjectQueue">[docs]</a>    <span class="k">def</span> <span class="nf">getReceiverObjectQueue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.getReceiverObjectQueue"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.getReceiverObjectQueue">[docs]</a>    <span class="k">def</span> <span class="nf">getReceiverObjectQueue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;get the receiver object queue in a removeEntity transaction.&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">receiver</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span></div>
 
-<div class="viewcode-block" id="CoreObject.calculateProcessingTime"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.calculateProcessingTime">[docs]</a>    <span class="k">def</span> <span class="nf">calculateProcessingTime</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.calculateProcessingTime"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.calculateProcessingTime">[docs]</a>    <span class="k">def</span> <span class="nf">calculateProcessingTime</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;calculates the processing time&quot;&quot;&quot;</span>
 
         <span class="c1"># this is only for processing of the initial wip</span>
@@ -1165,7 +1165,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">generateNumber</span><span class="p">()</span>
         <span class="p">)</span>  <span class="c1"># this is if we have a default processing time for all the entities</span></div>
 
-<div class="viewcode-block" id="CoreObject.calculateTime"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.calculateTime">[docs]</a>    <span class="k">def</span> <span class="nf">calculateTime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;Processing&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.calculateTime"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.calculateTime">[docs]</a>    <span class="k">def</span> <span class="nf">calculateTime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;Processing&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;calculates time (running through a dictionary) according to the type of processing given as argument&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="p">{</span>
@@ -1174,73 +1174,73 @@
             <span class="s2">&quot;Processing&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculateProcessingTime</span><span class="p">,</span>
         <span class="p">}[</span><span class="nb">type</span><span class="p">]()</span></div>
 
-<div class="viewcode-block" id="CoreObject.exitIsAssignedTo"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.exitIsAssignedTo">[docs]</a>    <span class="k">def</span> <span class="nf">exitIsAssignedTo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.exitIsAssignedTo"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.exitIsAssignedTo">[docs]</a>    <span class="k">def</span> <span class="nf">exitIsAssignedTo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;checks if the object is blocked&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exitAssignedToReceiver</span></div>
 
-<div class="viewcode-block" id="CoreObject.assignExitTo"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.assignExitTo">[docs]</a>    <span class="k">def</span> <span class="nf">assignExitTo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.assignExitTo"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.assignExitTo">[docs]</a>    <span class="k">def</span> <span class="nf">assignExitTo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;assign Exit of the object&quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">exitAssignedToReceiver</span> <span class="o">=</span> <span class="n">callerObject</span></div>
 
-<div class="viewcode-block" id="CoreObject.unAssignExit"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.unAssignExit">[docs]</a>    <span class="k">def</span> <span class="nf">unAssignExit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.unAssignExit"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.unAssignExit">[docs]</a>    <span class="k">def</span> <span class="nf">unAssignExit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;unblock the object&quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">exitAssignedToReceiver</span> <span class="o">=</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="CoreObject.entryIsAssignedTo"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.entryIsAssignedTo">[docs]</a>    <span class="k">def</span> <span class="nf">entryIsAssignedTo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.entryIsAssignedTo"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.entryIsAssignedTo">[docs]</a>    <span class="k">def</span> <span class="nf">entryIsAssignedTo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;checks if the object is blocked&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">entryAssignedToGiver</span></div>
 
-<div class="viewcode-block" id="CoreObject.assignEntryTo"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.assignEntryTo">[docs]</a>    <span class="k">def</span> <span class="nf">assignEntryTo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.assignEntryTo"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.assignEntryTo">[docs]</a>    <span class="k">def</span> <span class="nf">assignEntryTo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;assign Exit of the object&quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">entryAssignedToGiver</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">giver</span></div>
 
-<div class="viewcode-block" id="CoreObject.unAssignEntry"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.unAssignEntry">[docs]</a>    <span class="k">def</span> <span class="nf">unAssignEntry</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.unAssignEntry"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.unAssignEntry">[docs]</a>    <span class="k">def</span> <span class="nf">unAssignEntry</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;unblock the object&quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">entryAssignedToGiver</span> <span class="o">=</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="CoreObject.interruptionActions"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.interruptionActions">[docs]</a>    <span class="k">def</span> <span class="nf">interruptionActions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.interruptionActions"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.interruptionActions">[docs]</a>    <span class="k">def</span> <span class="nf">interruptionActions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        actions to be carried whenever the object is interrupted (failure, break, preemption, etc)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="CoreObject.postInterruptionActions"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.postInterruptionActions">[docs]</a>    <span class="k">def</span> <span class="nf">postInterruptionActions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.postInterruptionActions"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.postInterruptionActions">[docs]</a>    <span class="k">def</span> <span class="nf">postInterruptionActions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        actions to be carried whenever the object recovers control after an interruption (failure, break, preemption, etc)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="CoreObject.preempt"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.preempt">[docs]</a>    <span class="k">def</span> <span class="nf">preempt</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.preempt"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.preempt">[docs]</a>    <span class="k">def</span> <span class="nf">preempt</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;method to execute preemption&quot;&quot;&quot;</span>
 
         <span class="c1"># ToDO make a generic method</span>
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="CoreObject.checkIfActive"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.checkIfActive">[docs]</a>    <span class="k">def</span> <span class="nf">checkIfActive</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.checkIfActive"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.checkIfActive">[docs]</a>    <span class="k">def</span> <span class="nf">checkIfActive</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;checks if the object is in an active position&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Up</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">onShift</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">onBreak</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CoreObject.activeQueueIsEmpty"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.activeQueueIsEmpty">[docs]</a>    <span class="k">def</span> <span class="nf">activeQueueIsEmpty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.activeQueueIsEmpty"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.activeQueueIsEmpty">[docs]</a>    <span class="k">def</span> <span class="nf">activeQueueIsEmpty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;filter that returns True if the activeObject Queue is empty</span>
 <span class="sd">        false if object holds entities in its queue&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span></div>
 
-<div class="viewcode-block" id="CoreObject.endOperationActions"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.endOperationActions">[docs]</a>    <span class="k">def</span> <span class="nf">endOperationActions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.endOperationActions"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.endOperationActions">[docs]</a>    <span class="k">def</span> <span class="nf">endOperationActions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;actions to be carried out when the processing of an Entity ends&quot;&quot;&quot;</span>
 
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="CoreObject.isInActiveQueue"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.CoreObject.CoreObject.isInActiveQueue">[docs]</a>    <span class="k">def</span> <span class="nf">isInActiveQueue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="CoreObject.isInActiveQueue"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.isInActiveQueue">[docs]</a>    <span class="k">def</span> <span class="nf">isInActiveQueue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;check if an entity is in the internal Queue of the object&quot;&quot;&quot;</span>
 
         <span class="n">activeObjectQueue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span>

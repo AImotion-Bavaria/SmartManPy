@@ -229,6 +229,7 @@
 <li class="toctree-l2"><a class="reference internal" href="tutorials.html#introduction">Introduction</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="tutorials.html#basic-principles">Basic principles</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tutorials.html#adding-more-machines">Adding more machines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorials.html#improved-routing">Improved Routing</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="tutorials.html#advanced-usage">Advanced usage</a><ul>
@@ -238,55 +239,40 @@
 <li class="toctree-l3"><a class="reference internal" href="tutorials.html#failures">Failures</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tutorials.html#distributions-and-statecontrollers">Distributions and StateControllers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tutorials.html#export">Export</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorials.html#productionlinemodules">ProductionLineModules</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="core.html">Core</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="core.html#module-manpy.simulation.core.Feature">manpy.simulation.core.Feature.py</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="core.html#manpy.simulation.core.Feature.Feature"><code class="docutils literal notranslate"><span class="pre">Feature</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="core.html#module-manpy.simulation.core.Timeseries">manpy.simulation.core.Timeseries.py</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="core.html#manpy.simulation.core.Timeseries.Timeseries"><code class="docutils literal notranslate"><span class="pre">Timeseries</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="core.html#module-manpy.simulation.core.StateController">manpy.simulation.core.StateController.py</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="core.html#manpy.simulation.core.StateController.ContinuosNormalDistribution"><code class="docutils literal notranslate"><span class="pre">ContinuosNormalDistribution</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="core.html#manpy.simulation.core.StateController.RandomDefectStateController"><code class="docutils literal notranslate"><span class="pre">RandomDefectStateController</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="core.html#manpy.simulation.core.StateController.SimpleStateController"><code class="docutils literal notranslate"><span class="pre">SimpleStateController</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="core.html#manpy.simulation.core.StateController.StateController"><code class="docutils literal notranslate"><span class="pre">StateController</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="core.html#module-manpy.simulation.core.Machine">manpy.simulation.core.Machine.py</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="core.html#manpy.simulation.core.Machine.Machine"><code class="docutils literal notranslate"><span class="pre">Machine</span></code></a></li>
-</ul>
-</li>
 <li class="toctree-l2"><a class="reference internal" href="core.html#module-manpy.simulation.core.Assembly">manpy.simulation.core.Assembly.py</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="core.html#manpy.simulation.core.Assembly.Assembly"><code class="docutils literal notranslate"><span class="pre">Assembly</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="core.html#module-manpy.simulation.core.Failure">manpy.simulation.core.Failure.py</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="core.html#manpy.simulation.core.Failure.Failure"><code class="docutils literal notranslate"><span class="pre">Failure</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="core.html#module-manpy.simulation.core.Source">manpy.simulation.core.Source.py</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="core.html#manpy.simulation.core.Source.EntityGenerator"><code class="docutils literal notranslate"><span class="pre">EntityGenerator</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="core.html#manpy.simulation.core.Source.Source"><code class="docutils literal notranslate"><span class="pre">Source</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="core.html#module-manpy.simulation.core.Queue">manpy.simulation.core.Queue.py</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="core.html#manpy.simulation.core.Queue.Queue"><code class="docutils literal notranslate"><span class="pre">Queue</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="core.html#module-manpy.simulation.core.Exit">manpy.simulation.core.Exit.py</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="core.html#manpy.simulation.core.Exit.Exit"><code class="docutils literal notranslate"><span class="pre">Exit</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#module-manpy.simulation.core.CoreObject">manpy.simulation.core.CoreObject.py</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="core.html#manpy.simulation.core.CoreObject.CoreObject"><code class="docutils literal notranslate"><span class="pre">CoreObject</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="core.html#module-manpy.simulation.core.Database">manpy.simulation.core.Database.py</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="core.html#manpy.simulation.core.Database.ManPyDatabase"><code class="docutils literal notranslate"><span class="pre">ManPyDatabase</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="core.html#manpy.simulation.core.Database.ManPyKafkaConnection"><code class="docutils literal notranslate"><span class="pre">ManPyKafkaConnection</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="core.html#manpy.simulation.core.Database.ManPyQuestDBDatabase"><code class="docutils literal notranslate"><span class="pre">ManPyQuestDBDatabase</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#module-manpy.simulation.core.Entity">manpy.simulation.core.Entity.py</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="core.html#manpy.simulation.core.Entity.Entity"><code class="docutils literal notranslate"><span class="pre">Entity</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#module-manpy.simulation.core.Exit">manpy.simulation.core.Exit.py</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="core.html#manpy.simulation.core.Exit.Exit"><code class="docutils literal notranslate"><span class="pre">Exit</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#module-manpy.simulation.core.Failure">manpy.simulation.core.Failure.py</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="core.html#manpy.simulation.core.Failure.Failure"><code class="docutils literal notranslate"><span class="pre">Failure</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#module-manpy.simulation.core.Feature">manpy.simulation.core.Feature.py</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="core.html#manpy.simulation.core.Feature.Feature"><code class="docutils literal notranslate"><span class="pre">Feature</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="core.html#module-manpy.simulation.core.Globals">manpy.simulation.core.Globals.py</a><ul>
@@ -306,12 +292,8 @@
 <li class="toctree-l3"><a class="reference internal" href="core.html#manpy.simulation.core.Globals.setWIP"><code class="docutils literal notranslate"><span class="pre">setWIP()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="core.html#module-manpy.simulation.core.Entity">manpy.simulation.core.Entity.py</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="core.html#manpy.simulation.core.Entity.Entity"><code class="docutils literal notranslate"><span class="pre">Entity</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="core.html#module-manpy.simulation.core.CoreObject">manpy.simulation.core.CoreObject.py</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="core.html#manpy.simulation.core.CoreObject.CoreObject"><code class="docutils literal notranslate"><span class="pre">CoreObject</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#module-manpy.simulation.core.Machine">manpy.simulation.core.Machine.py</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="core.html#manpy.simulation.core.Machine.Machine"><code class="docutils literal notranslate"><span class="pre">Machine</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="core.html#module-manpy.simulation.core.ObjectInterruption">manpy.simulation.core.ObjectInterruption.py</a><ul>
@@ -324,6 +306,32 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="core.html#module-manpy.simulation.core.ObjectResource">manpy.simulation.core.ObjectResource.py</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="core.html#manpy.simulation.core.ObjectResource.ObjectResource"><code class="docutils literal notranslate"><span class="pre">ObjectResource</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#manpy-simulation-core-productionlinemodule-py">manpy.simulation.core.ProductionLineModule.py</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="core.html#manpy.simulation.core.ProductionLineModule.AbstractProductionLineModule"><code class="docutils literal notranslate"><span class="pre">AbstractProductionLineModule</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="core.html#manpy.simulation.core.ProductionLineModule.SequentialProductionLineModule"><code class="docutils literal notranslate"><span class="pre">SequentialProductionLineModule</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="core.html#manpy.simulation.core.ProductionLineModule.generate_routing_from_list"><code class="docutils literal notranslate"><span class="pre">generate_routing_from_list()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#module-manpy.simulation.core.Queue">manpy.simulation.core.Queue.py</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="core.html#manpy.simulation.core.Queue.Queue"><code class="docutils literal notranslate"><span class="pre">Queue</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#module-manpy.simulation.core.Source">manpy.simulation.core.Source.py</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="core.html#manpy.simulation.core.Source.EntityGenerator"><code class="docutils literal notranslate"><span class="pre">EntityGenerator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="core.html#manpy.simulation.core.Source.Source"><code class="docutils literal notranslate"><span class="pre">Source</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#module-manpy.simulation.core.StateController">manpy.simulation.core.StateController.py</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="core.html#manpy.simulation.core.StateController.ContinuosNormalDistribution"><code class="docutils literal notranslate"><span class="pre">ContinuosNormalDistribution</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="core.html#manpy.simulation.core.StateController.RandomDefectStateController"><code class="docutils literal notranslate"><span class="pre">RandomDefectStateController</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="core.html#manpy.simulation.core.StateController.SimpleStateController"><code class="docutils literal notranslate"><span class="pre">SimpleStateController</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="core.html#manpy.simulation.core.StateController.StateController"><code class="docutils literal notranslate"><span class="pre">StateController</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#module-manpy.simulation.core.Timeseries">manpy.simulation.core.Timeseries.py</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="core.html#manpy.simulation.core.Timeseries.Timeseries"><code class="docutils literal notranslate"><span class="pre">Timeseries</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="core.html#module-manpy.simulation.core.utils">manpy.simulation.core.utils.py</a><ul>

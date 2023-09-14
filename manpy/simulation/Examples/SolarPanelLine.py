@@ -100,7 +100,8 @@ def main(test=0):
     objectList.extend(
                   [Q0,
                   Solar_Cell_Scribing, Solar_Strings, Assembly0,
-                Q1, Layup, Visual_Fail, Q2, Q3, Q4,
+                Q1, Layup, Visual_Fail, Q2,
+                Q3, Q4,
                   EL_Test, E1])
 
     objectList.extend(tabber_objects)

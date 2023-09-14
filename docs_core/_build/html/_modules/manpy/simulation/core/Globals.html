@@ -229,7 +229,7 @@
 <span class="kn">from</span> <span class="nn">manpy.simulation.core.utils</span> <span class="kn">import</span> <span class="n">info</span>
 
 
-<div class="viewcode-block" id="G"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Globals.G">[docs]</a><span class="k">class</span> <span class="nc">G</span><span class="p">:</span>
+<div class="viewcode-block" id="G"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Globals.G">[docs]</a><span class="k">class</span> <span class="nc">G</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Defines global properties for the whole simulation&quot;&quot;&quot;</span>
 
     <span class="n">ObjList</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># a list that holds all the CoreObjects</span>
@@ -321,7 +321,7 @@
 
     <span class="n">totalPulpTime</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># temporary to track how much time PuLP needs to run</span>
 
-<div class="viewcode-block" id="G.get_simulation_results_dataframe"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Globals.G.get_simulation_results_dataframe">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="G.get_simulation_results_dataframe"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Globals.G.get_simulation_results_dataframe">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">get_simulation_results_dataframe</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Collects the logs from the traces in the simulation into a pandas dataframe.</span>
@@ -350,7 +350,7 @@
 
         <span class="k">return</span> <span class="n">df</span></div>
 
-<div class="viewcode-block" id="G.get_simulation_entities_history"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Globals.G.get_simulation_entities_history">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="G.get_simulation_entities_history"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Globals.G.get_simulation_entities_history">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">get_simulation_entities_history</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Iterates through all entities that passed through the simulation and collects</span>
@@ -373,7 +373,7 @@
         <span class="k">return</span> <span class="n">entity_hist</span></div></div>
 
 
-<div class="viewcode-block" id="moveExcess"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Globals.moveExcess">[docs]</a><span class="k">def</span> <span class="nf">moveExcess</span><span class="p">(</span><span class="n">consumption</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">safetyStock</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">giverId</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">receiverId</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="moveExcess"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Globals.moveExcess">[docs]</a><span class="k">def</span> <span class="nf">moveExcess</span><span class="p">(</span><span class="n">consumption</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">safetyStock</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">giverId</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">receiverId</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;method to move entities exceeding a certain safety stock&quot;&quot;&quot;</span>
     <span class="n">giver</span> <span class="o">=</span> <span class="n">findObjectById</span><span class="p">(</span><span class="n">giverId</span><span class="p">)</span>
     <span class="n">receiver</span> <span class="o">=</span> <span class="n">findObjectById</span><span class="p">(</span><span class="n">receiverId</span><span class="p">)</span>
@@ -391,7 +391,7 @@
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Giver and/or Receiver not defined&quot;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="getClassFromName"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Globals.getClassFromName">[docs]</a><span class="k">def</span> <span class="nf">getClassFromName</span><span class="p">(</span><span class="n">dotted_name</span><span class="p">):</span>
+<div class="viewcode-block" id="getClassFromName"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Globals.getClassFromName">[docs]</a><span class="k">def</span> <span class="nf">getClassFromName</span><span class="p">(</span><span class="n">dotted_name</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Import a class from a dotted name used in json.&quot;&quot;&quot;</span>
 
     <span class="kn">from</span> <span class="nn">zope.dottedname.resolve</span> <span class="kn">import</span> <span class="n">resolve</span>
@@ -413,7 +413,7 @@
     <span class="k">return</span> <span class="n">resolve</span><span class="p">(</span><span class="n">dotted_name</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="getMethodFromName"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Globals.getMethodFromName">[docs]</a><span class="k">def</span> <span class="nf">getMethodFromName</span><span class="p">(</span><span class="n">dotted_name</span><span class="p">):</span>
+<div class="viewcode-block" id="getMethodFromName"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Globals.getMethodFromName">[docs]</a><span class="k">def</span> <span class="nf">getMethodFromName</span><span class="p">(</span><span class="n">dotted_name</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;returns a method by its name. name should be given as manpy.ClassName.MethodName&quot;&quot;&quot;</span>
 
     <span class="n">name</span> <span class="o">=</span> <span class="n">dotted_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
@@ -439,7 +439,7 @@
     <span class="k">return</span> <span class="n">method</span></div>
 
 
-<div class="viewcode-block" id="findObjectById"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Globals.findObjectById">[docs]</a><span class="k">def</span> <span class="nf">findObjectById</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+<div class="viewcode-block" id="findObjectById"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Globals.findObjectById">[docs]</a><span class="k">def</span> <span class="nf">findObjectById</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;method finding objects by ID&quot;&quot;&quot;</span>
 
     <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="p">(</span>
@@ -455,14 +455,14 @@
     <span class="k">return</span> <span class="kc">None</span></div>
 
 
-<div class="viewcode-block" id="SetWipTypeError"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Globals.SetWipTypeError">[docs]</a><span class="k">class</span> <span class="nc">SetWipTypeError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<div class="viewcode-block" id="SetWipTypeError"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Globals.SetWipTypeError">[docs]</a><span class="k">class</span> <span class="nc">SetWipTypeError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Error in the setting up of the WIP&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setWipError</span><span class="p">):</span>
         <span class="ne">Exception</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setWipError</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="setWIP"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Globals.setWIP">[docs]</a><span class="k">def</span> <span class="nf">setWIP</span><span class="p">(</span><span class="n">entityList</span><span class="p">):</span>
+<div class="viewcode-block" id="setWIP"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Globals.setWIP">[docs]</a><span class="k">def</span> <span class="nf">setWIP</span><span class="p">(</span><span class="n">entityList</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    method to set-up the entities in the current stations as Work In Progress</span>
 <span class="sd">    in this case the current station must be defined!</span>
@@ -626,7 +626,7 @@
 <span class="c1">#             else:</span>
 <span class="c1">#                 print phrase,arg</span>
 
-<div class="viewcode-block" id="getSupportedPrintKwrds"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Globals.getSupportedPrintKwrds">[docs]</a><span class="k">def</span> <span class="nf">getSupportedPrintKwrds</span><span class="p">():</span>
+<div class="viewcode-block" id="getSupportedPrintKwrds"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Globals.getSupportedPrintKwrds">[docs]</a><span class="k">def</span> <span class="nf">getSupportedPrintKwrds</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;get the supported print Keywords&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">(</span>
         <span class="s2">&quot;create&quot;</span><span class="p">,</span>
@@ -658,7 +658,7 @@
     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="getPhrase"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Globals.getPhrase">[docs]</a><span class="k">def</span> <span class="nf">getPhrase</span><span class="p">():</span>
+<div class="viewcode-block" id="getPhrase"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Globals.getPhrase">[docs]</a><span class="k">def</span> <span class="nf">getPhrase</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;get the phrase to print from the keyword&quot;&quot;&quot;</span>
     <span class="n">printKwrds</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;create&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;phrase&quot;</span><span class="p">:</span> <span class="s2">&quot;created an entity&quot;</span><span class="p">},</span>
@@ -693,7 +693,7 @@
     <span class="k">return</span> <span class="n">printKwrds</span></div>
 
 
-<div class="viewcode-block" id="runSimulation"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Globals.runSimulation">[docs]</a><span class="k">def</span> <span class="nf">runSimulation</span><span class="p">(</span>
+<div class="viewcode-block" id="runSimulation"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Globals.runSimulation">[docs]</a><span class="k">def</span> <span class="nf">runSimulation</span><span class="p">(</span>
     <span class="n">objectList</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">maxSimTime</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
     <span class="n">numberOfReplications</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
@@ -883,7 +883,7 @@
             <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">ObjList</span> <span class="o">+</span> <span class="n">G</span><span class="o">.</span><span class="n">ObjectResourceList</span><span class="p">:</span>
                 <span class="nb">object</span><span class="o">.</span><span class="n">postProcessing</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="ExcelPrinter"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Globals.ExcelPrinter">[docs]</a><span class="k">def</span> <span class="nf">ExcelPrinter</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="ExcelPrinter"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Globals.ExcelPrinter">[docs]</a><span class="k">def</span> <span class="nf">ExcelPrinter</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Prints a dataframe to excel</span>
 
@@ -900,7 +900,7 @@
         <span class="n">df</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.xls&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="getFeatureData"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Globals.getFeatureData">[docs]</a><span class="k">def</span> <span class="nf">getFeatureData</span><span class="p">(</span><span class="n">objectList</span><span class="o">=</span><span class="p">[],</span> <span class="n">time</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<div class="viewcode-block" id="getFeatureData"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Globals.getFeatureData">[docs]</a><span class="k">def</span> <span class="nf">getFeatureData</span><span class="p">(</span><span class="n">objectList</span><span class="o">=</span><span class="p">[],</span> <span class="n">time</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    getFeatureData returns feature data of specific machines as dataframes</span>
 
@@ -962,7 +962,7 @@
         <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;Result&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="getTimeSeriesData"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Globals.getTimeSeriesData">[docs]</a><span class="k">def</span> <span class="nf">getTimeSeriesData</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<div class="viewcode-block" id="getTimeSeriesData"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Globals.getTimeSeriesData">[docs]</a><span class="k">def</span> <span class="nf">getTimeSeriesData</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    getTimeSeriesData returns timeseries data</span>
 
@@ -983,7 +983,7 @@
     <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">value</span><span class="p">)),</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="get_feature_values_by_id"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Globals.get_feature_values_by_id">[docs]</a><span class="k">def</span> <span class="nf">get_feature_values_by_id</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span> <span class="n">feature_ids</span><span class="p">):</span>
+<div class="viewcode-block" id="get_feature_values_by_id"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Globals.get_feature_values_by_id">[docs]</a><span class="k">def</span> <span class="nf">get_feature_values_by_id</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span> <span class="n">feature_ids</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns a list of the entity&#39;s feature values of the specified ids</span>
 

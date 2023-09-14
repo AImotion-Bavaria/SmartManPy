@@ -44,7 +44,7 @@ class Queue(CoreObject):
         self,
         id="",
         name="",
-        capacity=1,
+        capacity=5,
         isDummy=False,
         schedulingRule="FIFO",
         level=None,
@@ -54,10 +54,13 @@ class Queue(CoreObject):
         self.type = "Queue"  # String that shows the type of object
         CoreObject.__init__(self, id, name)
         capacity = float(capacity)
+
         if capacity < 0 or capacity == float("inf"):
             self.capacity = float("inf")
         else:
             self.capacity = int(capacity)
+
+        print(f"INFO: Queue {name} has capacity {self.capacity}.")
 
         self.isDummy = bool(
             int(isDummy)

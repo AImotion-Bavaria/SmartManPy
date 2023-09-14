@@ -60,10 +60,14 @@ This is done for each component individually:
     m1.defineRouting(predecessorList=[start], successorList=[exit])
     exit.defineRouting(predecessorList=[m1])
 
-We can now run and evaluate our simulation, e.g. for 50 time steps:
+We can now run and evaluate our simulation, e.g. for 50 time steps.
+To do this, we use the runSimulation function defined in Globals.py.
+This function needs a list with all simulated objects (machines, features/timeseries, failures, ...) and the maximum simulation time.
 
 .. code-block:: python
     :linenos:
+
+    from manpy.simulation.core.Globals import runSimulation
 
     maxSimTime = 50
     objectList = [start, m1, exit]
@@ -75,6 +79,12 @@ We can now run and evaluate our simulation, e.g. for 50 time steps:
 
     print(f"Produced:         {exit.numOfExits}
             Simulationszeit:    {maxSimTime}")
+
+.. attention::
+
+    The order of the objects in the object list is important!
+    If there exist dependencies (e.g. temporal) between simulated objects, you need to reflect this in the object list.
+    This is especially important for functional dependencies in features (see `Functional dependencies`_)
 
 Adding more machines
 ----------------------

@@ -60,10 +60,14 @@ This is done for each component individually:
     m1.defineRouting(predecessorList=[start], successorList=[exit])
     exit.defineRouting(predecessorList=[m1])
 
-We can now run and evaluate our simulation, e.g. for 50 time steps:
+We can now run and evaluate our simulation, e.g. for 50 time steps.
+To do this, we use the runSimulation function defined in Globals.py.
+This function needs a list with all simulated objects (machines, features/timeseries, failures, ...) and the maximum simulation time.
 
 .. code-block:: python
     :linenos:
+
+    from manpy.simulation.core.Globals import runSimulation
 
     maxSimTime = 50
     objectList = [start, m1, exit]
@@ -75,6 +79,12 @@ We can now run and evaluate our simulation, e.g. for 50 time steps:
 
     print(f"Produced:         {exit.numOfExits}
             Simulationszeit:    {maxSimTime}")
+
+.. attention::
+
+    The order of the objects in the object list is important!
+    If there exist dependencies (e.g. temporal) between simulated objects, you need to reflect this in the object list.
+    This is especially important for functional dependencies in features (see `Functional dependencies`_)
 
 Adding more machines
 ----------------------
@@ -111,6 +121,38 @@ In order to work correctly, we also need to update the routing of the production
 
     objectList = [start, m1, m2, q1, exit]
 
+Improved Routing
+-----------------
+
+The default routing mechanism requires you to manually set the predecessors and successors of objects, with makes multiple definitions necessary if you add an object to the production line.
+Furthermore, if you decide to change the order or want to (temporarily) remove a station, you also need to make changes at multiple locations.
+As an improvement, we added an easier way of defining the routing that's based on list.
+The whole production line is defined in one list.
+Each "stage", i.e. all machines at the same level, are contained in separate lists:
+
+.. code-block:: python
+    :linenos:
+
+    routing = [
+        [start],
+        [m1],
+        [q1],
+        [m2],
+        [exit]
+    ]
+
+It is also possible to add multiple machines or sources to the same level.
+
+To actually perform the routing definition, you need to use generate_routing_from_list defined in core/ProductionLineModule.py:
+
+.. code-block:: python
+    :linenos:
+
+    from manpy.simulation.core.ProductionLineModule import generate_routing_from_list
+
+    generate_routing_from_list(routing)
+
+Using this approach for routing, you can easily change the order or remove parts of the production line with minimal changes.
 
 Advanced usage
 ================
@@ -628,3 +670,10 @@ QuestDB also has plotting capabilities, as you can see in the following screensh
     Our Database interface is highly customizable.
     If necessary, you can write your own DB interface that perfectly fits you demands.
     The interface is defined in core/Database.py.
+
+
+ProductionLineModules
+----------------------
+
+The definition of long and complex production lines can get very extensive and confusing.
+To improve the clarity of complex production lines, we added ProductionLineModules, which allow the encapsulation of parts of the production line.

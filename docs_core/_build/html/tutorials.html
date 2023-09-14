@@ -242,18 +242,28 @@ This is done for each component individually:</p>
 <span class="linenos">3</span><span class="n">exit</span><span class="o">.</span><span class="n">defineRouting</span><span class="p">(</span><span class="n">predecessorList</span><span class="o">=</span><span class="p">[</span><span class="n">m1</span><span class="p">])</span>
 </pre></div>
 </div>
-<p>We can now run and evaluate our simulation, e.g. for 50 time steps:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="n">maxSimTime</span> <span class="o">=</span> <span class="mi">50</span>
-<span class="linenos"> 2</span><span class="n">objectList</span> <span class="o">=</span> <span class="p">[</span><span class="n">start</span><span class="p">,</span> <span class="n">m1</span><span class="p">,</span> <span class="n">exit</span><span class="p">]</span>
-<span class="linenos"> 3</span>
-<span class="linenos"> 4</span><span class="n">runSimulation</span><span class="p">(</span><span class="n">objectList</span><span class="p">,</span> <span class="n">maxSimTime</span><span class="p">)</span>
+<p>We can now run and evaluate our simulation, e.g. for 50 time steps.
+To do this, we use the runSimulation function defined in Globals.py.
+This function needs a list with all simulated objects (machines, features/timeseries, failures, …) and the maximum simulation time.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">from</span> <span class="nn">manpy.simulation.core.Globals</span> <span class="kn">import</span> <span class="n">runSimulation</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="n">maxSimTime</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="linenos"> 4</span><span class="n">objectList</span> <span class="o">=</span> <span class="p">[</span><span class="n">start</span><span class="p">,</span> <span class="n">m1</span><span class="p">,</span> <span class="n">exit</span><span class="p">]</span>
 <span class="linenos"> 5</span>
-<span class="linenos"> 6</span><span class="n">df</span> <span class="o">=</span> <span class="n">getEntityData</span><span class="p">()</span>
-<span class="linenos"> 7</span><span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;ExampleLine.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span>
-<span class="linenos"> 8</span>
-<span class="linenos"> 9</span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Produced:         </span><span class="si">{</span><span class="n">exit</span><span class="o">.</span><span class="n">numOfExits</span><span class="si">}</span>
-<span class="linenos">10</span>        <span class="n">Simulationszeit</span><span class="p">:</span>    <span class="p">{</span><span class="n">maxSimTime</span><span class="p">}</span><span class="s2">&quot;)</span>
+<span class="linenos"> 6</span><span class="n">runSimulation</span><span class="p">(</span><span class="n">objectList</span><span class="p">,</span> <span class="n">maxSimTime</span><span class="p">)</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="n">df</span> <span class="o">=</span> <span class="n">getEntityData</span><span class="p">()</span>
+<span class="linenos"> 9</span><span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;ExampleLine.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Produced:         </span><span class="si">{</span><span class="n">exit</span><span class="o">.</span><span class="n">numOfExits</span><span class="si">}</span>
+<span class="linenos">12</span>        <span class="n">Simulationszeit</span><span class="p">:</span>    <span class="p">{</span><span class="n">maxSimTime</span><span class="p">}</span><span class="s2">&quot;)</span>
 </pre></div>
+</div>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>The order of the objects in the object list is important!
+If there exist dependencies (e.g. temporal) between simulated objects, you need to reflect this in the object list.
+This is especially important for functional dependencies in features (see <a class="reference internal" href="#functional-dependencies">Functional dependencies</a>)</p>
 </div>
 </section>
 <section id="adding-more-machines">
@@ -284,6 +294,31 @@ In order to work correctly, we also need to update the routing of the production
 <span class="linenos">9</span><span class="n">objectList</span> <span class="o">=</span> <span class="p">[</span><span class="n">start</span><span class="p">,</span> <span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">,</span> <span class="n">q1</span><span class="p">,</span> <span class="n">exit</span><span class="p">]</span>
 </pre></div>
 </div>
+</section>
+<section id="improved-routing">
+<h3>Improved Routing<a class="headerlink" href="#improved-routing" title="Permalink to this heading">#</a></h3>
+<p>The default routing mechanism requires you to manually set the predecessors and successors of objects, with makes multiple definitions necessary if you add an object to the production line.
+Furthermore, if you decide to change the order or want to (temporarily) remove a station, you also need to make changes at multiple locations.
+As an improvement, we added an easier way of defining the routing that’s based on list.
+The whole production line is defined in one list.
+Each “stage”, i.e. all machines at the same level, are contained in separate lists:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">routing</span> <span class="o">=</span> <span class="p">[</span>
+<span class="linenos">2</span>    <span class="p">[</span><span class="n">start</span><span class="p">],</span>
+<span class="linenos">3</span>    <span class="p">[</span><span class="n">m1</span><span class="p">],</span>
+<span class="linenos">4</span>    <span class="p">[</span><span class="n">q1</span><span class="p">],</span>
+<span class="linenos">5</span>    <span class="p">[</span><span class="n">m2</span><span class="p">],</span>
+<span class="linenos">6</span>    <span class="p">[</span><span class="n">exit</span><span class="p">]</span>
+<span class="linenos">7</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>It is also possible to add multiple machines or sources to the same level.</p>
+<p>To actually perform the routing definition, you need to use generate_routing_from_list defined in core/ProductionLineModule.py:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">from</span> <span class="nn">manpy.simulation.core.ProductionLineModule</span> <span class="kn">import</span> <span class="n">generate_routing_from_list</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="n">generate_routing_from_list</span><span class="p">(</span><span class="n">routing</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Using this approach for routing, you can easily change the order or remove parts of the production line with minimal changes.</p>
 </section>
 </section>
 <section id="advanced-usage">
@@ -721,6 +756,11 @@ The interface is defined in core/Database.py.</p>
 </div>
 </section>
 </section>
+<section id="productionlinemodules">
+<h3>ProductionLineModules<a class="headerlink" href="#productionlinemodules" title="Permalink to this heading">#</a></h3>
+<p>The definition of long and complex production lines can get very extensive and confusing.
+To improve the clarity of complex production lines, we added ProductionLineModules, which allow the encapsulation of parts of the production line.</p>
+</section>
 </section>
 </section>
 
@@ -783,6 +823,7 @@ The interface is defined in core/Database.py.</p>
 <li><a class="reference internal" href="#introduction">Introduction</a><ul>
 <li><a class="reference internal" href="#basic-principles">Basic principles</a></li>
 <li><a class="reference internal" href="#adding-more-machines">Adding more machines</a></li>
+<li><a class="reference internal" href="#improved-routing">Improved Routing</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#advanced-usage">Advanced usage</a><ul>
@@ -816,6 +857,7 @@ The interface is defined in core/Database.py.</p>
 <li><a class="reference internal" href="#databases">Databases</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#productionlinemodules">ProductionLineModules</a></li>
 </ul>
 </li>
 </ul>

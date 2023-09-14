@@ -229,7 +229,7 @@
 <span class="kn">from</span> <span class="nn">manpy.simulation.core.utils</span> <span class="kn">import</span> <span class="n">check_config_dict</span>
 
 
-<div class="viewcode-block" id="Failure"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Failure.Failure">[docs]</a><span class="k">class</span> <span class="nc">Failure</span><span class="p">(</span><span class="n">ObjectInterruption</span><span class="p">):</span>
+<div class="viewcode-block" id="Failure"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Failure.Failure">[docs]</a><span class="k">class</span> <span class="nc">Failure</span><span class="p">(</span><span class="n">ObjectInterruption</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Models failures of machines.</span>
 
@@ -306,7 +306,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">entity</span> <span class="o">=</span> <span class="n">entity</span>
 
-<div class="viewcode-block" id="Failure.initialize"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Failure.Failure.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Failure.initialize"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Failure.Failure.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">ObjectInterruption</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">conditional</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">entity</span> <span class="o">=</span> <span class="kc">True</span>
@@ -316,7 +316,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">victimEndsProcessing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">event</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">contribution</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">event</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="Failure.run"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Failure.Failure.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Failure.run"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Failure.Failure.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The run method for the failure which has to served by a repairman&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">conditional</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>

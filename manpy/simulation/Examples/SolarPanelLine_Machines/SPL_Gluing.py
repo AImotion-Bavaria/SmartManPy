@@ -1,9 +1,11 @@
-from manpy.simulation.imports import Machine, Feature, Failure
+from manpy.simulation.imports import Machine, Feature
 from manpy.simulation.core.StateController import ContinuosNormalDistribution, RandomDefectStateController
 from manpy.simulation.core.ProductionLineModule import SequentialProductionLineModule
 
 Gluing = Machine("M5", "Gluing", processingTime={"Fixed": {"mean": 10}})
 # Gluing
+
+
 glue_temperature = Feature("glue_temp", "Glue_Temperature", victim=Gluing, random_walk=True, start_value=190,
                distribution={"Feature": {"Normal": {"mean": 0, "stdev": 0.3}}})
 
