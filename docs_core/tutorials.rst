@@ -159,53 +159,6 @@ Advanced usage
 
 The following sections provides an introduction into the more advanced concepts of our ManPy extension.
 
-Quality Control
------------------
-
-Quality control is a standard process in manufacturing.
-Therefore, we added the option for quality control to machines.
-As a result, machines can either have an additional quality control step at the end of their production step or be a standalone quality control instance.
-The condition for quality control can be set via a custom defined function, which is simply called "condition" in the following example.
-We can access the currently active entity in a machine with the following statement:
-
-.. code-block:: python
-
-    activeEntity = self.Res.users[0]
-
-We can then use any simulated value of the entity as measurement for quality control, e.g. feature values or internal labels.
-The condition function must return True if a defect was found, otherwise False must be returned.
-In the following example, we simply check if a given Feature value is inside a certain interval ([3, 7]).
-
-.. code-block:: python
-    :linenos:
-
-    def condition(self):
-        # self is w.r.t. to the machine in which we apply the condition!
-        activeEntity = self.Res.users[0]
-        if activeEntity.features[0] > 7 or activeEntity.features[0] < 3:
-            return True
-        else:
-            return False
-
-In this example, we had to access the feature value by index, which is usually very tedious.
-We therefore added the function "get_feature_values_by_id" in Globals.py, that let's you access certain feature values of an entity by the feature ID:
-
-.. code-block:: python
-    :linenos:
-
-    from manpy.simulation.core.Globals import get_feature_values_by_id
-
-    def condition(self):
-        # self is w.r.t. to the machine in which we apply the condition!
-        activeEntity = self.Res.users[0]
-
-        # Access first element since function returns a list
-        feature_value = get_feature_values_by_id(activeEntity, ["f1"])[0]
-
-        if feature_value > 7 or feature_value < 3:
-            return True
-        else:
-            return False
 
 Features
 ---------
@@ -390,6 +343,54 @@ The following plot shows two complex TimeSeries that were created using both int
 .. image:: ./images/ts_complex.png
     :width: 600
     :alt: Complex TimeSeries
+
+Quality Control
+-----------------
+
+Quality control is a standard process in manufacturing.
+Therefore, we added the option for quality control to machines.
+As a result, machines can either have an additional quality control step at the end of their production step or be a standalone quality control instance.
+The condition for quality control can be set via a custom defined function, which is simply called "condition" in the following example.
+We can access the currently active entity in a machine with the following statement:
+
+.. code-block:: python
+
+    activeEntity = self.Res.users[0]
+
+We can then use any simulated value of the entity as measurement for quality control, e.g. feature values or internal labels.
+The condition function must return True if a defect was found, otherwise False must be returned.
+In the following example, we simply check if a given Feature value is inside a certain interval ([3, 7]).
+
+.. code-block:: python
+    :linenos:
+
+    def condition(self):
+        # self is w.r.t. to the machine in which we apply the condition!
+        activeEntity = self.Res.users[0]
+        if activeEntity.features[0] > 7 or activeEntity.features[0] < 3:
+            return True
+        else:
+            return False
+
+In this example, we had to access the feature value by index, which is usually very tedious.
+We therefore added the function "get_feature_values_by_id" in Globals.py, that let's you access certain feature values of an entity by the feature ID:
+
+.. code-block:: python
+    :linenos:
+
+    from manpy.simulation.core.Globals import get_feature_values_by_id
+
+    def condition(self):
+        # self is w.r.t. to the machine in which we apply the condition!
+        activeEntity = self.Res.users[0]
+
+        # Access first element since function returns a list
+        feature_value = get_feature_values_by_id(activeEntity, ["f1"])[0]
+
+        if feature_value > 7 or feature_value < 3:
+            return True
+        else:
+            return False
 
 Failures
 ---------
@@ -677,3 +678,62 @@ ProductionLineModules
 
 The definition of long and complex production lines can get very extensive and confusing.
 To improve the clarity of complex production lines, we added ProductionLineModules, which allow the encapsulation of parts of the production line.
+A ProductionLineModule can contain an arbitrary amount of simulatable objects.
+The main advantage is the possibility to define complex production stations in a different file, without the need for importing a large amount of objects.
+ProductionLineModules only need to know their internal routing, the routing with external components is done via the known lists or using defineRouting.
+
+The most simple ProductionLineModule is SequentialProductionLineModule, which simply takes the routing between objects in sequential order and applies it.
+This type of module should be enough to cover most of the needs for such modules.
+If you need additional functionality, you can write you custom ProductionLineModule by inheriting from core/ProductionLineModule.
+
+The following example demonstrate the definition of a very basic module.
+
+.. code-block:: python
+    :linenos:
+
+    from manpy.simulation.imports import Machine, Feature
+    from manpy.simulation.core.ProductionLineModule import SequentialProductionLineModule
+
+    m1 = Machine("M1", "Machine1",
+                    processingTime={"Normal":
+                                    {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}
+                })
+
+    feature1 = Feature(id="f1",
+                       name="Feature1",
+                       victim=m1,
+                       distribution={"Feature": {"Normal": {"mean": 0, "stdev": 1.0}}}
+                       )
+
+    internal_routing = [[m1]]
+    features = [feature1]
+
+    example_module = SequentialProductionLineModule(internal_routing, features, "ExampleModule")
+
+This module can then be imported into other files and easily incorporated in the overall definition of a production line.
+
+.. code-block:: python
+    :linenos:
+
+    from manpy.simulation.core.ProductionLineModule import generate_routing_from_list
+    from FILENAME import example_module
+
+    object_list = [...]
+
+    example_module_objects = example_module.getObjectList()
+
+    object_list.extend(example_module_objects)
+
+    routing = [
+        ...
+        [...],
+        [example_module],
+        [...],
+        ...
+    ]
+
+    generate_routing_from_list(routing)
+
+Since all objects of the module need to be added to the global object list of the production line, we need to access the module's object.
+We can conveniently do so by using example_module.getObjectList().
+When defining the routing, a ProductionLineModule behaves like every Machine, Source, Exit, etc.

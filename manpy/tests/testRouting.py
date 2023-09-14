@@ -112,9 +112,9 @@ class TestRouting(TestCase):
         line_module = plm.SequentialProductionLineModule(module_routing, [], "module1")
 
         s1.defineRouting([m1])
-        m1.defineRouting([s1], line_module.get_routing_start())
+        m1.defineRouting([s1], line_module.getRoutingStart())
         line_module.defineRouting([m1], [e1])
-        e1.defineRouting(line_module.get_routing_end())
+        e1.defineRouting(line_module.getRoutingEnd())
 
 
         self.assertEqual(s1.previous, [])

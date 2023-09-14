@@ -467,8 +467,8 @@ this method is created to be overridden by the Assembly class in its getEntity w
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.get_routing_target">
-<span class="sig-name descname"><span class="pre">get_routing_target</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.get_routing_target"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.get_routing_target" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="manpy.simulation.core.CoreObject.CoreObject.getRoutingTarget">
+<span class="sig-name descname"><span class="pre">getRoutingTarget</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/CoreObject.html#CoreObject.getRoutingTarget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.CoreObject.CoreObject.getRoutingTarget" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns the object.
 This method is used for dynamic routing in order to handle CoreObjects and ProductionLineModules differently</p>
 </dd></dl>
@@ -1534,24 +1534,32 @@ Class that acts as an abstract. It should have no instances. All the Resources s
 </dd></dl>
 
 </section>
-<section id="manpy-simulation-core-productionlinemodule-py">
-<h2>manpy.simulation.core.ProductionLineModule.py<a class="headerlink" href="#manpy-simulation-core-productionlinemodule-py" title="Permalink to this heading">#</a></h2>
-<span class="target" id="module-manpy.simulation.core.ProductionLineModule"></span><dl class="py class">
+<section id="module-manpy.simulation.core.ProductionLineModule">
+<span id="manpy-simulation-core-productionlinemodule-py"></span><h2>manpy.simulation.core.ProductionLineModule.py<a class="headerlink" href="#module-manpy.simulation.core.ProductionLineModule" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
 <dt class="sig sig-object py" id="manpy.simulation.core.ProductionLineModule.AbstractProductionLineModule">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.ProductionLineModule.</span></span><span class="sig-name descname"><span class="pre">AbstractProductionLineModule</span></span><a class="reference internal" href="_modules/manpy/simulation/core/ProductionLineModule.html#AbstractProductionLineModule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ProductionLineModule.AbstractProductionLineModule" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.ProductionLineModule.AbstractProductionLineModule.appendPrevious">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">appendPrevious</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">previous</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ProductionLineModule.html#AbstractProductionLineModule.appendPrevious"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ProductionLineModule.AbstractProductionLineModule.appendPrevious" title="Permalink to this definition">#</a></dt>
-<dd><p>Appends an object to the previous objects of the first object(s) in the module.
-:param previous: The object to append the previous list of the first object(s) in the module</p>
+<dd><p>Appends an object to the previous objects of the first object(s) in the module.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>previous</strong> – The object to append the previous list of the first object(s) in the module</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.ProductionLineModule.AbstractProductionLineModule.defineNext">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">defineNext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">successorList</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ProductionLineModule.html#AbstractProductionLineModule.defineNext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ProductionLineModule.AbstractProductionLineModule.defineNext" title="Permalink to this definition">#</a></dt>
-<dd><p>Adds the objects in successorList as successor of the last object(s) in the module.
-:param successorList: list containing the successor(s)</p>
+<dd><p>Adds the objects in successorList as successor of the last object(s) in the module.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>successorList</strong> – list containing the successor(s)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1579,26 +1587,38 @@ Class that acts as an abstract. It should have no instances. All the Resources s
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="manpy.simulation.core.ProductionLineModule.AbstractProductionLineModule.get_routing_end">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_routing_end</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ProductionLineModule.html#AbstractProductionLineModule.get_routing_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ProductionLineModule.AbstractProductionLineModule.get_routing_end" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="manpy.simulation.core.ProductionLineModule.AbstractProductionLineModule.getRoutingEnd">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getRoutingEnd</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ProductionLineModule.html#AbstractProductionLineModule.getRoutingEnd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ProductionLineModule.AbstractProductionLineModule.getRoutingEnd" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a list with the end point of the module, i.e. the last objects.
-This list can be used as an input for defineRouting.
-:return: List containing the object(s) of the last stage in the module</p>
+This list can be used as an input for defineRouting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List containing the object(s) of the last stage in the module</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="manpy.simulation.core.ProductionLineModule.AbstractProductionLineModule.get_routing_start">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_routing_start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ProductionLineModule.html#AbstractProductionLineModule.get_routing_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ProductionLineModule.AbstractProductionLineModule.get_routing_start" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="manpy.simulation.core.ProductionLineModule.AbstractProductionLineModule.getRoutingStart">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getRoutingStart</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ProductionLineModule.html#AbstractProductionLineModule.getRoutingStart"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ProductionLineModule.AbstractProductionLineModule.getRoutingStart" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a list with the starting point of the module, i.e. the first objects.
-This list can be used as an input for defineRouting.
-:return: List containing the object(s) of the first stage in the module</p>
+This list can be used as an input for defineRouting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List containing the object(s) of the first stage in the module</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="manpy.simulation.core.ProductionLineModule.AbstractProductionLineModule.get_routing_target">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_routing_target</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ProductionLineModule.html#AbstractProductionLineModule.get_routing_target"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ProductionLineModule.AbstractProductionLineModule.get_routing_target" title="Permalink to this definition">#</a></dt>
-<dd><p>This method is used for dynamic routing in order to handle CoreObjects and ProductionLineModules differently
-:return: Returns the actually relevant objects for external routing, e.g. the first stage of the module.</p>
+<dt class="sig sig-object py" id="manpy.simulation.core.ProductionLineModule.AbstractProductionLineModule.getRoutingTarget">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">getRoutingTarget</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ProductionLineModule.html#AbstractProductionLineModule.getRoutingTarget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ProductionLineModule.AbstractProductionLineModule.getRoutingTarget" title="Permalink to this definition">#</a></dt>
+<dd><p>This method is used for dynamic routing in order to handle CoreObjects and ProductionLineModules differently</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the actually relevant objects for external routing, e.g. the first stage of the module.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -1607,18 +1627,39 @@ This list can be used as an input for defineRouting.
 <dt class="sig sig-object py" id="manpy.simulation.core.ProductionLineModule.SequentialProductionLineModule">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.ProductionLineModule.</span></span><span class="sig-name descname"><span class="pre">SequentialProductionLineModule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">routing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ProductionLineModule.html#SequentialProductionLineModule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ProductionLineModule.SequentialProductionLineModule" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#manpy.simulation.core.ProductionLineModule.AbstractProductionLineModule" title="manpy.simulation.core.ProductionLineModule.AbstractProductionLineModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractProductionLineModule</span></code></a></p>
+<p>ProductionLineModule that keeps the components in sequential order.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>routing</strong> – List containing the objects for routing in the correct order.
+Each “stage” of the production line is defined in its own list.
+Each stage can consist of multiple objects.
+Example: <cite>routing_list=[[source1], [machine1], [machine2, source2], [assembly], [exit]]</cite></p></li>
+<li><p><strong>features</strong> – List containing all features belonging to the module.</p></li>
+<li><p><strong>name</strong> – Name of the module as a string</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.ProductionLineModule.SequentialProductionLineModule.appendPrevious">
 <span class="sig-name descname"><span class="pre">appendPrevious</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">previous</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ProductionLineModule.html#SequentialProductionLineModule.appendPrevious"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ProductionLineModule.SequentialProductionLineModule.appendPrevious" title="Permalink to this definition">#</a></dt>
-<dd><p>Appends an object to the previous objects of the first object(s) in the module.
-:param previous: The object to append the previous list of the first object(s) in the module</p>
+<dd><p>Appends an object to the previous objects of the first object(s) in the module.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>previous</strong> – The object to append the previous list of the first object(s) in the module</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.ProductionLineModule.SequentialProductionLineModule.defineNext">
 <span class="sig-name descname"><span class="pre">defineNext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">successorList</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ProductionLineModule.html#SequentialProductionLineModule.defineNext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ProductionLineModule.SequentialProductionLineModule.defineNext" title="Permalink to this definition">#</a></dt>
-<dd><p>Adds the objects in successorList as successor of the last object(s) in the module.
-:param successorList: list containing the successor(s)</p>
+<dd><p>Adds the objects in successorList as successor of the last object(s) in the module.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>successorList</strong> – list containing the successor(s)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1646,26 +1687,38 @@ This list can be used as an input for defineRouting.
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="manpy.simulation.core.ProductionLineModule.SequentialProductionLineModule.get_routing_end">
-<span class="sig-name descname"><span class="pre">get_routing_end</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ProductionLineModule.html#SequentialProductionLineModule.get_routing_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ProductionLineModule.SequentialProductionLineModule.get_routing_end" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="manpy.simulation.core.ProductionLineModule.SequentialProductionLineModule.getRoutingEnd">
+<span class="sig-name descname"><span class="pre">getRoutingEnd</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ProductionLineModule.html#SequentialProductionLineModule.getRoutingEnd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ProductionLineModule.SequentialProductionLineModule.getRoutingEnd" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a list with the end point of the module, i.e. the last objects.
-This list can be used as an input for defineRouting.
-:return: List containing the object(s) of the last stage in the module</p>
+This list can be used as an input for defineRouting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List containing the object(s) of the last stage in the module</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="manpy.simulation.core.ProductionLineModule.SequentialProductionLineModule.get_routing_start">
-<span class="sig-name descname"><span class="pre">get_routing_start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ProductionLineModule.html#SequentialProductionLineModule.get_routing_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ProductionLineModule.SequentialProductionLineModule.get_routing_start" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="manpy.simulation.core.ProductionLineModule.SequentialProductionLineModule.getRoutingStart">
+<span class="sig-name descname"><span class="pre">getRoutingStart</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ProductionLineModule.html#SequentialProductionLineModule.getRoutingStart"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ProductionLineModule.SequentialProductionLineModule.getRoutingStart" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a list with the starting point of the module, i.e. the first objects.
-This list can be used as an input for defineRouting.
-:return: List containing the object(s) of the first stage in the module</p>
+This list can be used as an input for defineRouting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List containing the object(s) of the first stage in the module</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="manpy.simulation.core.ProductionLineModule.SequentialProductionLineModule.get_routing_target">
-<span class="sig-name descname"><span class="pre">get_routing_target</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ProductionLineModule.html#SequentialProductionLineModule.get_routing_target"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ProductionLineModule.SequentialProductionLineModule.get_routing_target" title="Permalink to this definition">#</a></dt>
-<dd><p>This method is used for dynamic routing in order to handle CoreObjects and ProductionLineModules differently
-:return: Returns the actually relevant objects for external routing, e.g. the first stage of the module.</p>
+<dt class="sig sig-object py" id="manpy.simulation.core.ProductionLineModule.SequentialProductionLineModule.getRoutingTarget">
+<span class="sig-name descname"><span class="pre">getRoutingTarget</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ProductionLineModule.html#SequentialProductionLineModule.getRoutingTarget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ProductionLineModule.SequentialProductionLineModule.getRoutingTarget" title="Permalink to this definition">#</a></dt>
+<dd><p>This method is used for dynamic routing in order to handle CoreObjects and ProductionLineModules differently</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the actually relevant objects for external routing, e.g. the first stage of the module.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -1673,9 +1726,13 @@ This list can be used as an input for defineRouting.
 <dl class="py function">
 <dt class="sig sig-object py" id="manpy.simulation.core.ProductionLineModule.generate_routing_from_list">
 <span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.ProductionLineModule.</span></span><span class="sig-name descname"><span class="pre">generate_routing_from_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">routing_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/ProductionLineModule.html#generate_routing_from_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.ProductionLineModule.generate_routing_from_list" title="Permalink to this definition">#</a></dt>
-<dd><p>Takes a list containing the objects for routing and defines the routing in the provided order.
-:param routing_list: List containing the objects for routing in the correct order.
-Each “stage” of the production line is defined in its own list. Each stage can consist of multiple objects.
+<dd><p>Takes a list containing the objects for routing and defines the routing in the provided order.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>routing_list</strong> – List containing the objects for routing in the correct order.</p>
+</dd>
+</dl>
+<p>Each “stage” of the production line is defined in its own list. Each stage can consist of multiple objects.
 Example: <cite>routing_list=[[source1], [machine1], [machine2, source2], [assembly], [exit]]</cite></p>
 </dd></dl>
 
@@ -2083,12 +2140,6 @@ retrieved state and a label for the state.</p>
 </section>
 <section id="module-manpy.simulation.core.utils">
 <span id="manpy-simulation-core-utils-py"></span><h2>manpy.simulation.core.utils.py<a class="headerlink" href="#module-manpy.simulation.core.utils" title="Permalink to this heading">#</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="manpy.simulation.core.utils.ProductionLineStation">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.utils.</span></span><span class="sig-name descname"><span class="pre">ProductionLineStation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predecessors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">successors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/utils.html#ProductionLineStation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.utils.ProductionLineStation" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-</dd></dl>
-
 <dl class="py function">
 <dt class="sig sig-object py" id="manpy.simulation.core.utils.check_config_dict">
 <span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.utils.</span></span><span class="sig-name descname"><span class="pre">check_config_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/utils.html#check_config_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.utils.check_config_dict" title="Permalink to this definition">#</a></dt>
@@ -2221,7 +2272,7 @@ Is used to prevent accidental misconfigurations.</p>
 <li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.getGiverObjectQueue"><code class="docutils literal notranslate"><span class="pre">CoreObject.getGiverObjectQueue()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.getReceiverObject"><code class="docutils literal notranslate"><span class="pre">CoreObject.getReceiverObject()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.getReceiverObjectQueue"><code class="docutils literal notranslate"><span class="pre">CoreObject.getReceiverObjectQueue()</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.get_routing_target"><code class="docutils literal notranslate"><span class="pre">CoreObject.get_routing_target()</span></code></a></li>
+<li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.getRoutingTarget"><code class="docutils literal notranslate"><span class="pre">CoreObject.getRoutingTarget()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.haveToDispose"><code class="docutils literal notranslate"><span class="pre">CoreObject.haveToDispose()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.identifyEntityToGet"><code class="docutils literal notranslate"><span class="pre">CoreObject.identifyEntityToGet()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.CoreObject.CoreObject.initialAllocationRequest"><code class="docutils literal notranslate"><span class="pre">CoreObject.initialAllocationRequest()</span></code></a></li>
@@ -2422,15 +2473,15 @@ Is used to prevent accidental misconfigurations.</p>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#manpy-simulation-core-productionlinemodule-py">manpy.simulation.core.ProductionLineModule.py</a><ul>
+<li><a class="reference internal" href="#module-manpy.simulation.core.ProductionLineModule">manpy.simulation.core.ProductionLineModule.py</a><ul>
 <li><a class="reference internal" href="#manpy.simulation.core.ProductionLineModule.AbstractProductionLineModule"><code class="docutils literal notranslate"><span class="pre">AbstractProductionLineModule</span></code></a><ul>
 <li><a class="reference internal" href="#manpy.simulation.core.ProductionLineModule.AbstractProductionLineModule.appendPrevious"><code class="docutils literal notranslate"><span class="pre">AbstractProductionLineModule.appendPrevious()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.ProductionLineModule.AbstractProductionLineModule.defineNext"><code class="docutils literal notranslate"><span class="pre">AbstractProductionLineModule.defineNext()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.ProductionLineModule.AbstractProductionLineModule.defineRouting"><code class="docutils literal notranslate"><span class="pre">AbstractProductionLineModule.defineRouting()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.ProductionLineModule.AbstractProductionLineModule.getObjectList"><code class="docutils literal notranslate"><span class="pre">AbstractProductionLineModule.getObjectList()</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.ProductionLineModule.AbstractProductionLineModule.get_routing_end"><code class="docutils literal notranslate"><span class="pre">AbstractProductionLineModule.get_routing_end()</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.ProductionLineModule.AbstractProductionLineModule.get_routing_start"><code class="docutils literal notranslate"><span class="pre">AbstractProductionLineModule.get_routing_start()</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.ProductionLineModule.AbstractProductionLineModule.get_routing_target"><code class="docutils literal notranslate"><span class="pre">AbstractProductionLineModule.get_routing_target()</span></code></a></li>
+<li><a class="reference internal" href="#manpy.simulation.core.ProductionLineModule.AbstractProductionLineModule.getRoutingEnd"><code class="docutils literal notranslate"><span class="pre">AbstractProductionLineModule.getRoutingEnd()</span></code></a></li>
+<li><a class="reference internal" href="#manpy.simulation.core.ProductionLineModule.AbstractProductionLineModule.getRoutingStart"><code class="docutils literal notranslate"><span class="pre">AbstractProductionLineModule.getRoutingStart()</span></code></a></li>
+<li><a class="reference internal" href="#manpy.simulation.core.ProductionLineModule.AbstractProductionLineModule.getRoutingTarget"><code class="docutils literal notranslate"><span class="pre">AbstractProductionLineModule.getRoutingTarget()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#manpy.simulation.core.ProductionLineModule.SequentialProductionLineModule"><code class="docutils literal notranslate"><span class="pre">SequentialProductionLineModule</span></code></a><ul>
@@ -2438,9 +2489,9 @@ Is used to prevent accidental misconfigurations.</p>
 <li><a class="reference internal" href="#manpy.simulation.core.ProductionLineModule.SequentialProductionLineModule.defineNext"><code class="docutils literal notranslate"><span class="pre">SequentialProductionLineModule.defineNext()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.ProductionLineModule.SequentialProductionLineModule.defineRouting"><code class="docutils literal notranslate"><span class="pre">SequentialProductionLineModule.defineRouting()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.ProductionLineModule.SequentialProductionLineModule.getObjectList"><code class="docutils literal notranslate"><span class="pre">SequentialProductionLineModule.getObjectList()</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.ProductionLineModule.SequentialProductionLineModule.get_routing_end"><code class="docutils literal notranslate"><span class="pre">SequentialProductionLineModule.get_routing_end()</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.ProductionLineModule.SequentialProductionLineModule.get_routing_start"><code class="docutils literal notranslate"><span class="pre">SequentialProductionLineModule.get_routing_start()</span></code></a></li>
-<li><a class="reference internal" href="#manpy.simulation.core.ProductionLineModule.SequentialProductionLineModule.get_routing_target"><code class="docutils literal notranslate"><span class="pre">SequentialProductionLineModule.get_routing_target()</span></code></a></li>
+<li><a class="reference internal" href="#manpy.simulation.core.ProductionLineModule.SequentialProductionLineModule.getRoutingEnd"><code class="docutils literal notranslate"><span class="pre">SequentialProductionLineModule.getRoutingEnd()</span></code></a></li>
+<li><a class="reference internal" href="#manpy.simulation.core.ProductionLineModule.SequentialProductionLineModule.getRoutingStart"><code class="docutils literal notranslate"><span class="pre">SequentialProductionLineModule.getRoutingStart()</span></code></a></li>
+<li><a class="reference internal" href="#manpy.simulation.core.ProductionLineModule.SequentialProductionLineModule.getRoutingTarget"><code class="docutils literal notranslate"><span class="pre">SequentialProductionLineModule.getRoutingTarget()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#manpy.simulation.core.ProductionLineModule.generate_routing_from_list"><code class="docutils literal notranslate"><span class="pre">generate_routing_from_list()</span></code></a></li>
@@ -2520,7 +2571,6 @@ Is used to prevent accidental misconfigurations.</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-manpy.simulation.core.utils">manpy.simulation.core.utils.py</a><ul>
-<li><a class="reference internal" href="#manpy.simulation.core.utils.ProductionLineStation"><code class="docutils literal notranslate"><span class="pre">ProductionLineStation</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.utils.check_config_dict"><code class="docutils literal notranslate"><span class="pre">check_config_dict()</span></code></a></li>
 <li><a class="reference internal" href="#manpy.simulation.core.utils.info"><code class="docutils literal notranslate"><span class="pre">info()</span></code></a></li>
 </ul>

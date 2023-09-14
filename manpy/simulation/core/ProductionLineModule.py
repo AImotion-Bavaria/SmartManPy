@@ -16,19 +16,21 @@ class AbstractProductionLineModule(ABC):
         pass
 
     @abstractmethod
-    def get_routing_start(self):
+    def getRoutingStart(self):
         """
         Returns a list with the starting point of the module, i.e. the first objects.
         This list can be used as an input for defineRouting.
+
         :return: List containing the object(s) of the first stage in the module
         """
         pass
 
     @abstractmethod
-    def get_routing_end(self):
+    def getRoutingEnd(self):
         """
         Returns a list with the end point of the module, i.e. the last objects.
         This list can be used as an input for defineRouting.
+
         :return: List containing the object(s) of the last stage in the module
         """
         pass
@@ -37,6 +39,7 @@ class AbstractProductionLineModule(ABC):
     def defineNext(self, successorList=[]):
         """
         Adds the objects in successorList as successor of the last object(s) in the module.
+
         :param successorList: list containing the successor(s)
         """
         pass
@@ -45,6 +48,7 @@ class AbstractProductionLineModule(ABC):
     def appendPrevious(self, previous):
         """
         Appends an object to the previous objects of the first object(s) in the module.
+
         :param previous: The object to append the previous list of the first object(s) in the module
         """
         pass
@@ -57,19 +61,32 @@ class AbstractProductionLineModule(ABC):
         pass
 
     @abstractmethod
-    def get_routing_target(self):
+    def getRoutingTarget(self):
         """
         This method is used for dynamic routing in order to handle CoreObjects and ProductionLineModules differently
+
         :return: Returns the actually relevant objects for external routing, e.g. the first stage of the module.
         """
         pass
 
 
 class SequentialProductionLineModule(AbstractProductionLineModule):
-    def __init__(self, routing: list, features: list, name=""):
+    """
+    ProductionLineModule that keeps the components in sequential order.
+
+    :param routing: List containing the objects for routing in the correct order.
+        Each "stage" of the production line is defined in its own list.
+        Each stage can consist of multiple objects.
+        Example: `routing_list=[[source1], [machine1], [machine2, source2], [assembly], [exit]]`
+    :param properties_and_interruptions: List containing all features belonging to the module.
+    :param name: Name of the module as a string
+    """
+
+    def __init__(self, routing: list, properties_and_interruptions: list, name=""):
+
+
         self.routing = routing
-        # TODO rename, doesnt include failures etc
-        self.features = features
+        self.properties_and_interruptions = properties_and_interruptions
         self.first = self.routing[0]
         self.last = self.routing[-1]
 
@@ -87,10 +104,10 @@ class SequentialProductionLineModule(AbstractProductionLineModule):
         for l in self.last:
             l.next.extend(successorList)
 
-    def get_routing_start(self):
+    def getRoutingStart(self):
         return self.first
 
-    def get_routing_end(self):
+    def getRoutingEnd(self):
         return self.last
 
     def defineNext(self, successorList=[]):
@@ -105,16 +122,17 @@ class SequentialProductionLineModule(AbstractProductionLineModule):
     def getObjectList(self):
         routing_objects = list(chain.from_iterable(self.routing))
 
-        object_list = routing_objects + self.features
+        object_list = routing_objects + self.properties_and_interruptions
         return object_list
 
-    def get_routing_target(self):
+    def getRoutingTarget(self):
         return self.first
 
 
 def generate_routing_from_list(routing_list: list):
     """
     Takes a list containing the objects for routing and defines the routing in the provided order.
+
     :param routing_list: List containing the objects for routing in the correct order.
     Each "stage" of the production line is defined in its own list. Each stage can consist of multiple objects.
     Example: `routing_list=[[source1], [machine1], [machine2, source2], [assembly], [exit]]`

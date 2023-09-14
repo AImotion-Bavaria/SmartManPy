@@ -312,8 +312,8 @@ class CoreObject(ManPyObject):
         for s in successorList:
             if s.isNext:  # checks if s can be a next object. e.g., exit cannot be a next object
                 # __get_routing_target() is used to handle CoreObjects and ProductionLineModules differently
-                if s.get_routing_target() not in self.next:
-                    self.next.extend(s.get_routing_target())
+                if s.getRoutingTarget() not in self.next:
+                    self.next.extend(s.getRoutingTarget())
                 s.appendPrevious(self)
 
     def definePrevious(self, predecessorList=[]):
@@ -330,7 +330,7 @@ class CoreObject(ManPyObject):
         else:
             print(f"Registering {previous.name} as previous in {self.name} failed.")
 
-    def get_routing_target(self):
+    def getRoutingTarget(self):
         """Returns the object.
         This method is used for dynamic routing in order to handle CoreObjects and ProductionLineModules differently"""
         return [self]

@@ -324,46 +324,6 @@ Each “stage”, i.e. all machines at the same level, are contained in separate
 <section id="advanced-usage">
 <h2>Advanced usage<a class="headerlink" href="#advanced-usage" title="Permalink to this heading">#</a></h2>
 <p>The following sections provides an introduction into the more advanced concepts of our ManPy extension.</p>
-<section id="quality-control">
-<h3>Quality Control<a class="headerlink" href="#quality-control" title="Permalink to this heading">#</a></h3>
-<p>Quality control is a standard process in manufacturing.
-Therefore, we added the option for quality control to machines.
-As a result, machines can either have an additional quality control step at the end of their production step or be a standalone quality control instance.
-The condition for quality control can be set via a custom defined function, which is simply called “condition” in the following example.
-We can access the currently active entity in a machine with the following statement:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">activeEntity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-</pre></div>
-</div>
-<p>We can then use any simulated value of the entity as measurement for quality control, e.g. feature values or internal labels.
-The condition function must return True if a defect was found, otherwise False must be returned.
-In the following example, we simply check if a given Feature value is inside a certain interval ([3, 7]).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">def</span> <span class="nf">condition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="linenos">2</span>    <span class="c1"># self is w.r.t. to the machine in which we apply the condition!</span>
-<span class="linenos">3</span>    <span class="n">activeEntity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="linenos">4</span>    <span class="k">if</span> <span class="n">activeEntity</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">7</span> <span class="ow">or</span> <span class="n">activeEntity</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
-<span class="linenos">5</span>        <span class="k">return</span> <span class="kc">True</span>
-<span class="linenos">6</span>    <span class="k">else</span><span class="p">:</span>
-<span class="linenos">7</span>        <span class="k">return</span> <span class="kc">False</span>
-</pre></div>
-</div>
-<p>In this example, we had to access the feature value by index, which is usually very tedious.
-We therefore added the function “get_feature_values_by_id” in Globals.py, that let’s you access certain feature values of an entity by the feature ID:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">from</span> <span class="nn">manpy.simulation.core.Globals</span> <span class="kn">import</span> <span class="n">get_feature_values_by_id</span>
-<span class="linenos"> 2</span>
-<span class="linenos"> 3</span><span class="k">def</span> <span class="nf">condition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="linenos"> 4</span>    <span class="c1"># self is w.r.t. to the machine in which we apply the condition!</span>
-<span class="linenos"> 5</span>    <span class="n">activeEntity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="linenos"> 6</span>
-<span class="linenos"> 7</span>    <span class="c1"># Access first element since function returns a list</span>
-<span class="linenos"> 8</span>    <span class="n">feature_value</span> <span class="o">=</span> <span class="n">get_feature_values_by_id</span><span class="p">(</span><span class="n">activeEntity</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;f1&quot;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
-<span class="linenos"> 9</span>
-<span class="linenos">10</span>    <span class="k">if</span> <span class="n">feature_value</span> <span class="o">&gt;</span> <span class="mi">7</span> <span class="ow">or</span> <span class="n">feature_value</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
-<span class="linenos">11</span>        <span class="k">return</span> <span class="kc">True</span>
-<span class="linenos">12</span>    <span class="k">else</span><span class="p">:</span>
-<span class="linenos">13</span>        <span class="k">return</span> <span class="kc">False</span>
-</pre></div>
-</div>
-</section>
 <section id="features">
 <h3>Features<a class="headerlink" href="#features" title="Permalink to this heading">#</a></h3>
 <p>Features are our most important extension to the original ManPy and also the most complex one.</p>
@@ -518,6 +478,46 @@ The data points for interpolation can also be determined by a Feature with all i
 <p>The following plot shows two complex TimeSeries that were created using both interpolation and functional dependencies:</p>
 <a class="reference internal image-reference" href="_images/ts_complex.png"><img alt="Complex TimeSeries" src="_images/ts_complex.png" style="width: 600px;" /></a>
 </section>
+</section>
+<section id="quality-control">
+<h3>Quality Control<a class="headerlink" href="#quality-control" title="Permalink to this heading">#</a></h3>
+<p>Quality control is a standard process in manufacturing.
+Therefore, we added the option for quality control to machines.
+As a result, machines can either have an additional quality control step at the end of their production step or be a standalone quality control instance.
+The condition for quality control can be set via a custom defined function, which is simply called “condition” in the following example.
+We can access the currently active entity in a machine with the following statement:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">activeEntity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>We can then use any simulated value of the entity as measurement for quality control, e.g. feature values or internal labels.
+The condition function must return True if a defect was found, otherwise False must be returned.
+In the following example, we simply check if a given Feature value is inside a certain interval ([3, 7]).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">def</span> <span class="nf">condition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos">2</span>    <span class="c1"># self is w.r.t. to the machine in which we apply the condition!</span>
+<span class="linenos">3</span>    <span class="n">activeEntity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="linenos">4</span>    <span class="k">if</span> <span class="n">activeEntity</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">7</span> <span class="ow">or</span> <span class="n">activeEntity</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+<span class="linenos">5</span>        <span class="k">return</span> <span class="kc">True</span>
+<span class="linenos">6</span>    <span class="k">else</span><span class="p">:</span>
+<span class="linenos">7</span>        <span class="k">return</span> <span class="kc">False</span>
+</pre></div>
+</div>
+<p>In this example, we had to access the feature value by index, which is usually very tedious.
+We therefore added the function “get_feature_values_by_id” in Globals.py, that let’s you access certain feature values of an entity by the feature ID:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">from</span> <span class="nn">manpy.simulation.core.Globals</span> <span class="kn">import</span> <span class="n">get_feature_values_by_id</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="k">def</span> <span class="nf">condition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos"> 4</span>    <span class="c1"># self is w.r.t. to the machine in which we apply the condition!</span>
+<span class="linenos"> 5</span>    <span class="n">activeEntity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span>    <span class="c1"># Access first element since function returns a list</span>
+<span class="linenos"> 8</span>    <span class="n">feature_value</span> <span class="o">=</span> <span class="n">get_feature_values_by_id</span><span class="p">(</span><span class="n">activeEntity</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;f1&quot;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span>    <span class="k">if</span> <span class="n">feature_value</span> <span class="o">&gt;</span> <span class="mi">7</span> <span class="ow">or</span> <span class="n">feature_value</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+<span class="linenos">11</span>        <span class="k">return</span> <span class="kc">True</span>
+<span class="linenos">12</span>    <span class="k">else</span><span class="p">:</span>
+<span class="linenos">13</span>        <span class="k">return</span> <span class="kc">False</span>
+</pre></div>
+</div>
 </section>
 <section id="failures">
 <h3>Failures<a class="headerlink" href="#failures" title="Permalink to this heading">#</a></h3>
@@ -759,7 +759,58 @@ The interface is defined in core/Database.py.</p>
 <section id="productionlinemodules">
 <h3>ProductionLineModules<a class="headerlink" href="#productionlinemodules" title="Permalink to this heading">#</a></h3>
 <p>The definition of long and complex production lines can get very extensive and confusing.
-To improve the clarity of complex production lines, we added ProductionLineModules, which allow the encapsulation of parts of the production line.</p>
+To improve the clarity of complex production lines, we added ProductionLineModules, which allow the encapsulation of parts of the production line.
+A ProductionLineModule can contain an arbitrary amount of simulatable objects.
+The main advantage is the possibility to define complex production stations in a different file, without the need for importing a large amount of objects.
+ProductionLineModules only need to know their internal routing, the routing with external components is done via the known lists or using defineRouting.</p>
+<p>The most simple ProductionLineModule is SequentialProductionLineModule, which simply takes the routing between objects in sequential order and applies it.
+This type of module should be enough to cover most of the needs for such modules.
+If you need additional functionality, you can write you custom ProductionLineModule by inheriting from core/ProductionLineModule.</p>
+<p>The following example demonstrate the definition of a very basic module.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">from</span> <span class="nn">manpy.simulation.imports</span> <span class="kn">import</span> <span class="n">Machine</span><span class="p">,</span> <span class="n">Feature</span>
+<span class="linenos"> 2</span><span class="kn">from</span> <span class="nn">manpy.simulation.core.ProductionLineModule</span> <span class="kn">import</span> <span class="n">SequentialProductionLineModule</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="n">m1</span> <span class="o">=</span> <span class="n">Machine</span><span class="p">(</span><span class="s2">&quot;M1&quot;</span><span class="p">,</span> <span class="s2">&quot;Machine1&quot;</span><span class="p">,</span>
+<span class="linenos"> 5</span>                <span class="n">processingTime</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span>
+<span class="linenos"> 6</span>                                <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> <span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="mf">0.075</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="mf">0.425</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="mf">1.175</span><span class="p">}</span>
+<span class="linenos"> 7</span>            <span class="p">})</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="n">feature1</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;f1&quot;</span><span class="p">,</span>
+<span class="linenos">10</span>                   <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Feature1&quot;</span><span class="p">,</span>
+<span class="linenos">11</span>                   <span class="n">victim</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span>
+<span class="linenos">12</span>                   <span class="n">distribution</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Feature&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}}}</span>
+<span class="linenos">13</span>                   <span class="p">)</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span><span class="n">internal_routing</span> <span class="o">=</span> <span class="p">[[</span><span class="n">m1</span><span class="p">]]</span>
+<span class="linenos">16</span><span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">feature1</span><span class="p">]</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span><span class="n">example_module</span> <span class="o">=</span> <span class="n">SequentialProductionLineModule</span><span class="p">(</span><span class="n">internal_routing</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="s2">&quot;ExampleModule&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This module can then be imported into other files and easily incorporated in the overall definition of a production line.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">from</span> <span class="nn">manpy.simulation.core.ProductionLineModule</span> <span class="kn">import</span> <span class="n">generate_routing_from_list</span>
+<span class="linenos"> 2</span><span class="kn">from</span> <span class="nn">FILENAME</span> <span class="kn">import</span> <span class="n">example_module</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="n">object_list</span> <span class="o">=</span> <span class="p">[</span><span class="o">...</span><span class="p">]</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="n">example_module_objects</span> <span class="o">=</span> <span class="n">example_module</span><span class="o">.</span><span class="n">getObjectList</span><span class="p">()</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="n">object_list</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">example_module_objects</span><span class="p">)</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="n">routing</span> <span class="o">=</span> <span class="p">[</span>
+<span class="linenos">11</span>    <span class="o">...</span>
+<span class="linenos">12</span>    <span class="p">[</span><span class="o">...</span><span class="p">],</span>
+<span class="linenos">13</span>    <span class="p">[</span><span class="n">example_module</span><span class="p">],</span>
+<span class="linenos">14</span>    <span class="p">[</span><span class="o">...</span><span class="p">],</span>
+<span class="linenos">15</span>    <span class="o">...</span>
+<span class="linenos">16</span><span class="p">]</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span><span class="n">generate_routing_from_list</span><span class="p">(</span><span class="n">routing</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Since all objects of the module need to be added to the global object list of the production line, we need to access the module’s object.
+We can conveniently do so by using example_module.getObjectList().
+When defining the routing, a ProductionLineModule behaves like every Machine, Source, Exit, etc.</p>
 </section>
 </section>
 </section>
@@ -827,7 +878,6 @@ To improve the clarity of complex production lines, we added ProductionLineModul
 </ul>
 </li>
 <li><a class="reference internal" href="#advanced-usage">Advanced usage</a><ul>
-<li><a class="reference internal" href="#quality-control">Quality Control</a></li>
 <li><a class="reference internal" href="#features">Features</a><ul>
 <li><a class="reference internal" href="#basic-usage">Basic usage</a></li>
 <li><a class="reference internal" href="#functional-dependencies">Functional dependencies</a></li>
@@ -841,6 +891,7 @@ To improve the clarity of complex production lines, we added ProductionLineModul
 <li><a class="reference internal" href="#example-plot">Example plot</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#quality-control">Quality Control</a></li>
 <li><a class="reference internal" href="#failures">Failures</a><ul>
 <li><a class="reference internal" href="#id2">Basic usage</a></li>
 <li><a class="reference internal" href="#conditional-failures">Conditional failures</a></li>

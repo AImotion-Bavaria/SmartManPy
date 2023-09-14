@@ -97,7 +97,7 @@ manpy.simulation.core.ObjectResource.py
    :show-inheritance:
 
 manpy.simulation.core.ProductionLineModule.py
-----------------------------------------
+----------------------------------------------
 
 .. automodule:: manpy.simulation.core.ProductionLineModule
    :members:
