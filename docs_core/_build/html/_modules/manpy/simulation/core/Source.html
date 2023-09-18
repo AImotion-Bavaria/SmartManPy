@@ -230,7 +230,7 @@
 <span class="kn">from</span> <span class="nn">manpy.simulation.core</span> <span class="kn">import</span> <span class="n">Globals</span>
 
 
-<div class="viewcode-block" id="EntityGenerator"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Source.EntityGenerator">[docs]</a><span class="k">class</span> <span class="nc">EntityGenerator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="EntityGenerator"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Source.EntityGenerator">[docs]</a><span class="k">class</span> <span class="nc">EntityGenerator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    models the source object that generates the entities</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -240,7 +240,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s2">&quot;EntityGenerator&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">victim</span> <span class="o">=</span> <span class="n">victim</span>
 
-<div class="viewcode-block" id="EntityGenerator.run"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Source.EntityGenerator.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="EntityGenerator.run"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Source.EntityGenerator.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
             <span class="c1"># if the Source is empty create the Entity</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">victim</span><span class="o">.</span><span class="n">getActiveObjectQueue</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -294,7 +294,7 @@
 <span class="c1"># ============================================================================</span>
 <span class="c1">#                 The Source object is a Process</span>
 <span class="c1"># ============================================================================</span>
-<div class="viewcode-block" id="Source"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Source.Source">[docs]</a><span class="k">class</span> <span class="nc">Source</span><span class="p">(</span><span class="n">CoreObject</span><span class="p">):</span>
+<div class="viewcode-block" id="Source"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Source.Source">[docs]</a><span class="k">class</span> <span class="nc">Source</span><span class="p">(</span><span class="n">CoreObject</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Spawns new entities for the simulations.</span>
 
 <span class="sd">    :param id: Internal ID</span>
@@ -329,6 +329,9 @@
 
         <span class="c1"># String that shows the type of object</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s2">&quot;Source&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">isNext</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">isPrevious</span> <span class="o">=</span> <span class="kc">True</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">rng</span> <span class="o">=</span> <span class="n">RandomNumberGenerator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interArrivalTime</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">capacity</span> <span class="o">=</span> <span class="n">capacity</span>
 
@@ -347,7 +350,7 @@
     <span class="c1"># ===========================================================================</span>
     <span class="c1"># The initialize method of the Source class</span>
     <span class="c1"># ===========================================================================</span>
-<div class="viewcode-block" id="Source.initialize"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Source.Source.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Source.initialize"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Source.Source.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># using the Process __init__ and not the CoreObject __init__</span>
         <span class="n">CoreObject</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
@@ -371,7 +374,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;loadOperatorAvailable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;canDispose&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span></div>
 
-<div class="viewcode-block" id="Source.run"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Source.Source.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Source.run"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Source.Source.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># get active object and its queue</span>
         <span class="n">activeObject</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getActiveObject</span><span class="p">()</span>
         <span class="n">activeObjectQueue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getActiveObjectQueue</span><span class="p">()</span>
@@ -405,7 +408,7 @@
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">signalReceiver</span><span class="p">():</span>
                     <span class="k">continue</span></div>
 
-<div class="viewcode-block" id="Source.appendEntity"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Source.Source.appendEntity">[docs]</a>    <span class="k">def</span> <span class="nf">appendEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">):</span>
+<div class="viewcode-block" id="Source.appendEntity"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Source.Source.appendEntity">[docs]</a>    <span class="k">def</span> <span class="nf">appendEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;add newly created entity to pendingEntities&quot;&quot;&quot;</span>
 
         <span class="kn">from</span> <span class="nn">manpy.simulation.core.Globals</span> <span class="kn">import</span> <span class="n">G</span>
@@ -416,12 +419,20 @@
         <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">RouterList</span><span class="p">:</span>
             <span class="n">G</span><span class="o">.</span><span class="n">pendingEntities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">activeEntity</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Source.defineRouting"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Source.Source.defineRouting">[docs]</a>    <span class="k">def</span> <span class="nf">defineRouting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">successorList</span><span class="o">=</span><span class="p">[]):</span>
+<div class="viewcode-block" id="Source.defineRouting"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Source.Source.defineRouting">[docs]</a>    <span class="k">def</span> <span class="nf">defineRouting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">successorList</span><span class="o">=</span><span class="p">[]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;sets the routing out element for the Source&quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">successorList</span></div>
 
-<div class="viewcode-block" id="Source.createEntity"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Source.Source.createEntity">[docs]</a>    <span class="k">def</span> <span class="nf">createEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Source.definePrevious"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Source.Source.definePrevious">[docs]</a>    <span class="k">def</span> <span class="nf">definePrevious</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Safeguarding to avoid setting predecessors to sources&quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cannot set predecessors to sources.&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Source.appendPrevious"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Source.Source.appendPrevious">[docs]</a>    <span class="k">def</span> <span class="nf">appendPrevious</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">previous</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Safeguarding to avoid setting predecessors to sources&quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cannot set predecessors to sources.&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Source.createEntity"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Source.Source.createEntity">[docs]</a>    <span class="k">def</span> <span class="nf">createEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;creates an Entity&quot;&quot;&quot;</span>
 
         <span class="kn">from</span> <span class="nn">manpy.simulation.core.Globals</span> <span class="kn">import</span> <span class="n">G</span>
@@ -439,13 +450,13 @@
                 <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">type</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">numberOfArrivals</span><span class="p">),</span>
             <span class="p">)</span>  <span class="c1"># return the newly created Entity</span></div>
 
-<div class="viewcode-block" id="Source.calculateInterArrivalTime"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Source.Source.calculateInterArrivalTime">[docs]</a>    <span class="k">def</span> <span class="nf">calculateInterArrivalTime</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Source.calculateInterArrivalTime"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Source.Source.calculateInterArrivalTime">[docs]</a>    <span class="k">def</span> <span class="nf">calculateInterArrivalTime</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;calculates the processing time&quot;&quot;&quot;</span>
 
         <span class="c1"># this is if we have a default interarrival time for all the entities</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">generateNumber</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="Source.removeEntity"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Source.Source.removeEntity">[docs]</a>    <span class="k">def</span> <span class="nf">removeEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Source.removeEntity"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Source.Source.removeEntity">[docs]</a>    <span class="k">def</span> <span class="nf">removeEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;removes an entity from the Source&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getActiveObjectQueue</span><span class="p">())</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scheduledEntities</span><span class="p">):</span>

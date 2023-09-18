@@ -134,7 +134,6 @@ class Entity(ManPyObject):
 
     def set_feature(self, feature, label, time, indexing):
         """Sets internal feature values to passed values"""
-
         self.labels[G.ftr_st.index(indexing)] = label
         self.features[G.ftr_st.index(indexing)] = feature
         self.feature_times[G.ftr_st.index(indexing)] = time

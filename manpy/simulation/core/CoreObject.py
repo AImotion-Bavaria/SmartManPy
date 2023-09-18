@@ -42,6 +42,8 @@ class CoreObject(ManPyObject):
         self.previous = []  # list with the previous objects in the flow
         self.nextIds = []  # list with the ids of the next objects in the flow
         self.previousIds = []  # list with the ids of the previous objects in the flow
+        self.isNext = True
+        self.isPrevious = True
 
         # lists to hold statistics of multiple runs
         self.Failure = []
@@ -300,6 +302,48 @@ class CoreObject(ManPyObject):
         """
         self.next = successorList
         self.previous = predecessorList
+
+    def defineNext(self, successorList=[]):
+        """
+        sets the next element for the object and automatically registers itself as previous object of all objects in successorList.
+        :param successorList:
+        :return: None
+        """
+        for s in successorList:
+            if s.isNext:  # checks if s can be a next object. e.g., exit cannot be a next object
+                # __get_routing_target() is used to handle CoreObjects and ProductionLineModules differently
+                if s.getRoutingTarget() not in self.next:
+                    self.next.extend(s.getRoutingTarget())
+                s.appendPrevious(self)
+
+    def definePrevious(self, predecessorList=[]):
+        """Sets self.previous"""
+
+        self.previous = predecessorList
+
+    def appendPrevious(self, previous):
+        """Append previous to self.previous"""
+        # first checks if previous can be a previous object
+        # e.g., source cannot be a previous object
+        if previous.isPrevious and previous not in self.previous:
+            self.previous.append(previous)
+        else:
+            print(f"Registering {previous.name} as previous in {self.name} failed.")
+
+    def getRoutingTarget(self):
+        """Returns the object.
+        This method is used for dynamic routing in order to handle CoreObjects and ProductionLineModules differently"""
+        return [self]
+
+
+    def printRouting(self):
+        # print(f"{self.name}", end="")
+        #
+        # print("")
+        #
+        # for s in self.next:
+        #     s.printRouting()
+        pass
 
     def initialSignalReceiver(self):
         """

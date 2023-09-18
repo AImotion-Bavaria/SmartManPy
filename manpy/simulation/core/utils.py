@@ -2,6 +2,15 @@ import sys
 
 
 def check_config_dict(config_dict: dict, keys: list, object_name: str):
+    """
+    Function to check if config dictionaries contain a mistake.
+    I.e., it checks if certain keys are contained in the dict and warns the user if some are missing.
+    Is used to prevent accidental misconfigurations.
+
+    :param config_dict: The config dict to be checked
+    :param keys: A list with the keys in config_dict that should be checked
+    :param object_name: The name of the object in which the check is done. Is used for the print statement
+    """
 
     for k in keys:
         if k not in config_dict:
@@ -17,4 +26,9 @@ def check_config_dict(config_dict: dict, keys: list, object_name: str):
 
 
 def info(text):
+    """
+    Puts "INFO: " in front of a text.
+
+    :param text: The text to which "INFO: " should be added.
+    """
     print(f"INFO: {text}")

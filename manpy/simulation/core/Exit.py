@@ -39,6 +39,9 @@ class Exit(CoreObject):
 
     def __init__(self, id, name, cancelCondition={}, **kw):
         self.type = "Exit"  # XXX needed ?
+        self.isNext = True
+        self.isPrevious = False
+
         # lists to hold statistics of multiple runs
         self.Exits = []
         self.UnitExits = []
@@ -82,6 +85,10 @@ class Exit(CoreObject):
     def defineRouting(self, predecessorList=[]):
         """sets the routing in element for the Exit"""
         self.previous = predecessorList  # no successorList for the Exit
+
+    def defineNext(self, successorList=[]):
+        """Safeguarding for mistakenly trying to set the next element on an Exit object"""
+        print("Trying to set successors for Exits does not have any effects.")
 
     def canAccept(self, callerObject=None):
         """checks if the Exit can accept an entity"""

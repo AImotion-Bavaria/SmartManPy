@@ -4,10 +4,11 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
+    <link rel="shortcut icon" href="../../../../_static/logo.png"/><!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
         <title>manpy.simulation.core.Database - Extended ManPy (beta) Docs</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -144,6 +145,9 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
   
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../../../../_static/logo.png" alt="Logo"/>
+  </div>
   
   <span class="sidebar-brand-text">Extended ManPy (beta) Docs</span>
   
@@ -196,16 +200,16 @@
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="c1"># TODO can we dynamically import packages? it may be annoying to install all dependencies if you only need 1</span>
 
-<div class="viewcode-block" id="ManPyDatabase"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Database.ManPyDatabase">[docs]</a><span class="k">class</span> <span class="nc">ManPyDatabase</span><span class="p">:</span>
+<div class="viewcode-block" id="ManPyDatabase"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Database.ManPyDatabase">[docs]</a><span class="k">class</span> <span class="nc">ManPyDatabase</span><span class="p">:</span>
 
-<div class="viewcode-block" id="ManPyDatabase.establish_connection"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Database.ManPyDatabase.establish_connection">[docs]</a>    <span class="k">def</span> <span class="nf">establish_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ManPyDatabase.establish_connection"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Database.ManPyDatabase.establish_connection">[docs]</a>    <span class="k">def</span> <span class="nf">establish_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Establishes connection</span>
 <span class="sd">        :return: None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented!&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ManPyDatabase.insert"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Database.ManPyDatabase.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">column_value_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<div class="viewcode-block" id="ManPyDatabase.insert"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Database.ManPyDatabase.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">column_value_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Inserts values into given columns of a table</span>
 <span class="sd">        :param table_name: Name of the table</span>
@@ -214,14 +218,14 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented!&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ManPyDatabase.commit"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Database.ManPyDatabase.commit">[docs]</a>    <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ManPyDatabase.commit"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Database.ManPyDatabase.commit">[docs]</a>    <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Commits the changes to the database</span>
 <span class="sd">        :return: None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented!&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ManPyDatabase.close_connection"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Database.ManPyDatabase.close_connection">[docs]</a>    <span class="k">def</span> <span class="nf">close_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ManPyDatabase.close_connection"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Database.ManPyDatabase.close_connection">[docs]</a>    <span class="k">def</span> <span class="nf">close_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Closes the database connection</span>
 <span class="sd">        :return: None</span>
@@ -229,28 +233,28 @@
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not implemented!&quot;</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="ManPyQuestDBDatabase"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Database.ManPyQuestDBDatabase">[docs]</a><span class="k">class</span> <span class="nc">ManPyQuestDBDatabase</span><span class="p">(</span><span class="n">ManPyDatabase</span><span class="p">):</span>
+<div class="viewcode-block" id="ManPyQuestDBDatabase"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Database.ManPyQuestDBDatabase">[docs]</a><span class="k">class</span> <span class="nc">ManPyQuestDBDatabase</span><span class="p">(</span><span class="n">ManPyDatabase</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">9009</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sender</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="n">host</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="n">port</span>
 
-<div class="viewcode-block" id="ManPyQuestDBDatabase.establish_connection"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Database.ManPyQuestDBDatabase.establish_connection">[docs]</a>    <span class="k">def</span> <span class="nf">establish_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ManPyQuestDBDatabase.establish_connection"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Database.ManPyQuestDBDatabase.establish_connection">[docs]</a>    <span class="k">def</span> <span class="nf">establish_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sender</span> <span class="o">=</span> <span class="n">Sender</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sender</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="ManPyQuestDBDatabase.insert"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Database.ManPyQuestDBDatabase.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">column_value_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<div class="viewcode-block" id="ManPyQuestDBDatabase.insert"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Database.ManPyQuestDBDatabase.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">column_value_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sender</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="n">table_name</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">column_value_dict</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ManPyQuestDBDatabase.commit"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Database.ManPyQuestDBDatabase.commit">[docs]</a>    <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ManPyQuestDBDatabase.commit"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Database.ManPyQuestDBDatabase.commit">[docs]</a>    <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sender</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="ManPyQuestDBDatabase.close_connection"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Database.ManPyQuestDBDatabase.close_connection">[docs]</a>    <span class="k">def</span> <span class="nf">close_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ManPyQuestDBDatabase.close_connection"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Database.ManPyQuestDBDatabase.close_connection">[docs]</a>    <span class="k">def</span> <span class="nf">close_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sender</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div></div>
 
 
-<div class="viewcode-block" id="ManPyKafkaConnection"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Database.ManPyKafkaConnection">[docs]</a><span class="k">class</span> <span class="nc">ManPyKafkaConnection</span><span class="p">(</span><span class="n">ManPyDatabase</span><span class="p">):</span>
+<div class="viewcode-block" id="ManPyKafkaConnection"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Database.ManPyKafkaConnection">[docs]</a><span class="k">class</span> <span class="nc">ManPyKafkaConnection</span><span class="p">(</span><span class="n">ManPyDatabase</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">producer</span><span class="p">,</span> <span class="n">topics</span><span class="p">,</span> <span class="n">bootstrap_server_address</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">producer</span> <span class="o">=</span> <span class="n">producer</span>
@@ -262,10 +266,10 @@
         <span class="n">topics_to_create</span> <span class="o">=</span> <span class="p">[</span><span class="n">NewTopic</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">names</span><span class="p">]</span>
         <span class="n">admin_client</span><span class="o">.</span><span class="n">create_topics</span><span class="p">(</span><span class="n">topics_to_create</span><span class="p">)</span>
 
-<div class="viewcode-block" id="ManPyKafkaConnection.establish_connection"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Database.ManPyKafkaConnection.establish_connection">[docs]</a>    <span class="k">def</span> <span class="nf">establish_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ManPyKafkaConnection.establish_connection"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Database.ManPyKafkaConnection.establish_connection">[docs]</a>    <span class="k">def</span> <span class="nf">establish_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="ManPyKafkaConnection.insert"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Database.ManPyKafkaConnection.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">column_value_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<div class="viewcode-block" id="ManPyKafkaConnection.insert"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Database.ManPyKafkaConnection.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">column_value_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        sends data to kafka</span>
 <span class="sd">        :param table_name: topic to write to</span>
@@ -281,10 +285,10 @@
         <span class="k">if</span> <span class="n">err</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&gt;&gt;&gt;&gt;&gt; Error while sending data to Kafka!: </span><span class="si">{</span><span class="n">err</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="ManPyKafkaConnection.commit"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Database.ManPyKafkaConnection.commit">[docs]</a>    <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ManPyKafkaConnection.commit"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Database.ManPyKafkaConnection.commit">[docs]</a>    <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">producer</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="ManPyKafkaConnection.close_connection"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.Database.ManPyKafkaConnection.close_connection">[docs]</a>    <span class="k">def</span> <span class="nf">close_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ManPyKafkaConnection.close_connection"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Database.ManPyKafkaConnection.close_connection">[docs]</a>    <span class="k">def</span> <span class="nf">close_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span></div></div>
 </pre></div>
         </article>
@@ -322,5 +326,7 @@
     <script src="../../../../_static/doctools.js"></script>
     <script src="../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../_static/scripts/furo.js"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
     </body>
 </html>

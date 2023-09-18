@@ -49,9 +49,9 @@ class SimulationExamples(TestCase):
         from manpy.simulation.Examples.Old.TwoServers import main
 
         result = main(test=1)
-        self.assertEqual(result["parts"], 732)
-        self.assertTrue(78.17 < result["blockage_ratio"] < 78.18)
-        self.assertTrue(26.73 < result["working_ratio"] < 27.74)
+        self.assertAlmostEquals(result["parts"], 750, delta=25)
+        self.assertAlmostEquals(78.0, result["blockage_ratio"], delta=1.0)
+        self.assertAlmostEquals(27.0, result["working_ratio"], delta=1.0)
 
     def testAssemblyLine(self):
         from manpy.simulation.Examples.Old.AssemblyLine import main

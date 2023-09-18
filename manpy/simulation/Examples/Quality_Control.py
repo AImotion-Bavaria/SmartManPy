@@ -1,5 +1,5 @@
 from manpy.simulation.imports import Machine, Source, Exit, Feature
-from manpy.simulation.core.Globals import runSimulation
+from manpy.simulation.core.Globals import runSimulation, get_feature_values_by_id
 
 
 # Any function can be employed as the condition to control the entity's quality before it exits the machine
@@ -7,11 +7,13 @@ from manpy.simulation.core.Globals import runSimulation
 # Return True to reject/discard the entity, and False to allow it to proceed
 def condition(self):
     activeEntity = self.Res.users[0]
-    if activeEntity.features[0] > 7 or activeEntity.features[0] < 3:
+    # Access first element since function returns a list
+    feature_value = get_feature_values_by_id(activeEntity, ["Ftr1"])[0]
+
+    if feature_value > 7 or feature_value < 3:
         return True
     else:
         return False
-
 
 # Objects
 S = Source("S1", "Source", interArrivalTime={"Fixed": {"mean": 0.1}}, entity="manpy.Part")

@@ -21,23 +21,25 @@ Created on 18 Feb 2013
 
 @author: George
 """
-"""
-Models an assembly object
-it gathers frames and parts which are loaded to the frames
-"""
+
 
 # from SimPy.Simulation import Process, Resource
 # from SimPy.Simulation import waitevent, now, hold
 import simpy
-from .RandomNumberGenerator import RandomNumberGenerator
+from manpy.simulation.RandomNumberGenerator import RandomNumberGenerator
 from manpy.simulation.core.CoreObject import CoreObject
-from .core import Globals
+from manpy.simulation.core import Globals
 from manpy.simulation.core.Entity import Entity
 
 # ===============================================================================
 # the Assembly object
 # ===============================================================================
 class Assembly(CoreObject):
+    """
+    Models an assembly object
+    it gathers frames and parts which are loaded to the frames
+    """
+
     class_name = "manpy.Assembly"
     # ===========================================================================
     # initialize the object
@@ -85,10 +87,9 @@ class Assembly(CoreObject):
 
         G.AssemblyList.append(self)
 
-    # =======================================================================
-    # parses inputs if they are given in a dictionary
-    # =======================================================================
     def parseInputs(self, inputsDict):
+        """parses inputs if they are given in a dictionary"""
+
         CoreObject.parseInputs(self, inputsDict)
         processingTime = inputsDict.get("processingTime", {})
         if not processingTime:
@@ -117,10 +118,9 @@ class Assembly(CoreObject):
 
         G.AssemblyList.append(self)
 
-    # ===========================================================================
-    # initialize method
-    # ===========================================================================
     def initialize(self):
+        """initialize method"""
+
         #         Process.__init__(self)
         CoreObject.initialize(self)
         self.waitToDispose = (
@@ -176,10 +176,9 @@ class Assembly(CoreObject):
 
     #         self.Res.waitQ=[]
 
-    # ===========================================================================
-    # class generator
-    # ===========================================================================
     def run(self):
+        """class generator"""
+
         activeObjectQueue = self.getActiveObjectQueue()
         while 1:
             from manpy.simulation.core.Globals import G
@@ -355,10 +354,9 @@ class Assembly(CoreObject):
                 self.expectedSignals["canDispose"] = 0
                 self.expectedSignals["interruptionStart"] = 0
 
-    # ===========================================================================
-    # checks if the Assembly can accept an entity
-    # ===========================================================================
     def canAccept(self, callerObject=None):
+        """checks if the Assembly can accept an entity"""
+
         # get active and giver objects
         activeObject = self.getActiveObject()
         activeObjectQueue = self.getActiveObjectQueue()
@@ -379,10 +377,9 @@ class Assembly(CoreObject):
                 return not activeObject.entryIsAssignedTo()
         return False
 
-    # ===========================================================================
-    # checks if the Assembly can accept a part or a Frame
-    # ===========================================================================
     def canAcceptAndIsRequested(self, callerObject=None):
+        """checks if the Assembly can accept a part or a Frame"""
+
         # get the active and the giver objects
         activeObject = self.getActiveObject()
         activeObjectQueue = self.getActiveObjectQueue()
@@ -401,10 +398,9 @@ class Assembly(CoreObject):
                 )
         return False
 
-    # ===========================================================================
-    # checks if the Assembly can dispose an entity to the following object
-    # ===========================================================================
     def haveToDispose(self, callerObject=None):
+        """checks if the Assembly can dispose an entity to the following object"""
+
         # get active object and its queue
         activeObject = self.getActiveObject()
         activeObjectQueue = self.getActiveObjectQueue()
@@ -420,10 +416,9 @@ class Assembly(CoreObject):
             and activeObject.waitToDispose
         )
 
-    # ===========================================================================
-    # removes an entity from the Assembly
-    # ===========================================================================
     def removeEntity(self, entity=None):
+        """removes an entity from the Assembly"""
+
         activeEntity = CoreObject.removeEntity(self, entity)  # run the default method
         self.waitToDispose = False
         if self.canAccept():
@@ -431,11 +426,9 @@ class Assembly(CoreObject):
             self.signalGiver()
         return activeEntity
 
-    # ===========================================================================
-    # gets an entity from the giver
-    # it may handle both Parts and Frames
-    # ===========================================================================
     def getEntity(self, type):
+        """gets an entity from the giver. it may handle both Parts and Frames"""
+
         activeObject = self.getActiveObject()
         activeObjectQueue = self.getActiveObjectQueue()
         giverObject = self.getGiverObject()
@@ -471,11 +464,11 @@ class Assembly(CoreObject):
             self.signalGiver()
         return activeEntity
 
-    # ===========================================================================
-    # appends entity to the receiver object. to be called by the removeEntity of the giver
-    # this method is created to be overridden by the Assembly class in its getEntity where Frames are loaded
-    # ===========================================================================
     def appendEntity(self, entity=None):
+        """appends entity to the receiver object. to be called by the removeEntity of the giver.
+        this method is created to be overridden by the Assembly class in its getEntity where Frames are loaded
+        """
+
         activeObject = self.getActiveObject()
         activeObjectQueue = self.getActiveObjectQueue()
         assert entity, "the entity to be appended cannot be None"
@@ -488,10 +481,9 @@ class Assembly(CoreObject):
                 entity
             )  # get the frame and append it to the internal queue
 
-    # ===========================================================================
-    # outputs results to JSON File
-    # ===========================================================================
     def outputResultsJSON(self):
+        """outputs results to JSON File"""
+
         from manpy.simulation.core.Globals import G
 
         json = {"_class": self.class_name, "id": self.id, "results": {}}

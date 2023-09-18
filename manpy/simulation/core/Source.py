@@ -132,6 +132,9 @@ class Source(CoreObject):
 
         # String that shows the type of object
         self.type = "Source"
+        self.isNext = False
+        self.isPrevious = True
+
         self.rng = RandomNumberGenerator(self, interArrivalTime)
         self.capacity = capacity
 
@@ -223,6 +226,14 @@ class Source(CoreObject):
         """sets the routing out element for the Source"""
 
         self.next = successorList
+
+    def definePrevious(self, **kw):
+        """Safeguarding to avoid setting predecessors to sources"""
+        print("Cannot set predecessors to sources.")
+
+    def appendPrevious(self, previous):
+        """Safeguarding to avoid setting predecessors to sources"""
+        print("Cannot set predecessors to sources.")
 
     def createEntity(self):
         """creates an Entity"""

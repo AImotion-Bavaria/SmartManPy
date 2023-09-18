@@ -223,7 +223,7 @@
 <span class="kn">import</span> <span class="nn">simpy</span>
 <span class="kn">from</span> <span class="nn">manpy.simulation.ManPyObject</span> <span class="kn">import</span> <span class="n">ManPyObject</span>
 
-<div class="viewcode-block" id="ObjectResource"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.ObjectResource.ObjectResource">[docs]</a><span class="k">class</span> <span class="nc">ObjectResource</span><span class="p">(</span><span class="n">ManPyObject</span><span class="p">):</span>
+<div class="viewcode-block" id="ObjectResource"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.ObjectResource.ObjectResource">[docs]</a><span class="k">class</span> <span class="nc">ObjectResource</span><span class="p">(</span><span class="n">ManPyObject</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The resource that repairs the machines</span>
 <span class="sd">    Class that acts as an abstract. It should have no instances. All the Resources should inherit from it.</span>
@@ -241,7 +241,7 @@
 
         <span class="n">G</span><span class="o">.</span><span class="n">ObjectResourceList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-<div class="viewcode-block" id="ObjectResource.initialize"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.ObjectResource.ObjectResource.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ObjectResource.initialize"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.ObjectResource.ObjectResource.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="kn">from</span> <span class="nn">manpy.simulation.core.Globals</span> <span class="kn">import</span> <span class="n">G</span>
 
         <span class="c1"># flag that shows if the resource is on shift</span>
@@ -265,7 +265,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">endShiftTimes</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">startShiftTimes</span> <span class="o">=</span> <span class="p">[]</span></div>
 
-<div class="viewcode-block" id="ObjectResource.checkIfResourceIsAvailable"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.ObjectResource.ObjectResource.checkIfResourceIsAvailable">[docs]</a>    <span class="k">def</span> <span class="nf">checkIfResourceIsAvailable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="ObjectResource.checkIfResourceIsAvailable"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.ObjectResource.ObjectResource.checkIfResourceIsAvailable">[docs]</a>    <span class="k">def</span> <span class="nf">checkIfResourceIsAvailable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;checks if the worker is available&quot;&quot;&quot;</span>
 
         <span class="c1"># return true if the operator is idle and on shift</span>
@@ -276,22 +276,22 @@
             <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">onBreak</span><span class="p">)</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="ObjectResource.getResource"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.ObjectResource.ObjectResource.getResource">[docs]</a>    <span class="k">def</span> <span class="nf">getResource</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ObjectResource.getResource"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.ObjectResource.ObjectResource.getResource">[docs]</a>    <span class="k">def</span> <span class="nf">getResource</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;returns the resource&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span></div>
 
-<div class="viewcode-block" id="ObjectResource.getResourceQueue"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.ObjectResource.ObjectResource.getResourceQueue">[docs]</a>    <span class="k">def</span> <span class="nf">getResourceQueue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ObjectResource.getResourceQueue"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.ObjectResource.ObjectResource.getResourceQueue">[docs]</a>    <span class="k">def</span> <span class="nf">getResourceQueue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;returns the active queue of the resource&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span></div>
 
-<div class="viewcode-block" id="ObjectResource.isInitialized"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.ObjectResource.ObjectResource.isInitialized">[docs]</a>    <span class="k">def</span> <span class="nf">isInitialized</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ObjectResource.isInitialized"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.ObjectResource.ObjectResource.isInitialized">[docs]</a>    <span class="k">def</span> <span class="nf">isInitialized</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;check if the resource is already initialized&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">initialized</span></div>
 
-<div class="viewcode-block" id="ObjectResource.printRoute"><a class="viewcode-back" href="../../../../deprecated_core_alphabetical_order.html#manpy.simulation.core.ObjectResource.ObjectResource.printRoute">[docs]</a>    <span class="k">def</span> <span class="nf">printRoute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ObjectResource.printRoute"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.ObjectResource.ObjectResource.printRoute">[docs]</a>    <span class="k">def</span> <span class="nf">printRoute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;print the route (the different stations the resource was occupied by)&quot;&quot;&quot;</span>
         <span class="k">pass</span></div></div>
 </pre></div>

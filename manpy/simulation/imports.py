@@ -39,7 +39,7 @@ from manpy.simulation.core.Machine import Machine
 from manpy.simulation.core.Queue import Queue
 from manpy.simulation.core.Source import Source
 from manpy.simulation.core.Exit import Exit
-from manpy.simulation.Assembly import Assembly
+from manpy.simulation.core.Assembly import Assembly
 from manpy.simulation.Dismantle import Dismantle
 from manpy.simulation.Conveyor import Conveyor
 from manpy.simulation.ExitJobShop import ExitJobShop
