@@ -163,7 +163,7 @@ class Feature(ObjectProperty):
                         G.db.insert(self.name, {"time": float(self.env.now), "value": float(self.featureValue)})
                         G.db.commit()
                 except:
-                    print("Quest-DB error: Feature")
+                    print(f"QuestDB error while trying to insert feature {self.name}")
 
                 # check contribution
                 if self.contribute != None:

@@ -794,7 +794,10 @@ def get_feature_values_by_id(entity, feature_ids):
     :param feature_ids: List containing the IDs of the features (as string) that should be retrieved.
     """
 
-    indices = [G.feature_indices[i] for i in feature_ids]
-    feature_values = [entity.features[idx] for idx in indices]
+    try:
+        indices = [G.feature_indices[i] for i in feature_ids]
+        feature_values = [entity.features[idx] for idx in indices]
+    except KeyError:
+        raise KeyError(f"Attempting to access a non-existent feature id for entity {entity.name}.")
 
     return feature_values

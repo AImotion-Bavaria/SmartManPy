@@ -21,15 +21,21 @@ Created on 14 Feb 2013
 
 @author: George
 """
+import random
 
-"""
-holds methods for generations of numbers from different distributions
-"""
+
 
 import math
 import numpy.random as rnd
 
 class RandomNumberGenerator(object):
+    """
+    holds methods for generations of numbers from different distributions
+
+    :param obj: The object that uses RandomNumberGenerator. Only used internally for logging in case of exceptions.
+    :param distribution: Dictionary describing the probability distribution from which the random number should be drawn.
+            See Docs for more details.
+    """
     # data should be given as a dict:
     #     "distribution": {
     #         "distributionType": {
@@ -57,6 +63,7 @@ class RandomNumberGenerator(object):
                 "Weibull",
                 "Cauchy",
                 "Triangular",
+                "Categorical"
             ]:
                 unknownDistribution = False
                 break
@@ -86,15 +93,19 @@ class RandomNumberGenerator(object):
                 "Weibull",
                 "Cauchy",
                 "Triangular",
+                "Categorical"
             ]:
                 distribution.pop(key, None)
         self.distribution = distribution
         self.distributionType = list(distribution.keys())[0]
         parameters = distribution[self.distributionType]
+        self.parameters = parameters
         # if a parameter is passed as None or empty string set it to 0
         for key in parameters:
             if parameters[key] in [None, ""]:
                 parameters[key] = 0.0
+
+        # TODO this definetly can be improved to have more safeguarding for accidental misconfiguration
         self.mean = str(parameters.get("mean", 0))
         self.stdev = str(parameters.get("stdev", 0))
         self.min = str(parameters.get("min", None))
@@ -200,6 +211,11 @@ class RandomNumberGenerator(object):
                     continue
         elif self.distributionType == "Triangular":  # if the distribution is Triangular
             return rnd.triangular(left=eval(self.min), mode=eval(self.mean), right=eval(self.max))
+        elif self.distributionType == "Categorical":
+            cat_values = list(self.parameters.keys())
+            weights = list(self.parameters.values())
+            item = random.choices(population=cat_values, weights=weights, k=1)[0]
+            return item
         else:
             raise ValueError(
                 "Unknown distribution %r used in %s %s"
