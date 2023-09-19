@@ -22,6 +22,10 @@ We performed the following modifications/additions (non-exhaustive):
 
 License: MIT/LGPL
 
+How to get started
+===================
+TODO
+
 Documentation
 ================
 
@@ -32,4 +36,5 @@ Most important modules
 
    tutorials
    core
+   rng
    examples
