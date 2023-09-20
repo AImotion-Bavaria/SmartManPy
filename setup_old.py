@@ -5,16 +5,21 @@
 import versioneer
 from setuptools import setup, find_packages
 
+with open('README.rst') as readme_file:
+    readme = readme_file.read()
 
-requirements = ['simpy', 'pandas', 'xlwt', 'zope.dottedname', 'confluent_kafka', 'questdb', 'scipy']
+with open('HISTORY.rst') as history_file:
+    history = history_file.read()
+
+requirements = ['simpy', 'pandas', 'xlwt', 'zope.dottedname']
 
 setup_requirements = ['pytest-runner', ]
 
 test_requirements = ['pytest', ]
 
 setup(
-    author="Data Revenue GmbH, AImotion Bavaria",
-    author_email='alan@datarevenue.com, lukas.lodes@thi.de',
+    author="Data Revenue GmbH",
+    author_email='alan@datarevenue.com',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
@@ -26,6 +31,7 @@ setup(
     description="ManPy ported to Python 3",
     install_requires=requirements,
     license="MIT license",
+    long_description=readme + '\n\n' + history,
     include_package_data=True,
     keywords='manpy',
     name='manpy',
