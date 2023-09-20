@@ -20,3 +20,15 @@ We did the following modifications/additions:
 3. When the feature is finished, merge the main branch into the feature branch. This makes the next step much easier.
 4. Open a pull request an assign it to another developer.
 5. After the pull request is closed and the feature branch is merged to the main branch, the issue can be closed.
+
+# Installation
+
+If you wish to install our extended manpy, follow the steps below. 
+
+1. Clone the Git repository to the desired directory (we call it MANPYDIR in the following)
+2. Open your command line and navigate to MANPYDIR
+3. Activate the virtualenv/conda env of your choice
+4. Enter the following command:
+   `pip install -e .`
+5. You can now import manpy: `import manpy`
+
