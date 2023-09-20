@@ -649,28 +649,28 @@ This method is used for dynamic routing in order to handle CoreObjects and Produ
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Database.ManPyDatabase.close_connection">
-<span class="sig-name descname"><span class="pre">close_connection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Database.html#ManPyDatabase.close_connection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Database.ManPyDatabase.close_connection" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">close_connection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Database.html#ManPyDatabase.close_connection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Database.ManPyDatabase.close_connection" title="Permalink to this definition">#</a></dt>
 <dd><p>Closes the database connection
 :return: None</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Database.ManPyDatabase.commit">
-<span class="sig-name descname"><span class="pre">commit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Database.html#ManPyDatabase.commit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Database.ManPyDatabase.commit" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">commit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Database.html#ManPyDatabase.commit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Database.ManPyDatabase.commit" title="Permalink to this definition">#</a></dt>
 <dd><p>Commits the changes to the database
 :return: None</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Database.ManPyDatabase.establish_connection">
-<span class="sig-name descname"><span class="pre">establish_connection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Database.html#ManPyDatabase.establish_connection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Database.ManPyDatabase.establish_connection" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">establish_connection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Database.html#ManPyDatabase.establish_connection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Database.ManPyDatabase.establish_connection" title="Permalink to this definition">#</a></dt>
 <dd><p>Establishes connection
 :return: None</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.Database.ManPyDatabase.insert">
-<span class="sig-name descname"><span class="pre">insert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_value_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Database.html#ManPyDatabase.insert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Database.ManPyDatabase.insert" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">insert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_value_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/Database.html#ManPyDatabase.insert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.Database.ManPyDatabase.insert" title="Permalink to this definition">#</a></dt>
 <dd><p>Inserts values into given columns of a table
 :param table_name: Name of the table
 :param column_value_dict: dict containing column-value pairs for the insertion. Example: {“col1”: “Test”}
@@ -2059,11 +2059,11 @@ retrieved state and a label for the state.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="manpy.simulation.core.StateController.StateController">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">manpy.simulation.core.StateController.</span></span><span class="sig-name descname"><span class="pre">StateController</span></span><a class="reference internal" href="_modules/manpy/simulation/core/StateController.html#StateController"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.StateController.StateController" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
 <p>Abstract base class for all StateControllers. A StateController must provide a get_and_update() and reset() method.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.StateController.StateController.get_and_update">
-<span class="sig-name descname"><span class="pre">get_and_update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/StateController.html#StateController.get_and_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.StateController.StateController.get_and_update" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_and_update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/StateController.html#StateController.get_and_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.StateController.StateController.get_and_update" title="Permalink to this definition">#</a></dt>
 <dd><p>Retrieves the current state first, then updates the internal state transition mechanism and then returns the
 retrieved state and a label for the state.</p>
 <dl class="field-list simple">
@@ -2075,7 +2075,7 @@ retrieved state and a label for the state.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.StateController.StateController.get_initial_state">
-<span class="sig-name descname"><span class="pre">get_initial_state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/StateController.html#StateController.get_initial_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.StateController.StateController.get_initial_state" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_initial_state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/StateController.html#StateController.get_initial_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.StateController.StateController.get_initial_state" title="Permalink to this definition">#</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Initial state and label: (state, label (bool))</p>
@@ -2085,7 +2085,7 @@ retrieved state and a label for the state.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="manpy.simulation.core.StateController.StateController.reset">
-<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/StateController.html#StateController.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.StateController.StateController.reset" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manpy/simulation/core/StateController.html#StateController.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manpy.simulation.core.StateController.StateController.reset" title="Permalink to this definition">#</a></dt>
 <dd><p>Resets the internal statistics of the controller. Should be called after something is repaired.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>

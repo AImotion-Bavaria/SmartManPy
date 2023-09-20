@@ -1,17 +1,22 @@
 from questdb.ingress import Sender
 from confluent_kafka.admin import AdminClient, NewTopic
 import json
+from abc import ABC, abstractmethod
+
 # TODO can we dynamically import packages? it may be annoying to install all dependencies if you only need 1
+
 
 class ManPyDatabase:
 
+    @abstractmethod
     def establish_connection(self):
         """
         Establishes connection
         :return: None
         """
-        raise NotImplementedError("Not implemented!")
+        pass
 
+    @abstractmethod
     def insert(self, table_name: str, column_value_dict: dict):
         """
         Inserts values into given columns of a table
@@ -19,21 +24,23 @@ class ManPyDatabase:
         :param column_value_dict: dict containing column-value pairs for the insertion. Example: {"col1": "Test"}
         :return: None
         """
-        raise NotImplementedError("Not implemented!")
+        pass
 
+    @abstractmethod
     def commit(self):
         """
         Commits the changes to the database
         :return: None
         """
-        raise NotImplementedError("Not implemented!")
+        pass
 
+    @abstractmethod
     def close_connection(self):
         """
         Closes the database connection
         :return: None
         """
-        raise NotImplementedError("Not implemented!")
+        pass
 
 
 class ManPyQuestDBDatabase(ManPyDatabase):

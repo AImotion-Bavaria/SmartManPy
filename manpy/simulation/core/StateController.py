@@ -1,17 +1,20 @@
 import numpy as np
 import random
+from abc import ABC, abstractmethod
 
-class StateController:
+class StateController(ABC):
     """
     Abstract base class for all StateControllers. A StateController must provide a get_and_update() and reset() method.
     """
 
+    @abstractmethod
     def get_initial_state(self):
         """
         :return: Initial state and label: (state, label (bool))
         """
-        raise NotImplementedError("Subclass must define 'get_initial_state' method.")
+        pass
 
+    @abstractmethod
     def get_and_update(self):
         """
         Retrieves the current state first, then updates the internal state transition mechanism and then returns the
@@ -19,15 +22,16 @@ class StateController:
 
         :return: Current state and label: (state, label (bool))
         """
-        raise NotImplementedError("Subclass must define 'get_and_update' method.")
+        pass
 
+    @abstractmethod
     def reset(self):
         """
         Resets the internal statistics of the controller. Should be called after something is repaired.
 
         :return: None
         """
-        raise NotImplementedError("Subclass must define 'reset' method.")
+        pass
 
 
 class SimpleStateController(StateController):
