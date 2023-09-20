@@ -23,8 +23,25 @@ We performed the following modifications/additions (non-exhaustive):
 License: MIT/LGPL
 
 How to get started
-================
-TODO
+===================
+
+Follow the steps below to install our ManPy extension:
+
+1. Clone the Git repository to the desired directory (we call it MANPYDIR in the following)
+2. Open your command line and navigate to MANPYDIR
+3. Activate the virtualenv/conda env of your choice
+4. Enter the following command:
+
+.. code-block:: bash
+
+    pip install -e .
+
+5. You can now import manpy:
+
+.. code-block:: python
+
+    import manpy
+
 
 Documentation
 ================
