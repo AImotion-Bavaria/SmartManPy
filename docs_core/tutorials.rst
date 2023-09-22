@@ -47,7 +47,7 @@ However, the minimal and maximal possible time is set to 0.425 and 1.175 seconds
 
     m1 = Machine("M1", "Machine1",
                     processingTime={"Normal":
-                                    {"mean": 0.8, "stddev": 0.075, "min": 0.425, "max": 1.175}
+                                    {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}
                 })
 
 In order to complete our small example, we need to define the routing between the components.
@@ -89,7 +89,7 @@ First of all, we need to define a second machine:
 
     m2 = Machine("M2", "Machine2",
                     processingTime={"Normal":
-                                    {"mean": 2.0, "stddev": 0.1, "min": 1.7, "max": 2.3}
+                                    {"mean": 2.0, "stdev": 0.1, "min": 1.7, "max": 2.3}
                 })
 
 Now we need to define how the output of Machine1 proceeds to Machine2.
