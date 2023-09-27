@@ -801,3 +801,19 @@ def get_feature_values_by_id(entity, feature_ids):
         raise KeyError(f"Attempting to access a non-existent feature id for entity {entity.name}.")
 
     return feature_values
+
+
+def get_feature_labels_by_id(entity, feature_ids):
+    """
+    Returns a list of the entity's feature labels of the specified ids
+
+    :param entity: The entity of which the feature labels should be retrieved.
+    :param feature_ids: List containing the IDs of the features (as string) that should be retrieved.
+    """
+    try:
+        indices = [G.feature_indices[i] for i in feature_ids]
+        feature_values = [entity.labels[idx] for idx in indices]
+    except KeyError:
+        raise KeyError(f"Attempting to access a non-existent feature id for entity {entity.name}.")
+
+    return feature_values

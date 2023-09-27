@@ -246,18 +246,20 @@ This is done for each component individually:</p>
 <p>We can now run and evaluate our simulation, e.g. for 50 time steps.
 To do this, we use the runSimulation function defined in Globals.py.
 This function needs a list with all simulated objects (machines, features/timeseries, failures, …) and the maximum simulation time.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">from</span> <span class="nn">manpy.simulation.core.Globals</span> <span class="kn">import</span> <span class="n">runSimulation</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">from</span> <span class="nn">manpy.simulation.core.Globals</span> <span class="kn">import</span> <span class="n">runSimulation</span><span class="p">,</span> <span class="n">getFeatureData</span>
 <span class="linenos"> 2</span>
-<span class="linenos"> 3</span><span class="n">maxSimTime</span> <span class="o">=</span> <span class="mi">50</span>
-<span class="linenos"> 4</span><span class="n">objectList</span> <span class="o">=</span> <span class="p">[</span><span class="n">start</span><span class="p">,</span> <span class="n">m1</span><span class="p">,</span> <span class="n">exit</span><span class="p">]</span>
-<span class="linenos"> 5</span>
-<span class="linenos"> 6</span><span class="n">runSimulation</span><span class="p">(</span><span class="n">objectList</span><span class="p">,</span> <span class="n">maxSimTime</span><span class="p">)</span>
+<span class="linenos"> 3</span><span class="kn">from</span> <span class="nn">manpy.simulation.core.Globals</span> <span class="kn">import</span> <span class="n">runSimulation</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="n">maxSimTime</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="linenos"> 6</span><span class="n">objectList</span> <span class="o">=</span> <span class="p">[</span><span class="n">start</span><span class="p">,</span> <span class="n">m1</span><span class="p">,</span> <span class="n">exit</span><span class="p">]</span>
 <span class="linenos"> 7</span>
-<span class="linenos"> 8</span><span class="n">df</span> <span class="o">=</span> <span class="n">getEntityData</span><span class="p">()</span>
-<span class="linenos"> 9</span><span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;ExampleLine.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span>
-<span class="linenos">10</span>
-<span class="linenos">11</span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Produced:         </span><span class="si">{</span><span class="n">exit</span><span class="o">.</span><span class="n">numOfExits</span><span class="si">}</span>
-<span class="linenos">12</span>        <span class="n">Simulationszeit</span><span class="p">:</span>    <span class="p">{</span><span class="n">maxSimTime</span><span class="p">}</span><span class="s2">&quot;)</span>
+<span class="linenos"> 8</span><span class="n">runSimulation</span><span class="p">(</span><span class="n">objectList</span><span class="p">,</span> <span class="n">maxSimTime</span><span class="p">)</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="n">df</span> <span class="o">=</span> <span class="n">getEntityData</span><span class="p">()</span>
+<span class="linenos">11</span><span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;ExampleLine.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Produced:         </span><span class="si">{</span><span class="n">exit</span><span class="o">.</span><span class="n">numOfExits</span><span class="si">}</span><span class="se">\\</span>
+<span class="linenos">14</span>        <span class="n">Simulationszeit</span><span class="p">:</span>    <span class="p">{</span><span class="n">maxSimTime</span><span class="p">}</span><span class="s2">&quot;)</span>
 </pre></div>
 </div>
 <div class="admonition attention">
@@ -487,7 +489,7 @@ Therefore, we added the option for quality control to machines.
 As a result, machines can either have an additional quality control step at the end of their production step or be a standalone quality control instance.
 The condition for quality control can be set via a custom defined function, which is simply called “condition” in the following example.
 We can access the currently active entity in a machine with the following statement:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">activeEntity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">activeEntity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getActiveEntity</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>We can then use any simulated value of the entity as measurement for quality control, e.g. feature values or internal labels.
@@ -495,11 +497,12 @@ The condition function must return True if a defect was found, otherwise False m
 In the following example, we simply check if a given Feature value is inside a certain interval ([3, 7]).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">def</span> <span class="nf">condition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="linenos">2</span>    <span class="c1"># self is w.r.t. to the machine in which we apply the condition!</span>
-<span class="linenos">3</span>    <span class="n">activeEntity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="linenos">4</span>    <span class="k">if</span> <span class="n">activeEntity</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">7</span> <span class="ow">or</span> <span class="n">activeEntity</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
-<span class="linenos">5</span>        <span class="k">return</span> <span class="kc">True</span>
-<span class="linenos">6</span>    <span class="k">else</span><span class="p">:</span>
-<span class="linenos">7</span>        <span class="k">return</span> <span class="kc">False</span>
+<span class="linenos">3</span>    <span class="n">activeEntity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getActiveEntity</span><span class="p">()</span>
+<span class="linenos">4</span>
+<span class="linenos">5</span>    <span class="k">if</span> <span class="n">activeEntity</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">7</span> <span class="ow">or</span> <span class="n">activeEntity</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+<span class="linenos">6</span>        <span class="k">return</span> <span class="kc">True</span>
+<span class="linenos">7</span>    <span class="k">else</span><span class="p">:</span>
+<span class="linenos">8</span>        <span class="k">return</span> <span class="kc">False</span>
 </pre></div>
 </div>
 <p>In this example, we had to access the feature value by index, which is usually very tedious.

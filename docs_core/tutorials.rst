@@ -66,16 +66,15 @@ This function needs a list with all simulated objects (machines, features/timese
 
 .. code-block:: python
     :linenos:
-    from manpy.simulation.core.Globals import runSimulation, getFeatureData
 
-    from manpy.simulation.core.Globals import runSimulation
+    from manpy.simulation.core.Globals import runSimulation, getFeatureData
 
     maxSimTime = 50
     objectList = [start, m1, exit]
 
     runSimulation(objectList, maxSimTime)
 
-    df = getEntityData()
+    df = getFeatureData([m1])
     df.to_csv("ExampleLine.csv", index=False, encoding="utf8")
 
     print(f"Produced:         {exit.numOfExits}\\
@@ -356,7 +355,7 @@ We can access the currently active entity in a machine with the following statem
 
 .. code-block:: python
 
-    activeEntity = self.Res.users[0]
+    activeEntity = self.getActiveEntity()
 
 We can then use any simulated value of the entity as measurement for quality control, e.g. feature values or internal labels.
 The condition function must return True if a defect was found, otherwise False must be returned.
@@ -367,7 +366,8 @@ In the following example, we simply check if a given Feature value is inside a c
 
     def condition(self):
         # self is w.r.t. to the machine in which we apply the condition!
-        activeEntity = self.Res.users[0]
+        activeEntity = self.getActiveEntity()
+
         if activeEntity.features[0] > 7 or activeEntity.features[0] < 3:
             return True
         else:
@@ -383,7 +383,7 @@ We therefore added the function "get_feature_values_by_id" in Globals.py, that l
 
     def condition(self):
         # self is w.r.t. to the machine in which we apply the condition!
-        activeEntity = self.Res.users[0]
+        activeEntity = self.getActiveEntity()
 
         # Access first element since function returns a list
         feature_value = get_feature_values_by_id(activeEntity, ["f1"])[0]

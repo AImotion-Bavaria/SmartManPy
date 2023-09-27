@@ -999,6 +999,22 @@
         <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Attempting to access a non-existent feature id for entity </span><span class="si">{</span><span class="n">entity</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">feature_values</span></div>
+
+
+<div class="viewcode-block" id="get_feature_labels_by_id"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Globals.get_feature_labels_by_id">[docs]</a><span class="k">def</span> <span class="nf">get_feature_labels_by_id</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span> <span class="n">feature_ids</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a list of the entity&#39;s feature labels of the specified ids</span>
+
+<span class="sd">    :param entity: The entity of which the feature labels should be retrieved.</span>
+<span class="sd">    :param feature_ids: List containing the IDs of the features (as string) that should be retrieved.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">feature_indices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">feature_ids</span><span class="p">]</span>
+        <span class="n">feature_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">entity</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Attempting to access a non-existent feature id for entity </span><span class="si">{</span><span class="n">entity</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">feature_values</span></div>
 </pre></div>
         </article>
       </div>
