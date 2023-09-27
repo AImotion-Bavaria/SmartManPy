@@ -12,7 +12,7 @@ We did the following modifications/additions:
 * Added Machine features
 * Added conditions to failures
 
-# Workflow 
+# Workflow
 
 
 1. Before you add a feature, create a new issue with a short explanation of the new feature.
@@ -23,7 +23,7 @@ We did the following modifications/additions:
 
 # Installation
 
-If you wish to install our extended manpy, follow the steps below. 
+If you wish to install our extended manpy, follow the steps below.
 
 1. Clone the Git repository to the desired directory (we call it MANPYDIR in the following)
 2. Open your command line and navigate to MANPYDIR
@@ -31,4 +31,23 @@ If you wish to install our extended manpy, follow the steps below.
 4. Enter the following command:
    `pip install -e .`
 5. You can now import manpy: `import manpy`
+
+# Build docs
+
+The html files for the docs are located in /docs_core/_build/html.
+To build the docs based on the current version of the code, follow the steps below.
+
+1. Install the following dependencies:
+
+    `pip install -U sphinx`
+
+    `pip install furo`
+
+    `pip install sphinx-copybutton`
+
+2. Call the following command in the base directory of this repo:
+
+    On windows: `.\docs_core\make.bat html`
+
+    On Linux/Ubuntu: `.\docs_core\make html`
 
