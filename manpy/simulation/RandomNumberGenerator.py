@@ -107,7 +107,12 @@ class RandomNumberGenerator(object):
 
         # TODO this definetly can be improved to have more safeguarding for accidental misconfiguration
         self.mean = str(parameters.get("mean", 0))
-        self.stdev = str(parameters.get("stdev", 0))
+
+        if "stdev" in parameters:
+            self.stdev = str(parameters.get("stdev", 0))
+        else:
+            self.stdev = str(parameters.get("stddev", 0))
+
         self.min = str(parameters.get("min", None))
         self.max = str(parameters.get("max", None))
         self.alpha = str(parameters.get("alpha", 0))
