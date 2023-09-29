@@ -10,7 +10,7 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath("../"))
 
-project = 'Extended ManPy'
+project = 'SmartManPy'
 copyright = '2023, AImotion Bavaria'
 author = 'LOMA'
 release = 'beta'
@@ -36,7 +36,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # html_theme = 'classic'
 html_theme = 'furo'
 html_static_path = ['_static']
-html_title = 'Extended ManPy (beta) Docs'
+html_title = 'SmartManPy (beta) Docs'
 html_link_suffix = ".html"
 html_logo = 'images/logo.png'
 html_favicon = 'images/logo.png'

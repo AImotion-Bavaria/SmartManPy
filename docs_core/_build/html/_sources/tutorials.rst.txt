@@ -66,6 +66,7 @@ This function needs a list with all simulated objects (machines, features/timese
 
 .. code-block:: python
     :linenos:
+    from manpy.simulation.core.Globals import runSimulation, getFeatureData
 
     from manpy.simulation.core.Globals import runSimulation
 
@@ -77,7 +78,7 @@ This function needs a list with all simulated objects (machines, features/timese
     df = getEntityData()
     df.to_csv("ExampleLine.csv", index=False, encoding="utf8")
 
-    print(f"Produced:         {exit.numOfExits}
+    print(f"Produced:         {exit.numOfExits}\\
             Simulationszeit:    {maxSimTime}")
 
 .. attention::

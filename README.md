@@ -1,5 +1,5 @@
 
-# Extended-ManPy
+# SmartManPy
 
 
 [![Tests (Self-hosted)](https://github.com/AImotion-Bavaria/ManPyExperiments/actions/workflows/tests_self_hosted.yml/badge.svg)](https://github.com/AImotion-Bavaria/ManPyExperiments/actions/workflows/tests_self_hosted.yml)
@@ -12,7 +12,7 @@ We did the following modifications/additions:
 * Added Machine features
 * Added conditions to failures
 
-# Workflow 
+# Workflow
 
 
 1. Before you add a feature, create a new issue with a short explanation of the new feature.
@@ -23,7 +23,7 @@ We did the following modifications/additions:
 
 # Installation
 
-If you wish to install our extended manpy, follow the steps below. 
+If you wish to install SmartManPy, follow the steps below.
 
 1. Clone the Git repository to the desired directory (we call it MANPYDIR in the following)
 2. Open your command line and navigate to MANPYDIR

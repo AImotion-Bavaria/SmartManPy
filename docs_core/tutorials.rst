@@ -2,7 +2,7 @@
 Tutorials
 ===========
 
-This page gives you an overview of the general usage paradigms of our ManPy extension.
+This page gives you an overview of the general usage paradigms of SmartManPy.
 We have prepared additional (complete) examples that demonstrate various capabilities.
 These examples can be found in manpy/simulation/Examples and here: :doc:`Full examples <examples>`
 
@@ -158,7 +158,7 @@ Using this approach for routing, you can easily change the order or remove parts
 Advanced usage
 ================
 
-The following sections provides an introduction into the more advanced concepts of our ManPy extension.
+The following sections provides an introduction into the more advanced concepts of SmartManpy.
 
 
 Features
@@ -617,7 +617,7 @@ This function marks an entity as "defect" if at least one feature was the result
 Export
 ------
 
-Our ManPy extensions offers two ways to export the simulated data: Pandas DataFrames and Databases.
+SmartManPy offers two ways to export the simulated data: Pandas DataFrames and Databases.
 
 Pandas DataFrames
 ..................
@@ -685,7 +685,7 @@ ProductionLineModules only need to know their internal routing, the routing with
 
 The most simple ProductionLineModule is SequentialProductionLineModule, which simply takes the routing between objects in sequential order and applies it.
 This type of module should be enough to cover most of the needs for such modules.
-If you need additional functionality, you can write you custom ProductionLineModule by inheriting from core/ProductionLineModule.
+If you need additional functionality, you can write custom ProductionLineModule by inheriting from core/ProductionLineModule.
 
 The following example demonstrate the definition of a very basic module.
 
