@@ -1649,3 +1649,6 @@ class Machine(CoreObject):
         json["results"]["break_ratio"] = self.OnBreak
 
         G.outputJSON["elementList"].append(json)
+
+    def getActiveEntity(self):
+        return self.Res.users[0]

@@ -206,16 +206,17 @@ manpy/simulation/examples/</p>
 <h2>Quality_Control.py<a class="headerlink" href="#quality-control-py" title="Permalink to this heading">#</a></h2>
 <p>This file demonstrates custom quality control in machines.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">manpy.simulation.imports</span> <span class="kn">import</span> <span class="n">Machine</span><span class="p">,</span> <span class="n">Source</span><span class="p">,</span> <span class="n">Exit</span><span class="p">,</span> <span class="n">Feature</span>
-<span class="kn">from</span> <span class="nn">manpy.simulation.core.Globals</span> <span class="kn">import</span> <span class="n">runSimulation</span><span class="p">,</span> <span class="n">get_feature_values_by_id</span>
+<span class="kn">from</span> <span class="nn">manpy.simulation.core.Globals</span> <span class="kn">import</span> <span class="n">runSimulation</span><span class="p">,</span> <span class="n">get_feature_values_by_id</span><span class="p">,</span> <span class="n">get_feature_labels_by_id</span>
 
 
 <span class="c1"># Any function can be employed as the condition to control the entity&#39;s quality before it exits the machine</span>
 <span class="c1"># You can utilize any simulation values for quality control purposes</span>
 <span class="c1"># Return True to reject/discard the entity, and False to allow it to proceed</span>
-<span class="k">def</span> <span class="nf">condition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="n">activeEntity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">def</span> <span class="nf">condition</span><span class="p">(</span><span class="n">machine</span><span class="p">):</span>
+    <span class="n">activeEntity</span> <span class="o">=</span> <span class="n">machine</span><span class="o">.</span><span class="n">getActiveEntity</span><span class="p">()</span>
     <span class="c1"># Access first element since function returns a list</span>
     <span class="n">feature_value</span> <span class="o">=</span> <span class="n">get_feature_values_by_id</span><span class="p">(</span><span class="n">activeEntity</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;Ftr1&quot;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">get_feature_labels_by_id</span><span class="p">(</span><span class="n">activeEntity</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;Ftr1&quot;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="k">if</span> <span class="n">feature_value</span> <span class="o">&gt;</span> <span class="mi">7</span> <span class="ow">or</span> <span class="n">feature_value</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">True</span>
