@@ -25,6 +25,7 @@ Created on 8 Nov 2012
 carries some global variables
 """
 
+import warnings
 import pandas as pd
 import simpy
 import xlwt
@@ -520,6 +521,7 @@ def runSimulation(
     :param data: TODO
     :param db: Database object. Optional. If passed, the results are saved to the database
     """
+
     G.numberOfReplications = numberOfReplications
     G.trace = trace
     G.snapshots = snapshots
@@ -817,3 +819,76 @@ def get_feature_labels_by_id(entity, feature_ids):
         raise KeyError(f"Attempting to access a non-existent feature id for entity {entity.name}.")
 
     return feature_values
+
+
+def resetSimulation():
+
+    warnings.warn("The resetSimulation method resets the internal state of the global simulation, but NOT of the"
+                  "individual Parts. It is not intended to restart the simulation after calling this function.")
+    global G
+
+    G.ObjList = []  # a list that holds all the CoreObjects
+    G.EntityList = []  # a list that holds all the Entities
+    G.ObjectResourceList = []
+    G.ObjectInterruptionList = []
+    G.ObjectPropertyList = []
+    G.RouterList = []
+    G.simulation_snapshots = [pd.DataFrame()]
+
+    G.objectList = []
+    G.EntityList = []
+    G.FeatureList = []
+    G.ObjList = []
+    G.ObjectPropertyList = []
+    G.ObjectInterruptionList = []
+    G.ObjectResourceList = []
+    G.trace_list = []
+    G.ftr_st = []   # list of (feature, corresponding station)
+    G.feature_indices = {}
+    G.ts_st = []   # list of (timeseries, corresponding station)
+    G.timeseries_indices = {}
+    G.SourceList = []
+    G.MachineList = []
+    G.ExitList = []
+    G.QueueList = []
+    G.RepairmanList = []
+    G.AssemblyList = []
+    G.DismantleList = []
+    G.ConveyerList = []
+    G.MachineJobShopList = []
+    G.QueueJobShopList = []
+    G.ExitJobShopList = []
+    G.BatchDecompositionList = []
+    G.BatchSourceList = []
+    G.BatchReassemblyList = []
+    G.LineClearanceList = []
+    G.EventGeneratorList = []
+    G.OperatorsList = []
+    G.OperatorManagedJobsList = []
+    G.OperatorPoolsList = []
+    G.BrokersList = []
+    G.OperatedMachineList = []
+    G.BatchScrapMachineList = []
+    G.OrderDecompositionList = []
+    G.ConditionalBufferList = []
+    G.MouldAssemblyBufferList = []
+    G.MouldAssemblyList = []
+    G.MachineManagedJobList = []
+    G.QueueManagedJobList = []
+    G.ModelResourceList = []
+    G.FeatureList = []
+    G.TimeSeriesList = []
+
+    G.JobList = []
+    G.WipList = []
+    G.EntityList = []
+    G.PartList = []
+    G.OrderComponentList = []
+    G.OrderList = []
+    G.MouldList = []
+    G.BatchList = []
+    G.SubBatchList = []
+
+    G.pendingEntities = []
+    G.env = simpy.Environment()
+    # del G
