@@ -66,6 +66,7 @@ This function needs a list with all simulated objects (machines, features/timese
 
 .. code-block:: python
     :linenos:
+    from manpy.simulation.core.Globals import runSimulation, getFeatureData
 
     from manpy.simulation.core.Globals import runSimulation, getFeatureData
 

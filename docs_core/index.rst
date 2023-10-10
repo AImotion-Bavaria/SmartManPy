@@ -1,7 +1,7 @@
 ===================
-Extended ManPy
+SmartManPy
 ===================
-Extended ManPy focuses on simulating complex features that evolve over time.
+SmartManPy focuses on simulating complex features that evolve over time.
 
 This project extends the Python 3 port of ManPy by Data Revenue GmbH (https://github.com/datarevenue-berlin/manpy).
 
@@ -25,7 +25,7 @@ License: MIT/LGPL
 How to get started
 ===================
 
-Follow the steps below to install our ManPy extension:
+Follow the steps below to install SmartManPy:
 
 1. Clone the Git repository to the desired directory (we call it MANPYDIR in the following)
 2. Open your command line and navigate to MANPYDIR
