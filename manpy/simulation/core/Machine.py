@@ -1,5 +1,3 @@
-# ===========================================================================
-# Copyright 2013 University of Limerick
 #
 # This file is part of DREAM.
 #
@@ -66,6 +64,8 @@ class Machine(CoreObject):
         technology=None,
         priority=0,
         control=None,
+        dynamicRouting=None,
+        successorCandidates=[],
         **kw,
     ):
         self.type = "Machine"  # String that shows the type of object
@@ -185,6 +185,12 @@ class Machine(CoreObject):
             self.control = condition
         else:
             self.control = control
+
+        self.dynamicRouting = dynamicRouting
+        self.successorCandidates = successorCandidates
+
+        if dynamicRouting:
+            assert(len(successorCandidates) > 0)
 
         # list for Entities who fail control
         self.discards = []
@@ -1245,6 +1251,10 @@ class Machine(CoreObject):
 
             if self.activeEntity not in self.discards:
                 self.entities.append(self.activeEntity)
+
+        if self.dynamicRouting is not None:
+            self.defineNext(self.dynamicRouting(self.successorCandidates), overwrite_next=True)
+            print(f"self.next: {[s.name for s in self.next]}")
 
 
     def interruptionActions(self, type="Processing"):

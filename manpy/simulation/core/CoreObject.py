@@ -303,17 +303,23 @@ class CoreObject(ManPyObject):
         self.next = successorList
         self.previous = predecessorList
 
-    def defineNext(self, successorList=[]):
+    def defineNext(self, successorList=[], overwrite_next=False):
         """
         sets the next element for the object and automatically registers itself as previous object of all objects in successorList.
         :param successorList:
         :return: None
         """
+        if overwrite_next:
+            print(f"Overwriting self.next of {self.name}")
+            self.next = []
         for s in successorList:
             if s.isNext:  # checks if s can be a next object. e.g., exit cannot be a next object
                 # __get_routing_target() is used to handle CoreObjects and ProductionLineModules differently
                 if s.getRoutingTarget() not in self.next:
                     self.next.extend(s.getRoutingTarget())
+                else:
+                    print(f"Registering {s.name} as next in {self.name} failed.")
+
                 s.appendPrevious(self)
 
     def definePrevious(self, predecessorList=[]):
