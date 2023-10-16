@@ -38,8 +38,8 @@ html_theme = 'furo'
 html_static_path = ['_static']
 html_title = 'SmartManPy (beta) Docs'
 html_link_suffix = ".html"
-html_logo = 'images/logo.png'
-html_favicon = 'images/logo.png'
+html_logo = 'images/SmartManPy_logo_transparent.png'
+html_favicon = 'images/SmartManPy_logo_transparent.png'
 
 # autodoc_member_order = 'bysource'
 # autodoc_member_order = 'alphabetical'
