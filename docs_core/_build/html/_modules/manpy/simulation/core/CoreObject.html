@@ -1,0 +1,1288 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
+
+    <link rel="shortcut icon" href="../../../../_static/SmartManPy_logo_transparent.png"/><!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
+        <title>manpy.simulation.core.CoreObject - SmartManPy (beta) Docs</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../../index.html"><div class="brand">SmartManPy (beta) Docs</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../../../../_static/SmartManPy_logo_transparent.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">SmartManPy (beta) Docs</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../rng.html">RandomNumberGenerator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples.html">Full examples</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <h1>Source code for manpy.simulation.core.CoreObject</h1><div class="highlight"><pre>
+<span></span><span class="c1"># ===========================================================================</span>
+<span class="c1"># Copyright 2013 University of Limerick</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of DREAM.</span>
+<span class="c1">#</span>
+<span class="c1"># DREAM is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU Lesser General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># DREAM is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU Lesser General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU Lesser General Public License</span>
+<span class="c1"># along with DREAM.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c1"># ===========================================================================</span>
+
+
+<span class="kn">from</span> <span class="nn">manpy.simulation.core.Globals</span> <span class="kn">import</span> <span class="n">G</span>
+<span class="kn">from</span> <span class="nn">manpy.simulation.ManPyObject</span> <span class="kn">import</span> <span class="n">ManPyObject</span>
+
+
+<div class="viewcode-block" id="CoreObject"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject">[docs]</a><span class="k">class</span> <span class="nc">CoreObject</span><span class="p">(</span><span class="n">ManPyObject</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Created on 12 Jul 2012</span>
+
+<span class="sd">    @author: George</span>
+<span class="sd">    Class that acts as an abstract. It should have no instances. All the core-objects should inherit from it</span>
+
+<span class="sd">    :param id: Internal Id</span>
+<span class="sd">    :param name: Name of the CoreObject</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">class_name</span> <span class="o">=</span> <span class="s2">&quot;manpy.CoreObject&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">ManPyObject</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objName</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="c1">#     lists that hold the previous and next objects in the flow</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># list with the next objects in the flow</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">previous</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># list with the previous objects in the flow</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nextIds</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># list with the ids of the next objects in the flow</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">previousIds</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># list with the ids of the previous objects in the flow</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">isNext</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">isPrevious</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># lists to hold statistics of multiple runs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Failure</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Working</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Blockage</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Waiting</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">OffShift</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">WaitingForOperator</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">WaitingForLoadOperator</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Loading</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SettingUp</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">OnBreak</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># flag that locks the entry of an object so that it cannot receive entities</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">isLocked</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># list that holds the objectInterruptions that have this element as victim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objectInterruptions</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># list that holds the objectProperties that have this elements as victim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objectProperties</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># default attributes set so that the CoreObject has them</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">isPreemptive</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resetOnPreemption</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interruptCause</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gatherWipStat</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1"># flag used to signal that the station waits for removeEntity event</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">waitEntityRemoval</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1"># attributes/indices used for printing the route,</span>
+        <span class="c1"># hold the cols corresponding to the object (entities route and operators route)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">station_col_inds</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">op_col_indx</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># if there is input in a dictionary parse from it</span>
+
+        <span class="n">G</span><span class="o">.</span><span class="n">ObjList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>  <span class="c1"># add object to ObjList</span>
+        <span class="c1"># list of expected signals of a station</span>
+        <span class="c1"># (values can be used as flags to inform on which signals is the station currently yielding)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">expectedSignals</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;isRequested&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;canDispose&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;interruptionStart&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;interruptionEnd&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;loadOperatorAvailable&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;initialWIP&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;brokerIsSet&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;preemptQueue&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;entityRemoved&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;entityCreated&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;moveEnd&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;processOperatorUnavailable&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;objectPropertyEnd&quot;</span> <span class="p">:</span> <span class="mi">0</span>
+        <span class="p">}</span>
+        <span class="c1"># flag notifying the the station can deliver entities that ended their processing while interrupted</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">canDeliverOnInterruption</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1"># keep wip stats for every replication</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">WipStat</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="CoreObject.initialize"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">env</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Up</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Boolean that shows if the object is in failure (&quot;Down&quot;) or not (&quot;up&quot;)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">onShift</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">onBreak</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">currentEntity</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># ============================== total times ===============================================</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">totalOperationTime</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># dummy variable to hold totalWorkin/SetupTime during an interruption (yield ...(self.operation(&#39;setup&#39;))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">totalBlockageTime</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># holds the total blockage time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">totalFailureTime</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># holds the total failure time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">totalWaitingTime</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># holds the total waiting time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">totalWorkingTime</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># holds the total working time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">totalBreakTime</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># holds the total break time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">totalOffShiftTime</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># holds the total off-shift time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">completedJobs</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># holds the number of completed jobs</span>
+        <span class="c1"># ============================== Entity related attributes =================================</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeLastEntityEnded</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="mi">0</span>  <span class="c1"># holds the last time that an entity ended processing in the object</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nameLastEntityEnded</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;&quot;</span>  <span class="c1"># holds the name of the last entity that ended processing in the object</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeLastEntityEntered</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="mi">0</span>  <span class="c1"># holds the last time that an entity entered in the object</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nameLastEntityEntered</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;&quot;</span>  <span class="c1"># holds the name of the last entity that entered in the object</span>
+        <span class="p">)</span>
+
+        <span class="c1"># ============================== shift related times =====================================</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeLastShiftStarted</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="mi">0</span>  <span class="c1"># holds the time that the last shift of the object started</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeLastShiftEnded</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="mi">0</span>  <span class="c1"># holds the time that the last shift of the object ended</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">offShiftTimeTryingToReleaseCurrentEntity</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="mi">0</span>  <span class="c1"># holds the time that the object was off-shift while trying</span>
+        <span class="p">)</span>
+        <span class="c1"># to release the current entity</span>
+        <span class="c1"># ============================== failure related times =====================================</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeLastFailure</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="mi">0</span>  <span class="c1"># holds the time that the last failure of the object started</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeLastFailureEnded</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="mi">0</span>  <span class="c1"># holds the time that the last failure of the object ended</span>
+        <span class="p">)</span>
+        <span class="c1"># processing the current entity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">downTimeInTryingToReleaseCurrentEntity</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="mi">0</span>  <span class="c1"># holds the time that the object was down while trying</span>
+        <span class="p">)</span>
+        <span class="c1"># to release the current entity . This might be due to failure, off-shift, etc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeLastEntityLeft</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="mi">0</span>  <span class="c1"># holds the last time that an entity left the object</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">processingTimeOfCurrentEntity</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="mi">0</span>  <span class="c1"># holds the total processing time that the current entity required</span>
+        <span class="p">)</span>
+        <span class="c1"># ============================== waiting flag ==============================================</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">waitToDispose</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># shows if the object waits to dispose an entity</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">isWorkingOnTheLast</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># shows if the object is performing the last processing before scheduled interruption</span>
+
+        <span class="c1"># ============================== the below are currently used in Jobshop =======================</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">giver</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="kc">None</span>  <span class="c1"># the CoreObject that the activeObject will take an Entity from</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">previous</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">giver</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">previous</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">receiver</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="kc">None</span>  <span class="c1"># the CoreObject that the activeObject will give an Entity to</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">next</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">receiver</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">next</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># ============================== variable that is used for the loading of objects =============</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exitAssignedToReceiver</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># by default the objects are not blocked</span>
+        <span class="c1"># when the entities have to be loaded to operated objects</span>
+        <span class="c1"># then the giverObjects have to be blocked for the time</span>
+        <span class="c1"># that the object is being loaded</span>
+        <span class="c1"># ============================== variable that is used signalling of objects ==================</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">entryAssignedToGiver</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># by default the objects are not blocked</span>
+        <span class="c1"># when the entities have to be received by objects</span>
+        <span class="c1"># then the objects have to be blocked after the first signal they receive</span>
+        <span class="c1"># in order to avoid signalling the same object</span>
+        <span class="c1"># while it has not received the entity it has been originally signalled for</span>
+        <span class="c1"># ============================== lists to hold statistics of multiple runs =====================</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">totalTimeWaitingForOperator</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">operatorWaitTimeCurrentEntity</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">totalTimeInCurrentEntity</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">operatorWaitTimeCurrentEntity</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">totalProcessingTimeInCurrentEntity</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1">#         self.failureTimeInCurrentEntity=0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setupTimeCurrentEntity</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># the time that the object started/ended its wait for the operator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeWaitForOperatorStarted</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeWaitForOperatorEnded</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># the time that the object started/ended its wait for the operator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeWaitForLoadOperatorStarted</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeWaitForLoadOperatorEnded</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">totalTimeWaitingForLoadOperator</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># the time that the operator started/ended loading the object</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeLoadStarted</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeLoadEnded</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">totalLoadTime</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># the time that the operator started/ended setting-up the object</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeSetupStarted</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeSetupEnded</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">totalSetupTime</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># Current entity load/setup/loadOperatorwait/operatorWait related times</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">operatorWaitTimeCurrentEntity</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="mi">0</span>  <span class="c1"># holds the time that the object was waiting for the operator</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loadOperatorWaitTimeCurrentEntity</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="mi">0</span>  <span class="c1"># holds the time that the object waits for operator to load the it</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loadTimeCurrentEntity</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># holds the time to load the current entity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setupTimeCurrentEntity</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="mi">0</span>  <span class="c1"># holds the time to setup the object before processing the current entity</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">shouldPreempt</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="kc">False</span>  <span class="c1"># flag that shows that the object should preempt or not</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">isProcessingInitialWIP</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="kc">False</span>  <span class="c1"># flag that is used only when a object has initial wip</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">lastGiver</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># variable that holds the last giver of the object, used by object in case of preemption</span>
+        <span class="c1"># initialize the wipStatList -</span>
+        <span class="c1"># TODO, think what to do in multiple runs</span>
+        <span class="c1"># TODO, this should be also updated in Globals.setWIP (in case we have initial wip)</span>
+        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">wipStatList</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">isRequested</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">event</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">canDispose</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">event</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interruptionEnd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">event</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interruptionStart</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">event</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interruptedBy</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">entityRemoved</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">event</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initialWIP</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">event</span><span class="p">()</span>
+        <span class="c1"># flag used to signal that the station waits for removeEntity event</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">waitEntityRemoval</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1"># attributes/indices used for printing the route, hold the cols corresponding to the object (entities route and operators route)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">station_col_inds</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">op_col_indx</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># flag that shows if the object is processing state at any given time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">isProcessing</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1"># variable that shows what kind of operation is the station performing at the moment</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            it can be Processing or Setup</span>
+<span class="sd">            XXX: others not yet implemented</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">currentlyPerforming</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># flag that shows if the object is blocked state at any given time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">isBlocked</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeLastBlockageStarted</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># list of expected signals of a station (values can be used as flags to inform on which signals is the station currently yielding)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">expectedSignals</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;isRequested&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;canDispose&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;interruptionStart&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;interruptionEnd&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;loadOperatorAvailable&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;initialWIP&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;brokerIsSet&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;preemptQueue&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;entityRemoved&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;entityCreated&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;moveEnd&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;processOperatorUnavailable&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;objectPropertyEnd&quot;</span> <span class="p">:</span> <span class="mi">0</span>
+        <span class="p">}</span>
+        <span class="c1"># lists that keep the start/endShiftTimes of the victim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endShiftTimes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">startShiftTimes</span> <span class="o">=</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="CoreObject.run"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        the main process of the core object, this is dummy, every object must have its own implementation</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Subclass must define &#39;run&#39; method&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CoreObject.defineRouting"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.defineRouting">[docs]</a>    <span class="k">def</span> <span class="nf">defineRouting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predecessorList</span><span class="o">=</span><span class="p">[],</span> <span class="n">successorList</span><span class="o">=</span><span class="p">[]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        sets the routing in and out elements for the Object</span>
+
+<span class="sd">        :param predecessorList: List containing the predecessor Objects</span>
+<span class="sd">        :param successorList: List containing the successor Objects</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">successorList</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">previous</span> <span class="o">=</span> <span class="n">predecessorList</span></div>
+
+<div class="viewcode-block" id="CoreObject.defineNext"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.defineNext">[docs]</a>    <span class="k">def</span> <span class="nf">defineNext</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">successorList</span><span class="o">=</span><span class="p">[]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        sets the next element for the object and automatically registers itself as previous object of all objects in successorList.</span>
+<span class="sd">        :param successorList:</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">successorList</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">isNext</span><span class="p">:</span>  <span class="c1"># checks if s can be a next object. e.g., exit cannot be a next object</span>
+                <span class="c1"># __get_routing_target() is used to handle CoreObjects and ProductionLineModules differently</span>
+                <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">getRoutingTarget</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">next</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">next</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">getRoutingTarget</span><span class="p">())</span>
+                <span class="n">s</span><span class="o">.</span><span class="n">appendPrevious</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CoreObject.definePrevious"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.definePrevious">[docs]</a>    <span class="k">def</span> <span class="nf">definePrevious</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predecessorList</span><span class="o">=</span><span class="p">[]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets self.previous&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">previous</span> <span class="o">=</span> <span class="n">predecessorList</span></div>
+
+<div class="viewcode-block" id="CoreObject.appendPrevious"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.appendPrevious">[docs]</a>    <span class="k">def</span> <span class="nf">appendPrevious</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">previous</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Append previous to self.previous&quot;&quot;&quot;</span>
+        <span class="c1"># first checks if previous can be a previous object</span>
+        <span class="c1"># e.g., source cannot be a previous object</span>
+        <span class="k">if</span> <span class="n">previous</span><span class="o">.</span><span class="n">isPrevious</span> <span class="ow">and</span> <span class="n">previous</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">previous</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">previous</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">previous</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Registering </span><span class="si">{</span><span class="n">previous</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> as previous in </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> failed.&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CoreObject.getRoutingTarget"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.getRoutingTarget">[docs]</a>    <span class="k">def</span> <span class="nf">getRoutingTarget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the object.</span>
+<span class="sd">        This method is used for dynamic routing in order to handle CoreObjects and ProductionLineModules differently&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="CoreObject.printRouting"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.printRouting">[docs]</a>    <span class="k">def</span> <span class="nf">printRouting</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># print(f&quot;{self.name}&quot;, end=&quot;&quot;)</span>
+        <span class="c1">#</span>
+        <span class="c1"># print(&quot;&quot;)</span>
+        <span class="c1">#</span>
+        <span class="c1"># for s in self.next:</span>
+        <span class="c1">#     s.printRouting()</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="CoreObject.initialSignalReceiver"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.initialSignalReceiver">[docs]</a>    <span class="k">def</span> <span class="nf">initialSignalReceiver</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        checks if there is anything set as WIP at the begging of the simulation and sends an event to initialize the simulation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">haveToDispose</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">signalReceiver</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="CoreObject.initialAllocationRequest"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.initialAllocationRequest">[docs]</a>    <span class="k">def</span> <span class="nf">initialAllocationRequest</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># TODO if the station is operated, and the operators have skills defined then the SkilledOperatorRouter should be signalled</span>
+        <span class="c1"># XXX: there may be a case where one object is not assigned an operator, in that case we do not want to invoke the allocation routine</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">checkForDedicatedOperators</span><span class="p">():</span>
+            <span class="n">allocationNeeded</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="kn">from</span> <span class="nn">.Globals</span> <span class="kn">import</span> <span class="n">G</span>
+
+            <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">MachineList</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">operatorPool</span> <span class="o">!=</span> <span class="s2">&quot;None&quot;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">operatorPool</span><span class="o">.</span><span class="n">operators</span><span class="p">:</span>
+                        <span class="n">allocationNeeded</span> <span class="o">=</span> <span class="kc">False</span>
+                        <span class="k">break</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">allocationNeeded</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="n">allocationNeeded</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">requestAllocation</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="CoreObject.removeEntity"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.removeEntity">[docs]</a>    <span class="k">def</span> <span class="nf">removeEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resetFlags</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">addBlockage</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        removes an Entity from the Object the Entity to be removed is passed as argument by getEntity of the receiver</span>
+
+<span class="sd">        :param entity:</span>
+<span class="sd">        :param resetFlags:</span>
+<span class="sd">        :param addBlockage:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">addBlockage</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">isBlocked</span><span class="p">:</span>
+            <span class="c1"># add the blocking time</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">addBlockage</span><span class="p">()</span>
+        <span class="c1"># reset flags</span>
+        <span class="k">if</span> <span class="n">resetFlags</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">isBlocked</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">isProcessing</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="n">activeObjectQueue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span>
+        <span class="n">activeObjectQueue</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>  <span class="c1"># remove the Entity from the queue</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">receiver</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">receiver</span><span class="o">.</span><span class="n">appendEntity</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">downTimeInTryingToReleaseCurrentEntity</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">offShiftTimeTryingToReleaseCurrentEntity</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeLastEntityLeft</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outputTrace</span><span class="p">(</span><span class="n">entity</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">entity</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">&quot;Left &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+
+        <span class="c1"># append the time to schedule so that it can be read in the result</span>
+        <span class="c1"># remember that every entity has it&#39;s schedule which is supposed to be updated every time</span>
+        <span class="c1"># he entity enters a new object</span>
+        <span class="k">if</span> <span class="n">entity</span><span class="o">.</span><span class="n">schedule</span><span class="p">:</span>
+            <span class="n">entity</span><span class="o">.</span><span class="n">schedule</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;exitTime&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span>
+
+        <span class="c1"># update wipStatList</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gatherWipStat</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">numpy</span>
+
+            <span class="n">wip</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">holdEntity</span> <span class="ow">in</span> <span class="n">activeObjectQueue</span><span class="p">:</span>
+                <span class="n">wip</span> <span class="o">+=</span> <span class="n">holdEntity</span><span class="o">.</span><span class="n">numberOfUnits</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wipStatList</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wipStatList</span><span class="p">,</span> <span class="p">[[</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="p">,</span> <span class="n">wip</span><span class="p">]])</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;entityRemoved&quot;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">printTrace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">signal</span><span class="o">=</span><span class="s2">&quot;(removedEntity)&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sendSignal</span><span class="p">(</span><span class="n">receiver</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">signal</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">entityRemoved</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">entity</span></div>
+
+<div class="viewcode-block" id="CoreObject.appendEntity"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.appendEntity">[docs]</a>    <span class="k">def</span> <span class="nf">appendEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        appends entity to the receiver object. to be called by the removeEntity of the giver</span>
+<span class="sd">        this method is created to be overridden by the Assembly class in its getEntity where Frames are loaded</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">activeObjectQueue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span>
+        <span class="n">activeObjectQueue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CoreObject.identifyEntityToGet"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.identifyEntityToGet">[docs]</a>    <span class="k">def</span> <span class="nf">identifyEntityToGet</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        called be getEntity it identifies the Entity to be obtained so that getEntity gives it to removeEntity as argument</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">giverObjectQueue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getGiverObjectQueue</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">giverObjectQueue</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="CoreObject.addBlockage"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.addBlockage">[docs]</a>    <span class="k">def</span> <span class="nf">addBlockage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        adds the blockage time to totalBlockageTime each time an Entity is removed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeLastBlockageStarted</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">totalBlockageTime</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeLastBlockageStarted</span></div>
+
+<div class="viewcode-block" id="CoreObject.getEntity"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.getEntity">[docs]</a>    <span class="k">def</span> <span class="nf">getEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        gets an entity from the giver</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># get active object and its queue, as well as the active (to be) entity</span>
+        <span class="c1"># (after the sorting of the entities in the queue of the giver object)</span>
+        <span class="c1">#         activeObject=self.getActiveObject()</span>
+        <span class="n">activeObjectQueue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span>
+        <span class="c1"># get giver object, its queue, and sort the entities according to this object priorities</span>
+        <span class="n">giverObject</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">giver</span>
+        <span class="n">giverObject</span><span class="o">.</span><span class="n">sortEntities</span><span class="p">()</span>  <span class="c1"># sort the Entities of the giver</span>
+        <span class="c1"># according to the scheduling rule if applied</span>
+        <span class="n">giverObject</span><span class="o">.</span><span class="n">sortEntitiesForReceiver</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">giverObjectQueue</span> <span class="o">=</span> <span class="n">giverObject</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span>
+
+        <span class="c1"># if the giverObject is blocked then unBlock it</span>
+        <span class="k">if</span> <span class="n">giverObject</span><span class="o">.</span><span class="n">exitIsAssignedTo</span><span class="p">():</span>
+            <span class="n">giverObject</span><span class="o">.</span><span class="n">unAssignExit</span><span class="p">()</span>
+        <span class="c1"># if the activeObject entry is blocked then unBlock it</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">entryIsAssignedTo</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">unAssignEntry</span><span class="p">()</span>
+        <span class="n">activeEntity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">identifyEntityToGet</span><span class="p">()</span>
+        <span class="n">activeEntity</span><span class="o">.</span><span class="n">currentStation</span> <span class="o">=</span> <span class="bp">self</span>
+
+        <span class="c1"># update the receiver of the giverObject</span>
+        <span class="n">giverObject</span><span class="o">.</span><span class="n">receiver</span> <span class="o">=</span> <span class="bp">self</span>
+
+        <span class="c1"># remove entity from the giver</span>
+        <span class="n">activeEntity</span> <span class="o">=</span> <span class="n">giverObject</span><span class="o">.</span><span class="n">removeEntity</span><span class="p">(</span><span class="n">entity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">identifyEntityToGet</span><span class="p">())</span>
+
+        <span class="c1"># variable that holds the last giver; used in case of preemption</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lastGiver</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">giver</span>
+        <span class="c1">#         #get the entity from the previous object and put it in front of the activeQ</span>
+        <span class="c1">#         activeObjectQueue.append(activeEntity)</span>
+
+        <span class="c1"># append the time to schedule so that it can be read in the result</span>
+        <span class="c1"># remember that every entity has it&#39;s schedule which is supposed to be updated every time</span>
+        <span class="c1"># the entity enters a new object</span>
+        <span class="n">activeEntity</span><span class="o">.</span><span class="n">schedule</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;station&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;entranceTime&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="p">})</span>
+
+        <span class="c1"># update variables</span>
+        <span class="n">activeEntity</span><span class="o">.</span><span class="n">currentStation</span> <span class="o">=</span> <span class="bp">self</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeLastEntityEntered</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nameLastEntityEntered</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">activeEntity</span><span class="o">.</span><span class="n">name</span>
+        <span class="p">)</span>  <span class="c1"># this holds the name of the last entity that got into object</span>
+        <span class="c1"># update the next list of the object</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updateNext</span><span class="p">(</span><span class="n">activeEntity</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outputTrace</span><span class="p">(</span><span class="n">activeEntity</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">activeEntity</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">&quot;Entered &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">printTrace</span><span class="p">(</span><span class="n">activeEntity</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">enter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="c1">#         # if there are entities with requiredParts then check whether the requirements are fulfilled for them to proceed</span>
+        <span class="c1">#         #     ass soon as a &quot;buffer&quot; receives an entity it controls if the entity is requested elsewhere,</span>
+        <span class="c1">#         #     then it checks if there other requested entities by the same requesting entity.</span>
+        <span class="c1">#         #     Finally, it is controlled whether all the requested parts have concluded</span>
+        <span class="c1">#         #     their sequences for the requesting entity</span>
+        <span class="c1">#         from Globals import G</span>
+        <span class="c1">#         # for all the entities in the EntityList</span>
+        <span class="c1">#         for entity in G.EntityList:</span>
+        <span class="c1">#             requiredParts=entity.getRequiredParts()</span>
+        <span class="c1">#             if requiredParts:</span>
+        <span class="c1">#                 # if the activeEntity is in the requierdParts of the entity</span>
+        <span class="c1">#                 if activeEntity in requiredParts:</span>
+        <span class="c1">#                     # if the entity that requires the activeEntity can proceed then signal the currentStation of the entity</span>
+        <span class="c1">#                     if entity.checkIfRequiredPartsReady() and entity.currentStation.expectedSignals[&#39;canDispose&#39;]:</span>
+        <span class="c1">#                         entity.mayProceed=True</span>
+        <span class="c1">#                         self.sendSignal(receiver=entity.currentStation, signal=entity.currentStation.canDispose)</span>
+
+        <span class="c1"># update wipStatList</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gatherWipStat</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">numpy</span>
+
+            <span class="n">wip</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">holdEntity</span> <span class="ow">in</span> <span class="n">activeObjectQueue</span><span class="p">:</span>
+                <span class="n">wip</span> <span class="o">+=</span> <span class="n">holdEntity</span><span class="o">.</span><span class="n">numberOfUnits</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wipStatList</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wipStatList</span><span class="p">,</span> <span class="p">[[</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="p">,</span> <span class="n">wip</span><span class="p">]])</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">activeEntity</span></div>
+
+<div class="viewcode-block" id="CoreObject.updateNext"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.updateNext">[docs]</a>    <span class="k">def</span> <span class="nf">updateNext</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        updates the next list of the object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="CoreObject.preemptReceiver"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.preemptReceiver">[docs]</a>    <span class="k">def</span> <span class="nf">preemptReceiver</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        check whether there is a critical entity to be disposed and if preemption is required</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">activeObjectQueue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span>
+        <span class="c1"># find a critical order if any</span>
+        <span class="n">critical</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">entity</span> <span class="ow">in</span> <span class="n">activeObjectQueue</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">entity</span><span class="o">.</span><span class="n">isCritical</span><span class="p">:</span>
+                <span class="n">activeEntity</span> <span class="o">=</span> <span class="n">entity</span>
+                <span class="n">critical</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">break</span>
+        <span class="k">if</span> <span class="n">critical</span><span class="p">:</span>
+            <span class="c1"># pick a receiver</span>
+            <span class="n">receiver</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
+                <span class="nb">object</span>
+                <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">next</span>
+                <span class="k">if</span> <span class="nb">object</span><span class="o">.</span><span class="n">isPreemptive</span> <span class="ow">and</span> <span class="nb">object</span><span class="o">.</span><span class="n">checkIfActive</span><span class="p">()</span>
+            <span class="p">):</span>
+                <span class="n">receiver</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
+                    <span class="nb">object</span>
+                    <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">next</span>
+                    <span class="k">if</span> <span class="nb">object</span><span class="o">.</span><span class="n">isPreemptive</span> <span class="ow">and</span> <span class="nb">object</span><span class="o">.</span><span class="n">checkIfActive</span><span class="p">()</span>
+                <span class="p">)</span>
+            <span class="c1"># if there is any receiver that can be preempted check if it is operated</span>
+            <span class="k">if</span> <span class="n">receiver</span><span class="p">:</span>
+                <span class="n">receiverOperated</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># local variable to inform if the receiver is operated for Loading</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="kn">from</span> <span class="nn">.MachineJobShop</span> <span class="kn">import</span> <span class="n">MachineJobShop</span>
+                    <span class="kn">from</span> <span class="nn">.MachineManagedJob</span> <span class="kn">import</span> <span class="n">MachineManagedJob</span>
+
+                    <span class="c1"># TODO: implement preemption for simple machines</span>
+                    <span class="k">if</span> <span class="p">(</span>
+                        <span class="n">receiver</span><span class="o">.</span><span class="n">operatorPool</span>
+                        <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">receiver</span><span class="p">,</span> <span class="n">MachineJobShop</span><span class="p">)</span>
+                        <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">receiver</span><span class="p">,</span> <span class="n">MachineManagedJob</span><span class="p">)</span>
+                    <span class="p">):</span>
+                        <span class="c1"># and the operationType list contains Load, the receiver is operated</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="n">receiver</span><span class="o">.</span><span class="n">operatorPool</span> <span class="o">!=</span> <span class="s2">&quot;None&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span>
+                            <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;Load&quot;</span> <span class="k">for</span> <span class="nb">type</span> <span class="ow">in</span> <span class="n">receiver</span><span class="o">.</span><span class="n">multOperationTypeList</span>
+                        <span class="p">):</span>
+                            <span class="n">receiverOperated</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="k">pass</span>
+                <span class="c1"># if the obtained Entity is critical and the receiver is preemptive and not operated</span>
+                <span class="c1">#     in the case that the receiver is operated the preemption is performed by the operators</span>
+                <span class="c1">#     if the receiver is not Up then no preemption will be performed</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">receiverOperated</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">receiver</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="c1"># if the receiver does not hold an Entity that is also critical</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">receiver</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">isCritical</span><span class="p">:</span>
+                        <span class="n">receiver</span><span class="o">.</span><span class="n">shouldPreempt</span> <span class="o">=</span> <span class="kc">True</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">printTrace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">preempt</span><span class="o">=</span><span class="n">receiver</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+                        <span class="n">receiver</span><span class="o">.</span><span class="n">preempt</span><span class="p">()</span>
+                        <span class="n">receiver</span><span class="o">.</span><span class="n">timeLastEntityEnded</span> <span class="o">=</span> <span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span>
+                        <span class="p">)</span>  <span class="c1"># required to count blockage correctly in the preemptied station</span>
+                        <span class="c1"># sort so that the critical entity is placed in front</span>
+                        <span class="n">activeObjectQueue</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span>
+                            <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">==</span> <span class="n">activeEntity</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span>
+                        <span class="p">)</span>
+                <span class="c1"># if there is a critical entity and the possible receivers are operated then signal the Router</span>
+                <span class="k">elif</span> <span class="n">receiverOperated</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">signalRouter</span><span class="p">(</span><span class="n">receiver</span><span class="p">)</span>
+                    <span class="n">activeObjectQueue</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span>
+                        <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">==</span> <span class="n">activeEntity</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span>
+                    <span class="p">)</span>
+        <span class="c1"># update wipStatList</span>
+        <span class="c1"># update wipStatList</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gatherWipStat</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">numpy</span>
+
+            <span class="n">wip</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">holdEntity</span> <span class="ow">in</span> <span class="n">activeObjectQueue</span><span class="p">:</span>
+                <span class="n">wip</span> <span class="o">+=</span> <span class="n">holdEntity</span><span class="o">.</span><span class="n">numberOfUnits</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wipStatList</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wipStatList</span><span class="p">,</span> <span class="p">[[</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="p">,</span> <span class="n">wip</span><span class="p">]])</span>
+            <span class="p">)</span></div>
+
+<div class="viewcode-block" id="CoreObject.findReceiversFor"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.findReceiversFor">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">findReceiversFor</span><span class="p">(</span><span class="n">activeObject</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        find possible receivers</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">receivers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="p">[</span>
+            <span class="n">x</span>
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">activeObject</span><span class="o">.</span><span class="n">next</span>
+            <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">canAccept</span><span class="p">(</span><span class="n">activeObject</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">isRequested</span><span class="o">.</span><span class="n">triggered</span>
+            <span class="ow">and</span> <span class="n">x</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;isRequested&quot;</span><span class="p">]</span>
+        <span class="p">]:</span>
+            <span class="n">receivers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">receivers</span></div>
+
+<div class="viewcode-block" id="CoreObject.signalReceiver"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.signalReceiver">[docs]</a>    <span class="k">def</span> <span class="nf">signalReceiver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transmitter</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;signal the successor that the object can dispose an entity&quot;&quot;&quot;</span>
+
+        <span class="n">possibleReceivers</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">[</span><span class="n">transmitter</span><span class="p">]</span> <span class="k">if</span> <span class="n">transmitter</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">findReceiversFor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">possibleReceivers</span><span class="p">:</span>
+            <span class="n">receiver</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectReceiver</span><span class="p">(</span><span class="n">possibleReceivers</span><span class="p">)</span>
+            <span class="n">receiversGiver</span> <span class="o">=</span> <span class="bp">self</span>
+
+            <span class="c1"># perform the checks that canAcceptAndIsRequested used to perform and update activeCallersList or assignExit and operatorPool</span>
+            <span class="k">while</span> <span class="ow">not</span> <span class="n">receiver</span><span class="o">.</span><span class="n">canAcceptAndIsRequested</span><span class="p">(</span><span class="n">receiversGiver</span><span class="p">):</span>
+                <span class="n">possibleReceivers</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">receiver</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">possibleReceivers</span><span class="p">:</span>
+                    <span class="n">receiversGiver</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="n">receiver</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="c1"># if no receiver can accept then try to preempt a receive if the stations holds a critical order</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">preemptReceiver</span><span class="p">()</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+                <span class="n">receiver</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectReceiver</span><span class="p">(</span><span class="n">possibleReceivers</span><span class="p">)</span>
+                <span class="n">receiversGiver</span> <span class="o">=</span> <span class="bp">self</span>
+            <span class="c1"># sorting the entities of the object for the receiver</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sortEntitiesForReceiver</span><span class="p">(</span><span class="n">receiver</span><span class="p">)</span>
+            <span class="c1"># signalling the Router if the receiver is operated and not assigned an operator</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">signalRouter</span><span class="p">(</span><span class="n">receiver</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">receiver</span> <span class="o">=</span> <span class="n">receiver</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">receiver</span><span class="o">.</span><span class="n">giver</span> <span class="o">=</span> <span class="bp">self</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">printTrace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">signalReceiver</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">receiver</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+            <span class="c1"># assign the entry of the receiver</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">receiver</span><span class="o">.</span><span class="n">assignEntryTo</span><span class="p">()</span>
+            <span class="c1"># assign the exit of the current object to the receiver</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assignExitTo</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">receiver</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">receiver</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;isRequested&quot;</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sendSignal</span><span class="p">(</span>
+                    <span class="n">receiver</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">receiver</span><span class="p">,</span> <span class="n">signal</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">receiver</span><span class="o">.</span><span class="n">isRequested</span>
+                <span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="c1"># if no receiver can accept then try to preempt a receive if the stations holds a critical order</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">preemptReceiver</span><span class="p">()</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="CoreObject.selectReceiver"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.selectReceiver">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">selectReceiver</span><span class="p">(</span><span class="n">possibleReceivers</span><span class="o">=</span><span class="p">[]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;select a receiver Object&quot;&quot;&quot;</span>
+
+        <span class="n">candidates</span> <span class="o">=</span> <span class="n">possibleReceivers</span>
+        <span class="c1"># dummy variables that help prioritize the objects requesting to give objects to the object (activeObject)</span>
+        <span class="n">maxTimeWaiting</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># dummy variable counting the time a successor is waiting</span>
+        <span class="n">receiver</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="kn">from</span> <span class="nn">.Globals</span> <span class="kn">import</span> <span class="n">G</span>
+
+        <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">candidates</span><span class="p">:</span>
+            <span class="n">timeWaiting</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">G</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="nb">object</span><span class="o">.</span><span class="n">timeLastEntityLeft</span>
+            <span class="p">)</span>  <span class="c1"># the time it has been waiting is updated and stored in dummy variable timeWaiting</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">timeWaiting</span> <span class="o">&gt;</span> <span class="n">maxTimeWaiting</span> <span class="ow">or</span> <span class="n">maxTimeWaiting</span> <span class="o">==</span> <span class="mi">0</span>
+            <span class="p">):</span>  <span class="c1"># if the timeWaiting is the maximum among the ones of the successors</span>
+                <span class="n">maxTimeWaiting</span> <span class="o">=</span> <span class="n">timeWaiting</span>
+                <span class="n">receiver</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="nb">object</span>  <span class="c1"># set the receiver as the longest waiting possible receiver</span>
+                <span class="p">)</span>
+        <span class="k">return</span> <span class="n">receiver</span></div>
+
+<div class="viewcode-block" id="CoreObject.sortEntitiesForReceiver"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.sortEntitiesForReceiver">[docs]</a>    <span class="k">def</span> <span class="nf">sortEntitiesForReceiver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">receiver</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;sort the entities of the queue for the receiver&quot;&quot;&quot;</span>
+
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="CoreObject.findGiversFor"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.findGiversFor">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">findGiversFor</span><span class="p">(</span><span class="n">activeObject</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;find possible givers&quot;&quot;&quot;</span>
+
+        <span class="n">givers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="p">[</span>
+            <span class="n">x</span>
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">activeObject</span><span class="o">.</span><span class="n">previous</span>
+            <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">x</span> <span class="ow">is</span> <span class="n">activeObject</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">canDispose</span><span class="o">.</span><span class="n">triggered</span>
+            <span class="ow">and</span> <span class="p">(</span>
+                <span class="n">x</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;canDispose&quot;</span><span class="p">]</span>
+                <span class="ow">or</span> <span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">canDeliverOnInterruption</span> <span class="ow">and</span> <span class="n">x</span><span class="o">.</span><span class="n">timeLastShiftEnded</span> <span class="o">==</span> <span class="n">x</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">]:</span>  <span class="c1"># extra check.If shift ended right now and the object</span>
+            <span class="c1"># can unload we relax the canDispose flag</span>
+            <span class="k">if</span> <span class="nb">object</span><span class="o">.</span><span class="n">haveToDispose</span><span class="p">(</span><span class="n">activeObject</span><span class="p">):</span>
+                <span class="n">givers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">givers</span></div>
+
+<div class="viewcode-block" id="CoreObject.signalGiver"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.signalGiver">[docs]</a>    <span class="k">def</span> <span class="nf">signalGiver</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;signal the giver that the entity is removed from its internalQueue&quot;&quot;&quot;</span>
+
+        <span class="n">possibleGivers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">findGiversFor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">possibleGivers</span><span class="p">:</span>
+            <span class="n">giver</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectGiver</span><span class="p">(</span><span class="n">possibleGivers</span><span class="p">)</span>
+            <span class="n">giversReceiver</span> <span class="o">=</span> <span class="bp">self</span>
+            <span class="c1"># perform the checks that canAcceptAndIsRequested used to perform and update activeCallersList or assignExit and operatorPool</span>
+            <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">canAcceptAndIsRequested</span><span class="p">(</span><span class="n">giver</span><span class="p">):</span>
+                <span class="n">possibleGivers</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">giver</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">possibleGivers</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+                <span class="n">giver</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectGiver</span><span class="p">(</span><span class="n">possibleGivers</span><span class="p">)</span>
+                <span class="n">giversReceiver</span> <span class="o">=</span> <span class="bp">self</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">giver</span> <span class="o">=</span> <span class="n">giver</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">giver</span><span class="o">.</span><span class="n">receiver</span> <span class="o">=</span> <span class="bp">self</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">giver</span><span class="o">.</span><span class="n">expectedSignals</span><span class="p">[</span><span class="s2">&quot;canDispose&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">giver</span><span class="o">.</span><span class="n">canDeliverOnInterruption</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">giver</span><span class="o">.</span><span class="n">timeLastShiftEnded</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span>
+            <span class="p">):</span>  <span class="c1"># extra check.If shift ended right now and the object</span>
+                <span class="c1"># can unload we relax the canDispose flag</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sendSignal</span><span class="p">(</span><span class="n">receiver</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">giver</span><span class="p">,</span> <span class="n">signal</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">giver</span><span class="o">.</span><span class="n">canDispose</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">printTrace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">signalGiver</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">giver</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="CoreObject.selectGiver"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.selectGiver">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">selectGiver</span><span class="p">(</span><span class="n">possibleGivers</span><span class="o">=</span><span class="p">[]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;select a giver Object&quot;&quot;&quot;</span>
+
+        <span class="n">candidates</span> <span class="o">=</span> <span class="n">possibleGivers</span>
+        <span class="c1"># dummy variables that help prioritize the objects requesting to give objects to the object (activeObject)</span>
+        <span class="n">maxTimeWaiting</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># dummy variable counting the time a predecessor is blocked</span>
+        <span class="n">giver</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="kn">from</span> <span class="nn">.Globals</span> <span class="kn">import</span> <span class="n">G</span>
+
+        <span class="c1"># loop through the possible givers to see which have to dispose and which is the one blocked for longer</span>
+        <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">candidates</span><span class="p">:</span>
+            <span class="c1"># calculate how much the giver is waiting</span>
+            <span class="n">timeWaiting</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="nb">object</span><span class="o">.</span><span class="n">timeLastEntityEnded</span>
+            <span class="k">if</span> <span class="n">timeWaiting</span> <span class="o">&gt;=</span> <span class="n">maxTimeWaiting</span><span class="p">:</span>
+                <span class="n">giver</span> <span class="o">=</span> <span class="nb">object</span>  <span class="c1"># the object to deliver the Entity to the activeObject is set to the ith member of the previous list</span>
+                <span class="n">maxTimeWaiting</span> <span class="o">=</span> <span class="n">timeWaiting</span>
+        <span class="k">return</span> <span class="n">giver</span></div>
+
+<div class="viewcode-block" id="CoreObject.postProcessing"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.postProcessing">[docs]</a>    <span class="k">def</span> <span class="nf">postProcessing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MaxSimtime</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;actions to be taken after the simulation ends&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">MaxSimtime</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">.Globals</span> <span class="kn">import</span> <span class="n">G</span>
+
+            <span class="n">MaxSimtime</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">maxSimTime</span>
+
+        <span class="n">activeObject</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getActiveObject</span><span class="p">()</span>
+        <span class="n">activeObjectQueue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getActiveObjectQueue</span><span class="p">()</span>
+
+        <span class="c1"># update wipStatList</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gatherWipStat</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">numpy</span>
+
+            <span class="n">wip</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">holdEntity</span> <span class="ow">in</span> <span class="n">activeObjectQueue</span><span class="p">:</span>
+                <span class="n">wip</span> <span class="o">+=</span> <span class="n">holdEntity</span><span class="o">.</span><span class="n">numberOfUnits</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wipStatList</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wipStatList</span><span class="p">,</span> <span class="p">[[</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span><span class="p">,</span> <span class="n">wip</span><span class="p">]])</span>
+            <span class="p">)</span>
+
+        <span class="c1"># calculate the offShift time for current entity</span>
+        <span class="n">offShiftTimeInCurrentEntity</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">interruptedBy</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">onShift</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>  <span class="c1"># and self.interruptedBy==&#39;ShiftScheduler&#39;:</span>
+                <span class="n">offShiftTimeInCurrentEntity</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="n">activeObject</span><span class="o">.</span><span class="n">timeLastShiftEnded</span>
+                <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">isBlocked</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">addBlockage</span><span class="p">()</span>
+
+        <span class="c1"># if object is currently processing an entity we should count this working time</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">isProcessing</span><span class="p">:</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;XXX currentlyPerforming can be Setup or Processing &quot;&quot;&quot;</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentlyPerforming</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentlyPerforming</span> <span class="o">==</span> <span class="s2">&quot;Setup&quot;</span><span class="p">:</span>
+                    <span class="n">activeObject</span><span class="o">.</span><span class="n">totalSetupTime</span> <span class="o">+=</span> <span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeLastOperationStarted</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">activeObject</span><span class="o">.</span><span class="n">totalWorkingTime</span> <span class="o">+=</span> <span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeLastOperationStarted</span>
+                    <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">activeObject</span><span class="o">.</span><span class="n">totalWorkingTime</span> <span class="o">+=</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeLastProcessingStarted</span>
+                <span class="p">)</span>
+            <span class="c1"># activeObject.totalTimeWaitingForOperator+=activeObject.operatorWaitTimeCurrentEntity</span>
+
+        <span class="c1"># if object is down we have to add this failure time to its total failure time</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Up</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">onShift</span><span class="p">:</span>
+                <span class="n">activeObject</span><span class="o">.</span><span class="n">totalFailureTime</span> <span class="o">+=</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="n">activeObject</span><span class="o">.</span><span class="n">timeLastFailure</span>
+                <span class="p">)</span>
+            <span class="c1"># if object is off shift add only the fail time before the shift ended</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">onShift</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeLastFailure</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeLastShiftEnded</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">totalFailureTime</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeLastShiftEnded</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeLastFailure</span>
+
+        <span class="c1"># if the Operator is on break we have to add this break time to its total break time</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">onBreak</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">onShift</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">totalBreakTime</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeLastBreakStarted</span>
+            <span class="c1"># if object is off shift add only the break time before the shift ended</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">onShift</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeLastBreakStarted</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeLastShiftEnded</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">totalBreakTime</span> <span class="o">+=</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">timeLastShiftEnded</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeLastBreakStarted</span>
+                <span class="p">)</span>
+
+        <span class="c1"># if the object is off shift,add this to the off-shift time</span>
+        <span class="k">if</span> <span class="n">activeObject</span><span class="o">.</span><span class="n">onShift</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="c1"># if we ran the simulation for infinite time we have to identify the last event</span>
+            <span class="n">now</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span>
+            <span class="k">if</span> <span class="n">now</span> <span class="o">==</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">):</span>
+                <span class="n">now</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">lastExits</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">ExitList</span><span class="p">:</span>
+                    <span class="n">lastExits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">object</span><span class="o">.</span><span class="n">timeLastEntityEntered</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">lastExits</span><span class="p">:</span>
+                    <span class="n">now</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">lastExits</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">totalOffShiftTime</span> <span class="o">+=</span> <span class="n">now</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeLastShiftEnded</span>
+
+        <span class="c1"># object was idle when it was not in any other state</span>
+        <span class="n">activeObject</span><span class="o">.</span><span class="n">totalWaitingTime</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">MaxSimtime</span>
+            <span class="o">-</span> <span class="n">activeObject</span><span class="o">.</span><span class="n">totalWorkingTime</span>
+            <span class="o">-</span> <span class="n">activeObject</span><span class="o">.</span><span class="n">totalBlockageTime</span>
+            <span class="o">-</span> <span class="n">activeObject</span><span class="o">.</span><span class="n">totalFailureTime</span>
+            <span class="o">-</span> <span class="n">activeObject</span><span class="o">.</span><span class="n">totalLoadTime</span>
+            <span class="o">-</span> <span class="n">activeObject</span><span class="o">.</span><span class="n">totalSetupTime</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">totalOffShiftTime</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">totalBreakTime</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">activeObject</span><span class="o">.</span><span class="n">totalBlockageTime</span> <span class="o">&lt;</span> <span class="mi">0</span>
+            <span class="ow">and</span> <span class="n">activeObject</span><span class="o">.</span><span class="n">totalBlockageTime</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mf">0.00001</span>
+        <span class="p">):</span>  <span class="c1"># to avoid some effects of getting negative cause of rounding precision</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">totalBlockageTime</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">activeObject</span><span class="o">.</span><span class="n">totalWaitingTime</span> <span class="o">&lt;</span> <span class="mi">0</span>
+            <span class="ow">and</span> <span class="n">activeObject</span><span class="o">.</span><span class="n">totalWaitingTime</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mf">0.00001</span>
+        <span class="p">):</span>  <span class="c1"># to avoid some effects of getting negative cause of rounding precision</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">totalWaitingTime</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="n">activeObject</span><span class="o">.</span><span class="n">Failure</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">totalFailureTime</span> <span class="o">/</span> <span class="n">MaxSimtime</span><span class="p">)</span>
+        <span class="n">activeObject</span><span class="o">.</span><span class="n">Blockage</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">totalBlockageTime</span> <span class="o">/</span> <span class="n">MaxSimtime</span><span class="p">)</span>
+        <span class="n">activeObject</span><span class="o">.</span><span class="n">Waiting</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">totalWaitingTime</span> <span class="o">/</span> <span class="n">MaxSimtime</span><span class="p">)</span>
+        <span class="n">activeObject</span><span class="o">.</span><span class="n">Working</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">totalWorkingTime</span> <span class="o">/</span> <span class="n">MaxSimtime</span><span class="p">)</span>
+        <span class="n">activeObject</span><span class="o">.</span><span class="n">WaitingForOperator</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="mi">100</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">totalTimeWaitingForOperator</span> <span class="o">/</span> <span class="n">MaxSimtime</span>
+        <span class="p">)</span>
+        <span class="n">activeObject</span><span class="o">.</span><span class="n">WaitingForLoadOperator</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="mi">100</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">totalTimeWaitingForLoadOperator</span> <span class="o">/</span> <span class="n">MaxSimtime</span>
+        <span class="p">)</span>
+        <span class="n">activeObject</span><span class="o">.</span><span class="n">Loading</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">totalLoadTime</span> <span class="o">/</span> <span class="n">MaxSimtime</span><span class="p">)</span>
+        <span class="n">activeObject</span><span class="o">.</span><span class="n">SettingUp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">totalSetupTime</span> <span class="o">/</span> <span class="n">MaxSimtime</span><span class="p">)</span>
+        <span class="n">activeObject</span><span class="o">.</span><span class="n">OffShift</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">totalOffShiftTime</span> <span class="o">/</span> <span class="n">MaxSimtime</span><span class="p">)</span>
+        <span class="n">activeObject</span><span class="o">.</span><span class="n">OnBreak</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">totalBreakTime</span> <span class="o">/</span> <span class="n">MaxSimtime</span><span class="p">)</span>
+        <span class="n">activeObject</span><span class="o">.</span><span class="n">WipStat</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wipStatList</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="CoreObject.outputResultsJSON"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.outputResultsJSON">[docs]</a>    <span class="k">def</span> <span class="nf">outputResultsJSON</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;outputs results to JSON File&quot;&quot;&quot;</span>
+
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="CoreObject.haveToDispose"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.haveToDispose">[docs]</a>    <span class="k">def</span> <span class="nf">haveToDispose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;checks if the Object can dispose an entity to the following object&quot;&quot;&quot;</span>
+
+        <span class="n">activeObjectQueue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">activeObjectQueue</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="CoreObject.canAcceptAndIsRequested"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.canAcceptAndIsRequested">[docs]</a>    <span class="k">def</span> <span class="nf">canAcceptAndIsRequested</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;checks if the Object can accept an entity and there is an entity in some possible giver waiting for it&quot;&quot;&quot;</span>
+
+        <span class="k">pass</span></div>
+
+    <span class="c1"># =======================================================================</span>
+<div class="viewcode-block" id="CoreObject.canAccept"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.canAccept">[docs]</a>    <span class="k">def</span> <span class="nf">canAccept</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;checks if the Object can accept an entity&quot;&quot;&quot;</span>
+
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="CoreObject.isInRouteOf"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.isInRouteOf">[docs]</a>    <span class="k">def</span> <span class="nf">isInRouteOf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;method used to check whether the station is a successor of the caller&quot;&quot;&quot;</span>
+
+        <span class="n">thecaller</span> <span class="o">=</span> <span class="n">callerObject</span>
+        <span class="c1"># if the caller is not defined then return True. We are only interested in checking whether</span>
+        <span class="c1"># the station can accept whatever entity from whichever giver</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">thecaller</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="c1"># check it the caller object is predecessor to the activeObject</span>
+        <span class="k">if</span> <span class="n">thecaller</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">previous</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="CoreObject.sortEntities"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.sortEntities">[docs]</a>    <span class="k">def</span> <span class="nf">sortEntities</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;sorts the Entities in the activeQ of the objects&quot;&quot;&quot;</span>
+
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="CoreObject.getActiveObject"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.getActiveObject">[docs]</a>    <span class="k">def</span> <span class="nf">getActiveObject</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;get the active object. This always returns self&quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="CoreObject.getActiveObjectQueue"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.getActiveObjectQueue">[docs]</a>    <span class="k">def</span> <span class="nf">getActiveObjectQueue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;get the activeQ of the active object.&quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span></div>
+
+<div class="viewcode-block" id="CoreObject.getGiverObject"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.getGiverObject">[docs]</a>    <span class="k">def</span> <span class="nf">getGiverObject</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;get the giver object in a getEntity transaction.&quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">giver</span></div>
+
+<div class="viewcode-block" id="CoreObject.getGiverObjectQueue"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.getGiverObjectQueue">[docs]</a>    <span class="k">def</span> <span class="nf">getGiverObjectQueue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;get the giver object queue in a getEntity transaction.&quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">giver</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span></div>
+
+<div class="viewcode-block" id="CoreObject.getReceiverObject"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.getReceiverObject">[docs]</a>    <span class="k">def</span> <span class="nf">getReceiverObject</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;get the receiver object in a removeEntity transaction.&quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">receiver</span></div>
+
+<div class="viewcode-block" id="CoreObject.getReceiverObjectQueue"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.getReceiverObjectQueue">[docs]</a>    <span class="k">def</span> <span class="nf">getReceiverObjectQueue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;get the receiver object queue in a removeEntity transaction.&quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">receiver</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span></div>
+
+<div class="viewcode-block" id="CoreObject.calculateProcessingTime"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.calculateProcessingTime">[docs]</a>    <span class="k">def</span> <span class="nf">calculateProcessingTime</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;calculates the processing time&quot;&quot;&quot;</span>
+
+        <span class="c1"># this is only for processing of the initial wip</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">isProcessingInitialWIP</span><span class="p">:</span>
+            <span class="n">activeEntity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getActiveObjectQueue</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">activeEntity</span><span class="o">.</span><span class="n">remainingProcessingTime</span><span class="p">:</span>
+                <span class="n">remainingProcessingTime</span> <span class="o">=</span> <span class="n">activeEntity</span><span class="o">.</span><span class="n">remainingProcessingTime</span>
+                <span class="kn">from</span> <span class="nn">..RandomNumberGenerator</span> <span class="kn">import</span> <span class="n">RandomNumberGenerator</span>
+
+                <span class="n">initialWIPrng</span> <span class="o">=</span> <span class="n">RandomNumberGenerator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">remainingProcessingTime</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">initialWIPrng</span><span class="o">.</span><span class="n">generateNumber</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">generateNumber</span><span class="p">()</span>
+        <span class="p">)</span>  <span class="c1"># this is if we have a default processing time for all the entities</span></div>
+
+<div class="viewcode-block" id="CoreObject.calculateTime"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.calculateTime">[docs]</a>    <span class="k">def</span> <span class="nf">calculateTime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;Processing&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;calculates time (running through a dictionary) according to the type of processing given as argument&quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;Load&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">loadRng</span><span class="o">.</span><span class="n">generateNumber</span><span class="p">,</span>
+            <span class="s2">&quot;Setup&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">stpRng</span><span class="o">.</span><span class="n">generateNumber</span><span class="p">,</span>
+            <span class="s2">&quot;Processing&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculateProcessingTime</span><span class="p">,</span>
+        <span class="p">}[</span><span class="nb">type</span><span class="p">]()</span></div>
+
+<div class="viewcode-block" id="CoreObject.exitIsAssignedTo"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.exitIsAssignedTo">[docs]</a>    <span class="k">def</span> <span class="nf">exitIsAssignedTo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;checks if the object is blocked&quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exitAssignedToReceiver</span></div>
+
+<div class="viewcode-block" id="CoreObject.assignExitTo"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.assignExitTo">[docs]</a>    <span class="k">def</span> <span class="nf">assignExitTo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callerObject</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;assign Exit of the object&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">exitAssignedToReceiver</span> <span class="o">=</span> <span class="n">callerObject</span></div>
+
+<div class="viewcode-block" id="CoreObject.unAssignExit"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.unAssignExit">[docs]</a>    <span class="k">def</span> <span class="nf">unAssignExit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;unblock the object&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">exitAssignedToReceiver</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="CoreObject.entryIsAssignedTo"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.entryIsAssignedTo">[docs]</a>    <span class="k">def</span> <span class="nf">entryIsAssignedTo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;checks if the object is blocked&quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">entryAssignedToGiver</span></div>
+
+<div class="viewcode-block" id="CoreObject.assignEntryTo"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.assignEntryTo">[docs]</a>    <span class="k">def</span> <span class="nf">assignEntryTo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;assign Exit of the object&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">entryAssignedToGiver</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">giver</span></div>
+
+<div class="viewcode-block" id="CoreObject.unAssignEntry"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.unAssignEntry">[docs]</a>    <span class="k">def</span> <span class="nf">unAssignEntry</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;unblock the object&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">entryAssignedToGiver</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="CoreObject.interruptionActions"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.interruptionActions">[docs]</a>    <span class="k">def</span> <span class="nf">interruptionActions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        actions to be carried whenever the object is interrupted (failure, break, preemption, etc)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="CoreObject.postInterruptionActions"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.postInterruptionActions">[docs]</a>    <span class="k">def</span> <span class="nf">postInterruptionActions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        actions to be carried whenever the object recovers control after an interruption (failure, break, preemption, etc)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="CoreObject.preempt"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.preempt">[docs]</a>    <span class="k">def</span> <span class="nf">preempt</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;method to execute preemption&quot;&quot;&quot;</span>
+
+        <span class="c1"># ToDO make a generic method</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="CoreObject.checkIfActive"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.checkIfActive">[docs]</a>    <span class="k">def</span> <span class="nf">checkIfActive</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;checks if the object is in an active position&quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Up</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">onShift</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">onBreak</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CoreObject.activeQueueIsEmpty"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.activeQueueIsEmpty">[docs]</a>    <span class="k">def</span> <span class="nf">activeQueueIsEmpty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;filter that returns True if the activeObject Queue is empty</span>
+<span class="sd">        false if object holds entities in its queue&quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="CoreObject.endOperationActions"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.endOperationActions">[docs]</a>    <span class="k">def</span> <span class="nf">endOperationActions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;actions to be carried out when the processing of an Entity ends&quot;&quot;&quot;</span>
+
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="CoreObject.isInActiveQueue"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.CoreObject.CoreObject.isInActiveQueue">[docs]</a>    <span class="k">def</span> <span class="nf">isInActiveQueue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;check if an entity is in the internal Queue of the object&quot;&quot;&quot;</span>
+
+        <span class="n">activeObjectQueue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span>
+        <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="n">entity</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">activeObjectQueue</span><span class="p">)</span></div></div>
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, AImotion Bavaria
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/scripts/furo.js"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
+    </body>
+</html>
