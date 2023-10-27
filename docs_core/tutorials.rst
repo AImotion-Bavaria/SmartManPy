@@ -260,7 +260,6 @@ Let's have a look at a simple example:
 
     ts_features = Feature(id="ftr_ts,
                           name="Feature_Time_Series",
-                          step_time=0.1,
                           distribution={"Function": {(0, 2): "0.5*x + 2"},
                                         "DataPoints": 20,
                                         "Feature": {"Normal": {"stdev": 0.1}}
@@ -281,7 +280,6 @@ It is possible to define multiple intervals to further customize the mathematica
 
     ts_features = Feature(id="ftr_ts,
                           name="Feature_Time_Series",
-                          step_time=0.1,
                           distribution={"Function": {(0, 1): "0.5*x + 2", (1, 2): "0.1*x + 2"},
                                         "DataPoints": 20,
                                         "Feature": {"Normal": {"stdev": 0.1}}
@@ -300,7 +298,6 @@ Sometimes, only certain values are known, which makes interpolation a very usefu
 
     ts_features = Feature(id="ftr_ts,
                           name="Feature_Time_Series",
-                          step_time=0.1,
                           distribution={"Function": {(0, 1): "0.5*x + 2",
                                                      (1, 3): [[1, 1.5, 2, 3], [4, 4.2, 4.3, 5.1]]},
                                         "DataPoints": 20,
@@ -324,7 +321,6 @@ The data points for interpolation can also be determined by a Feature with all i
 
     ts_features = Feature(id="ftr_ts,
                           name="Feature_Time_Series",
-                          step_time=0.1,
                           distribution={"Function": {(0, 1): "0.5*x + 2",
                                                      (1, 3): [[1, 1.5, 2, 3], [4, 4.2, 4.3, "EndVal"]]},
                                         "EndVal": endVal,
