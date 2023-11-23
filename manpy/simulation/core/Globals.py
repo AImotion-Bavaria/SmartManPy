@@ -823,8 +823,8 @@ def get_feature_labels_by_id(entity, feature_ids):
 
 def resetSimulation():
 
-    warnings.warn("The resetSimulation method resets the internal state of the global simulation, but NOT of the"
-                  "individual Parts. It is not intended to restart the simulation after calling this function.")
+    # warnings.warn("The resetSimulation method resets the internal state of the global simulation, but NOT of the"
+    #               "individual Parts. It is not intended to restart the simulation after calling this function.")
     global G
 
     G.ObjList = []  # a list that holds all the CoreObjects
