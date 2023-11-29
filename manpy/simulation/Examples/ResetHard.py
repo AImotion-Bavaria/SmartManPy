@@ -1,6 +1,5 @@
 from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue
 from manpy.simulation.core.Globals import runSimulation, getFeatureData, resetSimulation, G
-import multiprocessing as mp
 import time
 
 
@@ -65,9 +64,9 @@ def prepare():
 
 def main(test=0):
     maxSimTime = 1000
-    start = time.time()
 
     # 1
+    start = time.time()
     objectList = prepare()
     runSimulation(objectList, maxSimTime)
     df = getFeatureData([objectList[3]])
@@ -79,9 +78,11 @@ def main(test=0):
                 Simulationszeit:    {}
                 Laufzeit:           {:.2f}
                 """.format(len(objectList[3].discards), objectList[4].numOfExits, objectList[3].totalBlockageTime,
-                           maxSimTime, time.time() - start))
+                           G.env.now, time.time() - start))
 
     # 2
+    start = time.time()
+    # resetSimulation has to be called before objectList!
     resetSimulation()
     objectList = prepare()
     runSimulation(objectList, maxSimTime)
@@ -94,7 +95,7 @@ def main(test=0):
                 Simulationszeit:    {}
                 Laufzeit:           {:.2f}
                 """.format(len(objectList[3].discards), objectList[4].numOfExits, objectList[3].totalBlockageTime,
-                           maxSimTime, time.time() - start))
+                           G.env.now, time.time() - start))
 
 if __name__ == "__main__":
     main()
