@@ -37,8 +37,8 @@ class CapacityStationExit(Exit):
     # ===========================================================================
     # the __init__ method of the CapacityStationExit
     # ===========================================================================
-    def __init__(self, id, name=None, nextCapacityStationBufferId=None, **kw):
-        Exit.__init__(self, id, name)
+    def __init__(self, id, name=None, cost=0, nextCapacityStationBufferId=None, **kw):
+        Exit.__init__(self, id, name, cost=cost)
         self.isLocked = True
         self.nextCapacityStationBufferId = (
             nextCapacityStationBufferId  # the id of the next station. If it is None it

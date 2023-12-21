@@ -32,7 +32,7 @@ from .BatchDecomposition import BatchDecomposition
 class BatchDecompositionStartTime(BatchDecomposition):
 
     """
-    #gets an entity from the predecessor     
+    #gets an entity from the predecessor
     def getEntity(self):
         activeEntity=BatchDecomposition.getEntity(self)
         activeEntity.startTime=self.env.now

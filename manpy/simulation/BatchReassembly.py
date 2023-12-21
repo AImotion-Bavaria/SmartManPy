@@ -52,9 +52,10 @@ class BatchReassembly(CoreObject):
         operator="None",
         outputResults=False,
         outputFinalWIP=False,
+        cost=0,
         **kw
     ):
-        CoreObject.__init__(self, id, name)
+        CoreObject.__init__(self, id, name, cost)
         self.type = "BatchRassembly"  # String that shows the type of object
         if not processingTime:
             processingTime = {"Fixed": {"mean": 0}}

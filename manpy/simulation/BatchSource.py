@@ -38,10 +38,11 @@ class BatchSource(Source):
         interArrivalTime=None,
         entity="manpy.Batch",
         batchNumberOfUnits=1,
+        cost=0,
         **kw
     ):
         Source.__init__(
-            self, id=id, name=name, interArrivalTime=interArrivalTime, entity=entity
+            self, id=id, name=name, cost=cost, interArrivalTime=interArrivalTime, entity=entity
         )
         self.numberOfUnits = int(batchNumberOfUnits)
         from manpy.simulation.core.Globals import G

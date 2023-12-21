@@ -107,7 +107,7 @@ class Source(CoreObject):
     :param capacity: Capacity of the generated Entities, Only relevant for entity="manpy.Frame"
     """
 
-    def __init__(self, id, name, interArrivalTime=None, entity="manpy.Part", capacity=1, **kw):
+    def __init__(self, id, name, cost=0, interArrivalTime=None, entity="manpy.Part", capacity=1, **kw):
 
         if not interArrivalTime:
             interArrivalTime = {"Fixed": {"mean": 1}}
@@ -122,7 +122,7 @@ class Source(CoreObject):
                 + 5 * interArrivalTime["Normal"]["stdev"]
             )
 
-        CoreObject.__init__(self, id, name)
+        CoreObject.__init__(self, id, name, cost)
         # properties used for statistics
 
         self.totalinterArrivalTime = 0

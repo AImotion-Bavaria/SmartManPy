@@ -37,7 +37,7 @@ class Exit(CoreObject):
 
     family = "Exit"
 
-    def __init__(self, id, name, cancelCondition={}, **kw):
+    def __init__(self, id, name, cost=0, cancelCondition={}, **kw):
         self.type = "Exit"  # XXX needed ?
         self.isNext = True
         self.isPrevious = False
@@ -48,7 +48,7 @@ class Exit(CoreObject):
         self.Lifespan = []
         self.TaktTime = []
         # if input is given in a dictionary
-        CoreObject.__init__(self, id, name)
+        CoreObject.__init__(self, id, name, cost)
         from .Globals import G
 
         G.ExitList.append(self)

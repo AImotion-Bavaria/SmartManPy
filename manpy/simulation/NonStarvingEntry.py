@@ -42,9 +42,10 @@ class NonStarvingEntry(Queue):
         entityData={"_class": "manpy.Part"},
         threshold=2,
         initialWIPLevel=2,
+        cost=0,
         **kw
     ):
-        Queue.__init__(self, id=id, name=name, capacity=capacity)
+        Queue.__init__(self, id=id, name=name, capacity=capacity, cost=cost)
         # the threshold under which a new Entity will be created
         self.threshold = int(threshold)
         # the number of Entities in the start of simulation
