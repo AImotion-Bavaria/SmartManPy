@@ -53,7 +53,7 @@ def main(test=0):
     # 2. Easily set up your own database using the `ManPyDatabase` interface
     from manpy.simulation.core.Database import ManPyQuestDBDatabase
     db = ManPyQuestDBDatabase()
-    runSimulation(objectList, maxSimTime)
+    runSimulation(objectList, maxSimTime, db=db)
 
 
     # To retrieve feature data from the simulation, utilize the getFeatureData function
