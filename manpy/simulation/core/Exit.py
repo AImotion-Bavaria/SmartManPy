@@ -109,6 +109,8 @@ class Exit(CoreObject):
         """gets an entity from the predecessor"""
 
         activeEntity = CoreObject.getEntity(self)  # run the default method
+        # add to cost of entity
+        activeEntity.cost += self.cost
         # if the entity is in the G.pendingEntities list then remove it from there
         from .Globals import G
 
