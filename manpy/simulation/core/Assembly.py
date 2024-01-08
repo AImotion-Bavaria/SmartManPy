@@ -44,7 +44,7 @@ class Assembly(CoreObject):
     # ===========================================================================
     # initialize the object
     # ===========================================================================
-    def __init__(self, id="", name="", processingTime=None, entity="manpy.Part", inputsDict=None, **kw):
+    def __init__(self, id="", name="", cost=0, processingTime=None, entity="manpy.Part", inputsDict=None, **kw):
         self.type = "Assembly"  # String that shows the type of object
         self.next = []  # list with the next objects in the flow
         self.previous = []  # list with the previous objects in the flow
@@ -68,7 +68,7 @@ class Assembly(CoreObject):
                 processingTime["Normal"]["mean"]
             ) + 5 * float(processingTime["Normal"]["stdev"])
 
-        CoreObject.__init__(self, id, name)
+        CoreObject.__init__(self, id, name, cost)
         self.rng = RandomNumberGenerator(self, processingTime)
 
         # ============================== variable that is used for the loading of machines =============

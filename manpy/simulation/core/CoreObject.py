@@ -34,7 +34,7 @@ class CoreObject(ManPyObject):
     """
     class_name = "manpy.CoreObject"
 
-    def __init__(self, id, name, **kw):
+    def __init__(self, id, name, cost=0, **kw):
         ManPyObject.__init__(self, id, name)
         self.objName = name
         #     lists that hold the previous and next objects in the flow
@@ -101,6 +101,8 @@ class CoreObject(ManPyObject):
         self.canDeliverOnInterruption = False
         # keep wip stats for every replication
         self.WipStat = []
+        # set the cost of going through the object
+        self.cost = cost
 
     def initialize(self):
         self.env = G.env
@@ -385,6 +387,9 @@ class CoreObject(ManPyObject):
         if resetFlags:
             self.isBlocked = False
             self.isProcessing = False
+
+        # add to cost of entity
+        entity.cost += self.cost
 
         activeObjectQueue = self.Res.users
         activeObjectQueue.remove(entity)  # remove the Entity from the queue

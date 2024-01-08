@@ -95,12 +95,15 @@ class Entity(ManPyObject):
         self.remainingSetupTime = remainingSetupTime
         self.status = status
 
-        # set lists for features and timeseries
+        # setup lists for features and timeseries
         self.labels = [None] * (len(G.ftr_st) + 1)
         self.features = [None] * (len(G.ftr_st) + 1)
         self.feature_times = [None] * len(G.ftr_st)
         self.timeseries = [None] * len(G.ts_st)
         self.timeseries_times = [None] * len(G.ts_st)
+
+        # setup cost
+        self.cost = 0
 
     def responsibleForCurrentStep(self):
         """return the responsible operator for the current step, not implemented for entities"""

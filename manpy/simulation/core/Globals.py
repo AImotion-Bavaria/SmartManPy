@@ -705,7 +705,7 @@ def ExcelPrinter(df, filename):
         df.to_excel("{}.xls".format(filename))
 
 
-def getFeatureData(objectList=[], time=False) -> pd.DataFrame:
+def getFeatureData(objectList=[], time=False, price=False) -> pd.DataFrame:
     """
     getFeatureData returns feature data of specific machines as dataframes
 
@@ -728,7 +728,10 @@ def getFeatureData(objectList=[], time=False) -> pd.DataFrame:
                 else:
                     columns.append("{}_{}".format(ftr[1], ftr[0]))
                 feature_list.append(G.ftr_st.index(ftr))
+
     columns.append("Result")
+    if price:
+        columns.append("Price")
 
     # set df_list
     unique = []
@@ -745,7 +748,10 @@ def getFeatureData(objectList=[], time=False) -> pd.DataFrame:
                 features.append(entity.features[-1])
 
                 if time:
-                    l = [None] * (len(columns) - 1)
+                    if price:
+                        l = [None] * (len(columns) - 2)
+                    else:
+                        l = [None] * (len(columns) - 1)
                     for i in range(len(l)):
                         if i % 2 == 0:
                             l[i] = features[i // 2]
@@ -755,12 +761,16 @@ def getFeatureData(objectList=[], time=False) -> pd.DataFrame:
                 else:
                     l = [int(entity.id[4:])] + features
 
+                if price:
+                    l.append(entity.cost)
+
                 if len(l) == len(columns):
                     df_list.append(l)
                 unique.append(entity)
 
     # return result
     result = pd.DataFrame(df_list, columns=columns).sort_values("ID")
+
     if "Success" in result["Result"].unique() or "Fail" in result["Result"].unique():
         return result
     else:
@@ -822,73 +832,35 @@ def get_feature_labels_by_id(entity, feature_ids):
 
 
 def resetSimulation():
-
-    warnings.warn("The resetSimulation method resets the internal state of the global simulation, but NOT of the"
-                  "individual Parts. It is not intended to restart the simulation after calling this function.")
+    # reset all global parameters of the simulation in order to start a clean new one
     global G
 
-    G.ObjList = []  # a list that holds all the CoreObjects
-    G.EntityList = []  # a list that holds all the Entities
-    G.ObjectResourceList = []
-    G.ObjectInterruptionList = []
-    G.ObjectPropertyList = []
-    G.RouterList = []
-    G.simulation_snapshots = [pd.DataFrame()]
+    for i in vars(G).keys():
+        if i[:2] == '__':
+            continue
+        t = type(vars(G)[i])
+        if t == list:
+            setattr(G, i, [])
+        elif t == dict:
+            setattr(G, i, {})
+        elif t == bool:
+            setattr(G, i, False)
 
-    G.objectList = []
-    G.EntityList = []
-    G.FeatureList = []
-    G.ObjList = []
-    G.ObjectPropertyList = []
-    G.ObjectInterruptionList = []
-    G.ObjectResourceList = []
-    G.trace_list = []
-    G.ftr_st = []   # list of (feature, corresponding station)
-    G.feature_indices = {}
-    G.ts_st = []   # list of (timeseries, corresponding station)
-    G.timeseries_indices = {}
-    G.SourceList = []
-    G.MachineList = []
-    G.ExitList = []
-    G.QueueList = []
-    G.RepairmanList = []
-    G.AssemblyList = []
-    G.DismantleList = []
-    G.ConveyerList = []
-    G.MachineJobShopList = []
-    G.QueueJobShopList = []
-    G.ExitJobShopList = []
-    G.BatchDecompositionList = []
-    G.BatchSourceList = []
-    G.BatchReassemblyList = []
-    G.LineClearanceList = []
-    G.EventGeneratorList = []
-    G.OperatorsList = []
-    G.OperatorManagedJobsList = []
-    G.OperatorPoolsList = []
-    G.BrokersList = []
-    G.OperatedMachineList = []
-    G.BatchScrapMachineList = []
-    G.OrderDecompositionList = []
-    G.ConditionalBufferList = []
-    G.MouldAssemblyBufferList = []
-    G.MouldAssemblyList = []
-    G.MachineManagedJobList = []
-    G.QueueManagedJobList = []
-    G.ModelResourceList = []
-    G.FeatureList = []
-    G.TimeSeriesList = []
-
-    G.JobList = []
-    G.WipList = []
-    G.EntityList = []
-    G.PartList = []
-    G.OrderComponentList = []
-    G.OrderList = []
-    G.MouldList = []
-    G.BatchList = []
-    G.SubBatchList = []
-
-    G.pendingEntities = []
+    G.numberOfReplications = 1
+    G.confidenceLevel = 0.9
+    G.Base = 1
+    G.maxSimTime = 0
+    G.traceIndex = 0
+    G.sheetIndex = 1
+    G.outputIndex = 0
+    G.numberOfEntities = 0
+    G.totalPulpTime = 0
+    G.seed = 1
+    G.console = ""
+    G.traceFile = xlwt.Workbook()
+    G.traceSheet = G.traceFile.add_sheet("sheet " + str(G.sheetIndex), cell_overwrite_ok=True)
+    G.outputFile = xlwt.Workbook()
+    G.outputSheet = G.outputFile.add_sheet("sheet " + str(G.sheetIndex), cell_overwrite_ok=True)
+    G.outputJSONFile = None
+    G.db = None
     G.env = simpy.Environment()
-    # del G

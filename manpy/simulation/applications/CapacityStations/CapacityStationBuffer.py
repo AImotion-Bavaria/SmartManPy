@@ -45,9 +45,10 @@ class CapacityStationBuffer(Queue):
         schedulingRule="FIFO",
         gatherWipStat=False,
         notRequiredOperations=[],
+        cost=0,
         **kw
     ):
-        Queue.__init__(self, id, name, capacity=capacity)
+        Queue.__init__(self, id, name, cost=cost, capacity=capacity)
         self.isLocked = True
         self.requireFullProject = (
             requireFullProject  # flag that shows if here the whole project is assembled

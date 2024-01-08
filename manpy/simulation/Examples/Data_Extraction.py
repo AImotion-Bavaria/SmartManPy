@@ -4,10 +4,11 @@ from manpy.simulation.core.Globals import runSimulation, getTimeSeriesData, getF
 
 # Objects
 S = Source("S1", "Source", interArrivalTime={"Fixed": {"mean": 0.4}}, entity="manpy.Part")
-Soldering = Machine("M0", "Soldering", processingTime={"Normal": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}})
+# It is possible to add a cost to any step in the production line (CoreObject)
+Soldering = Machine("M0", "Soldering", processingTime={"Normal": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}}, cost=25)
 Q = Queue("Q", "Queue")
 Gluing = Machine("M1", "Gluing", processingTime={"Fixed": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}})
-E1 = Exit("E1", "Exit1")
+E1 = Exit("E1", "Exit1", cost=5)
 
 # ObjectProperty
 # Soldering
@@ -61,7 +62,8 @@ def main(test=0):
     print(solder.to_string(index=False), "\n")
 
     # With 'time=True', timestamps of the feature values are included in the DataFrame
-    solder_time = getFeatureData([Soldering], time=True)
+    # With 'price=True', the price of the entities are included in the DataFrame
+    solder_time = getFeatureData([Soldering], time=True, price=True)
     print(solder_time.to_string(index=False), "\n")
 
     # The function supports multiple machines

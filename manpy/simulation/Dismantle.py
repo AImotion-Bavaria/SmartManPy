@@ -41,7 +41,7 @@ class Dismantle(CoreObject):
     # ===========================================================================
     # initialize the object
     # ===========================================================================
-    def __init__(self, id="", name="", processingTime=None, **kw):
+    def __init__(self, id="", name="", cost=0, processingTime=None, **kw):
 
         self.type = "Dismantle"
         self.previous = []  # list with the previous objects in the flow
@@ -67,7 +67,7 @@ class Dismantle(CoreObject):
         # when the entities have to be loaded to operatedMachines
         # then the giverObjects have to be blocked for the time
         # that the machine is being loaded
-        CoreObject.__init__(self, id, name)
+        CoreObject.__init__(self, id, name, cost)
 
         if not processingTime:
             processingTime = {"Fixed": {"mean": 0}}

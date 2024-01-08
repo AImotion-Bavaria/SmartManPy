@@ -41,7 +41,7 @@ class NoCallerError(Exception):
 # ===========================================================================
 class QueueManagedJob(QueueJobShop):
     def __init__(
-        self, id, name, capacity=1, isDummy=False, schedulingRule="FIFO", **kw
+        self, id, name, cost=0, capacity=1, isDummy=False, schedulingRule="FIFO", **kw
     ):
         QueueJobShop.__init__(
             self,
@@ -50,6 +50,7 @@ class QueueManagedJob(QueueJobShop):
             capacity=capacity,
             isDummy=isDummy,
             schedulingRule=schedulingRule,
+            cost=cost
         )
         # variable used by the sortEntities method
         # to identify the object it will be sorting for (manager.checkIfResourceIsAvailable(self.objectSortingFor))

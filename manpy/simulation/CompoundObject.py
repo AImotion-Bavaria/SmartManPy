@@ -80,8 +80,8 @@ class NoneCallerObjectError(Exception):
 # ===========================================================================
 class CompoundObject(CoreObject, Queue):
     # object arguments may provide information on the type of the object, and the arguments needed to initiate it
-    def __init__(self, id, name, capacity, routing="Series", *objects):
-        CoreObject.__init__(self, id, name)
+    def __init__(self, id, name, capacity, cost=0, routing="Series", *objects):
+        CoreObject.__init__(self, id, name, cost)
         # it would be a good idea to have the arguments provided as dictionary
         self.type = "CompoundObject"
 
@@ -369,8 +369,12 @@ class CompoundObject(CoreObject, Queue):
     # if the routing is 'Parallel'
     # =======================================================================
     def removeEntity(self):
-        actibeObject = self.getActiveObject()
+        activeObject = self.getActiveObject()
         activeObjectQueue = self.getActiveObjectQueue()
+
+        # add to entity cost
+        activeObject.cost += self.cost
+
         try:
             receiverObject = self.getReceiverObject()
             # internal logic ================================================

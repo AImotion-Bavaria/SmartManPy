@@ -35,8 +35,8 @@ class Conveyor(CoreObject):
     class_name = "manpy.Conveyor"
     type = "Conveyor"
 
-    def __init__(self, id: str, name: str, length: float, speed: float,  **kwargs):
-        CoreObject.__init__(self, id, name)
+    def __init__(self, id: str, name: str, length: float, speed: float, cost=0, **kwargs):
+        CoreObject.__init__(self, id, name, cost)
         self.length = float(length)  # length in meters
         self.speed = float(speed)  # speed in m/sec
 

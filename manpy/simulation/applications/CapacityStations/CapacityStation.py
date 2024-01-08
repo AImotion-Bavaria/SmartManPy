@@ -50,9 +50,10 @@ class CapacityStation(Queue):
         intervalCapacityStart=0,
         intervalCapacityExceptions={},
         notProcessOutsideThreshold=False,
+        cost=0,
         **kw
     ):
-        Queue.__init__(self, id, name, capacity=capacity)
+        Queue.__init__(self, id, name, cost=cost, capacity=capacity)
         # a list that holds the capacity (manhours) that is available in each interval
         self.intervalCapacity = intervalCapacity
         # a list that holds the capacity (manhours) that is available in each interval for the remaining time

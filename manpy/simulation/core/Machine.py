@@ -66,10 +66,11 @@ class Machine(CoreObject):
         technology=None,
         priority=0,
         control=None,
+        cost=0,
         **kw,
     ):
         self.type = "Machine"  # String that shows the type of object
-        CoreObject.__init__(self, id, name)
+        CoreObject.__init__(self, id, name, cost)
         from manpy.simulation.core.Globals import G
 
         processingTime = self.getOperationTime(time=processingTime)
