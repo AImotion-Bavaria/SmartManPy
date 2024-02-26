@@ -32,8 +32,10 @@ Mass = Feature("Ftr4", "Mass", victim=Gluing,
                distribution={"Feature": {"Normal": {"mean": 400, "stdev": 50}}})
 
 # ObjectInterruption
-Stuck = Failure("Flr0", "Failure0", victim=Gluing, entity=True,
-                distribution={"TTF": {"Fixed": {"mean": 0}}, "TTR": {"Normal": {"mean": 2,"stdev": 0.2, "min":0, "probability": 0.05}}})
+# It is possible to add cost to any Failure
+# Failures can remove the current entity from a machine and mark it as Fail by setting 'remove' to True
+Stuck = Failure("Flr0", "Failure0", victim=Gluing, entity=True, cost=10, remove=True,
+                distribution={"TTF": {"Fixed": {"mean": 0}}, "TTR": {"Normal": {"mean": 1,"stdev": 0.1, "min":0, "probability": 0.5}}})
 
 # Routing
 S.defineRouting([Soldering])
@@ -44,16 +46,17 @@ E1.defineRouting([Gluing])
 
 
 def main(test=0):
-    maxSimTime = 5
-    objectList = [S, Soldering, Q, Gluing, E1, Voltage, Current, Resistance, Pressure, Insertion_depth, Flow_rate, Temperature, Mass]
+    maxSimTime = 7
+    objectList = [S, Soldering, Q, Gluing, E1, Voltage, Current, Resistance, Pressure, Insertion_depth, Flow_rate, Temperature, Mass, Stuck]
 
 
     # To utilize a database, you have two options:
     # 1. Import a pre-existing `DataBase` class from `DataBase.py`
     # 2. Easily set up your own database using the `ManPyDatabase` interface
-    from manpy.simulation.core.Database import ManPyQuestDBDatabase
-    db = ManPyQuestDBDatabase()
-    runSimulation(objectList, maxSimTime, db=db)
+    # from manpy.simulation.core.Database import ManPyQuestDBDatabase
+    # db = ManPyQuestDBDatabase()
+    # runSimulation(objectList, maxSimTime, db=db)
+    runSimulation(objectList, maxSimTime)
 
 
     # To retrieve feature data from the simulation, utilize the getFeatureData function

@@ -68,6 +68,7 @@ class Failure(ObjectInterruption):
         conditional=None,
         entity=False,
         remove=False,
+        cost=0,
         **kw
     ):
 
@@ -108,6 +109,7 @@ class Failure(ObjectInterruption):
             self.conditional = conditional
 
         self.entity = entity
+        self.cost = cost
 
     def initialize(self):
         ObjectInterruption.initialize(self)
@@ -236,6 +238,7 @@ class Failure(ObjectInterruption):
                                     yield self.env.timeout(0)
 
                         self.interruptVictim()
+
 
                         # check in the ObjectInterruptions of the victim. If there is a one that is waiting for victimFailed send it
                         for oi in self.victim.objectInterruptions:

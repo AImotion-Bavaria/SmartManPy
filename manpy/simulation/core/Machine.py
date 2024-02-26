@@ -955,7 +955,7 @@ class Machine(CoreObject):
                     )
                     G.db.commit()
                 if len(activeObjectQueue) > 0:
-                    self.activeEntity.features[-1] = "Fail"
+                    self.activeEntity.result = "Fail"
                     self.removeEntity(self.activeEntity)
                     self.discards.append(self.activeEntity)
 
@@ -999,7 +999,7 @@ class Machine(CoreObject):
                         )
                         G.db.commit()
                     if len(activeObjectQueue) > 0:
-                        self.activeEntity.features[-1] = "Success"
+                        self.activeEntity.result = "Success"
 
                 # blocking starts
                 self.isBlocked = True

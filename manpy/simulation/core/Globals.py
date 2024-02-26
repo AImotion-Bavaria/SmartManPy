@@ -714,7 +714,7 @@ def getFeatureData(objectList=[], time=False, price=False) -> pd.DataFrame:
     :return: dataframe
     """
 
-    columns = ["ID"]        # name of columns
+    columns = ["ID"]    # name of columns
     df_list = []        # list for the DataFrame
     feature_list = []   # list of included features
 
@@ -745,7 +745,7 @@ def getFeatureData(objectList=[], time=False, price=False) -> pd.DataFrame:
                 for f in feature_list:
                     features.append(entity.features[f])
                     times.append(entity.feature_times[f])
-                features.append(entity.features[-1])
+                features.append(entity.result)
 
                 if time:
                     if price:
