@@ -25,6 +25,7 @@ Created on 8 Nov 2012
 carries some global variables
 """
 
+import warnings
 import pandas as pd
 import simpy
 import xlwt
@@ -520,6 +521,7 @@ def runSimulation(
     :param data: TODO
     :param db: Database object. Optional. If passed, the results are saved to the database
     """
+
     G.numberOfReplications = numberOfReplications
     G.trace = trace
     G.snapshots = snapshots
@@ -703,7 +705,7 @@ def ExcelPrinter(df, filename):
         df.to_excel("{}.xls".format(filename))
 
 
-def getFeatureData(objectList=[], time=False) -> pd.DataFrame:
+def getFeatureData(objectList=[], time=False, price=False) -> pd.DataFrame:
     """
     getFeatureData returns feature data of specific machines as dataframes
 
@@ -712,7 +714,7 @@ def getFeatureData(objectList=[], time=False) -> pd.DataFrame:
     :return: dataframe
     """
 
-    columns = ["ID"]        # name of columns
+    columns = ["ID"]    # name of columns
     df_list = []        # list for the DataFrame
     feature_list = []   # list of included features
 
@@ -726,7 +728,10 @@ def getFeatureData(objectList=[], time=False) -> pd.DataFrame:
                 else:
                     columns.append("{}_{}".format(ftr[1], ftr[0]))
                 feature_list.append(G.ftr_st.index(ftr))
+
     columns.append("Result")
+    if price:
+        columns.append("Price")
 
     # set df_list
     unique = []
@@ -740,10 +745,13 @@ def getFeatureData(objectList=[], time=False) -> pd.DataFrame:
                 for f in feature_list:
                     features.append(entity.features[f])
                     times.append(entity.feature_times[f])
-                features.append(entity.features[-1])
+                features.append(entity.result)
 
                 if time:
-                    l = [None] * (len(columns) - 1)
+                    if price:
+                        l = [None] * (len(columns) - 2)
+                    else:
+                        l = [None] * (len(columns) - 1)
                     for i in range(len(l)):
                         if i % 2 == 0:
                             l[i] = features[i // 2]
@@ -753,12 +761,16 @@ def getFeatureData(objectList=[], time=False) -> pd.DataFrame:
                 else:
                     l = [int(entity.id[4:])] + features
 
+                if price:
+                    l.append(entity.cost)
+
                 if len(l) == len(columns):
                     df_list.append(l)
                 unique.append(entity)
 
     # return result
     result = pd.DataFrame(df_list, columns=columns).sort_values("ID")
+
     if "Success" in result["Result"].unique() or "Fail" in result["Result"].unique():
         return result
     else:
@@ -801,3 +813,54 @@ def get_feature_values_by_id(entity, feature_ids):
         raise KeyError(f"Attempting to access a non-existent feature id for entity {entity.name}.")
 
     return feature_values
+
+
+def get_feature_labels_by_id(entity, feature_ids):
+    """
+    Returns a list of the entity's feature labels of the specified ids
+
+    :param entity: The entity of which the feature labels should be retrieved.
+    :param feature_ids: List containing the IDs of the features (as string) that should be retrieved.
+    """
+    try:
+        indices = [G.feature_indices[i] for i in feature_ids]
+        feature_values = [entity.labels[idx] for idx in indices]
+    except KeyError:
+        raise KeyError(f"Attempting to access a non-existent feature id for entity {entity.name}.")
+
+    return feature_values
+
+
+def resetSimulation():
+    # reset all global parameters of the simulation in order to start a clean new one
+    global G
+
+    for i in vars(G).keys():
+        if i[:2] == '__':
+            continue
+        t = type(vars(G)[i])
+        if t == list:
+            setattr(G, i, [])
+        elif t == dict:
+            setattr(G, i, {})
+        elif t == bool:
+            setattr(G, i, False)
+
+    G.numberOfReplications = 1
+    G.confidenceLevel = 0.9
+    G.Base = 1
+    G.maxSimTime = 0
+    G.traceIndex = 0
+    G.sheetIndex = 1
+    G.outputIndex = 0
+    G.numberOfEntities = 0
+    G.totalPulpTime = 0
+    G.seed = 1
+    G.console = ""
+    G.traceFile = xlwt.Workbook()
+    G.traceSheet = G.traceFile.add_sheet("sheet " + str(G.sheetIndex), cell_overwrite_ok=True)
+    G.outputFile = xlwt.Workbook()
+    G.outputSheet = G.outputFile.add_sheet("sheet " + str(G.sheetIndex), cell_overwrite_ok=True)
+    G.outputJSONFile = None
+    G.db = None
+    G.env = simpy.Environment()

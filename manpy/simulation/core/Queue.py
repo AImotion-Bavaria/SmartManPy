@@ -49,10 +49,11 @@ class Queue(CoreObject):
         schedulingRule="FIFO",
         level=None,
         gatherWipStat=False,
+        cost=0,
         **kw
     ):
         self.type = "Queue"  # String that shows the type of object
-        CoreObject.__init__(self, id, name)
+        CoreObject.__init__(self, id, name, cost)
         capacity = float(capacity)
 
         if capacity < 0 or capacity == float("inf"):

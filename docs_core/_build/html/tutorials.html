@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Core" href="core.html" /><link rel="prev" title="SmartManPy" href="index.html" />
 
-    <link rel="shortcut icon" href="_static/logo.png"/><!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
+    <link rel="shortcut icon" href="_static/SmartManPy_logo_transparent.png"/><!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
         <title>Tutorials - SmartManPy (beta) Docs</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
@@ -147,7 +147,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   <div class="sidebar-logo-container">
-    <img class="sidebar-logo" src="_static/logo.png" alt="Logo"/>
+    <img class="sidebar-logo" src="_static/SmartManPy_logo_transparent.png" alt="Logo"/>
   </div>
   
   <span class="sidebar-brand-text">SmartManPy (beta) Docs</span>
@@ -199,7 +199,7 @@
         <article role="main">
           <section id="tutorials">
 <h1>Tutorials<a class="headerlink" href="#tutorials" title="Permalink to this heading">#</a></h1>
-<p>This page gives you an overview of the general usage paradigms of our ManPy extension.
+<p>This page gives you an overview of the general usage paradigms of SmartManPy.
 We have prepared additional (complete) examples that demonstrate various capabilities.
 These examples can be found in manpy/simulation/Examples and here: <a class="reference internal" href="examples.html"><span class="doc">Full examples</span></a></p>
 <p>We recommend the following order:</p>
@@ -246,6 +246,20 @@ This is done for each component individually:</p>
 <p>We can now run and evaluate our simulation, e.g. for 50 time steps.
 To do this, we use the runSimulation function defined in Globals.py.
 This function needs a list with all simulated objects (machines, features/timeseries, failures, …) and the maximum simulation time.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">from</span> <span class="nn">manpy.simulation.core.Globals</span> <span class="kn">import</span> <span class="n">runSimulation</span><span class="p">,</span> <span class="n">getFeatureData</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="n">maxSimTime</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="linenos"> 4</span><span class="n">objectList</span> <span class="o">=</span> <span class="p">[</span><span class="n">start</span><span class="p">,</span> <span class="n">m1</span><span class="p">,</span> <span class="n">exit</span><span class="p">]</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="n">runSimulation</span><span class="p">(</span><span class="n">objectList</span><span class="p">,</span> <span class="n">maxSimTime</span><span class="p">)</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="n">df</span> <span class="o">=</span> <span class="n">getFeatureData</span><span class="p">([</span><span class="n">m1</span><span class="p">])</span>
+<span class="linenos"> 9</span><span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;ExampleLine.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Produced:         </span><span class="si">{</span><span class="n">exit</span><span class="o">.</span><span class="n">numOfExits</span><span class="si">}</span><span class="se">\\</span>
+<span class="linenos">12</span>        <span class="n">Simulationszeit</span><span class="p">:</span>    <span class="p">{</span><span class="n">maxSimTime</span><span class="p">}</span><span class="s2">&quot;)</span>
+</pre></div>
+</div>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
 <p>The order of the objects in the object list is important!
@@ -310,7 +324,7 @@ Each “stage”, i.e. all machines at the same level, are contained in separate
 </section>
 <section id="advanced-usage">
 <h2>Advanced usage<a class="headerlink" href="#advanced-usage" title="Permalink to this heading">#</a></h2>
-<p>The following sections provides an introduction into the more advanced concepts of our ManPy extension.</p>
+<p>The following sections provides an introduction into the more advanced concepts of SmartManpy.</p>
 <section id="features">
 <h3>Features<a class="headerlink" href="#features" title="Permalink to this heading">#</a></h3>
 <p>Features are our most important extension to the original ManPy and also the most complex one.</p>
@@ -393,7 +407,6 @@ At each production step, TimeSeries generates a configurable amount of data poin
 Let’s have a look at a simple example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ts_features</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;ftr_ts,</span>
                       <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Feature_Time_Series&quot;</span><span class="p">,</span>
-                      <span class="n">step_time</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
                       <span class="n">distribution</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Function&quot;</span><span class="p">:</span> <span class="p">{(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span> <span class="s2">&quot;0.5*x + 2&quot;</span><span class="p">},</span>
                                     <span class="s2">&quot;DataPoints&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
                                     <span class="s2">&quot;Feature&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">}}</span>
@@ -411,7 +424,6 @@ At each data point in the time series, a standard deviation of 0.1 is applied to
 <p>It is possible to define multiple intervals to further customize the mathematical description of the time series:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ts_features</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;ftr_ts,</span>
                       <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Feature_Time_Series&quot;</span><span class="p">,</span>
-                      <span class="n">step_time</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
                       <span class="n">distribution</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Function&quot;</span><span class="p">:</span> <span class="p">{(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="s2">&quot;0.5*x + 2&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span> <span class="s2">&quot;0.1*x + 2&quot;</span><span class="p">},</span>
                                     <span class="s2">&quot;DataPoints&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
                                     <span class="s2">&quot;Feature&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">}}</span>
@@ -427,7 +439,6 @@ At each data point in the time series, a standard deviation of 0.1 is applied to
 Sometimes, only certain values are known, which makes interpolation a very useful tool for these cases:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ts_features</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;ftr_ts,</span>
                       <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Feature_Time_Series&quot;</span><span class="p">,</span>
-                      <span class="n">step_time</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
                       <span class="n">distribution</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Function&quot;</span><span class="p">:</span> <span class="p">{(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="s2">&quot;0.5*x + 2&quot;</span><span class="p">,</span>
                                                  <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mf">4.2</span><span class="p">,</span> <span class="mf">4.3</span><span class="p">,</span> <span class="mf">5.1</span><span class="p">]]},</span>
                                     <span class="s2">&quot;DataPoints&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
@@ -448,14 +459,13 @@ The data points for interpolation can also be determined by a Feature with all i
 <span class="linenos"> 7</span>
 <span class="linenos"> 8</span><span class="n">ts_features</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;ftr_ts,</span>
 <span class="linenos"> 9</span>                      <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Feature_Time_Series&quot;</span><span class="p">,</span>
-<span class="linenos">10</span>                      <span class="n">step_time</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
-<span class="linenos">11</span>                      <span class="n">distribution</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Function&quot;</span><span class="p">:</span> <span class="p">{(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="s2">&quot;0.5*x + 2&quot;</span><span class="p">,</span>
-<span class="linenos">12</span>                                                 <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mf">4.2</span><span class="p">,</span> <span class="mf">4.3</span><span class="p">,</span> <span class="s2">&quot;EndVal&quot;</span><span class="p">]]},</span>
-<span class="linenos">13</span>                                    <span class="s2">&quot;EndVal&quot;</span><span class="p">:</span> <span class="n">endVal</span><span class="p">,</span>
-<span class="linenos">14</span>                                    <span class="s2">&quot;DataPoints&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
-<span class="linenos">15</span>                                    <span class="s2">&quot;Feature&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">}}</span>
-<span class="linenos">16</span>                                   <span class="p">}</span>
-<span class="linenos">17</span>                      <span class="p">)</span>
+<span class="linenos">10</span>                      <span class="n">distribution</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Function&quot;</span><span class="p">:</span> <span class="p">{(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="s2">&quot;0.5*x + 2&quot;</span><span class="p">,</span>
+<span class="linenos">11</span>                                                 <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mf">4.2</span><span class="p">,</span> <span class="mf">4.3</span><span class="p">,</span> <span class="s2">&quot;EndVal&quot;</span><span class="p">]]},</span>
+<span class="linenos">12</span>                                    <span class="s2">&quot;EndVal&quot;</span><span class="p">:</span> <span class="n">endVal</span><span class="p">,</span>
+<span class="linenos">13</span>                                    <span class="s2">&quot;DataPoints&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+<span class="linenos">14</span>                                    <span class="s2">&quot;Feature&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">}}</span>
+<span class="linenos">15</span>                                   <span class="p">}</span>
+<span class="linenos">16</span>                      <span class="p">)</span>
 </pre></div>
 </div>
 <p>In this example, the final value for interpolation is received from Feature “endVal”.</p>
@@ -473,7 +483,7 @@ Therefore, we added the option for quality control to machines.
 As a result, machines can either have an additional quality control step at the end of their production step or be a standalone quality control instance.
 The condition for quality control can be set via a custom defined function, which is simply called “condition” in the following example.
 We can access the currently active entity in a machine with the following statement:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">activeEntity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">activeEntity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getActiveEntity</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>We can then use any simulated value of the entity as measurement for quality control, e.g. feature values or internal labels.
@@ -481,11 +491,12 @@ The condition function must return True if a defect was found, otherwise False m
 In the following example, we simply check if a given Feature value is inside a certain interval ([3, 7]).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">def</span> <span class="nf">condition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="linenos">2</span>    <span class="c1"># self is w.r.t. to the machine in which we apply the condition!</span>
-<span class="linenos">3</span>    <span class="n">activeEntity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="linenos">4</span>    <span class="k">if</span> <span class="n">activeEntity</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">7</span> <span class="ow">or</span> <span class="n">activeEntity</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
-<span class="linenos">5</span>        <span class="k">return</span> <span class="kc">True</span>
-<span class="linenos">6</span>    <span class="k">else</span><span class="p">:</span>
-<span class="linenos">7</span>        <span class="k">return</span> <span class="kc">False</span>
+<span class="linenos">3</span>    <span class="n">activeEntity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getActiveEntity</span><span class="p">()</span>
+<span class="linenos">4</span>
+<span class="linenos">5</span>    <span class="k">if</span> <span class="n">activeEntity</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">7</span> <span class="ow">or</span> <span class="n">activeEntity</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+<span class="linenos">6</span>        <span class="k">return</span> <span class="kc">True</span>
+<span class="linenos">7</span>    <span class="k">else</span><span class="p">:</span>
+<span class="linenos">8</span>        <span class="k">return</span> <span class="kc">False</span>
 </pre></div>
 </div>
 <p>In this example, we had to access the feature value by index, which is usually very tedious.
@@ -494,7 +505,7 @@ We therefore added the function “get_feature_values_by_id” in Globals.py, th
 <span class="linenos"> 2</span>
 <span class="linenos"> 3</span><span class="k">def</span> <span class="nf">condition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="linenos"> 4</span>    <span class="c1"># self is w.r.t. to the machine in which we apply the condition!</span>
-<span class="linenos"> 5</span>    <span class="n">activeEntity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="linenos"> 5</span>    <span class="n">activeEntity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getActiveEntity</span><span class="p">()</span>
 <span class="linenos"> 6</span>
 <span class="linenos"> 7</span>    <span class="c1"># Access first element since function returns a list</span>
 <span class="linenos"> 8</span>    <span class="n">feature_value</span> <span class="o">=</span> <span class="n">get_feature_values_by_id</span><span class="p">(</span><span class="n">activeEntity</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;f1&quot;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
@@ -698,7 +709,7 @@ The interface is defined in core/StateController.py.</p>
 </section>
 <section id="export">
 <h3>Export<a class="headerlink" href="#export" title="Permalink to this heading">#</a></h3>
-<p>Our ManPy extensions offers two ways to export the simulated data: Pandas DataFrames and Databases.</p>
+<p>SmartManPy offers two ways to export the simulated data: Pandas DataFrames and Databases.</p>
 <section id="pandas-dataframes">
 <h4>Pandas DataFrames<a class="headerlink" href="#pandas-dataframes" title="Permalink to this heading">#</a></h4>
 <p>To export the data to a Pandas DataFrame, you can use the getFeatureData and getTimeSeriesData functions:</p>
@@ -752,7 +763,7 @@ The main advantage is the possibility to define complex production stations in a
 ProductionLineModules only need to know their internal routing, the routing with external components is done via the known lists or using defineRouting.</p>
 <p>The most simple ProductionLineModule is SequentialProductionLineModule, which simply takes the routing between objects in sequential order and applies it.
 This type of module should be enough to cover most of the needs for such modules.
-If you need additional functionality, you can write you custom ProductionLineModule by inheriting from core/ProductionLineModule.</p>
+If you need additional functionality, you can write custom ProductionLineModule by inheriting from core/ProductionLineModule.</p>
 <p>The following example demonstrate the definition of a very basic module.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">from</span> <span class="nn">manpy.simulation.imports</span> <span class="kn">import</span> <span class="n">Machine</span><span class="p">,</span> <span class="n">Feature</span>
 <span class="linenos"> 2</span><span class="kn">from</span> <span class="nn">manpy.simulation.core.ProductionLineModule</span> <span class="kn">import</span> <span class="n">SequentialProductionLineModule</span>

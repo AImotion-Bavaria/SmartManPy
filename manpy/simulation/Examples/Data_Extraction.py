@@ -4,10 +4,11 @@ from manpy.simulation.core.Globals import runSimulation, getTimeSeriesData, getF
 
 # Objects
 S = Source("S1", "Source", interArrivalTime={"Fixed": {"mean": 0.4}}, entity="manpy.Part")
-Soldering = Machine("M0", "Soldering", processingTime={"Normal": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}})
+# It is possible to add a cost to any step in the production line (CoreObject)
+Soldering = Machine("M0", "Soldering", processingTime={"Normal": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}}, cost=25)
 Q = Queue("Q", "Queue")
 Gluing = Machine("M1", "Gluing", processingTime={"Fixed": {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}})
-E1 = Exit("E1", "Exit1")
+E1 = Exit("E1", "Exit1", cost=5)
 
 # ObjectProperty
 # Soldering
@@ -31,8 +32,10 @@ Mass = Feature("Ftr4", "Mass", victim=Gluing,
                distribution={"Feature": {"Normal": {"mean": 400, "stdev": 50}}})
 
 # ObjectInterruption
-Stuck = Failure("Flr0", "Failure0", victim=Gluing, entity=True,
-                distribution={"TTF": {"Fixed": {"mean": 0}}, "TTR": {"Normal": {"mean": 2,"stdev": 0.2, "min":0, "probability": 0.05}}})
+# It is possible to add cost to any Failure
+# Failures can remove the current entity from a machine and mark it as Fail by setting 'remove' to True
+Stuck = Failure("Flr0", "Failure0", victim=Gluing, entity=True, cost=10, remove=True,
+                distribution={"TTF": {"Fixed": {"mean": 0}}, "TTR": {"Normal": {"mean": 1,"stdev": 0.1, "min":0, "probability": 0.5}}})
 
 # Routing
 S.defineRouting([Soldering])
@@ -43,16 +46,17 @@ E1.defineRouting([Gluing])
 
 
 def main(test=0):
-    maxSimTime = 5
-    objectList = [S, Soldering, Q, Gluing, E1, Voltage, Current, Resistance, Pressure, Insertion_depth, Flow_rate, Temperature, Mass]
+    maxSimTime = 7
+    objectList = [S, Soldering, Q, Gluing, E1, Voltage, Current, Resistance, Pressure, Insertion_depth, Flow_rate, Temperature, Mass, Stuck]
 
 
     # To utilize a database, you have two options:
     # 1. Import a pre-existing `DataBase` class from `DataBase.py`
     # 2. Easily set up your own database using the `ManPyDatabase` interface
-    from manpy.simulation.core.Database import ManPyQuestDBDatabase
-    db = ManPyQuestDBDatabase()
-    runSimulation(objectList, maxSimTime, db=db)
+    # from manpy.simulation.core.Database import ManPyQuestDBDatabase
+    # db = ManPyQuestDBDatabase()
+    # runSimulation(objectList, maxSimTime, db=db)
+    runSimulation(objectList, maxSimTime)
 
 
     # To retrieve feature data from the simulation, utilize the getFeatureData function
@@ -61,7 +65,8 @@ def main(test=0):
     print(solder.to_string(index=False), "\n")
 
     # With 'time=True', timestamps of the feature values are included in the DataFrame
-    solder_time = getFeatureData([Soldering], time=True)
+    # With 'price=True', the price of the entities are included in the DataFrame
+    solder_time = getFeatureData([Soldering], time=True, price=True)
     print(solder_time.to_string(index=False), "\n")
 
     # The function supports multiple machines

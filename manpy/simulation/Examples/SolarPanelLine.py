@@ -1,4 +1,3 @@
-
 from manpy.simulation.core.Globals import runSimulation, getFeatureData, getTimeSeriesData
 from manpy.simulation.core.ProductionLineModule import generate_routing_from_list
 from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue, Timeseries, Assembly, Frame, ContinuosNormalDistribution, RandomDefectStateController
@@ -146,12 +145,16 @@ def main(test=0):
         # plt.show()
 
 
+
     print("""
             Ausschuss:          {}
             Produziert:         {}
             Simulationszeit:    {}
             Laufzeit:           {:.2f}
             """.format(len(solar_cell_tester_module.first[0].discards) + len(Layup.discards), len(E1.entities), maxSimTime, time.time() - start))
+
+
+
 
 if __name__ == "__main__":
     main()

@@ -32,3 +32,22 @@ If you wish to install SmartManPy, follow the steps below.
    `pip install -e .`
 5. You can now import manpy: `import manpy`
 
+# Build docs
+
+The html files for the docs are located in /docs_core/_build/html.
+To build the docs based on the current version of the code, follow the steps below.
+
+1. Install the following dependencies:
+
+    `pip install -U sphinx`
+
+    `pip install furo`
+
+    `pip install sphinx-copybutton`
+
+2. Call the following command in the base directory of this repo:
+
+    On windows: `.\docs_core\make.bat html`
+
+    On Linux/Ubuntu: `.\docs_core\make html`
+

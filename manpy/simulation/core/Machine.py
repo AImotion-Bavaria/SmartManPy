@@ -1,3 +1,5 @@
+# ===========================================================================
+# Copyright 2013 University of Limerick
 #
 # This file is part of DREAM.
 #
@@ -64,12 +66,11 @@ class Machine(CoreObject):
         technology=None,
         priority=0,
         control=None,
-        dynamicRouting=None,
-        successorCandidates=[],
+        cost=0,
         **kw,
     ):
         self.type = "Machine"  # String that shows the type of object
-        CoreObject.__init__(self, id, name)
+        CoreObject.__init__(self, id, name, cost)
         from manpy.simulation.core.Globals import G
 
         processingTime = self.getOperationTime(time=processingTime)
@@ -185,12 +186,6 @@ class Machine(CoreObject):
             self.control = condition
         else:
             self.control = control
-
-        self.dynamicRouting = dynamicRouting
-        self.successorCandidates = successorCandidates
-
-        if dynamicRouting:
-            assert(len(successorCandidates) > 0)
 
         # list for Entities who fail control
         self.discards = []
@@ -960,7 +955,7 @@ class Machine(CoreObject):
                     )
                     G.db.commit()
                 if len(activeObjectQueue) > 0:
-                    self.activeEntity.features[-1] = "Fail"
+                    self.activeEntity.result = "Fail"
                     self.removeEntity(self.activeEntity)
                     self.discards.append(self.activeEntity)
 
@@ -1004,7 +999,7 @@ class Machine(CoreObject):
                         )
                         G.db.commit()
                     if len(activeObjectQueue) > 0:
-                        self.activeEntity.features[-1] = "Success"
+                        self.activeEntity.result = "Success"
 
                 # blocking starts
                 self.isBlocked = True
@@ -1251,10 +1246,6 @@ class Machine(CoreObject):
 
             if self.activeEntity not in self.discards:
                 self.entities.append(self.activeEntity)
-
-        if self.dynamicRouting is not None:
-            self.defineNext(self.dynamicRouting(self.successorCandidates), overwrite_next=True)
-            print(f"self.next: {[s.name for s in self.next]}")
 
 
     def interruptionActions(self, type="Processing"):
@@ -1659,3 +1650,6 @@ class Machine(CoreObject):
         json["results"]["break_ratio"] = self.OnBreak
 
         G.outputJSON["elementList"].append(json)
+
+    def getActiveEntity(self):
+        return self.Res.users[0]
