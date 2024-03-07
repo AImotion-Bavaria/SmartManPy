@@ -903,7 +903,7 @@
         <span class="n">df</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.xls&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="getFeatureData"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Globals.getFeatureData">[docs]</a><span class="k">def</span> <span class="nf">getFeatureData</span><span class="p">(</span><span class="n">objectList</span><span class="o">=</span><span class="p">[],</span> <span class="n">time</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<div class="viewcode-block" id="getFeatureData"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Globals.getFeatureData">[docs]</a><span class="k">def</span> <span class="nf">getFeatureData</span><span class="p">(</span><span class="n">objectList</span><span class="o">=</span><span class="p">[],</span> <span class="n">time</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">price</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    getFeatureData returns feature data of specific machines as dataframes</span>
 
@@ -926,7 +926,10 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ftr</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ftr</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
                 <span class="n">feature_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">ftr_st</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">ftr</span><span class="p">))</span>
+
     <span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Result&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">price</span><span class="p">:</span>
+        <span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Price&quot;</span><span class="p">)</span>
 
     <span class="c1"># set df_list</span>
     <span class="n">unique</span> <span class="o">=</span> <span class="p">[]</span>
@@ -943,7 +946,10 @@
                 <span class="n">features</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entity</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 
                 <span class="k">if</span> <span class="n">time</span><span class="p">:</span>
-                    <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">price</span><span class="p">:</span>
+                        <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
                     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)):</span>
                         <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                             <span class="n">l</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="n">i</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span>
@@ -953,12 +959,16 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">entity</span><span class="o">.</span><span class="n">id</span><span class="p">[</span><span class="mi">4</span><span class="p">:])]</span> <span class="o">+</span> <span class="n">features</span>
 
+                <span class="k">if</span> <span class="n">price</span><span class="p">:</span>
+                    <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entity</span><span class="o">.</span><span class="n">cost</span><span class="p">)</span>
+
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">columns</span><span class="p">):</span>
                     <span class="n">df_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
                 <span class="n">unique</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
 
     <span class="c1"># return result</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">df_list</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;ID&quot;</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="s2">&quot;Success&quot;</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;Result&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span> <span class="ow">or</span> <span class="s2">&quot;Fail&quot;</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;Result&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
         <span class="k">return</span> <span class="n">result</span>
     <span class="k">else</span><span class="p">:</span>
@@ -1020,76 +1030,38 @@
 
 
 <span class="k">def</span> <span class="nf">resetSimulation</span><span class="p">():</span>
-
-    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;The resetSimulation method resets the internal state of the global simulation, but NOT of the&quot;</span>
-                  <span class="s2">&quot;individual Parts. It is not intended to restart the simulation after calling this function.&quot;</span><span class="p">)</span>
+    <span class="c1"># reset all global parameters of the simulation in order to start a clean new one</span>
     <span class="k">global</span> <span class="n">G</span>
 
-    <span class="n">G</span><span class="o">.</span><span class="n">ObjList</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># a list that holds all the CoreObjects</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">EntityList</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># a list that holds all the Entities</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">ObjectResourceList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">ObjectInterruptionList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">ObjectPropertyList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">RouterList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">simulation_snapshots</span> <span class="o">=</span> <span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">(</span><span class="n">G</span><span class="p">)</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">i</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;__&#39;</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="nb">vars</span><span class="p">(</span><span class="n">G</span><span class="p">)[</span><span class="n">i</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">t</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">elif</span> <span class="n">t</span> <span class="o">==</span> <span class="nb">dict</span><span class="p">:</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="k">elif</span> <span class="n">t</span> <span class="o">==</span> <span class="nb">bool</span><span class="p">:</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
-    <span class="n">G</span><span class="o">.</span><span class="n">objectList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">EntityList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">FeatureList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">ObjList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">ObjectPropertyList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">ObjectInterruptionList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">ObjectResourceList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">trace_list</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">ftr_st</span> <span class="o">=</span> <span class="p">[]</span>   <span class="c1"># list of (feature, corresponding station)</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">feature_indices</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">ts_st</span> <span class="o">=</span> <span class="p">[]</span>   <span class="c1"># list of (timeseries, corresponding station)</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">timeseries_indices</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">SourceList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">MachineList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">ExitList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">QueueList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">RepairmanList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">AssemblyList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">DismantleList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">ConveyerList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">MachineJobShopList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">QueueJobShopList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">ExitJobShopList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">BatchDecompositionList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">BatchSourceList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">BatchReassemblyList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">LineClearanceList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">EventGeneratorList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">OperatorsList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">OperatorManagedJobsList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">OperatorPoolsList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">BrokersList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">OperatedMachineList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">BatchScrapMachineList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">OrderDecompositionList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">ConditionalBufferList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">MouldAssemblyBufferList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">MouldAssemblyList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">MachineManagedJobList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">QueueManagedJobList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">ModelResourceList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">FeatureList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">TimeSeriesList</span> <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="n">G</span><span class="o">.</span><span class="n">JobList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">WipList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">EntityList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">PartList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">OrderComponentList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">OrderList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">MouldList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">BatchList</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">SubBatchList</span> <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="n">G</span><span class="o">.</span><span class="n">pendingEntities</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">numberOfReplications</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">confidenceLevel</span> <span class="o">=</span> <span class="mf">0.9</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">Base</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">maxSimTime</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">traceIndex</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">sheetIndex</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">outputIndex</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">numberOfEntities</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">totalPulpTime</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">console</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">traceFile</span> <span class="o">=</span> <span class="n">xlwt</span><span class="o">.</span><span class="n">Workbook</span><span class="p">()</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">traceSheet</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">traceFile</span><span class="o">.</span><span class="n">add_sheet</span><span class="p">(</span><span class="s2">&quot;sheet &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">sheetIndex</span><span class="p">),</span> <span class="n">cell_overwrite_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">outputFile</span> <span class="o">=</span> <span class="n">xlwt</span><span class="o">.</span><span class="n">Workbook</span><span class="p">()</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">outputSheet</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">outputFile</span><span class="o">.</span><span class="n">add_sheet</span><span class="p">(</span><span class="s2">&quot;sheet &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">sheetIndex</span><span class="p">),</span> <span class="n">cell_overwrite_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">outputJSONFile</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">G</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">simpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">()</span>
-    <span class="c1"># del G</span>
 </pre></div>
         </article>
       </div>

@@ -293,12 +293,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">remainingSetupTime</span> <span class="o">=</span> <span class="n">remainingSetupTime</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">status</span>
 
-        <span class="c1"># set lists for features and timeseries</span>
+        <span class="c1"># setup lists for features and timeseries</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">ftr_st</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">ftr_st</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feature_times</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">ftr_st</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timeseries</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">ts_st</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timeseries_times</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">ts_st</span><span class="p">)</span>
+
+        <span class="c1"># setup cost</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cost</span> <span class="o">=</span> <span class="mi">0</span>
 
 <div class="viewcode-block" id="Entity.responsibleForCurrentStep"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Entity.Entity.responsibleForCurrentStep">[docs]</a>    <span class="k">def</span> <span class="nf">responsibleForCurrentStep</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;return the responsible operator for the current step, not implemented for entities&quot;&quot;&quot;</span>

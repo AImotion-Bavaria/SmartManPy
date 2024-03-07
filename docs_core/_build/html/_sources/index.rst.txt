@@ -20,7 +20,7 @@ We performed the following modifications/additions (non-exhaustive):
 * Database connection
 * CSV export
 
-License: MIT/LGPL
+License: LGPL
 
 How to get started
 ===================

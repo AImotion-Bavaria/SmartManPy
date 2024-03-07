@@ -8,10 +8,15 @@
 
 import os
 import sys
+from datetime import date
+
 sys.path.insert(0, os.path.abspath("../"))
 
 project = 'SmartManPy'
-copyright = '2023, AImotion Bavaria'
+
+current_year = date.today().year
+copyright = f"{current_year}, AImotion Bavaria"
+
 author = 'LOMA'
 release = 'beta'
 

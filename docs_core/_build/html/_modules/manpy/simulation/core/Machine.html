@@ -264,10 +264,11 @@
         <span class="n">technology</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">priority</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
         <span class="n">control</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">cost</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kw</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s2">&quot;Machine&quot;</span>  <span class="c1"># String that shows the type of object</span>
-        <span class="n">CoreObject</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="n">CoreObject</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">cost</span><span class="p">)</span>
         <span class="kn">from</span> <span class="nn">manpy.simulation.core.Globals</span> <span class="kn">import</span> <span class="n">G</span>
 
         <span class="n">processingTime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getOperationTime</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">processingTime</span><span class="p">)</span>
