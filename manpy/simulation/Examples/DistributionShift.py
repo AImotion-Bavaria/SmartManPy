@@ -5,8 +5,8 @@ import time
 
 start = time.time()
 
-def M_condition(self):
-    activeEntity = self.Res.users[0]
+def M_condition(machine):
+    activeEntity = machine.Res.users[0]
     means = [1.6, 3500, 450, 180, 400, 50, 190, 400, 1]
     stdevs = [0.2, 200, 50, 30, 50, 5, 10, 50, 2]
     for idx, feature in enumerate(activeEntity.features):
@@ -72,12 +72,11 @@ StecktFest = Failure("Flr0", "Failure0", victim=Kleben, conditional=F_condition,
 
 dists = [{"Feature": {"Normal": {"mean": 1, "stdev":2}}},
          {"Feature": {"Normal": {"mean": 100, "stdev":2}}}]
-boundaries = {(0, 25): 0, (25, None): 1}
-distribution_controller = SimpleStateController(states=dists, boundaries=boundaries, wear_per_step=1.0, reset_amount=None)
+boundaries = {(0, 10): 0, (10, None): 1}
+distribution_controller = SimpleStateController(states=dists, labels=["ok", "defect"], boundaries=boundaries, wear_per_step=1.0, reset_amount=40)
 
 Test = Feature("Ftr8", "Feature9", victim=Kleben,
-               distribution_state_controller=distribution_controller,
-               contribute=[StecktFest], reset_distributions=True,
+               distribution_state_controller=distribution_controller
                )
 
 
@@ -97,7 +96,12 @@ def main():
     runSimulation(objectList, maxSimTime)
 
     df = getFeatureData([Kleben], time=True)[["M1_Ftr8_v", "Result"]]
-    df.to_csv("DistributionShift.csv", index=False, encoding="utf8")
+    print(df)
+    # df.to_csv("DistributionShift.csv", index=False, encoding="utf8")
+
+    ent = Löten.entities
+    for e in ent:
+        print(e.labels)
 
     print("""
             Ausschuss:          {}
