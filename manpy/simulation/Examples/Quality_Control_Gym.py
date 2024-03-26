@@ -4,7 +4,7 @@ from manpy.simulation.core.Globals import get_feature_values_by_id, get_feature_
 import numpy as np
 import statistics
 import pandas as pd
-import seaborn as sns
+# import seaborn as sns
 import matplotlib.pyplot as plt
 
 class ExampleEnv(QualityEnv):
@@ -19,8 +19,15 @@ class ExampleEnv(QualityEnv):
         E1 = Exit("E1", "Exit1")
 
         # ObjectProperty
+        dists = [{"Feature": {"Normal": {"mean": 400, "stdev": 50}}},
+                 {"Feature": {"Normal": {"mean": 500, "stdev": 30}}}]
+        boundaries = {(0, 25): 0, (25, None): 1}
+        distribution_controller = SimpleStateController(states=dists, labels=["ok", "defect"], boundaries=boundaries,
+                                                        wear_per_step=1.0, reset_amount=40)
         Ftr1 = Feature("Ftr1", "Feature1", victim=M1,
-                       distribution={"Feature": {"Normal": {"mean": 5, "stdev": 2, "min": 1, "max": 9}}})
+                       # distribution={"Feature": {"Normal": {"mean": 5, "stdev": 2, "min": 1, "max": 9}}},
+                       distribution_state_controller=distribution_controller,
+                       )
 
         # Routing
         S.defineRouting([M1])
@@ -48,7 +55,7 @@ class ExampleEnv(QualityEnv):
 
 
 
-simu = ExampleEnv('M0', observations=1, maxSimTime=float('inf'), maxSteps=1000000, updates=1)
+simu = ExampleEnv('M1', observations=1, maxSimTime=float('inf'), maxSteps=100000, updates=1)
 simu.reset()
 
 
