@@ -90,12 +90,12 @@ class SimpleStateController(StateController):
             previous_state_index = self.current_state_index
             self.current_state_index = self.__get_current_state()
             if previous_state_index is not self.current_state_index:
-                print(f"Change state to index {self.current_state_index}")
+                # print(f"Change state to index {self.current_state_index}")
+                pass
 
         return output, label
 
     def reset(self):
-        print(">>> Reset SimpleStateController <<<")
         self.account = 0
         self.current_state_index = self.initial_state_index
 
@@ -227,7 +227,6 @@ class RandomDefectStateController(StateController):
         return dist, label
 
     def reset(self):
-        print(">>> Reset StateController <<<")
         self.ok_controller.reset()
         for c in self.defect_controllers:
             c.reset()
