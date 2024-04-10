@@ -946,14 +946,6 @@ class Machine(CoreObject):
             # Control and end of processing
             activeObjectQueue = self.Res.users
             if self.control(self) == True:
-                self.outputTrace(activeObjectQueue[0].name, activeObjectQueue[0].id, "Failed Process control")
-                # send data to QuestDB
-                if G.db:
-                    G.db.insert(
-                        self.name,
-                        {"time": float(self.env.now), "message": activeObjectQueue[0].id + " failed Process control"}
-                    )
-                    G.db.commit()
                 if len(activeObjectQueue) > 0:
                     self.activeEntity.result = "Fail"
                     self.removeEntity(self.activeEntity)
@@ -989,17 +981,8 @@ class Machine(CoreObject):
                     if self.interruptedBy == "ShiftScheduler":
                         self.timeLastShiftEnded = self.env.now
             else:
-                if self.control(self) == False:
-                    self.outputTrace(activeObjectQueue[0].name, activeObjectQueue[0].id, "Succeeded Process control")
-                    # send data to QuestDB
-                    if G.db:
-                        G.db.insert(
-                            self.name,
-                            {"time": float(self.env.now), "message": activeObjectQueue[0].id + " succeeded Process control"}
-                        )
-                        G.db.commit()
-                    if len(activeObjectQueue) > 0:
-                        self.activeEntity.result = "Success"
+                if len(activeObjectQueue) > 0:
+                    self.activeEntity.result = "Success"
 
                 # blocking starts
                 self.isBlocked = True

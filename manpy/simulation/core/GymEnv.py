@@ -1,119 +1,74 @@
 from abc import ABC, abstractmethod
 import gymnasium as gym
 from gymnasium import spaces
-from manpy.simulation.core.Globals import runSimulation, resetSimulation
+from manpy.simulation.core.Globals import runSimulation, resetSimulation, G
+from tqdm import tqdm
 import torch
 import torch.nn as nn
+import torch.optim as optim
+import torch.nn.functional as F
 import numpy as np
-from torch.distributions import Bernoulli
 
 
-class Policy_Network(nn.Module):
-    def __init__(self, obs_space_dims: int, action_space_dims: int):
-        super().__init__()
+class PolicyNetwork(nn.Module):
+    def __init__(self, obs_space_dims):
+        super(PolicyNetwork, self).__init__()
+        self.dense1 = nn.Linear(obs_space_dims, 32)
+        self.dense2 = nn.Linear(32, 16)
+        self.dense3 = nn.Linear(16, 2)
 
-        hidden_space1 = 16
-        hidden_space2 = 32
+    def forward(self, x):
+        x = F.relu(self.dense1(x))
+        x = F.relu(self.dense2(x))
+        return F.softmax(self.dense3(x), dim=-1)
 
-        self.hidden_layer = nn.Sequential(
-            nn.Linear(obs_space_dims, hidden_space1),
-            nn.Tanh(),
-            nn.Linear(hidden_space1, hidden_space2),
-            nn.Tanh(),
-        )
-
-        self.output_layer = nn.Sequential(
-            nn.Linear(hidden_space2, action_space_dims),
-            nn.Sigmoid()
-        )
-
-    def forward(self, x: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
-        hidden_features = self.hidden_layer(x.float())
-        action_probs = self.output_layer(hidden_features)
-
-        return action_probs
 
 class Reinforce:
-    def __init__(self, obs_space_dims: int, action_space_dims: int):
+    def __init__(self, policy_network, learning_rate=0.001):
+        self.policy_network = policy_network
+        self.optimizer = optim.Adam(policy_network.parameters(), lr=learning_rate)
 
-        # Hyperparameters
-        self.learning_rate = 1e-4
-        self.gamma = 0.99
-        self.eps = 1e-6
+    def sample_action(self, state):
+        state = torch.FloatTensor(state)
+        action_probs = self.policy_network(state)
+        action = np.random.choice([0, 1], p=action_probs.detach().numpy())
+        return action, action_probs[action]
 
-        self.probs = []
-        self.rewards = []
-
-        self.net = Policy_Network(obs_space_dims, action_space_dims)
-        self.optimizer = torch.optim.AdamW(self.net.parameters(), lr=self.learning_rate)
-
-    def sample_action(self, state: np.ndarray) -> float:
-        """Returns an action, conditioned on the policy and observation.
-
-        Args:
-            state: Observation from the environment
-
-        Returns:
-            action: Action to be performed
-        """
-        state = torch.tensor(np.array([state]))
-        action_probs = self.net(state)
-
-        # create a normal distribution from the predicted
-        # mean and standard deviation and sample an action
-        distrib = Bernoulli(action_probs)
-        action = distrib.sample().item()
-
-        prob = distrib.log_prob(torch.tensor(action))
-        self.probs.append(prob.item())
-
-        return action
-
-    def update(self):
-        """Updates the policy network's weights."""
-        running_g = 0
-        gs = []
-
-        # Discounted return (backwards) - [::-1] will return an array in reverse
-        for R in self.rewards[::-1]:
-            running_g = R + self.gamma * running_g
-            gs.insert(0, running_g)
-
-        deltas = torch.tensor(gs, requires_grad=True)
-
+    def update(self, probs, rewards):
+        # Calculate loss
         loss = 0
-        # Multiply log probabilities by rewards and deltas
-        for log_prob, delta in zip(self.probs, deltas):
-            loss += log_prob * delta  # No need to multiply by -1 as we're maximizing
+        for p, R in zip(probs, rewards):
+            loss += -torch.log(p) * R
 
-        # Negative because we're performing gradient ascent
-        loss = -loss.mean()
-
-        # Update the policy network
+        # Backpropagation
         self.optimizer.zero_grad()
         loss.backward()
         self.optimizer.step()
 
-        # Empty / zero out all episode-centric/related variables
-        self.probs = []
-        self.rewards = []
-
 
 class QualityEnv(gym.Env):
 
-    def __init__(self, machine: str, observations: int, maxSimTime=100, maxSteps=None, updates=None):
-        self.observation_space = spaces.Box(low=float('-inf'), high=float('inf'), shape=(observations,))
+    def __init__(self, machine: str, observations: int, maxSimTime=100, maxSteps=None, updates=1):
+        self.observation_space = spaces.Box(low=float('-inf'), high=float('inf'), shape=(len(observations),))
+        self.observations = observations
         self.action_space = spaces.Discrete(2)
 
         self.steps = 0
-        self.all_rewards = []
+        self.probs, self.rewards, self.all_rewards = [], [], []
 
-        self.maxSimTime = maxSimTime
+        if maxSteps is None:
+            self.maxSimTime = maxSimTime
+            self.pbar = tqdm(total=maxSimTime, desc='Simulation Progress',
+                             bar_format="\033[92m{l_bar}{bar:25}{r_bar}\033[0m")
+        else:
+            self.maxSimTime = float('inf')
+            self.pbar = tqdm(total=maxSteps, desc='Simulation Progress',
+                             bar_format="\033[92m{l_bar}{bar:25}{r_bar}\033[0m")
         self.maxSteps = maxSteps
         self.updates = updates
 
         # setup agent
-        self.agent = Reinforce(observations, 1)
+        self.agent = Reinforce(PolicyNetwork(len(observations)))
 
         # setup machine
         objectList = self.prepare()
@@ -140,32 +95,40 @@ class QualityEnv(gym.Env):
 
 
     def reset(self):
-        super().reset()
+        self.pbar.n = 0
 
+        super().reset()
         resetSimulation()
+
         self.objectList = self.prepare()
         runSimulation(self.objectList, self.maxSimTime)
 
     def step(self, o):
         self.steps += 1
-        print("Step: ", self.steps)
+        self.pbar.update(1)
 
         # update machine
         self.machine = o
 
         # observe, take action, calculate reward
         observation = self.obs()
-        action = self.agent.sample_action(observation)
+        # normalize observation
+        for i, o in enumerate(observation):
+            observation[i] = (o - self.observations[i][0])/(self.observations[i][1]-self.observations[i][0])
+        if self.steps % 1000 == 0:
+            pass
+        action, prob = self.agent.sample_action(observation)
         reward = self.rew(action)
 
         # add reward
+        self.probs.append(prob)
+        self.rewards.append(reward)
         self.all_rewards.append(reward)
-        self.agent.rewards.append(reward)
 
         # update
-        if self.updates:
-            if self.steps % self.updates == 0:
-                self.agent.update()
+        if self.steps % self.updates == 0:
+            self.agent.update(self.probs, self.rewards)
+            self.probs, self.rewards = [], []
 
         # check maxSteps
         if self.maxSteps:
@@ -181,3 +144,4 @@ class QualityEnv(gym.Env):
 
     def close(self):
         self.objectList[0].endSimulation()
+        self.pbar.close()
