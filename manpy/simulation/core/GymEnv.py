@@ -13,14 +13,16 @@ import numpy as np
 class PolicyNetwork(nn.Module):
     def __init__(self, obs_space_dims):
         super(PolicyNetwork, self).__init__()
-        self.dense1 = nn.Linear(obs_space_dims, 32)
-        self.dense2 = nn.Linear(32, 16)
-        self.dense3 = nn.Linear(16, 2)
+        self.dense1 = nn.Linear(obs_space_dims, 64)
+        self.dense2 = nn.Linear(64, 32)
+        self.dense3 = nn.Linear(32, 16)
+        self.dense4 = nn.Linear(16, 2)
 
     def forward(self, x):
         x = F.relu(self.dense1(x))
         x = F.relu(self.dense2(x))
-        return F.softmax(self.dense3(x), dim=-1)
+        x = F.relu(self.dense3(x))
+        return F.softmax(self.dense4(x), dim=-1)
 
 
 class Reinforce:
@@ -48,11 +50,8 @@ class Reinforce:
 
 class QualityEnv(gym.Env):
 
-    def __init__(self, machine: str, observations: int, maxSimTime=100, maxSteps=None, updates=1):
-        self.observation_space = spaces.Box(low=float('-inf'), high=float('inf'), shape=(len(observations),))
+    def __init__(self, observations: int, maxSimTime=100, maxSteps=None, updates=1):
         self.observations = observations
-        self.action_space = spaces.Discrete(2)
-
         self.steps = 0
         self.probs, self.rewards, self.all_rewards = [], [], []
 
@@ -71,11 +70,8 @@ class QualityEnv(gym.Env):
         self.agent = Reinforce(PolicyNetwork(len(observations)))
 
         # setup machine
-        objectList = self.prepare()
-        for o in objectList:
-            if machine == o.id:
-                self.machine = o
-                break
+        self.objectList = self.prepare()
+
 
     @abstractmethod
     def prepare(self):
@@ -113,8 +109,12 @@ class QualityEnv(gym.Env):
         # observe, take action, calculate reward
         observation = self.obs()
         # normalize observation
-        for i, o in enumerate(observation):
-            observation[i] = (o - self.observations[i][0])/(self.observations[i][1]-self.observations[i][0])
+        for i, ob in enumerate(observation):
+            if ob:
+                observation[i] = (ob - self.observations[i][0])/(self.observations[i][1]-self.observations[i][0])
+            else:
+                observation[i] = -1
+        observation = observation.astype(np.float32)
         if self.steps % 1000 == 0:
             pass
         action, prob = self.agent.sample_action(observation)

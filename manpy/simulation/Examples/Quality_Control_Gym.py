@@ -48,7 +48,7 @@ class ExampleEnv(QualityEnv):
             return -1
 
 
-simu = ExampleEnv('M1', observations=[(0, 800)], maxSteps=6000, updates=5)
+simu = ExampleEnv(observations=[(0, 800)], maxSteps=6000, updates=5)
 simu.reset()
 
 
