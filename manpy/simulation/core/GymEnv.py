@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 import gymnasium as gym
-from gymnasium import spaces
 from manpy.simulation.core.Globals import runSimulation, resetSimulation, G
 from tqdm import tqdm
 import torch
@@ -8,33 +7,44 @@ import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
 import numpy as np
+from torch.optim.lr_scheduler import StepLR
 
 
 class PolicyNetwork(nn.Module):
     def __init__(self, obs_space_dims):
         super(PolicyNetwork, self).__init__()
         self.dense1 = nn.Linear(obs_space_dims, 64)
+        self.dropout1 = nn.Dropout(0.5)
         self.dense2 = nn.Linear(64, 32)
+        self.dropout2 = nn.Dropout(0.5)
         self.dense3 = nn.Linear(32, 16)
-        self.dense4 = nn.Linear(16, 2)
+        self.dropout3 = nn.Dropout(0.5)
+        self.dense4 = nn.Linear(16, 1)
 
     def forward(self, x):
         x = F.relu(self.dense1(x))
+        x = self.dropout1(x)
         x = F.relu(self.dense2(x))
+        x = self.dropout2(x)
         x = F.relu(self.dense3(x))
-        return F.softmax(self.dense4(x), dim=-1)
+        x = self.dropout3(x)
+        return torch.sigmoid(self.dense4(x))
 
 
 class Reinforce:
-    def __init__(self, policy_network, learning_rate=0.001):
+    def __init__(self, policy_network, learning_rate=0.1, step_size=10, gamma=0.1):
         self.policy_network = policy_network
         self.optimizer = optim.Adam(policy_network.parameters(), lr=learning_rate)
+        self.scheduler = StepLR(self.optimizer, step_size=step_size, gamma=gamma)
 
     def sample_action(self, state):
         state = torch.FloatTensor(state)
-        action_probs = self.policy_network(state)
-        action = np.random.choice([0, 1], p=action_probs.detach().numpy())
-        return action, action_probs[action]
+        action_prob = self.policy_network(state)
+        action = 1 if action_prob.item() > 0.5 else 0
+        if action == 0:
+            action_prob = 1 - action_prob
+
+        return action, action_prob
 
     def update(self, probs, rewards):
         # Calculate loss
@@ -47,12 +57,16 @@ class Reinforce:
         loss.backward()
         self.optimizer.step()
 
+        # Decay learning rate
+        self.scheduler.step()
+
 
 class QualityEnv(gym.Env):
 
-    def __init__(self, observations: int, maxSimTime=100, maxSteps=None, updates=1):
+    def __init__(self, observations: int, maxSimTime=100, maxSteps=None, updates=1, normalize=None):
         self.observations = observations
         self.steps = 0
+        self.normalize = normalize
         self.probs, self.rewards, self.all_rewards, self.all_actions = [], [], [], []
 
         if maxSteps is None:
@@ -128,6 +142,9 @@ class QualityEnv(gym.Env):
 
         # update
         if self.steps % self.updates == 0:
+            # normalize between -1 and 1
+            self.rewards = [(r - self.normalize[0]) / (self.normalize[1] - self.normalize[0]) * 2 - 1 for r in self.rewards]
+
             self.agent.update(self.probs, self.rewards)
             self.probs, self.rewards = [], []
 

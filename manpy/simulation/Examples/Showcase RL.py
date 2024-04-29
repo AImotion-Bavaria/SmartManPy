@@ -30,12 +30,12 @@ class ExampleEnv(QualityEnv):
         dists_2 = [{"Feature": {"Normal": {"mean": 200, "stdev": 50, "min": 0, "max": 400}}},
                    {"Feature": {"Normal": {"mean": 600, "stdev": 30, "min": 400, "max": 800}}}]
         dists_3 = [{"Feature": {"Normal": {"mean": 25000, "stdev": 2000, "min": 20000, "max": 30000}}},
-                   {"Feature": {"Normal": {"mean": 18000, "stdev": 5000, "min": 15000, "max": 23000}}}]
+                   {"Feature": {"Normal": {"mean": 15000, "stdev": 3000, "min": 16000, "max": 19000}}}]
 
         distribution_controller_1 = SimpleStateController(states=dists_1, labels=["ok", "defect"], boundaries={(0, 25): 0, (25, None): 1},
                                                         wear_per_step=1.0, reset_amount=27)
-        distribution_controller_2 = SimpleStateController(states=dists_2, labels=["ok", "defect"], boundaries={(0, 5): 0, (5, None): 1},
-                                                        wear_per_step=1.0, reset_amount=5)
+        distribution_controller_2 = SimpleStateController(states=dists_2, labels=["ok", "defect"], boundaries={(0, 2): 0, (2, None): 1},
+                                                        wear_per_step=1.0, reset_amount=3)
         distribution_controller_3 = SimpleStateController(states=dists_3, labels=["ok", "defect"], boundaries={(0, 290): 0, (290, None): 1},
                                                         wear_per_step=1.0, reset_amount=299)
 
@@ -71,17 +71,20 @@ class ExampleEnv(QualityEnv):
             cost = 9
 
         if action == 1 and "defect" in activeEntity.labels: # True Negative
-            return cost
+            return (cost + activeEntity.cost)*2
         elif action == 0 and "defect" in activeEntity.labels: # False Positive
             return -(cost + activeEntity.cost)
         elif action == 1: # False Negative
-            return -(cost + activeEntity.cost)
+            return -(cost + activeEntity.cost)*2
         elif action == 0: # True Positive
-            return cost
+            return 1
 
-observation_extrems = [(3400, 4150), (0, 800), (15000, 30000), (1, 9), (50000, 57000), (0.2, 0.8)]
-simu = ExampleEnv(observations=observation_extrems, maxSteps=6000, updates=5)
+
+# Simulation
+observation_extrems = [(3400, 4200), (0, 800), (16000, 30000), (1, 9), (50000, 57000), (0.2, 0.8)]
+simu = ExampleEnv(observations=observation_extrems, maxSteps=36000, updates=1, normalize=(-54, 54))
 simu.reset()
+
 
 # plot rewards
 s = 0.3 # smoothing factor
@@ -91,10 +94,11 @@ for i in range(0, len(simu.all_rewards), len(simu.all_rewards)//20):
     y.append(statistics.mean(simu.all_rewards[i:i+len(simu.all_rewards)//20]))
 
 # smoothing
-spl = UnivariateSpline(x, y, s=s)
-xs = np.linspace(min(x), max(x), 1000)
-plt.plot(xs, spl(xs))
+# spl = UnivariateSpline(x, y, s=s)
+# xs = np.linspace(min(x), max(x), 1000)
+# plt.plot(xs, spl(xs))
 
+plt.plot(x, y)
 plt.xlabel('Steps in thousands')
 plt.ylabel('Reward')
 plt.title('Reward over steps')
@@ -108,26 +112,31 @@ for i in range(0, len(simu.objectList[7].entities), len(simu.objectList[7].entit
             defect.append(1)
         else:
             defect.append(0)
+    if len(defect) < 500:
+        continue
     x.append(i/1000)
     y.append((sum(defect)/len(defect)) * 100)
+    defect = []
 
 # smoothing
-spl = UnivariateSpline(x, y, s=s-0.1)
-xs = np.linspace(min(x), max(x), 1000)
-plt.plot(xs, spl(xs))
+# spl = UnivariateSpline(x, y, s=s)
+# xs = np.linspace(min(x), max(x), 1000)
+# plt.plot(xs, spl(xs))
 
+plt.plot(x, y)
 plt.xlabel('Parts in thousands')
 plt.ylabel('% defect parts')
+plt.ylim(0, 100)
 plt.title('Percent of defect parts produced')
 plt.show()
 
 # plot features and actions
 size = 70
-
 y1 = [[]]*3
 y2 = [[]]*6
 good_actions_x1, good_actions_y1, bad_actions_x1, bad_actions_y1 = [], [], [], []
 good_actions_x2, good_actions_y2, bad_actions_x2, bad_actions_y2 = [], [], [], []
+
 Ftr1 = simu.objectList[8].featureHistory[:size]
 Ftr2 = simu.objectList[9].featureHistory[:size]
 Ftr3 = simu.objectList[10].featureHistory[:size]
@@ -200,5 +209,7 @@ axs[1].set_title("Machine 3")
 axs[1].legend(loc='upper left', bbox_to_anchor=(1, 1))
 
 fig.suptitle('Features and Actions')
+axs[0].set_ylim(-0.1, 1.1)
+axs[1].set_ylim(-0.1, 1.1)
 plt.tight_layout()
 plt.show()
