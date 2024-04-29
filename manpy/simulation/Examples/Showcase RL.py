@@ -4,6 +4,7 @@ import numpy as np
 import statistics
 import matplotlib.pyplot as plt
 from manpy.simulation.core.ProductionLineModule import generate_routing_from_list
+from scipy.interpolate import UnivariateSpline
 
 class ExampleEnv(QualityEnv):
     def prepare(self):
@@ -74,18 +75,104 @@ class ExampleEnv(QualityEnv):
         elif action == 0: # True Positive
             return max_cost - activeEntity.cost
 
-observation_extrems = [(3400, 4150), (0, 800), (15000, 30000), (1, 9), (50000, 570000), (0.2, 0.8)]
-simu = ExampleEnv(observations=observation_extrems, maxSteps=50000, updates=5)
+observation_extrems = [(3400, 4150), (0, 800), (15000, 30000), (1, 9), (50000, 57000), (0.2, 0.8)]
+simu = ExampleEnv(observations=observation_extrems, maxSteps=600, updates=5)
 simu.reset()
 
-
-x = []
-y = []
+# plot rewards
+s = 0.3 # smoothing factor
+x, y = [], []
 for i in range(0, len(simu.all_rewards), len(simu.all_rewards)//20):
     x.append(i/1000)
     y.append(statistics.mean(simu.all_rewards[i:i+len(simu.all_rewards)//20]))
-plt.plot(x, y)
-# plt.ylim(-45, 24)
+
+spl = UnivariateSpline(x, y, s=s)  # Add smoothing factor here
+xs = np.linspace(min(x), max(x), 1000)
+plt.plot(xs, spl(xs))
+
 plt.xlabel('Steps in thousands')
-plt.ylabel('Cost saved')
+plt.ylabel('Reward')
+plt.title('Reward over steps')
+plt.show()
+
+# plot features and actions
+size = 70
+
+y1 = [[]]*3
+y2 = [[]]*6
+good_actions_x1, good_actions_y1, bad_actions_x1, bad_actions_y1 = [], [], [], []
+good_actions_x2, good_actions_y2, bad_actions_x2, bad_actions_y2 = [], [], [], []
+Ftr1 = simu.objectList[8].featureHistory[:size]
+Ftr2 = simu.objectList[9].featureHistory[:size]
+Ftr3 = simu.objectList[10].featureHistory[:size]
+Ftr4 = simu.objectList[11].featureHistory[:size]
+Ftr5 = simu.objectList[12].featureHistory[:size]
+Ftr6 = simu.objectList[13].featureHistory[:size]
+
+for ind, ((machine, action), reward) in enumerate(zip(simu.all_actions[:size], simu.all_rewards[:size])):
+    if machine == 1:
+        # features
+        y = [Ftr1[ind], Ftr4[ind], Ftr5[ind]]
+        for i, ftr in enumerate(y):
+            y1[i] = y1[i] + [ftr]
+        # normalize
+        y1[0][-1] = (y1[0][-1] - observation_extrems[0][0])/(observation_extrems[0][1]-observation_extrems[0][0])
+        y1[1][-1] = (y1[1][-1] - observation_extrems[3][0])/(observation_extrems[3][1]-observation_extrems[3][0])
+        y1[2][-1] = (y1[2][-1] - observation_extrems[4][0])/(observation_extrems[4][1]-observation_extrems[4][0])
+
+        # actions
+        if reward > 0:
+            good_actions_x1.append(len(y1[0]))
+            good_actions_y1.append(action)
+        else:
+            bad_actions_x1.append(len(y1[0]))
+            bad_actions_y1.append(action)
+    elif machine == 3:
+        # features
+        y = [Ftr1[ind], Ftr2[ind], Ftr3[ind], Ftr4[ind], Ftr5[ind], Ftr6[ind]]
+        for i, ftr in enumerate(y):
+            y2[i] = y2[i] + [ftr]
+        # normalize
+        for i in range(6):
+            y2[i][-1] = (y2[i][-1] - observation_extrems[i][0])/(observation_extrems[i][1]-observation_extrems[i][0])
+
+        # actions
+        if reward > 0:
+            good_actions_x2.append(len(y2[0]))
+            good_actions_y2.append(action)
+        else:
+            bad_actions_x2.append(len(y2[0]))
+            bad_actions_y2.append(action)
+
+x1 = range(len(y1[0]))
+x2 = range(len(y2[0]))
+
+fig, axs = plt.subplots(2, 1)
+
+xs = np.linspace(min(x1), max(x1), 1000)
+spl = UnivariateSpline(x1, y1[0], s=s)
+axs[0].plot(xs, spl(xs), label='Feature 1')
+spl = UnivariateSpline(x1, y1[1], s=s)
+axs[0].plot(xs, spl(xs), color='grey', alpha=0.5, label='Feature 4')
+spl = UnivariateSpline(x1, y1[2], s=s)
+axs[0].plot(xs, spl(xs), color='grey', alpha=0.5, label='Feature 5')
+axs[0].scatter(good_actions_x1, good_actions_y1, color='green', label='Good Action')
+axs[0].scatter(bad_actions_x1, bad_actions_y1, color='red', label='Bad Action')
+axs[0].set_title("Machine 1")
+axs[0].legend(loc='upper left', bbox_to_anchor=(1, 1))
+
+xs = np.linspace(min(x2), max(x2), 1000)
+for i in range(6):
+    spl = UnivariateSpline(x2, y2[i], s=s)
+    if i >= 3:  # Apply grey color and alpha for the last three features
+        axs[1].plot(xs, spl(xs), color='grey', alpha=0.5, label=f'Feature {i+1}')
+    else:
+        axs[1].plot(xs, spl(xs), label=f'Feature {i+1}')
+axs[1].scatter(good_actions_x2, good_actions_y2, color='green', label='Good Action')
+axs[1].scatter(bad_actions_x2, bad_actions_y2, color='red', label='Bad Action')
+axs[1].set_title("Machine 3")
+axs[1].legend(loc='upper left', bbox_to_anchor=(1, 1))
+
+fig.suptitle('Features and Actions')
+plt.tight_layout()
 plt.show()

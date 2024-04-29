@@ -53,7 +53,7 @@ class QualityEnv(gym.Env):
     def __init__(self, observations: int, maxSimTime=100, maxSteps=None, updates=1):
         self.observations = observations
         self.steps = 0
-        self.probs, self.rewards, self.all_rewards = [], [], []
+        self.probs, self.rewards, self.all_rewards, self.all_actions = [], [], [], []
 
         if maxSteps is None:
             self.maxSimTime = maxSimTime
@@ -124,6 +124,7 @@ class QualityEnv(gym.Env):
         self.probs.append(prob)
         self.rewards.append(reward)
         self.all_rewards.append(reward)
+        self.all_actions.append((int(o.id[1:]), action))
 
         # update
         if self.steps % self.updates == 0:
