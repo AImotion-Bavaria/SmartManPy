@@ -9,7 +9,7 @@ from scipy.interpolate import UnivariateSpline
 class ExampleEnv(QualityEnv):
     def prepare(self):
         # Objects
-        S = Source("S1", "Source", interArrivalTime={"Fixed": {"mean": 0.1}}, entity="manpy.Part", cost=3)
+        S = Source("S1", "Source", interArrivalTime={"Fixed": {"mean": 0.1}}, entity="manpy.Part", cost=12)
 
         # Assign the condition as the "control" parameter for any machine
         M1 = Machine("M1", "Machine1", processingTime={"Normal": {"mean": 0.2, "stdev": 0.1, "min": 0.08, "max": 0.34}},
@@ -64,19 +64,23 @@ class ExampleEnv(QualityEnv):
         return np.array(activeEntity.features)
 
     def rew(self, action):
-        max_cost = 27
         activeEntity = self.machine.Res.users[0]
+        if self.machine.id == "M1":
+            cost = 15
+        elif self.machine.id == "M3":
+            cost = 9
+
         if action == 1 and "defect" in activeEntity.labels: # True Negative
-            return max_cost - activeEntity.cost
+            return cost
         elif action == 0 and "defect" in activeEntity.labels: # False Positive
-            return -(max_cost - activeEntity.cost)
+            return -(cost + activeEntity.cost)
         elif action == 1: # False Negative
-            return -(max_cost + activeEntity.cost)
+            return -(cost + activeEntity.cost)
         elif action == 0: # True Positive
-            return max_cost - activeEntity.cost
+            return cost
 
 observation_extrems = [(3400, 4150), (0, 800), (15000, 30000), (1, 9), (50000, 57000), (0.2, 0.8)]
-simu = ExampleEnv(observations=observation_extrems, maxSteps=600, updates=5)
+simu = ExampleEnv(observations=observation_extrems, maxSteps=6000, updates=5)
 simu.reset()
 
 # plot rewards
@@ -86,13 +90,35 @@ for i in range(0, len(simu.all_rewards), len(simu.all_rewards)//20):
     x.append(i/1000)
     y.append(statistics.mean(simu.all_rewards[i:i+len(simu.all_rewards)//20]))
 
-spl = UnivariateSpline(x, y, s=s)  # Add smoothing factor here
+# smoothing
+spl = UnivariateSpline(x, y, s=s)
 xs = np.linspace(min(x), max(x), 1000)
 plt.plot(xs, spl(xs))
 
 plt.xlabel('Steps in thousands')
 plt.ylabel('Reward')
 plt.title('Reward over steps')
+plt.show()
+
+# plot % of defect parts in exit
+x, y, defect = [], [], []
+for i in range(0, len(simu.objectList[7].entities), len(simu.objectList[7].entities)//20):
+    for entity in simu.objectList[7].entities[i:i+len(simu.objectList[7].entities)//20]:
+        if "defect" in entity.labels:
+            defect.append(1)
+        else:
+            defect.append(0)
+    x.append(i/1000)
+    y.append((sum(defect)/len(defect)) * 100)
+
+# smoothing
+spl = UnivariateSpline(x, y, s=s-0.1)
+xs = np.linspace(min(x), max(x), 1000)
+plt.plot(xs, spl(xs))
+
+plt.xlabel('Parts in thousands')
+plt.ylabel('% defect parts')
+plt.title('Percent of defect parts produced')
 plt.show()
 
 # plot features and actions
@@ -153,9 +179,9 @@ xs = np.linspace(min(x1), max(x1), 1000)
 spl = UnivariateSpline(x1, y1[0], s=s)
 axs[0].plot(xs, spl(xs), label='Feature 1')
 spl = UnivariateSpline(x1, y1[1], s=s)
-axs[0].plot(xs, spl(xs), color='grey', alpha=0.5, label='Feature 4')
+axs[0].plot(xs, spl(xs), color='grey', alpha=0.3, label='Feature 4')
 spl = UnivariateSpline(x1, y1[2], s=s)
-axs[0].plot(xs, spl(xs), color='grey', alpha=0.5, label='Feature 5')
+axs[0].plot(xs, spl(xs), color='grey', alpha=0.3, label='Feature 5')
 axs[0].scatter(good_actions_x1, good_actions_y1, color='green', label='Good Action')
 axs[0].scatter(bad_actions_x1, bad_actions_y1, color='red', label='Bad Action')
 axs[0].set_title("Machine 1")
@@ -165,7 +191,7 @@ xs = np.linspace(min(x2), max(x2), 1000)
 for i in range(6):
     spl = UnivariateSpline(x2, y2[i], s=s)
     if i >= 3:  # Apply grey color and alpha for the last three features
-        axs[1].plot(xs, spl(xs), color='grey', alpha=0.5, label=f'Feature {i+1}')
+        axs[1].plot(xs, spl(xs), color='grey', alpha=0.3, label=f'Feature {i+1}')
     else:
         axs[1].plot(xs, spl(xs), label=f'Feature {i+1}')
 axs[1].scatter(good_actions_x2, good_actions_y2, color='green', label='Good Action')
