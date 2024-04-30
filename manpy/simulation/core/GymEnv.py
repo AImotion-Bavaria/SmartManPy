@@ -13,13 +13,13 @@ from torch.optim.lr_scheduler import StepLR
 class PolicyNetwork(nn.Module):
     def __init__(self, obs_space_dims):
         super(PolicyNetwork, self).__init__()
-        self.dense1 = nn.Linear(obs_space_dims, 64)
-        self.dropout1 = nn.Dropout(0.5)
-        self.dense2 = nn.Linear(64, 32)
-        self.dropout2 = nn.Dropout(0.5)
-        self.dense3 = nn.Linear(32, 16)
-        self.dropout3 = nn.Dropout(0.5)
-        self.dense4 = nn.Linear(16, 1)
+        self.dense1 = nn.Linear(obs_space_dims, 128)
+        self.dropout1 = nn.Dropout(0.3)
+        self.dense2 = nn.Linear(128, 1024)
+        self.dropout2 = nn.Dropout(0.3)
+        self.dense3 = nn.Linear(1024, 512)
+        self.dropout3 = nn.Dropout(0.3)
+        self.dense4 = nn.Linear(512, 2)
 
     def forward(self, x):
         x = F.relu(self.dense1(x))
@@ -28,23 +28,21 @@ class PolicyNetwork(nn.Module):
         x = self.dropout2(x)
         x = F.relu(self.dense3(x))
         x = self.dropout3(x)
-        return torch.sigmoid(self.dense4(x))
+        return torch.softmax(self.dense4(x), dim=-1)
 
 
 class Reinforce:
-    def __init__(self, policy_network, learning_rate=0.1, step_size=10, gamma=0.1):
+    def __init__(self, policy_network, learning_rate=1e-4, step_size=100, gamma=0.1):
         self.policy_network = policy_network
         self.optimizer = optim.Adam(policy_network.parameters(), lr=learning_rate)
         self.scheduler = StepLR(self.optimizer, step_size=step_size, gamma=gamma)
 
     def sample_action(self, state):
         state = torch.FloatTensor(state)
-        action_prob = self.policy_network(state)
-        action = 1 if action_prob.item() > 0.5 else 0
-        if action == 0:
-            action_prob = 1 - action_prob
+        action_probs = self.policy_network(state)
+        action = np.random.choice([0, 1], p=action_probs.detach().numpy())
 
-        return action, action_prob
+        return action, action_probs
 
     def update(self, probs, rewards):
         # Calculate loss
@@ -67,7 +65,7 @@ class QualityEnv(gym.Env):
         self.observations = observations
         self.steps = 0
         self.normalize = normalize
-        self.probs, self.rewards, self.all_rewards, self.all_actions = [], [], [], []
+        self.probs, self.rewards, self.all_rewards, self.all_actions, self.all_probs = [], [], [], [], []
 
         if maxSteps is None:
             self.maxSimTime = maxSimTime
@@ -131,7 +129,8 @@ class QualityEnv(gym.Env):
         observation = observation.astype(np.float32)
         if self.steps % 1000 == 0:
             pass
-        action, prob = self.agent.sample_action(observation)
+        action, probs = self.agent.sample_action(observation)
+        prob = probs[action]
         reward = self.rew(action)
 
         # add reward
@@ -139,11 +138,13 @@ class QualityEnv(gym.Env):
         self.rewards.append(reward)
         self.all_rewards.append(reward)
         self.all_actions.append((int(o.id[1:]), action))
+        self.all_probs.append(probs.detach().numpy())
 
         # update
         if self.steps % self.updates == 0:
             # normalize between -1 and 1
-            self.rewards = [(r - self.normalize[0]) / (self.normalize[1] - self.normalize[0]) * 2 - 1 for r in self.rewards]
+            if self.normalize:
+                self.rewards = [(r - self.normalize[0]) / (self.normalize[1] - self.normalize[0]) * 2 - 1 for r in self.rewards]
 
             self.agent.update(self.probs, self.rewards)
             self.probs, self.rewards = [], []
