@@ -35,7 +35,7 @@ class ExampleEnv(QualityEnv):
                                                         wear_per_step=1.0, reset_amount=27)
         distribution_controller_2 = SimpleStateController(states=dists_2, labels=["ok", "defect"], boundaries={(0, 2): 0, (2, None): 1},
                                                         wear_per_step=1.0, reset_amount=3)
-        distribution_controller_3 = SimpleStateController(states=dists_3, labels=["ok", "defect"], boundaries={(0, 290): 0, (290, None): 1},
+        distribution_controller_3 = SimpleStateController(states=dists_3, labels=["ok", "defect"], boundaries={(0, 200): 0, (200, None): 1},
                                                         wear_per_step=1.0, reset_amount=299)
 
         Ftr1 = Feature("Ftr1", "Feature1", victim=M1,
@@ -70,18 +70,21 @@ class ExampleEnv(QualityEnv):
             cost = 9
 
         if action == 1 and "defect" in activeEntity.labels: # True Negative
-            return (cost + activeEntity.cost)*2
+            # return (cost + activeEntity.cost)*2
+            return 1
         elif action == 0 and "defect" in activeEntity.labels: # False Positive
-            return -(cost + activeEntity.cost)
+            # return -(cost + activeEntity.cost)
+            return 0
         elif action == 1: # False Negative
-            return -(cost + activeEntity.cost)*2
+            # return -(cost + activeEntity.cost)*2
+            return 0
         elif action == 0: # True Positive
             return 1
 
 
 # Simulation
 observation_extrems = [(3400, 4200), (0, 2100), (11000, 50000), (1, 9), (50000, 57000), (0.2, 0.8)]
-simu = ExampleEnv(observations=observation_extrems, maxSteps=36000, updates=5, normalize=(-54, 54))
+simu = ExampleEnv(observations=observation_extrems, maxSteps=16000, updates=5, normalize=(0, 1))
 simu.reset()
 
 
@@ -101,7 +104,8 @@ plt.plot(x, y)
 plt.xlabel('Steps in thousands')
 plt.ylabel('Reward')
 plt.title('Reward over steps')
-plt.show()
+# plt.show()
+plt.savefig("reward.png")
 
 # plot % of defect parts in exit
 x, y, defect = [], [], []
@@ -127,7 +131,8 @@ plt.xlabel('Parts in thousands')
 plt.ylabel('% defect parts')
 plt.ylim(0, 100)
 plt.title('Percent of defect parts produced')
-plt.show()
+# plt.show()
+plt.savefig("defect_parts.png")
 
 # plot features and actions
 size = 30
@@ -211,7 +216,8 @@ fig.suptitle('Features and Actions')
 axs[0].set_ylim(-0.1, 1.1)
 axs[1].set_ylim(-0.1, 1.1)
 plt.tight_layout()
-plt.show()
+# plt.show()
+plt.savefig("features_actions.png")
 
 # plot difference of probs
 x = []
@@ -222,4 +228,5 @@ for i in range(0, len(simu.all_probs), len(simu.all_probs)//20):
 
 plt.plot(x, y)
 plt.ylabel('Difference of probabilities')
-plt.show()
+# plt.show()
+plt.savefig("prob_differences.png")

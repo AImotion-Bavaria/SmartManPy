@@ -8,17 +8,18 @@ import torch.optim as optim
 import torch.nn.functional as F
 import numpy as np
 from torch.optim.lr_scheduler import StepLR
+from statistics import mean
 
 
 class PolicyNetwork(nn.Module):
-    def __init__(self, obs_space_dims):
+    def __init__(self, obs_space_dims, dropout_p=0.0):
         super(PolicyNetwork, self).__init__()
-        self.dense1 = nn.Linear(obs_space_dims, 128)
-        self.dropout1 = nn.Dropout(0.3)
-        self.dense2 = nn.Linear(128, 1024)
-        self.dropout2 = nn.Dropout(0.3)
+        self.dense1 = nn.Linear(obs_space_dims, 256)
+        self.dropout1 = nn.Dropout(dropout_p)
+        self.dense2 = nn.Linear(256, 1024)
+        self.dropout2 = nn.Dropout(dropout_p)
         self.dense3 = nn.Linear(1024, 512)
-        self.dropout3 = nn.Dropout(0.3)
+        self.dropout3 = nn.Dropout(dropout_p)
         self.dense4 = nn.Linear(512, 2)
 
     def forward(self, x):
@@ -35,7 +36,9 @@ class Reinforce:
     def __init__(self, policy_network, learning_rate=1e-4, step_size=100, gamma=0.1):
         self.policy_network = policy_network
         self.optimizer = optim.Adam(policy_network.parameters(), lr=learning_rate)
-        self.scheduler = StepLR(self.optimizer, step_size=step_size, gamma=gamma)
+        # self.scheduler = StepLR(self.optimizer, step_size=step_size, gamma=gamma)
+        self.all_losses = []
+
 
     def sample_action(self, state):
         state = torch.FloatTensor(state)
@@ -50,13 +53,18 @@ class Reinforce:
         for p, R in zip(probs, rewards):
             loss += -torch.log(p) * R
 
+        self.all_losses.append(loss.item())
+        print(f"Mean loss: {mean(self.all_losses)}")
+        # print(f"Current absolute loss: {loss.item()}")
+
         # Backpropagation
         self.optimizer.zero_grad()
         loss.backward()
         self.optimizer.step()
 
         # Decay learning rate
-        self.scheduler.step()
+        # self.scheduler.step()
+        self.optimizer.zero_grad()
 
 
 class QualityEnv(gym.Env):
