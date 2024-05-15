@@ -136,7 +136,7 @@ class QualityEnv(gym.Env):
             if ob:
                 observation[i] = (ob - self.observations[i][0])/(self.observations[i][1]-self.observations[i][0])
             else:
-                observation[i] = 10
+                observation[i] = 0
         observation = observation.astype(np.float32)
         if self.steps % 1000 == 0:
             pass

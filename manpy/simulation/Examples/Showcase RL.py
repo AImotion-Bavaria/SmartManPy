@@ -47,7 +47,7 @@ class ExampleEnv(QualityEnv):
         Ftr1 = Feature("Ftr1", "Feature1", victim=M1,
                        distribution_state_controller=distribution_controller_1)
         Ftr2 = Feature("Ftr2", "Feature2", victim=M2,
-                       distribution_state_controller=distribution_controller_2)
+                      distribution_state_controller=distribution_controller_2)
         Ftr3 = Feature("Ftr3", "Feature3", victim=M3,
                        distribution_state_controller=distribution_controller_3)
         Ftr4 = Feature("Ftr4", "Feature4", victim=M1,
@@ -79,9 +79,9 @@ class ExampleEnv(QualityEnv):
 
         c = (cost + activeEntity.cost)
         if action == 1 and "defect" in activeEntity.labels:  # True Negative
-            return c * 2
+            return c
         elif action == 0 and "defect" in activeEntity.labels:  # False Positive
-            return -c
+            return -c * 2
         elif action == 1:  # False Negative
             return -c * 4
         elif action == 0:  # True Positive
@@ -90,29 +90,24 @@ class ExampleEnv(QualityEnv):
 
 def plot(simulation, m_one=True, size=70):
     # plot rewards
-    s = 0.3  # smoothing factor
     x, y = [], []
     for i in range(0, len(simulation.all_rewards), len(simulation.all_rewards) // 20):
         x.append(i / 1000)
         y.append(statistics.mean(simulation.all_rewards[i:i + len(simulation.all_rewards) // 20]))
 
-    # smoothing
-    # spl = UnivariateSpline(x, y, s=s)
-    # xs = np.linspace(min(x), max(x), 1000)
-    # plt.plot(xs, spl(xs))
-
     plt.plot(x, y)
     plt.xlabel('Steps in thousands')
     plt.ylabel('Reward')
     plt.title('Reward over steps')
-    plt.show()
+
     plt.savefig("reward.png")
+    plt.show()
     print(f"Reward: {y[-1]}")
 
     # plot % of defect parts in exit
     x, y, defect = [], [], []
-    for i in range(0, len(simulation.objectList[7].entities), len(simulation.objectList[7].entities) // 20):
-        for entity in simulation.objectList[7].entities[i:i + len(simulation.objectList[7].entities) // 20]:
+    for i in range(0, len(simu.objectList[7].entities), len(simu.objectList[7].entities) // 20):
+        for entity in simu.objectList[7].entities[i:i + len(simu.objectList[7].entities) // 20]:
             if "defect" in entity.labels:
                 defect.append(1)
             else:
@@ -123,19 +118,30 @@ def plot(simulation, m_one=True, size=70):
         y.append((sum(defect) / len(defect)) * 100)
         defect = []
 
-    # smoothing
-    # spl = UnivariateSpline(x, y, s=s)
-    # xs = np.linspace(min(x), max(x), 1000)
-    # plt.plot(xs, spl(xs))
-
     plt.plot(x, y)
     plt.xlabel('Parts in thousands')
     plt.ylabel('% defect parts')
     plt.ylim(0, 100)
     plt.title('Percent of defect parts produced')
-    plt.show()
+
     plt.savefig("defect_parts.png")
+    plt.show()
     print(f"Percent of defect parts produced: {y[-1]}")
+
+    # plot difference of probs
+    x = []
+    y = []
+    for i in range(0, len(simulation.all_probs), len(simulation.all_probs) // 20):
+        x.append(i / 1000)
+        y.append(
+            statistics.mean([max(probs) - min(probs) for probs in simulation.all_probs[i:i + len(simulation.all_probs) // 20]]))
+
+    plt.plot(x, y)
+    plt.ylabel('Difference of probabilities')
+
+    plt.savefig("prob_differences.png")
+    plt.show()
+    print(f"Difference of probabilities: {y[-1]}")
 
     # plot features and actions
     y1 = [[]] * 3
@@ -191,62 +197,51 @@ def plot(simulation, m_one=True, size=70):
 
     x1 = range(len(y1[0]))
     x2 = range(len(y2[0]))
-
-    fig, axs = plt.subplots(2, 1)
+    s = 0.3
 
     # Machine 1
     if m_one:
         xs = np.linspace(min(x1), max(x1), 1000)
         spl = UnivariateSpline(x1, y1[0], s=s)
-        axs[0].plot(xs, spl(xs), label='Feature 1')
+        plt.plot(xs, spl(xs), label='Feature 1')
         spl = UnivariateSpline(x1, y1[1], s=s)
-        axs[0].plot(xs, spl(xs), color='grey', alpha=0.3, label='Feature 4')
+        plt.plot(xs, spl(xs), color='grey', alpha=0.3, label='Feature 4')
         spl = UnivariateSpline(x1, y1[2], s=s)
-        axs[0].plot(xs, spl(xs), color='grey', alpha=0.3, label='Feature 5')
-        axs[0].scatter(good_actions_x1, good_actions_y1, color='green', label='Good Action')
-        axs[0].scatter(bad_actions_x1, bad_actions_y1, color='red', label='Bad Action')
-        axs[0].set_title("Machine 1")
-        axs[0].legend(loc='upper left', bbox_to_anchor=(1, 1))
+        plt.plot(xs, spl(xs), color='grey', alpha=0.3, label='Feature 5')
+        plt.scatter(good_actions_x1, good_actions_y1, color='green', label='Good Action')
+        plt.scatter(bad_actions_x1, bad_actions_y1, color='red', label='Bad Action')
+        plt.title("Machine 1")
+        plt.legend(loc='upper left', bbox_to_anchor=(1, 1))
+        plt.ylim(-0.1, 1.1)
+        plt.tight_layout()
+
+        plt.savefig("Machine 1.png")
+        plt.show()
 
     # Machine 3
+    plt.figure(figsize=(10, 4))
     xs = np.linspace(min(x2), max(x2), 1000)
     for i in range(6):
         spl = UnivariateSpline(x2, y2[i], s=s)
         if i >= 3:  # Apply grey color and alpha for the last three features
-            axs[1].plot(xs, spl(xs), color='grey', alpha=0.3, label=f'Feature {i + 1}')
+            plt.plot(xs, spl(xs), color='grey', alpha=0.3, label=f'Feature {i + 1}')
         else:
-            axs[1].plot(xs, spl(xs), label=f'Feature {i + 1}')
-    axs[1].scatter(good_actions_x2, good_actions_y2, color='green', label='Good Action')
-    axs[1].scatter(bad_actions_x2, bad_actions_y2, color='red', label='Bad Action')
-    axs[1].set_title("Machine 3")
-    axs[1].legend(loc='upper left', bbox_to_anchor=(1, 1))
-
-    fig.suptitle('Features and Actions')
-    axs[0].set_ylim(-0.1, 1.1)
-    axs[1].set_ylim(-0.1, 1.1)
+            plt.plot(xs, spl(xs), label=f'Feature {i + 1}')
+    plt.scatter(good_actions_x2, good_actions_y2, color='green', label='Good Action')
+    plt.scatter(bad_actions_x2, bad_actions_y2, color='red', label='Bad Action')
+    plt.title("Machine 3")
+    plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05), ncol=4)
+    plt.ylim(-0.1, 1.1)
     plt.tight_layout()
-    plt.show()
-    plt.savefig("features_actions.png")
 
-    # plot difference of probs
-    x = []
-    y = []
-    for i in range(0, len(simulation.all_probs), len(simulation.all_probs) // 20):
-        x.append(i / 1000)
-        y.append(
-            statistics.mean([max(probs) - min(probs) for probs in simulation.all_probs[i:i + len(simulation.all_probs) // 20]]))
-
-    plt.plot(x, y)
-    plt.ylabel('Difference of probabilities')
+    plt.savefig("Machine 3.png")
     plt.show()
-    plt.savefig("prob_differences.png")
-    print(f"Difference of probabilities: {y[-1]}")
 
 
 if __name__ == "__main__":
     # Simulation
     observation_extremes = [(3400, 4900), (0, 2100), (11000, 50000), (1, 9), (50000, 57000), (0.2, 0.8)]
-    simu = ExampleEnv(observations=observation_extremes, maxSteps=20000, updates=300)
+    simu = ExampleEnv(observations=observation_extremes, maxSteps=32000, updates=100)
     simu.reset()
 
-    plot(simu, m_one=False, size=30)
+    plot(simu, m_one=False, size=40)
