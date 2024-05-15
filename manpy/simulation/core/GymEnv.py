@@ -1,11 +1,11 @@
 from abc import ABC, abstractmethod
+from typing import List
 import gymnasium as gym
 from manpy.simulation.core.Globals import runSimulation, resetSimulation, G
 from tqdm import tqdm
 import torch
 import torch.nn as nn
 import torch.optim as optim
-import torch.nn.functional as F
 import numpy as np
 from torch.optim.lr_scheduler import StepLR
 from statistics import mean
@@ -14,22 +14,25 @@ from statistics import mean
 class PolicyNetwork(nn.Module):
     def __init__(self, obs_space_dims, dropout_p=0.0):
         super(PolicyNetwork, self).__init__()
-        self.dense1 = nn.Linear(obs_space_dims, 256)
-        self.dropout1 = nn.Dropout(dropout_p)
-        self.dense2 = nn.Linear(256, 1024)
-        self.dropout2 = nn.Dropout(dropout_p)
-        self.dense3 = nn.Linear(1024, 512)
-        self.dropout3 = nn.Dropout(dropout_p)
-        self.dense4 = nn.Linear(512, 2)
+        self.model = nn.Sequential(
+            nn.Linear(obs_space_dims, 256),
+            nn.ReLU(),
+            nn.Dropout(dropout_p),
+
+            nn.Linear(256, 1024),
+            nn.ReLU(),
+            nn.Dropout(dropout_p),
+
+            nn.Linear(1024, 512),
+            nn.ReLU(),
+            nn.Dropout(dropout_p),
+
+            nn.Linear(512, 2),
+            nn.Softmax(dim=-1)
+        )
 
     def forward(self, x):
-        x = F.relu(self.dense1(x))
-        x = self.dropout1(x)
-        x = F.relu(self.dense2(x))
-        x = self.dropout2(x)
-        x = F.relu(self.dense3(x))
-        x = self.dropout3(x)
-        return torch.softmax(self.dense4(x), dim=-1)
+        return self.model(x)
 
 
 class Reinforce:
@@ -49,17 +52,16 @@ class Reinforce:
 
     def update(self, probs, rewards):
         # Calculate loss
-        loss = 0
+        loss = []
         for p, R in zip(probs, rewards):
-            loss += -torch.log(p) * R
+            loss.append(-torch.log(p) * R)
+        mean_loss = torch.mean(torch.stack(loss))
 
-        self.all_losses.append(loss.item())
-        print(f"Mean loss: {mean(self.all_losses)}")
-        # print(f"Current absolute loss: {loss.item()}")
+        self.all_losses.append(mean_loss.item())
 
         # Backpropagation
         self.optimizer.zero_grad()
-        loss.backward()
+        mean_loss.backward()
         self.optimizer.step()
 
         # Decay learning rate
@@ -69,10 +71,9 @@ class Reinforce:
 
 class QualityEnv(gym.Env):
 
-    def __init__(self, observations: int, maxSimTime=100, maxSteps=None, updates=1, normalize=None):
+    def __init__(self, observations: List, maxSimTime=100, maxSteps=None, updates=5):
         self.observations = observations
         self.steps = 0
-        self.normalize = normalize
         self.probs, self.rewards, self.all_rewards, self.all_actions, self.all_probs = [], [], [], [], []
 
         if maxSteps is None:
@@ -122,6 +123,8 @@ class QualityEnv(gym.Env):
     def step(self, o):
         self.steps += 1
         self.pbar.update(1)
+        if self.agent.all_losses:
+            self.pbar.set_postfix({'loss': mean(list(map(lambda x: abs(x), self.agent.all_losses[-10:]))), 'reward': mean(self.all_rewards[-self.updates*10:])})
 
         # update machine
         self.machine = o
@@ -133,7 +136,7 @@ class QualityEnv(gym.Env):
             if ob:
                 observation[i] = (ob - self.observations[i][0])/(self.observations[i][1]-self.observations[i][0])
             else:
-                observation[i] = -1
+                observation[i] = 10
         observation = observation.astype(np.float32)
         if self.steps % 1000 == 0:
             pass
@@ -150,10 +153,6 @@ class QualityEnv(gym.Env):
 
         # update
         if self.steps % self.updates == 0:
-            # normalize between -1 and 1
-            if self.normalize:
-                self.rewards = [(r - self.normalize[0]) / (self.normalize[1] - self.normalize[0]) * 2 - 1 for r in self.rewards]
-
             self.agent.update(self.probs, self.rewards)
             self.probs, self.rewards = [], []
 
