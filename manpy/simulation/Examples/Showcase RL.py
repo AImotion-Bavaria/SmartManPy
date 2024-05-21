@@ -10,21 +10,19 @@ from scipy.interpolate import UnivariateSpline
 class ExampleEnv(QualityEnv):
     def prepare(self):
         # Objects
-        S = Source("S1", "Source", interArrivalTime={"Fixed": {"mean": 0.1}}, entity="manpy.Part", cost=12)
+        S = Source("S1", "Source", interArrivalTime={"Fixed": {"mean": 0.1}}, entity="manpy.Part")
 
         # Assign the condition as the "control" parameter for any machine
-        M1 = Machine("M1", "Machine1", processingTime={"Normal": {"mean": 0.2, "stdev": 0.1, "min": 0.08, "max": 0.34}},
-                     cost=5)
-        M2 = Machine("M2", "Machine2", processingTime={"Normal": {"mean": 1, "stdev": 0.3, "min": 0.5, "max": 2}},
-                     cost=10)
+        M1 = Machine("M1", "Machine1", processingTime={"Normal": {"mean": 0.2, "stdev": 0.1, "min": 0.08, "max": 0.34}})
+        M2 = Machine("M2", "Machine2", processingTime={"Normal": {"mean": 1, "stdev": 0.3, "min": 0.5, "max": 2}})
         M3 = Machine("M3", "Machine3", processingTime={"Normal": {"mean": 0.5, "stdev": 0.2, "min": 0.2, "max": 0.8}},
-                     control=self.step, cost=7)
+                     control=self.step)
 
         Q1 = Queue("Q1", "Queue1")
         Q2 = Queue("Q2", "Queue2")
         Q3 = Queue("Q3", "Queue3")
 
-        E1 = Exit("E1", "Exit1", cost=2)
+        E1 = Exit("E1", "Exit1")
 
         # ObjectProperty
         dists_1 = [{"Feature": {"Normal": {"mean": 3800, "stdev": 100, "min": 3400, "max": 4200}}},
@@ -47,7 +45,7 @@ class ExampleEnv(QualityEnv):
         Ftr1 = Feature("Ftr1", "Feature1", victim=M1,
                        distribution_state_controller=distribution_controller_1)
         Ftr2 = Feature("Ftr2", "Feature2", victim=M2,
-                      distribution_state_controller=distribution_controller_2)
+                       distribution_state_controller=distribution_controller_2)
         Ftr3 = Feature("Ftr3", "Feature3", victim=M3,
                        distribution_state_controller=distribution_controller_3)
         Ftr4 = Feature("Ftr4", "Feature4", victim=M1,
@@ -70,25 +68,18 @@ class ExampleEnv(QualityEnv):
 
     def rew(self, action):
         activeEntity = self.machine.Res.users[0]
-        if self.machine.id == "M1":
-            cost = 15
-        elif self.machine.id == "M3":
-            cost = 9
-        else:
-            cost = 5
 
-        c = (cost + activeEntity.cost)
         if action == 1 and "defect" in activeEntity.labels:  # True Negative
-            return c
+            return 1
         elif action == 0 and "defect" in activeEntity.labels:  # False Positive
-            return -c * 2
+            return -2
         elif action == 1:  # False Negative
-            return -c * 4
+            return -4
         elif action == 0:  # True Positive
-            return c
+            return 2
 
 
-def plot(simulation, m_one=True, size=70):
+def plot(simulation, size=40):
     # plot rewards
     x, y = [], []
     for i in range(0, len(simulation.all_rewards), len(simulation.all_rewards) // 20):
@@ -126,7 +117,7 @@ def plot(simulation, m_one=True, size=70):
 
     plt.savefig("defect_parts.png")
     plt.show()
-    print(f"Percent of defect parts produced: {y[-1]}")
+    print(f"Defect parts produced:       {y[-1]:.2f}%")
 
     # plot difference of probs
     x = []
@@ -141,13 +132,11 @@ def plot(simulation, m_one=True, size=70):
 
     plt.savefig("prob_differences.png")
     plt.show()
-    print(f"Difference of probabilities: {y[-1]}")
+    print(f"Difference of probabilities: {y[-1]:.2f}")
 
     # plot features and actions
-    y1 = [[]] * 3
-    y2 = [[]] * 6
-    good_actions_x1, good_actions_y1, bad_actions_x1, bad_actions_y1 = [], [], [], []
-    good_actions_x2, good_actions_y2, bad_actions_x2, bad_actions_y2 = [], [], [], []
+    y1 = [[]] * 6
+    good_actions_x, good_actions_y, bad_actions_x, bad_actions_y = [], [], [], []
 
     Ftr1 = simulation.objectList[8].featureHistory[:size]
     Ftr2 = simulation.objectList[9].featureHistory[:size]
@@ -157,80 +146,40 @@ def plot(simulation, m_one=True, size=70):
     Ftr6 = simulation.objectList[13].featureHistory[:size]
 
     for ind, ((machine, action), reward) in enumerate(zip(simulation.all_actions[:size], simulation.all_rewards[:size])):
-        if machine == 1:
-            # features
-            y = [Ftr1[ind], Ftr4[ind], Ftr5[ind]]
-            for i, ftr in enumerate(y):
-                y1[i] = y1[i] + [ftr]
-            # normalize
-            y1[0][-1] = (y1[0][-1] - observation_extremes[0][0]) / (
-                observation_extremes[0][1] - observation_extremes[0][0])
-            y1[1][-1] = (y1[1][-1] - observation_extremes[3][0]) / (
-                observation_extremes[3][1] - observation_extremes[3][0])
-            y1[2][-1] = (y1[2][-1] - observation_extremes[4][0]) / (
-                observation_extremes[4][1] - observation_extremes[4][0])
-
-            # actions
-            if reward > 0:
-                good_actions_x1.append(len(y1[0]))
-                good_actions_y1.append(action)
-            else:
-                bad_actions_x1.append(len(y1[0]))
-                bad_actions_y1.append(action)
         if machine == 3:
             # features
             y = [Ftr1[ind], Ftr2[ind], Ftr3[ind], Ftr4[ind], Ftr5[ind], Ftr6[ind]]
             for i, ftr in enumerate(y):
-                y2[i] = y2[i] + [ftr]
+                y1[i] = y1[i] + [ftr]
             # normalize
             for i in range(6):
-                y2[i][-1] = (y2[i][-1] - observation_extremes[i][0]) / (
+                y1[i][-1] = (y1[i][-1] - observation_extremes[i][0]) / (
                     observation_extremes[i][1] - observation_extremes[i][0])
 
             # actions
             if reward > 0:
-                good_actions_x2.append(len(y2[0]))
-                good_actions_y2.append(action)
+                good_actions_x.append(len(y1[0]))
+                good_actions_y.append(action)
             else:
-                bad_actions_x2.append(len(y2[0]))
-                bad_actions_y2.append(action)
+                bad_actions_x.append(len(y1[0]))
+                bad_actions_y.append(action)
 
     x1 = range(len(y1[0]))
-    x2 = range(len(y2[0]))
     s = 0.3
-
-    # Machine 1
-    if m_one:
-        xs = np.linspace(min(x1), max(x1), 1000)
-        spl = UnivariateSpline(x1, y1[0], s=s)
-        plt.plot(xs, spl(xs), label='Feature 1')
-        spl = UnivariateSpline(x1, y1[1], s=s)
-        plt.plot(xs, spl(xs), color='grey', alpha=0.3, label='Feature 4')
-        spl = UnivariateSpline(x1, y1[2], s=s)
-        plt.plot(xs, spl(xs), color='grey', alpha=0.3, label='Feature 5')
-        plt.scatter(good_actions_x1, good_actions_y1, color='green', label='Good Action')
-        plt.scatter(bad_actions_x1, bad_actions_y1, color='red', label='Bad Action')
-        plt.title("Machine 1")
-        plt.legend(loc='upper left', bbox_to_anchor=(1, 1))
-        plt.ylim(-0.1, 1.1)
-        plt.tight_layout()
-
-        plt.savefig("Machine 1.png")
-        plt.show()
 
     # Machine 3
     plt.figure(figsize=(10, 4))
-    xs = np.linspace(min(x2), max(x2), 1000)
+    xs = np.linspace(min(x1), max(x1), 1000)
     for i in range(6):
-        spl = UnivariateSpline(x2, y2[i], s=s)
+        spl = UnivariateSpline(x1, y1[i], s=s)
         if i >= 3:  # Apply grey color and alpha for the last three features
             plt.plot(xs, spl(xs), color='grey', alpha=0.3, label=f'Feature {i + 1}')
         else:
             plt.plot(xs, spl(xs), label=f'Feature {i + 1}')
-    plt.scatter(good_actions_x2, good_actions_y2, color='green', label='Good Action')
-    plt.scatter(bad_actions_x2, bad_actions_y2, color='red', label='Bad Action')
+    plt.scatter(good_actions_x, good_actions_y, color='green', label='Good Action')
+    plt.scatter(bad_actions_x, bad_actions_y, color='red', label='Bad Action')
     plt.title("Machine 3")
-    plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05), ncol=4)
+    plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.1), ncol=4)
     plt.ylim(-0.1, 1.1)
     plt.tight_layout()
 
@@ -244,4 +193,4 @@ if __name__ == "__main__":
     simu = ExampleEnv(observations=observation_extremes, maxSteps=32000, updates=100)
     simu.reset()
 
-    plot(simu, m_one=False, size=40)
+    plot(simu, size=40)
