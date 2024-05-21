@@ -80,44 +80,50 @@ class ExampleEnv(QualityEnv):
 
 
 def plot(simulation, size=40):
-    # plot rewards
-    x, y = [], []
-    for i in range(0, len(simulation.all_rewards), len(simulation.all_rewards) // 20):
+    sim_time = simulation.objectList[0].env.now
+    steps_taken = len(simulation.all_rewards)
+
+    # Plot Performance
+    x, y1, y2, y3, defect = [], [], [], [], []
+    minima, maxima = min(simulation.all_rewards), max(simulation.all_rewards)
+    j = 0
+    for ind, i in enumerate(range(0, steps_taken, steps_taken // 20)):
         x.append(i / 1000)
-        y.append(statistics.mean(simulation.all_rewards[i:i + len(simulation.all_rewards) // 20]))
 
-    plt.plot(x, y)
-    plt.xlabel('Steps in thousands')
-    plt.ylabel('Reward')
-    plt.title('Reward over steps')
+        # Rewards
+        average_reward = statistics.mean(simulation.all_rewards[i:i + steps_taken // 20])
+        y1.append((average_reward - minima) / (maxima - minima) * 100)
 
-    plt.savefig("reward.png")
-    plt.show()
-    print(f"Reward: {y[-1]}")
+        # Correct actions
+        y2.append((sum([1 for reward in simulation.all_rewards[i:i + steps_taken // 20] if reward > 0]) / (steps_taken // 20)) * 100)
 
-    # plot % of defect parts in exit
-    x, y, defect = [], [], []
-    for i in range(0, len(simu.objectList[7].entities), len(simu.objectList[7].entities) // 20):
-        for entity in simu.objectList[7].entities[i:i + len(simu.objectList[7].entities) // 20]:
-            if "defect" in entity.labels:
+        # Defect parts
+        for entity in simu.objectList[7].entities[j:]:
+            if max(entity.feature_times) > (sim_time // 20)*(ind+1):
+                j = simu.objectList[7].entities.index(entity)
+                break
+            elif "defect" in entity.labels:
                 defect.append(1)
             else:
                 defect.append(0)
-        if len(defect) < 500:
-            continue
-        x.append(i / 1000)
-        y.append((sum(defect) / len(defect)) * 100)
+        y3.append((sum(defect) / len(defect)) * 100)
         defect = []
 
-    plt.plot(x, y)
-    plt.xlabel('Parts in thousands')
-    plt.ylabel('% defect parts')
-    plt.ylim(0, 100)
-    plt.title('Percent of defect parts produced')
+    print(f"Rewards:         {y1[-1]:>6.2f}%")
+    print(f"Correct actions: {y2[-1]:>6.2f}%")
+    print(f"Defect parts:    {y3[-1]:>6.2f}%")
 
-    plt.savefig("defect_parts.png")
+    plt.plot(x, y1, label="Rewards")
+    plt.plot(x, y2, label="Correct actions")
+    plt.plot(x, y3, label="Defect parts")
+
+    plt.xlabel('Steps in thousands')
+    plt.ylabel('Percent')
+    plt.ylim(0, 100)
+    plt.legend(loc='center right')
+    plt.title("Performance")
+    plt.savefig("Performance in percent.png")
     plt.show()
-    print(f"Defect parts produced:       {y[-1]:.2f}%")
 
     # plot difference of probs
     x = []
@@ -130,7 +136,6 @@ def plot(simulation, size=40):
     plt.plot(x, y)
     plt.ylabel('Difference of probabilities')
 
-    plt.savefig("prob_differences.png")
     plt.show()
     print(f"Difference of probabilities: {y[-1]:.2f}")
 
@@ -190,7 +195,7 @@ def plot(simulation, size=40):
 if __name__ == "__main__":
     # Simulation
     observation_extremes = [(3400, 4900), (0, 2100), (11000, 50000), (1, 9), (50000, 57000), (0.2, 0.8)]
-    simu = ExampleEnv(observations=observation_extremes, maxSteps=32000, updates=100)
+    simu = ExampleEnv(observations=observation_extremes, maxSteps=24000, updates=100)
     simu.reset()
 
     plot(simu, size=40)
