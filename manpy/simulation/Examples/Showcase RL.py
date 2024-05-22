@@ -1,5 +1,5 @@
 from manpy.simulation.imports import Machine, Source, Exit, Feature, Queue, SimpleStateController
-from manpy.simulation.core.GymEnv import QualityEnv
+from manpy.simulation.core.GymEnv import QualityEnv, PolicyNetwork
 import numpy as np
 import statistics
 import matplotlib.pyplot as plt
@@ -198,7 +198,7 @@ def plot(simulation, size=40):
 if __name__ == "__main__":
     # Simulation
     observation_extremes = [(3400, 4900), (0, 2100), (11000, 50000), (1, 9), (50000, 57000), (0.2, 0.8)]
-    simu = ExampleEnv(observations=observation_extremes, maxSteps=24000, updates=100)
+    simu = ExampleEnv(observations=observation_extremes, policy_network=PolicyNetwork(len(observation_extremes)), maxSteps=24000, updates=100)
     simu.reset()
 
     plot(simu, size=40)

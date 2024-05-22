@@ -7,8 +7,8 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import numpy as np
-from torch.optim.lr_scheduler import StepLR
 from statistics import mean
+from datetime import datetime
 
 
 class PolicyNetwork(nn.Module):
@@ -67,7 +67,8 @@ class Reinforce:
 
 class QualityEnv(gym.Env):
 
-    def __init__(self, observations: List, maxSimTime=100, maxSteps=None, updates=5):
+    def __init__(self, observations: List, policy_network: nn.Module,  maxSimTime=100, maxSteps=None, updates=5,
+                 save_policy_network=False):
         self.observations = observations
         self.steps = 0
         self.probs, self.rewards, self.all_rewards, self.all_actions, self.all_probs = [], [], [], [], []
@@ -83,8 +84,10 @@ class QualityEnv(gym.Env):
         self.maxSteps = maxSteps
         self.updates = updates
 
+        self.policy_network = policy_network
+        self.save_policy_network = save_policy_network
         # setup agent
-        self.agent = Reinforce(PolicyNetwork(len(observations)))
+        self.agent = Reinforce(policy_network)
 
         # setup machine
         self.objectList = self.prepare()
@@ -92,22 +95,30 @@ class QualityEnv(gym.Env):
 
     @abstractmethod
     def prepare(self):
-        # initialize objects and routing
-        # return objectList
+        """
+        initialize objects and routing
+        return objectList
+        """
         pass
 
     @abstractmethod
     def obs(self):
-        # return observation
+        """
+        return observation
+        """
         pass
 
     @abstractmethod
     def rew(self, action):
-        # calculate and return reward
+        """
+        calculate and return reward
+        """
         pass
 
-
     def reset(self):
+        """
+        Resets and starts the simulation.
+        """
         self.pbar.n = 0
 
         super().reset()
@@ -167,3 +178,8 @@ class QualityEnv(gym.Env):
     def close(self):
         self.objectList[0].endSimulation()
         self.pbar.close()
+
+        if self.save_policy_network:
+            current_date_time = datetime.now().strftime('%Y%m%d_%H%M%S')
+            filename = f"QualityNetwork_{current_date_time}.pt"
+            torch.save(self.policy_network.state_dict(), filename)

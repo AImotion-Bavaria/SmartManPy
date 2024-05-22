@@ -1,5 +1,5 @@
 from manpy.simulation.imports import Machine, Source, Exit, Feature, Queue, SimpleStateController
-from manpy.simulation.core.GymEnv import QualityEnv
+from manpy.simulation.core.GymEnv import QualityEnv, PolicyNetwork
 import numpy as np
 import statistics
 import matplotlib.pyplot as plt
@@ -48,7 +48,7 @@ class ExampleEnv(QualityEnv):
             return -1
 
 
-simu = ExampleEnv(observations=[(0, 800)], maxSteps=6000, updates=5)
+simu = ExampleEnv(observations=[(0, 800)], policy_network=PolicyNetwork(1), maxSteps=6000, updates=5, save_policy_network=True)
 simu.reset()
 
 
