@@ -36,12 +36,10 @@ class PolicyNetwork(nn.Module):
 
 
 class Reinforce:
-    def __init__(self, policy_network, learning_rate=1e-4, step_size=100, gamma=0.1):
+    def __init__(self, policy_network, learning_rate=1e-4):
         self.policy_network = policy_network
         self.optimizer = optim.Adam(policy_network.parameters(), lr=learning_rate)
-        # self.scheduler = StepLR(self.optimizer, step_size=step_size, gamma=gamma)
         self.all_losses = []
-
 
     def sample_action(self, state):
         state = torch.FloatTensor(state)
@@ -64,8 +62,6 @@ class Reinforce:
         mean_loss.backward()
         self.optimizer.step()
 
-        # Decay learning rate
-        # self.scheduler.step()
         self.optimizer.zero_grad()
 
 
