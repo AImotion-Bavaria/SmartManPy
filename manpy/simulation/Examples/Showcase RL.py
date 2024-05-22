@@ -113,16 +113,19 @@ def plot(simulation, size=40):
     print(f"Correct actions: {y2[-1]:>6.2f}%")
     print(f"Defect parts:    {y3[-1]:>6.2f}%")
 
-    plt.plot(x, y1, label="Rewards")
-    plt.plot(x, y2, label="Correct actions")
-    plt.plot(x, y3, label="Defect parts")
+    # plt.plot(x, y1, label="Rewards")
+    # plt.plot(x, y2, label="Correct actions")
+    # plt.plot(x, y3, label="Defect parts")
+    plt.plot(x, y1, label="Rewards", color='black', linestyle='-')
+    plt.plot(x, y2, label="Correct actions", color='red', linestyle='--')
+    plt.plot(x, y3, label="Defect parts", color='grey', linestyle='-.')
 
     plt.xlabel('Steps in thousands')
     plt.ylabel('Percent')
     plt.ylim(0, 100)
     plt.legend(loc='center right')
     plt.title("Performance")
-    plt.savefig("Performance in percent.png")
+    plt.savefig("performance_percent.pdf", format="pdf")
     plt.show()
 
     # plot difference of probs
