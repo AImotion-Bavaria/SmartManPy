@@ -36,7 +36,10 @@ class PolicyNetwork(nn.Module):
 
 
 class Reinforce:
-    def __init__(self, policy_network, learning_rate=1e-4):
+    def __init__(self, 
+                 policy_network, 
+                 learning_rate=1e-4):
+
         self.policy_network = policy_network
         self.optimizer = optim.Adam(policy_network.parameters(), lr=learning_rate)
         self.all_losses = []
@@ -67,9 +70,26 @@ class Reinforce:
 
 class QualityEnv(gym.Env):
 
-    def __init__(self, observations: List, policy_network: nn.Module,  maxSimTime=100, maxSteps=None, updates=5,
+    def __init__(self, 
+                 observation_extremes: List, 
+                 policy_network: nn.Module,  
+                 maxSimTime=100, 
+                 maxSteps=None, 
+                 steps_between_updates=5,
                  save_policy_network=False):
-        self.observations = observations
+        
+        """
+        Simple RL Env for quality predictions. Is assigned instead of a quality control function.
+        
+        :param observation_extremes: List of tuples that contain the observation extremes for each observation.
+        :param policy_network: torch NN that is used for predicting the policy.
+        :param maxSimTime: Used to correctly display the progress bar.
+        :param maxSteps: Number of maximum training steps. Training ends after maxSteps is reached.
+        :param steps_between_updates: Determines how many steps are between each update. 
+        :param save_policy_network: Saves the policy NN's state dict if True.
+        """
+
+        self.observation_extremes = observation_extremes
         self.steps = 0
         self.probs, self.rewards, self.all_rewards, self.all_actions, self.all_probs = [], [], [], [], []
 
@@ -82,7 +102,7 @@ class QualityEnv(gym.Env):
             self.pbar = tqdm(total=maxSteps, desc='Simulation Progress',
                              bar_format="\033[92m{l_bar}{bar:25}{r_bar}\033[0m")
         self.maxSteps = maxSteps
-        self.updates = updates
+        self.steps_between_updates = steps_between_updates
 
         self.policy_network = policy_network
         self.save_policy_network = save_policy_network
@@ -131,7 +151,7 @@ class QualityEnv(gym.Env):
         self.steps += 1
         self.pbar.update(1)
         if self.agent.all_losses:
-            self.pbar.set_postfix({'loss': mean(list(map(lambda x: abs(x), self.agent.all_losses[-10:]))), 'reward': mean(self.all_rewards[-self.updates*10:])})
+            self.pbar.set_postfix({'loss': mean(list(map(lambda x: abs(x), self.agent.all_losses[-10:]))), 'reward': mean(self.all_rewards[-self.steps_between_updates*10:])})
 
         # update machine
         self.machine = o
@@ -141,7 +161,7 @@ class QualityEnv(gym.Env):
         # normalize observation
         for i, ob in enumerate(observation):
             if ob:
-                observation[i] = (ob - self.observations[i][0])/(self.observations[i][1]-self.observations[i][0])
+                observation[i] = (ob - self.observation_extremes[i][0])/(self.observation_extremes[i][1]-self.observation_extremes[i][0])
             else:
                 observation[i] = 0
         observation = observation.astype(np.float32)
@@ -159,7 +179,7 @@ class QualityEnv(gym.Env):
         self.all_probs.append(probs.detach().numpy())
 
         # update
-        if self.steps % self.updates == 0:
+        if self.steps % self.steps_between_updates == 0:
             self.agent.update(self.probs, self.rewards)
             self.probs, self.rewards = [], []
 

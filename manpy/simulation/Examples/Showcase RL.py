@@ -198,7 +198,7 @@ def plot(simulation, size=40):
 if __name__ == "__main__":
     # Simulation
     observation_extremes = [(3400, 4900), (0, 2100), (11000, 50000), (1, 9), (50000, 57000), (0.2, 0.8)]
-    simu = ExampleEnv(observations=observation_extremes, policy_network=PolicyNetwork(len(observation_extremes)), maxSteps=24000, updates=100)
+    simu = ExampleEnv(observation_extremes=observation_extremes, policy_network=PolicyNetwork(len(observation_extremes)), maxSteps=24000, steps_between_updates=100)
     simu.reset()
 
     plot(simu, size=40)
