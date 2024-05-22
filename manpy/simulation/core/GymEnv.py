@@ -36,8 +36,8 @@ class PolicyNetwork(nn.Module):
 
 
 class Reinforce:
-    def __init__(self, 
-                 policy_network, 
+    def __init__(self,
+                 policy_network,
                  learning_rate=1e-4):
 
         self.policy_network = policy_network
@@ -69,25 +69,25 @@ class Reinforce:
 
 
 class QualityEnv(gym.Env):
+    """
+    Simple RL Env for quality predictions. Is assigned instead of a quality control function.
 
-    def __init__(self, 
-                 observation_extremes: List, 
-                 policy_network: nn.Module,  
-                 maxSimTime=100, 
-                 maxSteps=None, 
+    :param observation_extremes: List of tuples that contain the observation extremes for each observation.
+    :param policy_network: torch NN that is used for predicting the policy.
+    :param maxSimTime: Used to correctly display the progress bar.
+    :param maxSteps: Number of maximum training steps. Training ends after maxSteps is reached.
+    :param steps_between_updates: Determines how many steps are between each update.
+    :param save_policy_network: Saves the policy NN's state dict if True.
+    """
+    def __init__(self,
+                 observation_extremes: List,
+                 policy_network: nn.Module,
+                 maxSimTime=100,
+                 maxSteps=None,
                  steps_between_updates=5,
                  save_policy_network=False):
-        
-        """
-        Simple RL Env for quality predictions. Is assigned instead of a quality control function.
-        
-        :param observation_extremes: List of tuples that contain the observation extremes for each observation.
-        :param policy_network: torch NN that is used for predicting the policy.
-        :param maxSimTime: Used to correctly display the progress bar.
-        :param maxSteps: Number of maximum training steps. Training ends after maxSteps is reached.
-        :param steps_between_updates: Determines how many steps are between each update. 
-        :param save_policy_network: Saves the policy NN's state dict if True.
-        """
+
+
 
         self.observation_extremes = observation_extremes
         self.steps = 0

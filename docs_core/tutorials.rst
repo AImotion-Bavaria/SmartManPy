@@ -86,6 +86,8 @@ This function needs a list with all simulated objects (machines, features/timese
     If there exist dependencies (e.g. temporal) between simulated objects, you need to reflect this in the object list.
     This is especially important for functional dependencies in features (see `Functional dependencies`_)
 
+If you want to run another simulation directly after the previous one has finished, you can use the "resetSimulation()" in Globals.
+
 Adding more machines
 ----------------------
 
@@ -388,6 +390,14 @@ We therefore added the function "get_feature_values_by_id" in Globals.py, that l
             return True
         else:
             return False
+
+Assembly and cost of entities
+------------------------------
+
+Since every part and every production step in reality costs money, cost is an interesting aspect for simulation.
+We therefore added a parameter "cost" to entities, machines and assemblies, which allows us to accurately simulate the value of an entity over the course of a production line.
+
+TODO example
 
 Failures
 ---------
@@ -734,3 +744,8 @@ This module can then be imported into other files and easily incorporated in the
 Since all objects of the module need to be added to the global object list of the production line, we need to access the module's object.
 We can conveniently do so by using example_module.getObjectList().
 When defining the routing, a ProductionLineModule behaves like every Machine, Source, Exit, etc.
+
+Training an AI agent using deep RL
+-----------------------------------
+
+TODO
