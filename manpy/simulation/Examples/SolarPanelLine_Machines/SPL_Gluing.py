@@ -1,5 +1,5 @@
 from manpy.simulation.imports import Machine, Feature
-from manpy.simulation.core.StateController import ContinuosNormalDistribution, RandomDefectStateController
+from manpy.simulation.core.StateController import ContinuousNormalDistribution, RandomDefectStateController
 from manpy.simulation.core.ProductionLineModule import SequentialProductionLineModule
 
 Gluing = Machine("M5", "Gluing", processingTime={"Fixed": {"mean": 10}})
@@ -9,19 +9,19 @@ Gluing = Machine("M5", "Gluing", processingTime={"Fixed": {"mean": 10}})
 glue_temperature = Feature("glue_temp", "Glue_Temperature", victim=Gluing, random_walk=True, start_value=190,
                distribution={"Feature": {"Normal": {"mean": 0, "stdev": 0.3}}})
 
-sG_1 = ContinuosNormalDistribution(
+sG_1 = ContinuousNormalDistribution(
                                    mean_change_per_step=0.0,
                                    initial_mean=400,
                                    std=50,
                                    )
 
-sG_2 = ContinuosNormalDistribution(
+sG_2 = ContinuousNormalDistribution(
                                     mean_change_per_step=0.0,
                                     initial_mean=500,
                                     std=50,
                                     )
 
-s6_3 = ContinuosNormalDistribution(
+s6_3 = ContinuousNormalDistribution(
                                     mean_change_per_step=0.0,
                                     initial_mean=300,
                                     std=50,

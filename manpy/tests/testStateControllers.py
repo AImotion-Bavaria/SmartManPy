@@ -41,7 +41,7 @@ class TestStateControllers(TestCase):
         self.assertEqual((0, "ok"), s_reset.get_and_update())
 
     def testContinuosNormalDistribution(self):
-        s = sc.ContinuosNormalDistribution(wear_per_step=1,
+        s = sc.ContinuousNormalDistribution(wear_per_step=1,
                                             break_point=3,
                                             mean_change_per_step=1,
                                             initial_mean=0,
@@ -92,23 +92,23 @@ class TestStateControllers(TestCase):
         self.assertEqual(1, std)
 
     def testRandomDefectsController(self):
-        s1 = sc.ContinuosNormalDistribution(wear_per_step=1,
-                                           break_point=None,
-                                           mean_change_per_step=1,
-                                           initial_mean=0,
-                                           std=1,
-                                           defect_mean=10,
-                                           defect_std=5
-                                           )
+        s1 = sc.ContinuousNormalDistribution(wear_per_step=1,
+                                             break_point=None,
+                                             mean_change_per_step=1,
+                                             initial_mean=0,
+                                             std=1,
+                                             defect_mean=10,
+                                             defect_std=5
+                                             )
 
-        s2 = sc.ContinuosNormalDistribution(wear_per_step=1,
-                                            break_point=None,
-                                            mean_change_per_step=1,
-                                            initial_mean=100,
-                                            std=1,
-                                            defect_mean=110,
-                                            defect_std=50
-                                            )
+        s2 = sc.ContinuousNormalDistribution(wear_per_step=1,
+                                             break_point=None,
+                                             mean_change_per_step=1,
+                                             initial_mean=100,
+                                             std=1,
+                                             defect_mean=110,
+                                             defect_std=50
+                                             )
 
         r = sc.RandomDefectStateController(failure_probability=0.0,
                                            ok_controller=s1,

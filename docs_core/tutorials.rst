@@ -504,13 +504,13 @@ In this case, the break point is defined at 25 units of wear, which leads to a n
     By default, a StateController is reset to its initial state after the victim (= the machine) of its assigned feature has ended a failure, i.e. it's been repaired.
     This behavior can be deactivated through the "reset_distributions" parameter of Feature.
 
-ContinuosNormalDistribution
+ContinuousNormalDistribution
 ............................
 
 SimpleStateController is very generic by simply retrieving the element in the states list that is determined by boundaries.
-ContinuosNormalDistribution is a more specialized StateController.
+ContinuousNormalDistribution is a more specialized StateController.
 It is specifically designed for Features that are generated using a Gaussian distribution.
-In ContinuosNormalDistribution, we assume that wear immediately influences the underlying probability distribution, even if it's by a very small amount.
+In ContinuousNormalDistribution, we assume that wear immediately influences the underlying probability distribution, even if it's by a very small amount.
 We model this by adding a certain amount (mean_change_per_step) in each production step to the mean of the normal distribution.
 Additionally, the break point mechanic from SimpleStateController is still present.
 However, it's now simplified such that the normal distribution after the defect occurred is only defined by a mean and STD:
@@ -519,7 +519,7 @@ However, it's now simplified such that the normal distribution after the defect 
     :linenos:
 
     mean_change_per_step = 0.05
-    controller1 = ContinuosNormalDistribution(wear_per_step=0.1,
+    controller1 = ContinuousNormalDistribution(wear_per_step=0.1,
                                              mean_change_per_step=mean_change_per_step,
                                              initial_mean=2.0,
                                              std=2.0,
@@ -529,7 +529,7 @@ However, it's now simplified such that the normal distribution after the defect 
                                              )
 
     # not using a break point
-    controller2 = ContinuosNormalDistribution(wear_per_step=0.7,
+    controller2 = ContinuousNormalDistribution(wear_per_step=0.7,
                                              mean_change_per_step=mean_change_per_step,
                                              initial_mean=2.0,
                                              std=2.0,
@@ -541,17 +541,17 @@ However, it's now simplified such that the normal distribution after the defect 
     f3 = Feature("f3", "F3", victim=m2, reset_distributions=True, distribution_state_controller=controller1)
     # f3 = Feature("f3", "F3", victim=m2, reset_distributions=True, distribution_state_controller=controller2)
 
-The typical behaviour of ContinuosNormalDistribution can be seen in the following plot.
-It contains the evolution of the feature value of two ContinuosNormalDistribution StateControllers over the span of 250 steps.
+The typical behaviour of ContinuousNormalDistribution can be seen in the following plot.
+It contains the evolution of the feature value of two ContinuousNormalDistribution StateControllers over the span of 250 steps.
 
 .. image:: ./images/continuos_normal_dist.png
     :width: 500
-    :alt: Two ContinuosNormalDistributions
+    :alt: Two ContinuousNormalDistributions
 
 RandomDefectStateController
 ............................
 
-SimpleStateController and ContinuosNormalDistribution are best used to model properties related to wear.
+SimpleStateController and ContinuousNormalDistribution are best used to model properties related to wear.
 But sometimes, failures can occur without obvious reason.
 For these cases, we designed RandomDefectStateController, which models a defect using a Bernoulli distribution.
 If the Bernoulli distribution returns 1, it selects a defect StateController from a list, otherwise it uses a "ok" StateController that model normal behaviour.
@@ -561,7 +561,7 @@ If the Bernoulli distribution returns 1, it selects a defect StateController fro
 
     mean_change_per_step = 0.02
 
-    ok_controller = ContinuosNormalDistribution(wear_per_step=0.7,
+    ok_controller = ContinuousNormalDistribution(wear_per_step=0.7,
                                                 break_point=None,
                                                 mean_change_per_step=mean_change_per_step,
                                                 initial_mean=3.0,
@@ -570,7 +570,7 @@ If the Bernoulli distribution returns 1, it selects a defect StateController fro
                                                 defect_std=3.0
                                                 )
 
-    defect_controller1 = ContinuosNormalDistribution(wear_per_step=0.7,
+    defect_controller1 = ContinuousNormalDistribution(wear_per_step=0.7,
                                                     mean_change_per_step=mean_change_per_step,
                                                     initial_mean=7.0,
                                                     std=2.0,
@@ -579,7 +579,7 @@ If the Bernoulli distribution returns 1, it selects a defect StateController fro
                                                     defect_std=None
                                                     )
 
-    defect_controller2 = ContinuosNormalDistribution(wear_per_step=0.1,
+    defect_controller2 = ContinuousNormalDistribution(wear_per_step=0.1,
                                                     mean_change_per_step=mean_change_per_step,
                                                     initial_mean=1.0,
                                                     std=2.0,
@@ -748,4 +748,9 @@ When defining the routing, a ProductionLineModule behaves like every Machine, So
 Training an AI agent using deep RL
 -----------------------------------
 
-TODO
+* Example in Quality_Control_Gym.py
+* Build a custom class inheriting from Quality env
+* prepare(): define Sim and return object list
+* obs: sample observation from sim for agent
+* rew: calculate reward for action
+* Params: observation extremes, model, ....

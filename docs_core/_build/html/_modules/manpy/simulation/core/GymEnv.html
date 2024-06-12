@@ -1,0 +1,443 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
+
+    <link rel="shortcut icon" href="../../../../_static/SmartManPy_logo_transparent.png"/><!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
+        <title>manpy.simulation.core.GymEnv - SmartManPy (beta) Docs</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../../index.html"><div class="brand">SmartManPy (beta) Docs</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../../../../_static/SmartManPy_logo_transparent.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">SmartManPy (beta) Docs</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../rng.html">RandomNumberGenerator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples.html">Full examples</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <h1>Source code for manpy.simulation.core.GymEnv</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
+<span class="kn">from</span> <span class="nn">manpy.simulation.core.Globals</span> <span class="kn">import</span> <span class="n">runSimulation</span><span class="p">,</span> <span class="n">resetSimulation</span><span class="p">,</span> <span class="n">G</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">torch.optim</span> <span class="k">as</span> <span class="nn">optim</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">statistics</span> <span class="kn">import</span> <span class="n">mean</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+
+<div class="viewcode-block" id="PolicyNetwork"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.GymEnv.PolicyNetwork">[docs]</a><span class="k">class</span> <span class="nc">PolicyNetwork</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obs_space_dims</span><span class="p">,</span> <span class="n">dropout_p</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PolicyNetwork</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">obs_space_dims</span><span class="p">,</span> <span class="mi">256</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">dropout_p</span><span class="p">),</span>
+
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">1024</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">dropout_p</span><span class="p">),</span>
+
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">1024</span><span class="p">,</span> <span class="mi">512</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">dropout_p</span><span class="p">),</span>
+
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Softmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="PolicyNetwork.forward"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.GymEnv.PolicyNetwork.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div></div>
+
+
+<span class="k">class</span> <span class="nc">Reinforce</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">policy_network</span><span class="p">,</span>
+                 <span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">policy_network</span> <span class="o">=</span> <span class="n">policy_network</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">policy_network</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">learning_rate</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_losses</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">sample_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="n">action_probs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">policy_network</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="n">action</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">p</span><span class="o">=</span><span class="n">action_probs</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+
+        <span class="k">return</span> <span class="n">action</span><span class="p">,</span> <span class="n">action_probs</span>
+
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">probs</span><span class="p">,</span> <span class="n">rewards</span><span class="p">):</span>
+        <span class="c1"># Calculate loss</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">R</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">probs</span><span class="p">,</span> <span class="n">rewards</span><span class="p">):</span>
+            <span class="n">loss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">-</span><span class="n">torch</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">*</span> <span class="n">R</span><span class="p">)</span>
+        <span class="n">mean_loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">loss</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mean_loss</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+
+        <span class="c1"># Backpropagation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">mean_loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="QualityEnv"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.GymEnv.QualityEnv">[docs]</a><span class="k">class</span> <span class="nc">QualityEnv</span><span class="p">(</span><span class="n">gym</span><span class="o">.</span><span class="n">Env</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Simple RL Env for quality predictions. Is assigned instead of a quality control function.</span>
+
+<span class="sd">    :param observation_extremes: List of tuples that contain the observation extremes for each observation.</span>
+<span class="sd">    :param policy_network: torch NN that is used for predicting the policy.</span>
+<span class="sd">    :param maxSimTime: Used to correctly display the progress bar.</span>
+<span class="sd">    :param maxSteps: Number of maximum training steps. Training ends after maxSteps is reached.</span>
+<span class="sd">    :param steps_between_updates: Determines how many steps are between each update.</span>
+<span class="sd">    :param save_policy_network: Saves the policy NN&#39;s state dict if True.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">observation_extremes</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span>
+                 <span class="n">policy_network</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span>
+                 <span class="n">maxSimTime</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                 <span class="n">maxSteps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">steps_between_updates</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+                 <span class="n">save_policy_network</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">observation_extremes</span> <span class="o">=</span> <span class="n">observation_extremes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">steps</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">probs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rewards</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_rewards</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_actions</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_probs</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="n">maxSteps</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">maxSimTime</span> <span class="o">=</span> <span class="n">maxSimTime</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pbar</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="n">maxSimTime</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Simulation Progress&#39;</span><span class="p">,</span>
+                             <span class="n">bar_format</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[92m</span><span class="si">{l_bar}{bar:25}{r_bar}</span><span class="se">\033</span><span class="s2">[0m&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">maxSimTime</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pbar</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="n">maxSteps</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Simulation Progress&#39;</span><span class="p">,</span>
+                             <span class="n">bar_format</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[92m</span><span class="si">{l_bar}{bar:25}{r_bar}</span><span class="se">\033</span><span class="s2">[0m&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maxSteps</span> <span class="o">=</span> <span class="n">maxSteps</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">steps_between_updates</span> <span class="o">=</span> <span class="n">steps_between_updates</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">policy_network</span> <span class="o">=</span> <span class="n">policy_network</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_policy_network</span> <span class="o">=</span> <span class="n">save_policy_network</span>
+        <span class="c1"># setup agent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agent</span> <span class="o">=</span> <span class="n">Reinforce</span><span class="p">(</span><span class="n">policy_network</span><span class="p">)</span>
+
+        <span class="c1"># setup machine</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objectList</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prepare</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="QualityEnv.prepare"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.GymEnv.QualityEnv.prepare">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        initialize objects and routing</span>
+<span class="sd">        return objectList</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="QualityEnv.obs"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.GymEnv.QualityEnv.obs">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">obs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        return observation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="QualityEnv.rew"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.GymEnv.QualityEnv.rew">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">rew</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        calculate and return reward</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="QualityEnv.reset"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.GymEnv.QualityEnv.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Resets and starts the simulation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pbar</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="n">resetSimulation</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">objectList</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prepare</span><span class="p">()</span>
+        <span class="n">runSimulation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">objectList</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxSimTime</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="QualityEnv.step"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.GymEnv.QualityEnv.step">[docs]</a>    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">steps</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pbar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">all_losses</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pbar</span><span class="o">.</span><span class="n">set_postfix</span><span class="p">({</span><span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="n">mean</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">all_losses</span><span class="p">[</span><span class="o">-</span><span class="mi">10</span><span class="p">:]))),</span> <span class="s1">&#39;reward&#39;</span><span class="p">:</span> <span class="n">mean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">all_rewards</span><span class="p">[</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">steps_between_updates</span><span class="o">*</span><span class="mi">10</span><span class="p">:])})</span>
+
+        <span class="c1"># update machine</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">machine</span> <span class="o">=</span> <span class="n">o</span>
+
+        <span class="c1"># observe, take action, calculate reward</span>
+        <span class="n">observation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obs</span><span class="p">()</span>
+        <span class="c1"># normalize observation</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ob</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">observation</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">ob</span><span class="p">:</span>
+                <span class="n">observation</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">ob</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">observation_extremes</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">observation_extremes</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">observation_extremes</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">observation</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">observation</span> <span class="o">=</span> <span class="n">observation</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">steps</span> <span class="o">%</span> <span class="mi">1000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="n">action</span><span class="p">,</span> <span class="n">probs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">sample_action</span><span class="p">(</span><span class="n">observation</span><span class="p">)</span>
+        <span class="n">prob</span> <span class="o">=</span> <span class="n">probs</span><span class="p">[</span><span class="n">action</span><span class="p">]</span>
+        <span class="n">reward</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rew</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+
+        <span class="c1"># add reward</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">probs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prob</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_actions</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="n">id</span><span class="p">[</span><span class="mi">1</span><span class="p">:]),</span> <span class="n">action</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_probs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">probs</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+
+        <span class="c1"># update</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">steps</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">steps_between_updates</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">probs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rewards</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">probs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rewards</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+
+        <span class="c1"># check maxSteps</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxSteps</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">steps</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxSteps</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;close&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="c1"># take action</span>
+        <span class="k">if</span> <span class="n">action</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="QualityEnv.close"><a class="viewcode-back" href="../../../../core.html#manpy.simulation.core.GymEnv.QualityEnv.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objectList</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">endSimulation</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pbar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_policy_network</span><span class="p">:</span>
+            <span class="n">current_date_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y%m</span><span class="si">%d</span><span class="s1">_%H%M%S&#39;</span><span class="p">)</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;QualityNetwork_</span><span class="si">{</span><span class="n">current_date_time</span><span class="si">}</span><span class="s2">.pt&quot;</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">policy_network</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="n">filename</span><span class="p">)</span></div></div>
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, AImotion Bavaria
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/scripts/furo.js"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
+    </body>
+</html>

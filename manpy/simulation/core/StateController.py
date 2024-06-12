@@ -122,7 +122,7 @@ class SimpleStateController(StateController):
         return res[0]
 
 
-class ContinuosNormalDistribution(StateController):
+class ContinuousNormalDistribution(StateController):
     """
     Normal Distribution that changes its mean value with each step. Optionally, a defect can occur after a defined
     period. Provides label.

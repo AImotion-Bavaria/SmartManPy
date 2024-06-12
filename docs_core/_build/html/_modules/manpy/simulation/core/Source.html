@@ -305,7 +305,7 @@
 <span class="sd">    :param capacity: Capacity of the generated Entities, Only relevant for entity=&quot;manpy.Frame&quot;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">interArrivalTime</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="s2">&quot;manpy.Part&quot;</span><span class="p">,</span> <span class="n">capacity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">cost</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">interArrivalTime</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="s2">&quot;manpy.Part&quot;</span><span class="p">,</span> <span class="n">capacity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">interArrivalTime</span><span class="p">:</span>
             <span class="n">interArrivalTime</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Fixed&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}</span>
@@ -320,7 +320,7 @@
                 <span class="o">+</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">interArrivalTime</span><span class="p">[</span><span class="s2">&quot;Normal&quot;</span><span class="p">][</span><span class="s2">&quot;stdev&quot;</span><span class="p">]</span>
             <span class="p">)</span>
 
-        <span class="n">CoreObject</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="n">CoreObject</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">cost</span><span class="p">)</span>
         <span class="c1"># properties used for statistics</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">totalinterArrivalTime</span> <span class="o">=</span> <span class="mi">0</span>
@@ -426,12 +426,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">successorList</span></div>
 
 <div class="viewcode-block" id="Source.definePrevious"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Source.Source.definePrevious">[docs]</a>    <span class="k">def</span> <span class="nf">definePrevious</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Safeguarding to avoid setting predecessors to sources&quot;&quot;&quot;</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cannot set predecessors to sources.&quot;</span><span class="p">)</span></div>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Safeguarding to avoid setting predecessors to sources&quot;&quot;&quot;</span></div>
 
 <div class="viewcode-block" id="Source.appendPrevious"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Source.Source.appendPrevious">[docs]</a>    <span class="k">def</span> <span class="nf">appendPrevious</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">previous</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Safeguarding to avoid setting predecessors to sources&quot;&quot;&quot;</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cannot set predecessors to sources.&quot;</span><span class="p">)</span></div>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Safeguarding to avoid setting predecessors to sources&quot;&quot;&quot;</span></div>
 
 <div class="viewcode-block" id="Source.createEntity"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Source.Source.createEntity">[docs]</a>    <span class="k">def</span> <span class="nf">createEntity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;creates an Entity&quot;&quot;&quot;</span>
