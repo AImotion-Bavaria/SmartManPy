@@ -39,7 +39,6 @@ class Reinforce:
     def __init__(self,
                  policy_network,
                  learning_rate=1e-4):
-
         self.policy_network = policy_network
         self.optimizer = optim.Adam(policy_network.parameters(), lr=learning_rate)
         self.all_losses = []
@@ -76,9 +75,10 @@ class QualityEnv(gym.Env):
     :param policy_network: torch NN that is used for predicting the policy.
     :param maxSimTime: Used to correctly display the progress bar.
     :param maxSteps: Number of maximum training steps. Training ends after maxSteps is reached.
-    :param steps_between_updates: Determines how many steps are between each update.
+    :param steps_between_updates: Determines how many steps are between each update, essentially the batch size.
     :param save_policy_network: Saves the policy NN's state dict if True.
     """
+
     def __init__(self,
                  observation_extremes: List,
                  policy_network: nn.Module,
@@ -86,8 +86,6 @@ class QualityEnv(gym.Env):
                  maxSteps=None,
                  steps_between_updates=5,
                  save_policy_network=False):
-
-
 
         self.observation_extremes = observation_extremes
         self.steps = 0
@@ -112,7 +110,6 @@ class QualityEnv(gym.Env):
         # setup machine
         self.objectList = self.prepare()
 
-
     @abstractmethod
     def prepare(self):
         """
@@ -124,7 +121,7 @@ class QualityEnv(gym.Env):
     @abstractmethod
     def obs(self):
         """
-        return observation
+        return observations
         """
         pass
 
@@ -148,10 +145,14 @@ class QualityEnv(gym.Env):
         runSimulation(self.objectList, self.maxSimTime)
 
     def step(self, o):
+        """
+        this function is called when the agent should make an action and replaces a quality control function.
+        """
         self.steps += 1
         self.pbar.update(1)
         if self.agent.all_losses:
-            self.pbar.set_postfix({'loss': mean(list(map(lambda x: abs(x), self.agent.all_losses[-10:]))), 'reward': mean(self.all_rewards[-self.steps_between_updates*10:])})
+            self.pbar.set_postfix({'loss': mean(list(map(lambda x: abs(x), self.agent.all_losses[-10:]))),
+                                   'reward': mean(self.all_rewards[-self.steps_between_updates * 10:])})
 
         # update machine
         self.machine = o
@@ -161,12 +162,11 @@ class QualityEnv(gym.Env):
         # normalize observation
         for i, ob in enumerate(observation):
             if ob:
-                observation[i] = (ob - self.observation_extremes[i][0])/(self.observation_extremes[i][1]-self.observation_extremes[i][0])
+                observation[i] = (ob - self.observation_extremes[i][0]) / (
+                        self.observation_extremes[i][1] - self.observation_extremes[i][0])
             else:
                 observation[i] = 0
         observation = observation.astype(np.float32)
-        if self.steps % 1000 == 0:
-            pass
         action, probs = self.agent.sample_action(observation)
         prob = probs[action]
         reward = self.rew(action)
@@ -189,13 +189,16 @@ class QualityEnv(gym.Env):
                 print("close")
                 self.close()
 
-        # take action
+        # take action, 1 == True == discard the part
         if action == 1:
             return True
         else:
             return False
 
     def close(self):
+        """
+        close the simulation and potentially save the policy network.
+        """
         self.objectList[0].endSimulation()
         self.pbar.close()
 

@@ -7,14 +7,14 @@ from manpy.simulation.core.ProductionLineModule import generate_routing_from_lis
 from scipy.interpolate import UnivariateSpline
 
 
-class ExampleEnv(QualityEnv):
+class ShowcaseEnv(QualityEnv):
     def prepare(self):
         # Objects
         S = Source("S1", "Source", interArrivalTime={"Fixed": {"mean": 0.1}}, entity="manpy.Part")
 
-        # Assign the condition as the "control" parameter for any machine
         M1 = Machine("M1", "Machine1", processingTime={"Normal": {"mean": 0.2, "stdev": 0.1, "min": 0.08, "max": 0.34}})
         M2 = Machine("M2", "Machine2", processingTime={"Normal": {"mean": 1, "stdev": 0.3, "min": 0.5, "max": 2}})
+        # Assign the step function as the "control" parameter for any machine.
         M3 = Machine("M3", "Machine3", processingTime={"Normal": {"mean": 0.5, "stdev": 0.2, "min": 0.2, "max": 0.8}},
                      control=self.step)
 
@@ -198,7 +198,7 @@ def plot(simulation, size=40):
 if __name__ == "__main__":
     # Simulation
     observation_extremes = [(3400, 4900), (0, 2100), (11000, 50000), (1, 9), (50000, 57000), (0.2, 0.8)]
-    simu = ExampleEnv(observation_extremes=observation_extremes, policy_network=PolicyNetwork(len(observation_extremes)), maxSteps=24000, steps_between_updates=100)
+    simu = ShowcaseEnv(observation_extremes=observation_extremes, policy_network=PolicyNetwork(len(observation_extremes)), maxSteps=24000, steps_between_updates=100)
     simu.reset()
 
     plot(simu, size=40)

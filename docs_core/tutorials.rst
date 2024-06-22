@@ -14,6 +14,7 @@ We recommend the following order:
 4. Conditional_Failure.py
 5. Interpolation.py
 6. Data_Extraction.py
+7. Quality_Control_Gym.py
 
 
 Introduction
@@ -391,14 +392,6 @@ We therefore added the function "get_feature_values_by_id" in Globals.py, that l
         else:
             return False
 
-Assembly and cost of entities
-------------------------------
-
-Since every part and every production step in reality costs money, cost is an interesting aspect for simulation.
-We therefore added a parameter "cost" to entities, machines and assemblies, which allows us to accurately simulate the value of an entity over the course of a production line.
-
-TODO example
-
 Failures
 ---------
 
@@ -459,7 +452,6 @@ Similarly to Quality Control, we can access the feature values to determine whet
     A Failure is automatically resolved after TTR is passed.
     Additionally, ManPy offers the possibility to model repairmen, which can be used to model constrained maintenance resources.
     In our case, we always assume that a failure can be repaired in the given time period, which may be unrealistic.
-
 
 Distributions and StateControllers
 -----------------------------------
@@ -620,6 +612,36 @@ This function marks an entity as "defect" if at least one feature was the result
     If necessary, you can write your own StateController that perfectly fits you demands.
     The interface is defined in core/StateController.py.
 
+Cost of entities
+----------------
+
+Since every part and every production step in reality costs money, cost is an interesting aspect for simulation.
+We therefore added an attribute "cost" to Entity, which allows us to accurately simulate the value of an entity over the course of a production line.
+
+Every CoreObject has a cost parameter, which is set to 0 by default. When an entity passes through a CoreObject, the cost of the entity is increased by the cost of the CoreObject.
+This even includes the Source and Exit objects, which can be used to model the initial cost or the final value of an entity.
+
+Additionally it is possible to add a cost to any Failure. This cost is added to the current entity that is being processed by the victim of the Failure.
+
+.. code-block:: python
+
+    m1 = Machine("M1", "Machine1",
+                processingTime={"Normal":
+                                {"mean": 0.8, "stdev": 0.075, "min": 0.425, "max": 1.175}
+            },
+            cost=10)
+    e1 = Exit("E1", "Exit1", cost=-50)
+
+    expensive_failure = Failure(id="Flr0",
+                         name="ExpensiveFailure",
+                         victim=m1,
+                         distribution={"TTF": {"Fixed": {"mean": 0.8}},
+                                       "TTR": {"Normal": {"mean": 100, "stdev": 25, "min":50,
+                                                          "probability": 0.01}}},
+                         cost=100)
+
+Furthermore, every cost can be negative. Just like in this example, where e1 has a negative cost, which means that finishing the part adds value to it instead of costing money.
+
 Export
 ------
 
@@ -748,9 +770,83 @@ When defining the routing, a ProductionLineModule behaves like every Machine, So
 Training an AI agent using deep RL
 -----------------------------------
 
-* Example in Quality_Control_Gym.py
-* Build a custom class inheriting from Quality env
-* prepare(): define Sim and return object list
-* obs: sample observation from sim for agent
-* rew: calculate reward for action
-* Params: observation extremes, model, ....
+ManPy as a simluation framework is a great playground for training Reinforcement Learning agents. Because they can interact with and influence the production line during the simulation.
+This opens up different possibilities than training on static datasets that are generated at the end of a simulation.
+
+We have implemented a custom Gym environment, starting with a simple example of a Quality Control problem.
+The environment is defined in GymEnv.py as QualityEnv.
+In order to use it, create a class, inherit from the class QualityEnv and override the abstract methods prepare, obs, and rew.
+
+prepare is used to define the simulation, like in the normal simulation setup.
+obs is used to define the observations that the agent receives from the simulation.
+rew is used to define the reward that the agent receives for a certain action. When writing rew, the input action 1 means discarding the part.
+
+Because we now have an environment and a simulation, taking a step is different from other Gym environments.
+Instead of letting the environment make a step, we let the simulation run, and call the agent at an appropriate time through QualityEnv.step().
+For this Quality Control example, the agent replaces the control function of a machine.
+
+.. code-block:: python
+
+    from manpy.simulation.core.GymEnv import QualityEnv
+
+    class ExampleEnv(QualityEnv):
+        def prepare(self):
+        s = Source("S1", "Source",
+                    interArrivalTime={"Fixed": {"mean": 0.1}},
+                    entity="manpy.Part"
+                )
+
+        m1 = Machine("M1", "Machine1",
+                    processingTime={"Normal": {"mean": 0.2, "stdev": 0.1, "min": 0.08, "max": 0.34}},
+                    control=self.step
+                )
+
+        e1 = Exit("E1", "Exit1")
+
+        dists = [{"Feature": {"Normal": {"mean": 200, "stdev": 50, "min": 0, "max": 400}}},
+                 {"Feature": {"Normal": {"mean": 600, "stdev": 30, "min": 400, "max": 800}}}]
+
+        boundaries = {(0, 25): 0, (25, None): 1}
+
+        controller = SimpleStateController(states=dists,
+                        labels=["ok", "defect"],
+                        boundaries=boundaries,
+                        wear_per_step=1.0,
+                        reset_amount=40
+                    )
+
+        f1 = Feature("Ftr1", "Feature1",
+                    victim=M1,
+                    distribution_state_controller=controller,
+                   )
+
+        s.defineRouting([M1])
+        m1.defineRouting([S], [E1])
+        e1.defineRouting([M1])
+
+        return [s, m1, e1, f1]
+
+        def obs(self):
+            activeEntity = self.machine.Res.users[0]
+            return np.array(activeEntity.features)
+
+        def rew(self, action):
+            activeEntity = self.machine.Res.users[0]
+            if action == 1 and activeEntity.labels[-1] == "ok":
+                return -1
+            elif action == 1 and activeEntity.labels[-1] == "defect":
+                return 1
+            elif action == 0 and activeEntity.labels[-1] == "ok":
+                return 1
+            elif action == 0 and activeEntity.labels[-1] == "defect":
+                return -1
+
+    simu = ExampleEnv(observation_extremes=[(0, 800)], policy_network=PolicyNetwork(1), maxSteps=2000, steps_between_updates=10, save_policy_network=True)
+    simu.reset()
+
+In this example, we produce "defect" and "ok" parts with different feature values by using a SimpleStateController.
+The agent can decide whether to discard a part or let it pass and receives a reward of 1 for a correct decision and -1 for a wrong decision.
+We set m1 as the machine that the agent controls, by setting the "control" parameter to self.step.
+
+To start the training, create an instance of ExampleEnv and call reset() to reset, prepare and run the simulation.
+In order to access the results of the simulation, use simulation.objectList to get all objects and therefore the data of the simulation.
