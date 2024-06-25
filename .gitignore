@@ -106,5 +106,8 @@ ENV/
 *.xls
 
 # PyCharm Files
-
 .idea/
+
+# Simulation outputs
+.csv
+.xls
