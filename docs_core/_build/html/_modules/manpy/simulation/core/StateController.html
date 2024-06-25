@@ -320,7 +320,7 @@
         <span class="k">return</span> <span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="ContinuosNormalDistribution"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.StateController.ContinuosNormalDistribution">[docs]</a><span class="k">class</span> <span class="nc">ContinuosNormalDistribution</span><span class="p">(</span><span class="n">StateController</span><span class="p">):</span>
+<div class="viewcode-block" id="ContinuousNormalDistribution"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.StateController.ContinuousNormalDistribution">[docs]</a><span class="k">class</span> <span class="nc">ContinuousNormalDistribution</span><span class="p">(</span><span class="n">StateController</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Normal Distribution that changes its mean value with each step. Optionally, a defect can occur after a defined</span>
 <span class="sd">    period. Provides label.</span>
@@ -357,10 +357,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">defect_mean</span> <span class="o">=</span> <span class="n">defect_mean</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">defect_std</span> <span class="o">=</span> <span class="n">defect_std</span>
 
-<div class="viewcode-block" id="ContinuosNormalDistribution.get_initial_state"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.StateController.ContinuosNormalDistribution.get_initial_state">[docs]</a>    <span class="k">def</span> <span class="nf">get_initial_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ContinuousNormalDistribution.get_initial_state"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.StateController.ContinuousNormalDistribution.get_initial_state">[docs]</a>    <span class="k">def</span> <span class="nf">get_initial_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_distribution</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">std</span><span class="p">),</span> <span class="kc">False</span></div>
 
-<div class="viewcode-block" id="ContinuosNormalDistribution.get_and_update"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.StateController.ContinuosNormalDistribution.get_and_update">[docs]</a>    <span class="k">def</span> <span class="nf">get_and_update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ContinuousNormalDistribution.get_and_update"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.StateController.ContinuousNormalDistribution.get_and_update">[docs]</a>    <span class="k">def</span> <span class="nf">get_and_update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># parameters are incremented before return</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">break_point</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">account</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">break_point</span><span class="p">:</span>
             <span class="n">mean</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">defect_mean</span>
@@ -378,7 +378,7 @@
     <span class="k">def</span> <span class="nf">__get_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">std</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;Feature&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="n">mean</span><span class="p">,</span> <span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="n">std</span><span class="p">}}}</span>
 
-<div class="viewcode-block" id="ContinuosNormalDistribution.reset"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.StateController.ContinuosNormalDistribution.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ContinuousNormalDistribution.reset"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.StateController.ContinuousNormalDistribution.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">current_mean</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_mean</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="mi">0</span></div></div>
 

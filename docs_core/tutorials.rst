@@ -624,6 +624,7 @@ This even includes the Source and Exit objects, which can be used to model the i
 Additionally it is possible to add a cost to any Failure. This cost is added to the current entity that is being processed by the victim of the Failure.
 
 .. code-block:: python
+    :linenos:
 
     m1 = Machine("M1", "Machine1",
                 processingTime={"Normal":
@@ -786,6 +787,7 @@ Instead of letting the environment make a step, we let the simulation run, and c
 For this Quality Control example, the agent replaces the control function of a machine.
 
 .. code-block:: python
+    :linenos:
 
     from manpy.simulation.core.GymEnv import QualityEnv
 
