@@ -1,7 +1,7 @@
 
 from manpy.simulation.core.Globals import runSimulation, getFeatureData, getTimeSeriesData
 from manpy.simulation.core.ProductionLineModule import generate_routing_from_list
-from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue, Timeseries, Assembly, Frame, ContinuosNormalDistribution, RandomDefectStateController
+from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue, Timeseries, Assembly, Frame, ContinuousNormalDistribution, RandomDefectStateController
 import time
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -101,9 +101,9 @@ Tab_Str_Resistance_Too_High = Failure("Flr1", "RTooHigh", victim=Tabber_Stringer
                                       distribution={"TTF": {"Fixed": {"mean": 0}}, "TTR": {"Fixed": {"mean": 5}}}, waitOnTie=True)
 
 Tab_Str_Voltage = Feature("Tab_Str_Voltage", "Tab_Str_Voltage", victim=Tabber_Stringer,
-                          distribution_state_controller=ContinuosNormalDistribution(mean_change_per_step=0.0001, initial_mean=1.6,
-                                                                         std=0.1, wear_per_step=1, break_point=1000,
-                                                                         defect_mean=2.0, defect_std=0.1))
+                          distribution_state_controller=ContinuousNormalDistribution(mean_change_per_step=0.0001, initial_mean=1.6,
+                                                                                     std=0.1, wear_per_step=1, break_point=1000,
+                                                                                     defect_mean=2.0, defect_std=0.1))
 Tab_Str_Power = Feature("Tab_Str_Power", "Tab_Str_Power", victim=Tabber_Stringer, dependent={"Function" : "1000*x + 1900", "x" : Tab_Str_Voltage}, distribution={"Feature": {"Normal": {"stdev": 30}}})
 
 Tab_Str_Resistance = Feature("Tab_Str_Resistance", "Tab_Str_Resistance", victim=Tabber_Stringer, dependent={"Function" : "(V/I)*1000000", "V" : Tab_Str_Voltage, "I" : Tab_Str_Power}, distribution={"Feature": {"Normal": {"stdev": 5}}}, contribute=[Tab_Str_Resistance_Too_High])
@@ -118,19 +118,19 @@ Tab_Str_Force = Feature("Tab_Str_Force", "Tab_Str_Force", victim=Tabber_Stringer
 glue_temperature = Feature("glue_temp", "Glue_Temperature", victim=Gluing, random_walk=True, start_value=190,
                distribution={"Feature": {"Normal": {"mean": 0, "stdev": 0.3}}}, start_time=1000, end_time=5000)
 
-sG_1 = ContinuosNormalDistribution(
+sG_1 = ContinuousNormalDistribution(
                                    mean_change_per_step=0.0,
                                    initial_mean=400,
                                    std=50,
                                    )
 
-sG_2 = ContinuosNormalDistribution(
+sG_2 = ContinuousNormalDistribution(
                                     mean_change_per_step=0.0,
                                     initial_mean=500,
                                     std=50,
                                     )
 
-s6_3 = ContinuosNormalDistribution(
+s6_3 = ContinuousNormalDistribution(
                                     mean_change_per_step=0.0,
                                     initial_mean=300,
                                     std=50,
@@ -241,12 +241,12 @@ def main(test=0):
 
     sct = getFeatureData([Solar_Cell_Tester, Layup])
     TS = getTimeSeriesData(IV_Curve)
-    sct.to_csv("Solar_Cell_Tester.csv", index=False, encoding="utf8")
-    TS.to_csv("IV_Curve.csv", index=False, encoding="utf8")
+    # sct.to_csv("Solar_Cell_Tester.csv", index=False, encoding="utf8")
+    # TS.to_csv("IV_Curve.csv", index=False, encoding="utf8")
     # TS[1].to_csv("PV_Curve.csv", index=False, encoding="utf8")
     lamination_ts = getTimeSeriesData(Lamination_Pressure_Curve)
     print(lamination_ts)
-    lamination_ts.to_csv("TS_Lamination_Pressure.csv", index=False, encoding="utf8")
+    # lamination_ts.to_csv("TS_Lamination_Pressure.csv", index=False, encoding="utf8")
 
     # with pd.option_context('display.max_columns', None):
     #     print(sct.drop(["ID"], axis=1).describe())

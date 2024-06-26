@@ -1,6 +1,6 @@
 from manpy.simulation.core.Globals import runSimulation, getFeatureData, getTimeSeriesData
 from manpy.simulation.core.ProductionLineModule import generate_routing_from_list
-from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue, Timeseries, Assembly, Frame, ContinuosNormalDistribution, RandomDefectStateController
+from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue, Timeseries, Assembly, Frame, ContinuousNormalDistribution, RandomDefectStateController
 
 from manpy.simulation.Examples.SolarPanelLine_Machines.SPL_Solar_Cell_Tester import solar_cell_tester_module
 from manpy.simulation.Examples.SolarPanelLine_Machines.SPL_Tabber_Str import tabber_str_module

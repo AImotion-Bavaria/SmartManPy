@@ -35,7 +35,7 @@ class ObjectInterruption(ManPyObject):
     Class that acts as an abstract. It should have no instances. All object interruptions (eg failures, breaks) should inherit from it
     """
 
-    def __init__(self, id="", name="", victim=None, remove=False, **kw):
+    def __init__(self, id="", name="", victim=None, remove=False, cost=0, **kw):
         ManPyObject.__init__(self, id, name)
         self.victim = victim
         # variable used to hand in control to the objectInterruption
@@ -64,6 +64,7 @@ class ObjectInterruption(ManPyObject):
             "victimIsInterrupted": 0,
             "victimResumesProcessing": 0
         }
+        self.cost = 0
 
     def initialize(self):
         from manpy.simulation.core.Globals import G
@@ -122,6 +123,9 @@ class ObjectInterruption(ManPyObject):
     def interruptVictim(self):
         """interrupts the victim"""
 
+        # add cost to entity
+        self.victim.activeEntity.cost += self.cost
+
         # print(f"Starting failure at {self.env.now}")
         # inform the victim by whom will it be interrupted
         # TODO: reconsider what happens when failure and ShiftScheduler (e.g.) signal simultaneously
@@ -140,7 +144,7 @@ class ObjectInterruption(ManPyObject):
             self.victim.requestAllocation()
         # remove entity if needed
         if self.remove:
-            self.victim.activeEntity.features[-1] = "Fail"
+            self.victim.activeEntity.result = "Fail"
             self.victim.discards.append(self.victim.activeEntity)
             self.victim.removeEntity(self.victim.activeEntity)
 

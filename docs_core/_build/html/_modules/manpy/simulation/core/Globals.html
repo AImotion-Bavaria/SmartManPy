@@ -229,6 +229,7 @@
 <span class="kn">import</span> <span class="nn">xlwt</span>
 <span class="kn">from</span> <span class="nn">manpy.simulation.core.Database</span> <span class="kn">import</span> <span class="n">ManPyDatabase</span>
 <span class="kn">from</span> <span class="nn">manpy.simulation.core.utils</span> <span class="kn">import</span> <span class="n">info</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
 
 
 <div class="viewcode-block" id="G"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Globals.G">[docs]</a><span class="k">class</span> <span class="nc">G</span><span class="p">:</span>
@@ -695,6 +696,65 @@
     <span class="k">return</span> <span class="n">printKwrds</span></div>
 
 
+<span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">objectList</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">manpy.simulation.core.Entity</span> <span class="kn">import</span> <span class="n">Entity</span>
+
+    <span class="c1"># run the replications</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">numberOfReplications</span><span class="p">):</span>
+        <span class="n">G</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">env</span> <span class="ow">or</span> <span class="n">simpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">()</span>
+        <span class="c1"># this is where all the simulation object &#39;live&#39;</span>
+
+        <span class="n">G</span><span class="o">.</span><span class="n">EntityList</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">objectList</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">object</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="n">Entity</span><span class="p">):</span>
+                <span class="n">G</span><span class="o">.</span><span class="n">EntityList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span>
+
+        <span class="c1"># initialize all the objects</span>
+        <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="p">(</span>
+            <span class="n">G</span><span class="o">.</span><span class="n">ObjList</span> <span class="o">+</span> <span class="n">G</span><span class="o">.</span><span class="n">ObjectInterruptionList</span> <span class="o">+</span> <span class="n">G</span><span class="o">.</span><span class="n">ObjectResourceList</span> <span class="o">+</span> <span class="n">G</span><span class="o">.</span><span class="n">EntityList</span> <span class="o">+</span> <span class="n">G</span><span class="o">.</span><span class="n">ObjectPropertyList</span>
+        <span class="p">):</span>
+            <span class="nb">object</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
+
+        <span class="c1"># activate all the objects</span>
+        <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">ObjectInterruptionList</span><span class="p">:</span>
+            <span class="n">G</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="nb">object</span><span class="o">.</span><span class="n">run</span><span class="p">())</span>
+
+        <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">ObjectPropertyList</span><span class="p">:</span>
+            <span class="n">G</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="nb">object</span><span class="o">.</span><span class="n">run</span><span class="p">())</span>
+
+        <span class="c1"># activate all the objects</span>
+        <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">ObjList</span><span class="p">:</span>
+            <span class="n">G</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="nb">object</span><span class="o">.</span><span class="n">run</span><span class="p">())</span>
+
+        <span class="c1"># set the WIP</span>
+        <span class="n">setWIP</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">EntityList</span><span class="p">)</span>
+
+        <span class="n">info</span><span class="p">(</span><span class="s2">&quot;Config finished. Starting simulation...&quot;</span><span class="p">)</span>
+        <span class="n">G</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">until</span><span class="o">=</span><span class="n">G</span><span class="o">.</span><span class="n">maxSimTime</span><span class="p">)</span>  <span class="c1"># run the simulation</span>
+
+        <span class="c1"># identify from the exits what is the time that the last entity has ended.</span>
+        <span class="n">endList</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="kn">from</span> <span class="nn">manpy.simulation.core.Exit</span> <span class="kn">import</span> <span class="n">Exit</span>
+
+        <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">ObjList</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">object</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="n">Exit</span><span class="p">):</span>
+                <span class="n">endList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">object</span><span class="o">.</span><span class="n">timeLastEntityLeft</span><span class="p">)</span>
+
+        <span class="c1"># identify the time of the last event</span>
+        <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">==</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">):</span>
+            <span class="n">G</span><span class="o">.</span><span class="n">maxSimTime</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">endList</span><span class="p">))</span>
+        <span class="c1"># do not let G.maxSimTime=0 so that there will be no crash</span>
+        <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">maxSimTime</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;simulation ran for 0 time, something may have gone wrong&quot;</span><span class="p">)</span>
+            <span class="kn">import</span> <span class="nn">sys</span>
+
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+
+        <span class="c1"># carry on the post processing operations for every object in the topology</span>
+        <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">ObjList</span> <span class="o">+</span> <span class="n">G</span><span class="o">.</span><span class="n">ObjectResourceList</span><span class="p">:</span>
+            <span class="nb">object</span><span class="o">.</span><span class="n">postProcessing</span><span class="p">()</span>
+
+
 <div class="viewcode-block" id="runSimulation"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Globals.runSimulation">[docs]</a><span class="k">def</span> <span class="nf">runSimulation</span><span class="p">(</span>
     <span class="n">objectList</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">maxSimTime</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
@@ -704,7 +764,7 @@
     <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
     <span class="n">env</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">data</span><span class="o">=</span><span class="s2">&quot;No&quot;</span><span class="p">,</span>
-    <span class="n">db</span><span class="p">:</span> <span class="n">ManPyDatabase</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">db</span><span class="p">:</span> <span class="n">ManPyDatabase</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Starts the simulation</span>
@@ -742,7 +802,6 @@
     <span class="kn">from</span> <span class="nn">.ObjectInterruption</span> <span class="kn">import</span> <span class="n">ObjectInterruption</span>
     <span class="kn">from</span> <span class="nn">.ObjectProperty</span> <span class="kn">import</span> <span class="n">ObjectProperty</span>
     <span class="kn">from</span> <span class="nn">.ObjectResource</span> <span class="kn">import</span> <span class="n">ObjectResource</span>
-    <span class="kn">from</span> <span class="nn">manpy.simulation.core.Entity</span> <span class="kn">import</span> <span class="n">Entity</span>
 
 
     <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">objectList</span><span class="p">:</span>
@@ -774,117 +833,12 @@
     <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">db</span><span class="p">:</span>
         <span class="n">G</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">establish_connection</span><span class="p">()</span>
 
-        <span class="c1"># run the replications</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">numberOfReplications</span><span class="p">):</span>
-            <span class="n">G</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">env</span> <span class="ow">or</span> <span class="n">simpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">()</span>
-            <span class="c1"># this is where all the simulation object &#39;live&#39;</span>
+        <span class="n">run</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">objectList</span><span class="p">)</span>
 
-            <span class="n">G</span><span class="o">.</span><span class="n">EntityList</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">objectList</span><span class="p">:</span>
-                <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">object</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="n">Entity</span><span class="p">):</span>
-                    <span class="n">G</span><span class="o">.</span><span class="n">EntityList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span>
-
-            <span class="c1"># initialize all the objects</span>
-            <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="p">(</span>
-                <span class="n">G</span><span class="o">.</span><span class="n">ObjList</span> <span class="o">+</span> <span class="n">G</span><span class="o">.</span><span class="n">ObjectInterruptionList</span> <span class="o">+</span> <span class="n">G</span><span class="o">.</span><span class="n">ObjectResourceList</span> <span class="o">+</span> <span class="n">G</span><span class="o">.</span><span class="n">EntityList</span> <span class="o">+</span> <span class="n">G</span><span class="o">.</span><span class="n">ObjectPropertyList</span>
-            <span class="p">):</span>
-                <span class="nb">object</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
-
-            <span class="c1"># activate all the objects</span>
-            <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">ObjectInterruptionList</span><span class="p">:</span>
-                <span class="n">G</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="nb">object</span><span class="o">.</span><span class="n">run</span><span class="p">())</span>
-
-            <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">ObjectPropertyList</span><span class="p">:</span>
-                <span class="n">G</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="nb">object</span><span class="o">.</span><span class="n">run</span><span class="p">())</span>
-
-            <span class="c1"># activate all the objects</span>
-            <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">ObjList</span><span class="p">:</span>
-                <span class="n">G</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="nb">object</span><span class="o">.</span><span class="n">run</span><span class="p">())</span>
-
-            <span class="c1"># set the WIP</span>
-            <span class="n">setWIP</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">EntityList</span><span class="p">)</span>
-
-            <span class="n">info</span><span class="p">(</span><span class="s2">&quot;Config finished. Starting simulation...&quot;</span><span class="p">)</span>
-            <span class="n">G</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">until</span><span class="o">=</span><span class="n">G</span><span class="o">.</span><span class="n">maxSimTime</span><span class="p">)</span>  <span class="c1"># run the simulation</span>
-
-            <span class="c1"># identify from the exits what is the time that the last entity has ended.</span>
-            <span class="n">endList</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="kn">from</span> <span class="nn">manpy.simulation.core.Exit</span> <span class="kn">import</span> <span class="n">Exit</span>
-
-            <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">ObjList</span><span class="p">:</span>
-                <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">object</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="n">Exit</span><span class="p">):</span>
-                    <span class="n">endList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">object</span><span class="o">.</span><span class="n">timeLastEntityLeft</span><span class="p">)</span>
-
-            <span class="c1"># identify the time of the last event</span>
-            <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">==</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">):</span>
-                <span class="n">G</span><span class="o">.</span><span class="n">maxSimTime</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">endList</span><span class="p">))</span>
-            <span class="c1"># do not let G.maxSimTime=0 so that there will be no crash</span>
-            <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">maxSimTime</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;simulation ran for 0 time, something may have gone wrong&quot;</span><span class="p">)</span>
-                <span class="kn">import</span> <span class="nn">sys</span>
-
-                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
-
-            <span class="c1"># carry on the post processing operations for every object in the topology</span>
-            <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">ObjList</span> <span class="o">+</span> <span class="n">G</span><span class="o">.</span><span class="n">ObjectResourceList</span><span class="p">:</span>
-                <span class="nb">object</span><span class="o">.</span><span class="n">postProcessing</span><span class="p">()</span>
         <span class="n">G</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
         <span class="n">G</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">close_connection</span><span class="p">()</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="c1"># run the replications</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">numberOfReplications</span><span class="p">):</span>
-            <span class="n">G</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">env</span> <span class="ow">or</span> <span class="n">simpy</span><span class="o">.</span><span class="n">Environment</span><span class="p">()</span>
-            <span class="c1"># this is where all the simulation object &#39;live&#39;</span>
-
-            <span class="n">G</span><span class="o">.</span><span class="n">EntityList</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">objectList</span><span class="p">:</span>
-                <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">object</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="n">Entity</span><span class="p">):</span>
-                    <span class="n">G</span><span class="o">.</span><span class="n">EntityList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span>
-
-            <span class="c1"># initialize all the objects</span>
-            <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="p">(</span>
-                <span class="n">G</span><span class="o">.</span><span class="n">ObjList</span> <span class="o">+</span> <span class="n">G</span><span class="o">.</span><span class="n">ObjectInterruptionList</span> <span class="o">+</span> <span class="n">G</span><span class="o">.</span><span class="n">ObjectResourceList</span> <span class="o">+</span> <span class="n">G</span><span class="o">.</span><span class="n">EntityList</span> <span class="o">+</span> <span class="n">G</span><span class="o">.</span><span class="n">ObjectPropertyList</span>
-            <span class="p">):</span>
-                <span class="nb">object</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
-
-            <span class="c1"># activate all the objects</span>
-            <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">ObjectInterruptionList</span><span class="p">:</span>
-                <span class="n">G</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="nb">object</span><span class="o">.</span><span class="n">run</span><span class="p">())</span>
-
-            <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">ObjectPropertyList</span><span class="p">:</span>
-                <span class="n">G</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="nb">object</span><span class="o">.</span><span class="n">run</span><span class="p">())</span>
-
-            <span class="c1"># activate all the objects</span>
-            <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">ObjList</span><span class="p">:</span>
-                <span class="n">G</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="nb">object</span><span class="o">.</span><span class="n">run</span><span class="p">())</span>
-
-            <span class="c1"># set the WIP</span>
-            <span class="n">setWIP</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">EntityList</span><span class="p">)</span>
-
-            <span class="n">info</span><span class="p">(</span><span class="s2">&quot;Config finished. Starting simulation...&quot;</span><span class="p">)</span>
-            <span class="n">G</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">until</span><span class="o">=</span><span class="n">G</span><span class="o">.</span><span class="n">maxSimTime</span><span class="p">)</span>  <span class="c1"># run the simulation</span>
-
-            <span class="c1"># identify from the exits what is the time that the last entity has ended.</span>
-            <span class="n">endList</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="kn">from</span> <span class="nn">manpy.simulation.core.Exit</span> <span class="kn">import</span> <span class="n">Exit</span>
-
-            <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">ObjList</span><span class="p">:</span>
-                <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">object</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="n">Exit</span><span class="p">):</span>
-                    <span class="n">endList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">object</span><span class="o">.</span><span class="n">timeLastEntityLeft</span><span class="p">)</span>
-
-            <span class="c1"># identify the time of the last event</span>
-            <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">now</span> <span class="o">==</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">):</span>
-                <span class="n">G</span><span class="o">.</span><span class="n">maxSimTime</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">endList</span><span class="p">))</span>
-            <span class="c1"># do not let G.maxSimTime=0 so that there will be no crash</span>
-            <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">maxSimTime</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;simulation ran for 0 time, something may have gone wrong&quot;</span><span class="p">)</span>
-                <span class="kn">import</span> <span class="nn">sys</span>
-
-                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
-
-            <span class="c1"># carry on the post processing operations for every object in the topology</span>
-            <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">ObjList</span> <span class="o">+</span> <span class="n">G</span><span class="o">.</span><span class="n">ObjectResourceList</span><span class="p">:</span>
-                <span class="nb">object</span><span class="o">.</span><span class="n">postProcessing</span><span class="p">()</span></div>
+        <span class="n">run</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">objectList</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ExcelPrinter"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.Globals.ExcelPrinter">[docs]</a><span class="k">def</span> <span class="nf">ExcelPrinter</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -912,7 +866,7 @@
 <span class="sd">    :return: dataframe</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ID&quot;</span><span class="p">]</span>        <span class="c1"># name of columns</span>
+    <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ID&quot;</span><span class="p">]</span>    <span class="c1"># name of columns</span>
     <span class="n">df_list</span> <span class="o">=</span> <span class="p">[]</span>        <span class="c1"># list for the DataFrame</span>
     <span class="n">feature_list</span> <span class="o">=</span> <span class="p">[]</span>   <span class="c1"># list of included features</span>
 
@@ -943,7 +897,7 @@
                 <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">feature_list</span><span class="p">:</span>
                     <span class="n">features</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entity</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="n">f</span><span class="p">])</span>
                     <span class="n">times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entity</span><span class="o">.</span><span class="n">feature_times</span><span class="p">[</span><span class="n">f</span><span class="p">])</span>
-                <span class="n">features</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entity</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">features</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entity</span><span class="o">.</span><span class="n">result</span><span class="p">)</span>
 
                 <span class="k">if</span> <span class="n">time</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">price</span><span class="p">:</span>

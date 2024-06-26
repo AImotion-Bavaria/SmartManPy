@@ -378,7 +378,7 @@ class SimulationExamples(TestCase):
             self.assertLessEqual(result["Ftr1"][idx] - result["Ftr1"][idx - 1], 10,
                                     "\nRandomWalk should be lower than 10\nIt instead is: ".format(result["Ftr1"][idx]))
     def testDependency(self):
-        from manpy.simulation.Examples.Dependency import main
+        from manpy.simulation.tutorials.Dependency import main
 
         result = main(test=1)
 
@@ -397,7 +397,7 @@ class SimulationExamples(TestCase):
                          "\nProduction of M1 does not match the output of the Assembly")
 
     def testExampleTS(self):
-        from manpy.simulation.Examples.ExampleTS import main
+        from manpy.simulation.tutorials.ExampleTS import main
 
         result = main(test=1)
 

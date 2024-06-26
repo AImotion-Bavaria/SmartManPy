@@ -229,11 +229,9 @@ class Source(CoreObject):
 
     def definePrevious(self, **kw):
         """Safeguarding to avoid setting predecessors to sources"""
-        print("Cannot set predecessors to sources.")
 
     def appendPrevious(self, previous):
         """Safeguarding to avoid setting predecessors to sources"""
-        print("Cannot set predecessors to sources.")
 
     def createEntity(self):
         """creates an Entity"""

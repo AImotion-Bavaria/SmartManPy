@@ -96,13 +96,13 @@ class Entity(ManPyObject):
         self.status = status
 
         # setup lists for features and timeseries
-        self.labels = [None] * (len(G.ftr_st) + 1)
-        self.features = [None] * (len(G.ftr_st) + 1)
+        self.labels = [None] * len(G.ftr_st)
+        self.features = [None] * len(G.ftr_st)
         self.feature_times = [None] * len(G.ftr_st)
         self.timeseries = [None] * len(G.ts_st)
         self.timeseries_times = [None] * len(G.ts_st)
 
-        # setup cost
+        self.result = None
         self.cost = 0
 
     def responsibleForCurrentStep(self):
@@ -136,14 +136,13 @@ class Entity(ManPyObject):
         return []
 
     def set_feature(self, feature, label, time, indexing):
-        """Sets internal feature values to passed values"""
+        """sets internal feature values to passed values"""
         self.labels[G.ftr_st.index(indexing)] = label
         self.features[G.ftr_st.index(indexing)] = feature
         self.feature_times[G.ftr_st.index(indexing)] = time
 
     def set_timeseries(self, timeseries, label, time, indexing):
-        """Sets internal timeseries values to passed values"""
-
+        """sets internal timeseries values to passed values"""
         self.labels[G.ts_st.index(indexing)] = label
         self.timeseries[G.ts_st.index(indexing)] = timeseries
         self.timeseries_times[G.ts_st.index(indexing)] = time

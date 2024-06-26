@@ -90,12 +90,12 @@ class SimpleStateController(StateController):
             previous_state_index = self.current_state_index
             self.current_state_index = self.__get_current_state()
             if previous_state_index is not self.current_state_index:
-                print(f"Change state to index {self.current_state_index}")
+                # print(f"Change state to index {self.current_state_index}")
+                pass
 
         return output, label
 
     def reset(self):
-        print(">>> Reset SimpleStateController <<<")
         self.account = 0
         self.current_state_index = self.initial_state_index
 
@@ -122,7 +122,19 @@ class SimpleStateController(StateController):
         return res[0]
 
 
-class ContinuosNormalDistribution(StateController):
+class ContinuousNormalDistribution(StateController):
+    """
+    Normal Distribution that changes its mean value with each step. Optionally, a defect can occur after a defined
+    period. Provides label.
+
+    :param wear_per_step: How much wear happens per step
+    :param break_point: When this value of wear is reached, a defect happens. Will be ignored if None
+    :param mean_change_per_step: Value that is added to the mean of the normal distribution in each step
+    :param initial_mean: Initial mean value of the normal distribution
+    :param std: STD of the normal distribution, does not change
+    :param defect_mean: Mean value in the defect state
+    :param defect_std: STD in the defect state
+    """
     def __init__(self,
                  mean_change_per_step,
                  initial_mean,
@@ -132,18 +144,7 @@ class ContinuosNormalDistribution(StateController):
                  defect_mean=None,
                  defect_std=None,
                  ):
-        """
-        Normal Distribution that changes its mean value with each step. Optionally, a defect can occur after a defined
-        period. Provides label.
 
-        :param wear_per_step: How much wear happens per step
-        :param break_point: When this value of wear is reached, a defect happens. Will be ignored if None
-        :param mean_change_per_step: Value that is added to the mean of the normal distribution in each step
-        :param initial_mean: Initial mean value of the normal distribution
-        :param std: STD of the normal distribution, does not change
-        :param defect_mean: Mean value in the defect state
-        :param defect_std: STD in the defect state
-        """
         self.mean_change_per_step = mean_change_per_step
 
         self.initial_mean = initial_mean
@@ -187,21 +188,22 @@ class ContinuosNormalDistribution(StateController):
 
 
 class RandomDefectStateController(StateController):
+    """
+    Orchestrates multiple StateControllers. Using a Bernoulli-Distribution, it chooses either the
+    ok or the defect distribution.
+
+    :param failure_probability: Probability of failure for the Bernoulli-Distribution.
+    :param ok_controller:
+    :param defect_controllers: list of StateControllers. If a random failure occurs, one of them is
+                                drawn with uniform distribution. Example: in case of defect, a value can be either
+                                too high or too low
+    """
     def __init__(self,
                  failure_probability,
                  ok_controller: StateController,
                  defect_controllers: list
                  ):
-        """
-        Orchestrates multiple StateControllers. Using a Bernoulli-Distribution, it chooses either the
-        ok or the defect distribution.
 
-        :param failure_probability: Probability of failure for the Bernoulli-Distribution.
-        :param ok_controller:
-        :param defect_controllers: list of StateControllers. If a random failure occurs, one of them is
-                                    drawn with uniform distribution. Example: in case of defect, a value can be either
-                                    too high or too low
-        """
         self.failure_probability = failure_probability
         self.ok_controller = ok_controller
         self.defect_controllers = defect_controllers
@@ -227,7 +229,6 @@ class RandomDefectStateController(StateController):
         return dist, label
 
     def reset(self):
-        print(">>> Reset StateController <<<")
         self.ok_controller.reset()
         for c in self.defect_controllers:
             c.reset()

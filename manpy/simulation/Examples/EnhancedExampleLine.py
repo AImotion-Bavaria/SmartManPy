@@ -1,4 +1,4 @@
-from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue, RandomDefectStateController, ContinuosNormalDistribution
+from manpy.simulation.imports import Machine, Source, Exit, Failure, Feature, Queue, RandomDefectStateController, ContinuousNormalDistribution
 from manpy.simulation.core.Database import ManPyQuestDBDatabase
 from manpy.simulation.core.Globals import runSimulation, getFeatureData, G, ExcelPrinter
 import time
@@ -54,9 +54,9 @@ WiderstandZuHoch = Failure("Flr1", "RTooHigh", victim=Löten, conditional=resist
             distribution={"TTF": {"Fixed": {"mean": 0}}, "TTR": {"Fixed": {"mean": 5}}}, waitOnTie=True)
 
 Spannung = Feature("Spannung", "Spannung", victim=Löten,
-               distribution_state_controller=ContinuosNormalDistribution(mean_change_per_step=0.0001, initial_mean=1.6,
-                                                                         std=0.1, wear_per_step=1, break_point=1000,
-                                                                         defect_mean=2.0, defect_std=0.1))
+               distribution_state_controller=ContinuousNormalDistribution(mean_change_per_step=0.0001, initial_mean=1.6,
+                                                                          std=0.1, wear_per_step=1, break_point=1000,
+                                                                          defect_mean=2.0, defect_std=0.1))
 Strom = Feature("Strom", "Strom", victim=Löten, dependent={"Function" : "1000*x + 1900", "x" : Spannung}, distribution={"Feature": {"Normal": {"stdev": 30}}})
 
 Widerstand = Feature("Widerstand", "Widerstand", victim=Löten, dependent={"Function" : "(V/I)*1000000", "V" : Spannung, "I" : Strom}, distribution={"Feature": {"Normal": {"stdev": 5}}}, contribute=[WiderstandZuHoch])
@@ -64,18 +64,18 @@ Widerstand = Feature("Widerstand", "Widerstand", victim=Löten, dependent={"Func
 Kraft = Feature("Kraft", "Kraft", victim=Löten,
                distribution={"Feature": {"Normal": {"mean": 180, "stdev": 30}}})
 # random defect controller
-s4_1 = ContinuosNormalDistribution(
+s4_1 = ContinuousNormalDistribution(
                                     mean_change_per_step=0.0,
                                     initial_mean=400,
                                     std=50,
                                     )
 
-s4_2 = ContinuosNormalDistribution(
+s4_2 = ContinuousNormalDistribution(
                                     mean_change_per_step=0.0,
                                     initial_mean=300,
                                     std=50,
                                    )
-s4_3 = ContinuosNormalDistribution(
+s4_3 = ContinuousNormalDistribution(
                                     mean_change_per_step=0.0,
                                     initial_mean=500,
                                     std=50
@@ -95,19 +95,19 @@ Temperatur = Feature("Temperatur", "Temperatur", victim=Kleben, random_walk=True
                distribution={"Feature": {"Normal": {"mean": 0, "stdev": 0.3}}})
 
 # random defect controller
-s7_1 = ContinuosNormalDistribution(
+s7_1 = ContinuousNormalDistribution(
                                            mean_change_per_step=0.0,
                                            initial_mean=400,
                                            std=50,
                                            )
 
-s7_2 = ContinuosNormalDistribution(
+s7_2 = ContinuousNormalDistribution(
                                     mean_change_per_step=0.0,
                                     initial_mean=500,
                                     std=50,
                                     )
 
-s7_3 = ContinuosNormalDistribution(
+s7_3 = ContinuousNormalDistribution(
                                     mean_change_per_step=0.0,
                                     initial_mean=300,
                                     std=50,

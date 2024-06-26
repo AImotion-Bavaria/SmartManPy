@@ -65,6 +65,13 @@ manpy.simulation.core.Globals.py
    :members:
    :show-inheritance:
 
+manpy.simulation.core.GymEnv.py
+---------------------------------
+
+.. automodule:: manpy.simulation.core.GymEnv
+   :members:
+   :show-inheritance:
+
 manpy.simulation.core.Machine.py
 ------------------------------------
 

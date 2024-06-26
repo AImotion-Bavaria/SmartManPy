@@ -1,4 +1,4 @@
-from manpy.simulation.imports import RandomNumberGenerator, SimpleStateController, ContinuosNormalDistribution, \
+from manpy.simulation.imports import RandomNumberGenerator, SimpleStateController, ContinuousNormalDistribution, \
     RandomDefectStateController
 import numpy as np
 import matplotlib.pyplot as plt
@@ -42,25 +42,25 @@ def demonstrate_ContinuosNormalDistribution():
 
     mean_change_per_step = 0.02
 
-    controller = ContinuosNormalDistribution(wear_per_step=0.7,
-                                             break_point=None,
-                                             mean_change_per_step=mean_change_per_step,
-                                             initial_mean=2.0,
-                                             std=2.0,
-                                             defect_mean=7.0,
-                                             defect_std=3.0
-                                             )
+    controller = ContinuousNormalDistribution(wear_per_step=0.7,
+                                              break_point=None,
+                                              mean_change_per_step=mean_change_per_step,
+                                              initial_mean=2.0,
+                                              std=2.0,
+                                              defect_mean=7.0,
+                                              defect_std=3.0
+                                              )
 
     features = generate_n_values(controller, 250, 100)
 
-    defect_controller = ContinuosNormalDistribution(wear_per_step=0.7,
-                                                    mean_change_per_step=mean_change_per_step,
-                                                    initial_mean=7.0,
-                                                    std=2.0,
-                                                    break_point=None,
-                                                    defect_mean=None,
-                                                    defect_std=None
-                                                    )
+    defect_controller = ContinuousNormalDistribution(wear_per_step=0.7,
+                                                     mean_change_per_step=mean_change_per_step,
+                                                     initial_mean=7.0,
+                                                     std=2.0,
+                                                     break_point=None,
+                                                     defect_mean=None,
+                                                     defect_std=None
+                                                     )
     defect_features = generate_n_values(defect_controller, 250, 100)
 
     plt.plot(features, color='blue', label='OK')
@@ -75,23 +75,23 @@ def demonstrate_ContinuosNormalDistribution():
 def demonstrate_RandomDefectStateController():
     mean_change_per_step = 0.02
 
-    ok_controller = ContinuosNormalDistribution(wear_per_step=0.7,
-                                                break_point=None,
-                                                mean_change_per_step=mean_change_per_step,
-                                                initial_mean=2.0,
-                                                std=2.0,
-                                                defect_mean=7.0,
-                                                defect_std=3.0
-                                                )
+    ok_controller = ContinuousNormalDistribution(wear_per_step=0.7,
+                                                 break_point=None,
+                                                 mean_change_per_step=mean_change_per_step,
+                                                 initial_mean=2.0,
+                                                 std=2.0,
+                                                 defect_mean=7.0,
+                                                 defect_std=3.0
+                                                 )
 
-    defect_controller = ContinuosNormalDistribution(wear_per_step=0.7,
-                                                    mean_change_per_step=mean_change_per_step,
-                                                    initial_mean=7.0,
-                                                    std=2.0,
-                                                    break_point=None,
-                                                    defect_mean=None,
-                                                    defect_std=None
-                                                    )
+    defect_controller = ContinuousNormalDistribution(wear_per_step=0.7,
+                                                     mean_change_per_step=mean_change_per_step,
+                                                     initial_mean=7.0,
+                                                     std=2.0,
+                                                     break_point=None,
+                                                     defect_mean=None,
+                                                     defect_std=None
+                                                     )
 
 
     random_defect_controller = RandomDefectStateController(0.05, ok_controller=ok_controller, defect_controllers=[defect_controller])

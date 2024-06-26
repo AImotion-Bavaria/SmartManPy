@@ -13,39 +13,39 @@ Quality_Control.py
 
 This file demonstrates custom quality control in machines.
 
-.. literalinclude:: ../manpy/simulation/examples/Quality_Control.py
+.. literalinclude:: ../manpy/simulation/tutorials/Quality_Control.py
 
 Dependency.py
 ==============
 
 This file demonstrates functional dependencies between features.
 
-.. literalinclude:: ../manpy/simulation/examples/Dependency.py
+.. literalinclude:: ../manpy/simulation/tutorials/Dependency.py
 
 ExampleTS.py
 =============
 
 This file demonstrates the basic usage of the TimeSeries class.
 
-.. literalinclude:: ../manpy/simulation/examples/ExampleTS.py
+.. literalinclude:: ../manpy/simulation/tutorials/ExampleTS.py
 
 Conditional_Failure.py
 ========================
 
 This file demonstrates failures that are triggered by conditions.
 
-.. literalinclude:: ../manpy/simulation/examples/Conditional_Failure.py
+.. literalinclude:: ../manpy/simulation/tutorials/Conditional_Failure.py
 
 Interpolation.py
 =================
 
 This file demonstrates the creation of TimeSeries objects using interpolation.
 
-.. literalinclude:: ../manpy/simulation/examples/Interpolation.py
+.. literalinclude:: ../manpy/simulation/tutorials/Interpolation.py
 
 Data_Extraction.py
 ====================
 
 This file demonstrates the various ways of exporting simulated data.
 
-.. literalinclude:: ../manpy/simulation/examples/Data_Extraction.py
+.. literalinclude:: ../manpy/simulation/tutorials/Data_Extraction.py

@@ -288,12 +288,12 @@
             <span class="n">previous_state_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_state_index</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">current_state_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_current_state</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">previous_state_index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_state_index</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Change state to index </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">current_state_index</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="c1"># print(f&quot;Change state to index {self.current_state_index}&quot;)</span>
+                <span class="k">pass</span>
 
         <span class="k">return</span> <span class="n">output</span><span class="p">,</span> <span class="n">label</span></div>
 
 <div class="viewcode-block" id="SimpleStateController.reset"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.StateController.SimpleStateController.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&gt;&gt;&gt; Reset SimpleStateController &lt;&lt;&lt;&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">current_state_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_state_index</span></div>
 
@@ -320,7 +320,19 @@
         <span class="k">return</span> <span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="ContinuosNormalDistribution"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.StateController.ContinuosNormalDistribution">[docs]</a><span class="k">class</span> <span class="nc">ContinuosNormalDistribution</span><span class="p">(</span><span class="n">StateController</span><span class="p">):</span>
+<div class="viewcode-block" id="ContinuousNormalDistribution"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.StateController.ContinuousNormalDistribution">[docs]</a><span class="k">class</span> <span class="nc">ContinuousNormalDistribution</span><span class="p">(</span><span class="n">StateController</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Normal Distribution that changes its mean value with each step. Optionally, a defect can occur after a defined</span>
+<span class="sd">    period. Provides label.</span>
+
+<span class="sd">    :param wear_per_step: How much wear happens per step</span>
+<span class="sd">    :param break_point: When this value of wear is reached, a defect happens. Will be ignored if None</span>
+<span class="sd">    :param mean_change_per_step: Value that is added to the mean of the normal distribution in each step</span>
+<span class="sd">    :param initial_mean: Initial mean value of the normal distribution</span>
+<span class="sd">    :param std: STD of the normal distribution, does not change</span>
+<span class="sd">    :param defect_mean: Mean value in the defect state</span>
+<span class="sd">    :param defect_std: STD in the defect state</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">mean_change_per_step</span><span class="p">,</span>
                  <span class="n">initial_mean</span><span class="p">,</span>
@@ -330,18 +342,7 @@
                  <span class="n">defect_mean</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">defect_std</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Normal Distribution that changes its mean value with each step. Optionally, a defect can occur after a defined</span>
-<span class="sd">        period. Provides label.</span>
 
-<span class="sd">        :param wear_per_step: How much wear happens per step</span>
-<span class="sd">        :param break_point: When this value of wear is reached, a defect happens. Will be ignored if None</span>
-<span class="sd">        :param mean_change_per_step: Value that is added to the mean of the normal distribution in each step</span>
-<span class="sd">        :param initial_mean: Initial mean value of the normal distribution</span>
-<span class="sd">        :param std: STD of the normal distribution, does not change</span>
-<span class="sd">        :param defect_mean: Mean value in the defect state</span>
-<span class="sd">        :param defect_std: STD in the defect state</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mean_change_per_step</span> <span class="o">=</span> <span class="n">mean_change_per_step</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">initial_mean</span> <span class="o">=</span> <span class="n">initial_mean</span>
@@ -356,10 +357,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">defect_mean</span> <span class="o">=</span> <span class="n">defect_mean</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">defect_std</span> <span class="o">=</span> <span class="n">defect_std</span>
 
-<div class="viewcode-block" id="ContinuosNormalDistribution.get_initial_state"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.StateController.ContinuosNormalDistribution.get_initial_state">[docs]</a>    <span class="k">def</span> <span class="nf">get_initial_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ContinuousNormalDistribution.get_initial_state"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.StateController.ContinuousNormalDistribution.get_initial_state">[docs]</a>    <span class="k">def</span> <span class="nf">get_initial_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_distribution</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">std</span><span class="p">),</span> <span class="kc">False</span></div>
 
-<div class="viewcode-block" id="ContinuosNormalDistribution.get_and_update"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.StateController.ContinuosNormalDistribution.get_and_update">[docs]</a>    <span class="k">def</span> <span class="nf">get_and_update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ContinuousNormalDistribution.get_and_update"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.StateController.ContinuousNormalDistribution.get_and_update">[docs]</a>    <span class="k">def</span> <span class="nf">get_and_update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># parameters are incremented before return</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">break_point</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">account</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">break_point</span><span class="p">:</span>
             <span class="n">mean</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">defect_mean</span>
@@ -377,7 +378,7 @@
     <span class="k">def</span> <span class="nf">__get_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">std</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;Feature&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="n">mean</span><span class="p">,</span> <span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="n">std</span><span class="p">}}}</span>
 
-<div class="viewcode-block" id="ContinuosNormalDistribution.reset"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.StateController.ContinuosNormalDistribution.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ContinuousNormalDistribution.reset"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.StateController.ContinuousNormalDistribution.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">current_mean</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_mean</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">account</span> <span class="o">=</span> <span class="mi">0</span></div></div>
 
@@ -385,21 +386,22 @@
 
 
 <div class="viewcode-block" id="RandomDefectStateController"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.StateController.RandomDefectStateController">[docs]</a><span class="k">class</span> <span class="nc">RandomDefectStateController</span><span class="p">(</span><span class="n">StateController</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Orchestrates multiple StateControllers. Using a Bernoulli-Distribution, it chooses either the</span>
+<span class="sd">    ok or the defect distribution.</span>
+
+<span class="sd">    :param failure_probability: Probability of failure for the Bernoulli-Distribution.</span>
+<span class="sd">    :param ok_controller:</span>
+<span class="sd">    :param defect_controllers: list of StateControllers. If a random failure occurs, one of them is</span>
+<span class="sd">                                drawn with uniform distribution. Example: in case of defect, a value can be either</span>
+<span class="sd">                                too high or too low</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">failure_probability</span><span class="p">,</span>
                  <span class="n">ok_controller</span><span class="p">:</span> <span class="n">StateController</span><span class="p">,</span>
                  <span class="n">defect_controllers</span><span class="p">:</span> <span class="nb">list</span>
                  <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Orchestrates multiple StateControllers. Using a Bernoulli-Distribution, it chooses either the</span>
-<span class="sd">        ok or the defect distribution.</span>
 
-<span class="sd">        :param failure_probability: Probability of failure for the Bernoulli-Distribution.</span>
-<span class="sd">        :param ok_controller:</span>
-<span class="sd">        :param defect_controllers: list of StateControllers. If a random failure occurs, one of them is</span>
-<span class="sd">                                    drawn with uniform distribution. Example: in case of defect, a value can be either</span>
-<span class="sd">                                    too high or too low</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">failure_probability</span> <span class="o">=</span> <span class="n">failure_probability</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ok_controller</span> <span class="o">=</span> <span class="n">ok_controller</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">defect_controllers</span> <span class="o">=</span> <span class="n">defect_controllers</span>
@@ -425,7 +427,6 @@
         <span class="k">return</span> <span class="n">dist</span><span class="p">,</span> <span class="n">label</span></div>
 
 <div class="viewcode-block" id="RandomDefectStateController.reset"><a class="viewcode-back" href="../../../../deprecated_core_alternative_order.html#manpy.simulation.core.StateController.RandomDefectStateController.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&gt;&gt;&gt; Reset StateController &lt;&lt;&lt;&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ok_controller</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">defect_controllers</span><span class="p">:</span>
             <span class="n">c</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span></div></div>

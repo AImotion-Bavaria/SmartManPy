@@ -102,6 +102,7 @@ dependencies:
   - zlib=1.2.13
   - zope=1.0
   - zstd=1.5.2
+  - tqdm=4.66.4
   - pip:
     - pyqt5-sip==12.11.0
     - questdb==1.1.0

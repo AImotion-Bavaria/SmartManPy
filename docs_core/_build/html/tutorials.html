@@ -201,7 +201,7 @@
 <h1>Tutorials<a class="headerlink" href="#tutorials" title="Permalink to this heading">#</a></h1>
 <p>This page gives you an overview of the general usage paradigms of SmartManPy.
 We have prepared additional (complete) examples that demonstrate various capabilities.
-These examples can be found in manpy/simulation/Examples and here: <a class="reference internal" href="examples.html"><span class="doc">Full examples</span></a></p>
+These examples can be found in manpy/simulation/tutorials and here: <a class="reference internal" href="examples.html"><span class="doc">Full examples</span></a></p>
 <p>We recommend the following order:</p>
 <ol class="arabic simple">
 <li><p>Quality_Control.py</p></li>
@@ -210,6 +210,7 @@ These examples can be found in manpy/simulation/Examples and here: <a class="ref
 <li><p>Conditional_Failure.py</p></li>
 <li><p>Interpolation.py</p></li>
 <li><p>Data_Extraction.py</p></li>
+<li><p>Quality_Control_Gym.py</p></li>
 </ol>
 <section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
@@ -266,6 +267,7 @@ This function needs a list with all simulated objects (machines, features/timese
 If there exist dependencies (e.g. temporal) between simulated objects, you need to reflect this in the object list.
 This is especially important for functional dependencies in features (see <a class="reference internal" href="#functional-dependencies">Functional dependencies</a>)</p>
 </div>
+<p>If you want to run another simulation directly after the previous one has finished, you can use the “resetSimulation()” in Globals.</p>
 </section>
 <section id="adding-more-machines">
 <h3>Adding more machines<a class="headerlink" href="#adding-more-machines" title="Permalink to this heading">#</a></h3>
@@ -608,17 +610,17 @@ In this case, the break point is defined at 25 units of wear, which leads to a n
 This behavior can be deactivated through the “reset_distributions” parameter of Feature.</p>
 </div>
 </section>
-<section id="continuosnormaldistribution">
-<h4>ContinuosNormalDistribution<a class="headerlink" href="#continuosnormaldistribution" title="Permalink to this heading">#</a></h4>
+<section id="continuousnormaldistribution">
+<h4>ContinuousNormalDistribution<a class="headerlink" href="#continuousnormaldistribution" title="Permalink to this heading">#</a></h4>
 <p>SimpleStateController is very generic by simply retrieving the element in the states list that is determined by boundaries.
-ContinuosNormalDistribution is a more specialized StateController.
+ContinuousNormalDistribution is a more specialized StateController.
 It is specifically designed for Features that are generated using a Gaussian distribution.
-In ContinuosNormalDistribution, we assume that wear immediately influences the underlying probability distribution, even if it’s by a very small amount.
+In ContinuousNormalDistribution, we assume that wear immediately influences the underlying probability distribution, even if it’s by a very small amount.
 We model this by adding a certain amount (mean_change_per_step) in each production step to the mean of the normal distribution.
 Additionally, the break point mechanic from SimpleStateController is still present.
 However, it’s now simplified such that the normal distribution after the defect occurred is only defined by a mean and STD:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="n">mean_change_per_step</span> <span class="o">=</span> <span class="mf">0.05</span>
-<span class="linenos"> 2</span><span class="n">controller1</span> <span class="o">=</span> <span class="n">ContinuosNormalDistribution</span><span class="p">(</span><span class="n">wear_per_step</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+<span class="linenos"> 2</span><span class="n">controller1</span> <span class="o">=</span> <span class="n">ContinuousNormalDistribution</span><span class="p">(</span><span class="n">wear_per_step</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
 <span class="linenos"> 3</span>                                         <span class="n">mean_change_per_step</span><span class="o">=</span><span class="n">mean_change_per_step</span><span class="p">,</span>
 <span class="linenos"> 4</span>                                         <span class="n">initial_mean</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
 <span class="linenos"> 5</span>                                         <span class="n">std</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
@@ -628,7 +630,7 @@ However, it’s now simplified such that the normal distribution after the defec
 <span class="linenos"> 9</span>                                         <span class="p">)</span>
 <span class="linenos">10</span>
 <span class="linenos">11</span><span class="c1"># not using a break point</span>
-<span class="linenos">12</span><span class="n">controller2</span> <span class="o">=</span> <span class="n">ContinuosNormalDistribution</span><span class="p">(</span><span class="n">wear_per_step</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+<span class="linenos">12</span><span class="n">controller2</span> <span class="o">=</span> <span class="n">ContinuousNormalDistribution</span><span class="p">(</span><span class="n">wear_per_step</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
 <span class="linenos">13</span>                                         <span class="n">mean_change_per_step</span><span class="o">=</span><span class="n">mean_change_per_step</span><span class="p">,</span>
 <span class="linenos">14</span>                                         <span class="n">initial_mean</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
 <span class="linenos">15</span>                                         <span class="n">std</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
@@ -641,19 +643,19 @@ However, it’s now simplified such that the normal distribution after the defec
 <span class="linenos">22</span><span class="c1"># f3 = Feature(&quot;f3&quot;, &quot;F3&quot;, victim=m2, reset_distributions=True, distribution_state_controller=controller2)</span>
 </pre></div>
 </div>
-<p>The typical behaviour of ContinuosNormalDistribution can be seen in the following plot.
-It contains the evolution of the feature value of two ContinuosNormalDistribution StateControllers over the span of 250 steps.</p>
-<a class="reference internal image-reference" href="_images/continuos_normal_dist.png"><img alt="Two ContinuosNormalDistributions" src="_images/continuos_normal_dist.png" style="width: 500px;" /></a>
+<p>The typical behaviour of ContinuousNormalDistribution can be seen in the following plot.
+It contains the evolution of the feature value of two ContinuousNormalDistribution StateControllers over the span of 250 steps.</p>
+<a class="reference internal image-reference" href="_images/continuos_normal_dist.png"><img alt="Two ContinuousNormalDistributions" src="_images/continuos_normal_dist.png" style="width: 500px;" /></a>
 </section>
 <section id="randomdefectstatecontroller">
 <h4>RandomDefectStateController<a class="headerlink" href="#randomdefectstatecontroller" title="Permalink to this heading">#</a></h4>
-<p>SimpleStateController and ContinuosNormalDistribution are best used to model properties related to wear.
+<p>SimpleStateController and ContinuousNormalDistribution are best used to model properties related to wear.
 But sometimes, failures can occur without obvious reason.
 For these cases, we designed RandomDefectStateController, which models a defect using a Bernoulli distribution.
 If the Bernoulli distribution returns 1, it selects a defect StateController from a list, otherwise it uses a “ok” StateController that model normal behaviour.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span> <span class="n">mean_change_per_step</span> <span class="o">=</span> <span class="mf">0.02</span>
 <span class="linenos"> 2</span>
-<span class="linenos"> 3</span> <span class="n">ok_controller</span> <span class="o">=</span> <span class="n">ContinuosNormalDistribution</span><span class="p">(</span><span class="n">wear_per_step</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+<span class="linenos"> 3</span> <span class="n">ok_controller</span> <span class="o">=</span> <span class="n">ContinuousNormalDistribution</span><span class="p">(</span><span class="n">wear_per_step</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
 <span class="linenos"> 4</span>                                             <span class="n">break_point</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 <span class="linenos"> 5</span>                                             <span class="n">mean_change_per_step</span><span class="o">=</span><span class="n">mean_change_per_step</span><span class="p">,</span>
 <span class="linenos"> 6</span>                                             <span class="n">initial_mean</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span>
@@ -662,7 +664,7 @@ If the Bernoulli distribution returns 1, it selects a defect StateController fro
 <span class="linenos"> 9</span>                                             <span class="n">defect_std</span><span class="o">=</span><span class="mf">3.0</span>
 <span class="linenos">10</span>                                             <span class="p">)</span>
 <span class="linenos">11</span>
-<span class="linenos">12</span> <span class="n">defect_controller1</span> <span class="o">=</span> <span class="n">ContinuosNormalDistribution</span><span class="p">(</span><span class="n">wear_per_step</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+<span class="linenos">12</span> <span class="n">defect_controller1</span> <span class="o">=</span> <span class="n">ContinuousNormalDistribution</span><span class="p">(</span><span class="n">wear_per_step</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
 <span class="linenos">13</span>                                                 <span class="n">mean_change_per_step</span><span class="o">=</span><span class="n">mean_change_per_step</span><span class="p">,</span>
 <span class="linenos">14</span>                                                 <span class="n">initial_mean</span><span class="o">=</span><span class="mf">7.0</span><span class="p">,</span>
 <span class="linenos">15</span>                                                 <span class="n">std</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
@@ -671,7 +673,7 @@ If the Bernoulli distribution returns 1, it selects a defect StateController fro
 <span class="linenos">18</span>                                                 <span class="n">defect_std</span><span class="o">=</span><span class="kc">None</span>
 <span class="linenos">19</span>                                                 <span class="p">)</span>
 <span class="linenos">20</span>
-<span class="linenos">21</span> <span class="n">defect_controller2</span> <span class="o">=</span> <span class="n">ContinuosNormalDistribution</span><span class="p">(</span><span class="n">wear_per_step</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+<span class="linenos">21</span> <span class="n">defect_controller2</span> <span class="o">=</span> <span class="n">ContinuousNormalDistribution</span><span class="p">(</span><span class="n">wear_per_step</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
 <span class="linenos">22</span>                                                 <span class="n">mean_change_per_step</span><span class="o">=</span><span class="n">mean_change_per_step</span><span class="p">,</span>
 <span class="linenos">23</span>                                                 <span class="n">initial_mean</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
 <span class="linenos">24</span>                                                 <span class="n">std</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
@@ -706,6 +708,31 @@ If necessary, you can write your own StateController that perfectly fits you dem
 The interface is defined in core/StateController.py.</p>
 </div>
 </section>
+</section>
+<section id="cost-of-entities">
+<h3>Cost of entities<a class="headerlink" href="#cost-of-entities" title="Permalink to this heading">#</a></h3>
+<p>Since every part and every production step in reality costs money, cost is an interesting aspect for simulation.
+We therefore added an attribute “cost” to Entity, which allows us to accurately simulate the value of an entity over the course of a production line.</p>
+<p>Every CoreObject has a cost parameter, which is set to 0 by default. When an entity passes through a CoreObject, the cost of the entity is increased by the cost of the CoreObject.
+This even includes the Source and Exit objects, which can be used to model the initial cost or the final value of an entity.</p>
+<p>Additionally it is possible to add a cost to any Failure. This cost is added to the current entity that is being processed by the victim of the Failure.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="n">m1</span> <span class="o">=</span> <span class="n">Machine</span><span class="p">(</span><span class="s2">&quot;M1&quot;</span><span class="p">,</span> <span class="s2">&quot;Machine1&quot;</span><span class="p">,</span>
+<span class="linenos"> 2</span>            <span class="n">processingTime</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span>
+<span class="linenos"> 3</span>                            <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> <span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="mf">0.075</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="mf">0.425</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="mf">1.175</span><span class="p">}</span>
+<span class="linenos"> 4</span>        <span class="p">},</span>
+<span class="linenos"> 5</span>        <span class="n">cost</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="linenos"> 6</span><span class="n">e1</span> <span class="o">=</span> <span class="n">Exit</span><span class="p">(</span><span class="s2">&quot;E1&quot;</span><span class="p">,</span> <span class="s2">&quot;Exit1&quot;</span><span class="p">,</span> <span class="n">cost</span><span class="o">=-</span><span class="mi">50</span><span class="p">)</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="n">expensive_failure</span> <span class="o">=</span> <span class="n">Failure</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;Flr0&quot;</span><span class="p">,</span>
+<span class="linenos"> 9</span>                     <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ExpensiveFailure&quot;</span><span class="p">,</span>
+<span class="linenos">10</span>                     <span class="n">victim</span><span class="o">=</span><span class="n">m1</span><span class="p">,</span>
+<span class="linenos">11</span>                     <span class="n">distribution</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;TTF&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Fixed&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">}},</span>
+<span class="linenos">12</span>                                   <span class="s2">&quot;TTR&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">:</span><span class="mi">50</span><span class="p">,</span>
+<span class="linenos">13</span>                                                      <span class="s2">&quot;probability&quot;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">}}},</span>
+<span class="linenos">14</span>                     <span class="n">cost</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Furthermore, every cost can be negative. Just like in this example, where e1 has a negative cost, which means that finishing the part adds value to it instead of costing money.</p>
 </section>
 <section id="export">
 <h3>Export<a class="headerlink" href="#export" title="Permalink to this heading">#</a></h3>
@@ -810,6 +837,83 @@ If you need additional functionality, you can write custom ProductionLineModule 
 We can conveniently do so by using example_module.getObjectList().
 When defining the routing, a ProductionLineModule behaves like every Machine, Source, Exit, etc.</p>
 </section>
+<section id="training-an-ai-agent-using-deep-rl">
+<h3>Training an AI agent using deep RL<a class="headerlink" href="#training-an-ai-agent-using-deep-rl" title="Permalink to this heading">#</a></h3>
+<p>ManPy as a simluation framework is a great playground for training Reinforcement Learning agents. Because they can interact with and influence the production line during the simulation.
+This opens up different possibilities than training on static datasets that are generated at the end of a simulation.</p>
+<p>We have implemented a custom Gym environment, starting with a simple example of a Quality Control problem.
+The environment is defined in GymEnv.py as QualityEnv.
+In order to use it, create a class, inherit from the class QualityEnv and override the abstract methods prepare, obs, and rew.</p>
+<p>prepare is used to define the simulation, like in the normal simulation setup.
+obs is used to define the observations that the agent receives from the simulation.
+rew is used to define the reward that the agent receives for a certain action. When writing rew, the input action 1 means discarding the part.</p>
+<p>Because we now have an environment and a simulation, taking a step is different from other Gym environments.
+Instead of letting the environment make a step, we let the simulation run, and call the agent at an appropriate time through QualityEnv.step().
+For this Quality Control example, the agent replaces the control function of a machine.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">from</span> <span class="nn">manpy.simulation.core.GymEnv</span> <span class="kn">import</span> <span class="n">QualityEnv</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="k">class</span> <span class="nc">ExampleEnv</span><span class="p">(</span><span class="n">QualityEnv</span><span class="p">):</span>
+<span class="linenos"> 4</span>    <span class="k">def</span> <span class="nf">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos"> 5</span>    <span class="n">s</span> <span class="o">=</span> <span class="n">Source</span><span class="p">(</span><span class="s2">&quot;S1&quot;</span><span class="p">,</span> <span class="s2">&quot;Source&quot;</span><span class="p">,</span>
+<span class="linenos"> 6</span>                <span class="n">interArrivalTime</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Fixed&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">}},</span>
+<span class="linenos"> 7</span>                <span class="n">entity</span><span class="o">=</span><span class="s2">&quot;manpy.Part&quot;</span>
+<span class="linenos"> 8</span>            <span class="p">)</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span>    <span class="n">m1</span> <span class="o">=</span> <span class="n">Machine</span><span class="p">(</span><span class="s2">&quot;M1&quot;</span><span class="p">,</span> <span class="s2">&quot;Machine1&quot;</span><span class="p">,</span>
+<span class="linenos">11</span>                <span class="n">processingTime</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="mf">0.08</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="mf">0.34</span><span class="p">}},</span>
+<span class="linenos">12</span>                <span class="n">control</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">step</span>
+<span class="linenos">13</span>            <span class="p">)</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span>    <span class="n">e1</span> <span class="o">=</span> <span class="n">Exit</span><span class="p">(</span><span class="s2">&quot;E1&quot;</span><span class="p">,</span> <span class="s2">&quot;Exit1&quot;</span><span class="p">)</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span>    <span class="n">dists</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;Feature&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span> <span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="mi">400</span><span class="p">}}},</span>
+<span class="linenos">18</span>             <span class="p">{</span><span class="s2">&quot;Feature&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Normal&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="mi">600</span><span class="p">,</span> <span class="s2">&quot;stdev&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="mi">800</span><span class="p">}}}]</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span>    <span class="n">boundaries</span> <span class="o">=</span> <span class="p">{(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">25</span><span class="p">):</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span> <span class="mi">1</span><span class="p">}</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span>    <span class="n">controller</span> <span class="o">=</span> <span class="n">SimpleStateController</span><span class="p">(</span><span class="n">states</span><span class="o">=</span><span class="n">dists</span><span class="p">,</span>
+<span class="linenos">23</span>                    <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;ok&quot;</span><span class="p">,</span> <span class="s2">&quot;defect&quot;</span><span class="p">],</span>
+<span class="linenos">24</span>                    <span class="n">boundaries</span><span class="o">=</span><span class="n">boundaries</span><span class="p">,</span>
+<span class="linenos">25</span>                    <span class="n">wear_per_step</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+<span class="linenos">26</span>                    <span class="n">reset_amount</span><span class="o">=</span><span class="mi">40</span>
+<span class="linenos">27</span>                <span class="p">)</span>
+<span class="linenos">28</span>
+<span class="linenos">29</span>    <span class="n">f1</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Ftr1&quot;</span><span class="p">,</span> <span class="s2">&quot;Feature1&quot;</span><span class="p">,</span>
+<span class="linenos">30</span>                <span class="n">victim</span><span class="o">=</span><span class="n">M1</span><span class="p">,</span>
+<span class="linenos">31</span>                <span class="n">distribution_state_controller</span><span class="o">=</span><span class="n">controller</span><span class="p">,</span>
+<span class="linenos">32</span>               <span class="p">)</span>
+<span class="linenos">33</span>
+<span class="linenos">34</span>    <span class="n">s</span><span class="o">.</span><span class="n">defineRouting</span><span class="p">([</span><span class="n">M1</span><span class="p">])</span>
+<span class="linenos">35</span>    <span class="n">m1</span><span class="o">.</span><span class="n">defineRouting</span><span class="p">([</span><span class="n">S</span><span class="p">],</span> <span class="p">[</span><span class="n">E1</span><span class="p">])</span>
+<span class="linenos">36</span>    <span class="n">e1</span><span class="o">.</span><span class="n">defineRouting</span><span class="p">([</span><span class="n">M1</span><span class="p">])</span>
+<span class="linenos">37</span>
+<span class="linenos">38</span>    <span class="k">return</span> <span class="p">[</span><span class="n">s</span><span class="p">,</span> <span class="n">m1</span><span class="p">,</span> <span class="n">e1</span><span class="p">,</span> <span class="n">f1</span><span class="p">]</span>
+<span class="linenos">39</span>
+<span class="linenos">40</span>    <span class="k">def</span> <span class="nf">obs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos">41</span>        <span class="n">activeEntity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="linenos">42</span>        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">activeEntity</span><span class="o">.</span><span class="n">features</span><span class="p">)</span>
+<span class="linenos">43</span>
+<span class="linenos">44</span>    <span class="k">def</span> <span class="nf">rew</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+<span class="linenos">45</span>        <span class="n">activeEntity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="linenos">46</span>        <span class="k">if</span> <span class="n">action</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">activeEntity</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;ok&quot;</span><span class="p">:</span>
+<span class="linenos">47</span>            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+<span class="linenos">48</span>        <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">activeEntity</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;defect&quot;</span><span class="p">:</span>
+<span class="linenos">49</span>            <span class="k">return</span> <span class="mi">1</span>
+<span class="linenos">50</span>        <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">activeEntity</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;ok&quot;</span><span class="p">:</span>
+<span class="linenos">51</span>            <span class="k">return</span> <span class="mi">1</span>
+<span class="linenos">52</span>        <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">activeEntity</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;defect&quot;</span><span class="p">:</span>
+<span class="linenos">53</span>            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+<span class="linenos">54</span>
+<span class="linenos">55</span><span class="n">simu</span> <span class="o">=</span> <span class="n">ExampleEnv</span><span class="p">(</span><span class="n">observation_extremes</span><span class="o">=</span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">800</span><span class="p">)],</span> <span class="n">policy_network</span><span class="o">=</span><span class="n">PolicyNetwork</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">maxSteps</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">steps_between_updates</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">save_policy_network</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="linenos">56</span><span class="n">simu</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In this example, we produce “defect” and “ok” parts with different feature values by using a SimpleStateController.
+The agent can decide whether to discard a part or let it pass and receives a reward of 1 for a correct decision and -1 for a wrong decision.
+We set m1 as the machine that the agent controls, by setting the “control” parameter to self.step.</p>
+<p>To start the training, create an instance of ExampleEnv and call reset() to reset, prepare and run the simulation.
+In order to access the results of the simulation, use simulation.objectList to get all objects and therefore the data of the simulation.</p>
+</section>
 </section>
 </section>
 
@@ -897,16 +1001,18 @@ When defining the routing, a ProductionLineModule behaves like every Machine, So
 </li>
 <li><a class="reference internal" href="#distributions-and-statecontrollers">Distributions and StateControllers</a><ul>
 <li><a class="reference internal" href="#simplestatecontroller">SimpleStateController</a></li>
-<li><a class="reference internal" href="#continuosnormaldistribution">ContinuosNormalDistribution</a></li>
+<li><a class="reference internal" href="#continuousnormaldistribution">ContinuousNormalDistribution</a></li>
 <li><a class="reference internal" href="#randomdefectstatecontroller">RandomDefectStateController</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#cost-of-entities">Cost of entities</a></li>
 <li><a class="reference internal" href="#export">Export</a><ul>
 <li><a class="reference internal" href="#pandas-dataframes">Pandas DataFrames</a></li>
 <li><a class="reference internal" href="#databases">Databases</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#productionlinemodules">ProductionLineModules</a></li>
+<li><a class="reference internal" href="#training-an-ai-agent-using-deep-rl">Training an AI agent using deep RL</a></li>
 </ul>
 </li>
 </ul>
