@@ -26,14 +26,13 @@ E1.defineRouting([M1])
 
 
 def main():
-    maxSimTime = 25
+    maxSimTime = 20
 
     runSimulation([S, M1, E1, Ftr1, Ftr2, TS], maxSimTime)
 
     for i in M1.entities:
-        plt.plot([2], [i.features[0]], "o", label="Ftr1")
-        plt.plot([3], [i.features[1]], "o", label="Ftr2")
-        plt.plot([4], [i.features[2]], "o", label="Ftr3")
+        plt.plot([2], [i.features[0]], "o", c="blue", label="Ftr1")
+        plt.plot([3], [i.features[1]], "o", c="green", label="Ftr2")
         plt.plot(i.timeseries_times[0], i.timeseries[0], c="red", label="TS")
         plt.legend()
         plt.show()

@@ -241,12 +241,12 @@ def main(test=0):
 
     sct = getFeatureData([Solar_Cell_Tester, Layup])
     TS = getTimeSeriesData(IV_Curve)
-    sct.to_csv("Solar_Cell_Tester.csv", index=False, encoding="utf8")
-    TS.to_csv("IV_Curve.csv", index=False, encoding="utf8")
+    # sct.to_csv("Solar_Cell_Tester.csv", index=False, encoding="utf8")
+    # TS.to_csv("IV_Curve.csv", index=False, encoding="utf8")
     # TS[1].to_csv("PV_Curve.csv", index=False, encoding="utf8")
     lamination_ts = getTimeSeriesData(Lamination_Pressure_Curve)
     print(lamination_ts)
-    lamination_ts.to_csv("TS_Lamination_Pressure.csv", index=False, encoding="utf8")
+    # lamination_ts.to_csv("TS_Lamination_Pressure.csv", index=False, encoding="utf8")
 
     # with pd.option_context('display.max_columns', None):
     #     print(sct.drop(["ID"], axis=1).describe())
