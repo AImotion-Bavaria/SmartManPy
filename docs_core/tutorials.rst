@@ -4,7 +4,7 @@ Tutorials
 
 This page gives you an overview of the general usage paradigms of SmartManPy.
 We have prepared additional (complete) examples that demonstrate various capabilities.
-These examples can be found in manpy/simulation/Examples and here: :doc:`Full examples <examples>`
+These examples can be found in manpy/simulation/tutorials and here: :doc:`Full examples <examples>`
 
 We recommend the following order:
 
