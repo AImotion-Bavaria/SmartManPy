@@ -1,6 +1,7 @@
 ===================
 SmartManPy
 ===================
+
 SmartManPy focuses on simulating complex features that evolve over time.
 
 This project extends the Python 3 port of ManPy by Data Revenue GmbH (https://github.com/datarevenue-berlin/manpy).
