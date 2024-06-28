@@ -109,3 +109,4 @@ dependencies:
     - zope-dottedname==5.0
     - confluent-kafka==2.0.2
     - sphinx-copybutton==0.5.2
+    - furo==2024.5.6
