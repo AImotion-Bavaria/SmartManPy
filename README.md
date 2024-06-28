@@ -1,8 +1,7 @@
 
 # SmartManPy
 
-
-[![Tests (Self-hosted)](https://github.com/AImotion-Bavaria/ManPyExperiments/actions/workflows/tests_self_hosted.yml/badge.svg)](https://github.com/AImotion-Bavaria/ManPyExperiments/actions/workflows/tests_self_hosted.yml)
+[![Documentation Status](https://readthedocs.org/projects/smartmanpy/badge/?version=latest)](https://smartmanpy.readthedocs.io/en/latest/?badge=latest)
 
 This repository extends the Python 3 port of ManPy by Data Revenue GmbH (https://github.com/datarevenue-berlin/manpy)
 
